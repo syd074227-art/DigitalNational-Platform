@@ -3,104 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هيئة KR</title>
-    <link rel="stylesheet" href="style.css">
+    <title>نظام تفعيل الهوية - KR</title>
+    <!-- استخدم رابط مباشر من CDN للتأكد من عدم وجود مشاكل -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* نضع CSS هنا مباشرة لتجنب مشاكل الملفات */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        .form-box { padding: 30px; }
+        h2 {
+            color: #1e3a8a;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-top: 8px;
+        }
+        input.error {
+            border-color: #ff4444;
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .alert {
+            background: #ff4444;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn:hover { background: #2563eb; }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="logo">
-                <i class="fas fa-id-card"></i>
-                <h1>هيئة KR الرقمية</h1>
-            </div>
+            <h1><i class="fas fa-id-card"></i> نظام تفعيل الهوية</h1>
+            <p>هيئة KR الرقمية</p>
         </header>
-
-        <main class="form-box">
-            <!-- الخطوة 1 -->
-            <div class="form-step active" id="step1">
-                <h2>البيانات الأساسية</h2>
-                
-                <div class="input-field">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="fullName" placeholder="الاسم الكامل">
-                </div>
-                
-                <div class="input-field">
-                    <i class="fas fa-birthday-cake"></i>
-                    <input type="number" id="age" placeholder="العمر (18+)">
-                </div>
-                
-                <div class="input-field">
-                    <i class="fab fa-discord"></i>
-                    <input type="text" id="discord" placeholder="اسمك في الديسكورد">
-                </div>
-                
-                <div class="input-field">
-                    <i class="fas fa-id-card"></i>
-                    <input type="text" id="nationalId" placeholder="رقم الهوية (10 أرقام فقط)">
-                </div>
-                
-                <button class="btn next-btn" onclick="goToStep(2)">التالي</button>
+        
+        <div class="form-box">
+            <!-- صندوق التحذيرات -->
+            <div class="alert" id="alertBox">⚠️ هنا سيظهر التحذير</div>
+            
+            <!-- الفورم -->
+            <h2>البيانات الأساسية</h2>
+            
+            <div class="input-group">
+                <label>الاسم الكامل:</label>
+                <input type="text" id="fullName" placeholder="أدخل اسمك الكامل">
             </div>
-
-            <!-- الخطوة 2 -->
-            <div class="form-step" id="step2">
-                <h2>اختيار الوظيفة</h2>
-                
-                <div class="options">
-                    <div class="option" onclick="selectJob('citizen')">
-                        <i class="fas fa-user-tie"></i>
-                        <span>مواطن</span>
-                    </div>
-                    
-                    <div class="option" onclick="selectJob('interior')">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>منسوب الداخلية</span>
-                    </div>
-                </div>
-                
-                <div class="btn-group">
-                    <button class="btn prev-btn" onclick="goToStep(1)">السابق</button>
-                    <button class="btn next-btn" onclick="goToStep(3)">التالي</button>
-                </div>
+            
+            <div class="input-group">
+                <label>العمر:</label>
+                <input type="number" id="age" placeholder="مثال: 25">
             </div>
-
-            <!-- الخطوة 3 -->
-            <div class="form-step" id="step3">
-                <h2>رفع صورة الهوية</h2>
-                
-                <div class="upload-area" onclick="uploadFile()">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p>اضغط لرفع صورة هوية اللعبة</p>
-                    <input type="file" id="idImage" accept="image/*" hidden>
-                </div>
-                
-                <div class="file-info" id="fileInfo">لم يتم رفع أي صورة</div>
-                
-                <div class="example">
-                    <p><strong>مثال على الهوية الصحيحة:</strong></p>
-                    <img src="https://image2url.com/r2/default/images/1769695282320-2ade9dfa-ea7d-4f34-b1f5-81fd757f4464.jpeg" alt="مثال" width="100%">
-                </div>
-                
-                <div class="btn-group">
-                    <button class="btn prev-btn" onclick="goToStep(2)">السابق</button>
-                    <button class="btn submit-btn" onclick="submitForm()">إرسال الطلب</button>
-                </div>
+            
+            <div class="input-group">
+                <label>رقم الهوية (10 أرقام فقط):</label>
+                <input type="text" id="nationalId" placeholder="1234567890">
             </div>
-
+            
+            <div class="input-group">
+                <label>صورة الهوية:</label>
+                <input type="file" id="idImage" accept="image/*">
+            </div>
+            
+            <!-- مثال الصورة -->
+            <div style="margin: 25px 0; text-align: center;">
+                <p><strong>مثال على الهوية الصحيحة:</strong></p>
+                <img src="https://image2url.com/r2/default/images/1769695282320-2ade9dfa-ea7d-4f34-b1f5-81fd757f4464.jpeg" 
+                     alt="مثال" style="width: 100%; border-radius: 10px; margin-top: 10px;">
+            </div>
+            
+            <button class="btn" id="submitBtn">إرسال الطلب</button>
+            
             <!-- رسالة النجاح -->
-            <div class="success" id="success" style="display:none">
-                <i class="fas fa-check-circle"></i>
-                <h3>تم الإرسال بنجاح!</h3>
-                <button class="btn" onclick="resetForm()">طلب جديد</button>
+            <div id="successMessage" style="display: none; text-align: center; margin-top: 30px; padding: 20px; background: #4CAF50; color: white; border-radius: 10px;">
+                <h3>✅ تم إرسال طلبك بنجاح!</h3>
+                <p>رقم الطلب: <span id="requestNumber">KR-001</span></p>
             </div>
-        </main>
+        </div>
     </div>
 
-    <!-- مكان ظهور التحذيرات -->
-    <div class="error-box" id="errorBox"></div>
-
-    <script src="script.js"></script>
+    <!-- نضع JavaScript هنا مباشرة -->
+    <script>
+        // متغيرات التطبيق
+        let currentFile = null;
+        
+        // 1. عندما يتم تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ الصفحة تم تحميلها بنجاح');
+            
+            // 2. ربط زر الإرسال
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', validateAndSubmit);
+                console.log('✅ زر الإرسال متصل');
+            } else {
+                console.error('❌ زر الإرسال غير موجود');
+            }
+            
+            // 3. التحكم في حقل رقم الهوية
+            const idInput = document.getElementById('nationalId');
+            if (idInput) {
+                idInput.addEventListener('input', function(e) {
+                    // السماح فقط بالأرقام
+                    let value = e.target.value;
+                    let numbersOnly = value.replace(/\D/g, '');
+                    
+                    // إذا كان هناك حروف، نعرض تحذير فوري
+                    if (value !== numbersOnly) {
+                        showAlert('⚠️ رقم الهوية يقبل أرقام فقط!');
+                        e.target.classList.add('error');
+                        setTimeout(() => e.target.classList.remove('error'), 500);
+                    }
+                    
+                    // تحديث القيمة بالأرقام فقط
+                    e.target.value = numbersOnly.slice(0, 10);
+                });
+            }
+            
+            // 4. رفع الملف
+            const fileInput = document.getElementById('idImage');
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
+                    if (e.target.files.length > 0) {
+                        currentFile = e.target.files[0];
+                        console.log('📁 المرفوع:', currentFile.name);
+                        showAlert(`✅ تم رفع الملف: ${currentFile.name}`, 'success');
+                    }
+                });
+            }
+        });
+        
+        // دالة التحقق والإرسال
+        function validateAndSubmit() {
+            console.log('🔍 بدأ التحقق...');
+            
+            // جمع البيانات
+            const name = document.getElementById('fullName').value.trim();
+            const age = document.getElementById('age').value;
+            const nationalId = document.getElementById('nationalId').value.trim();
+            
+            // التحقق من الاسم
+            if (!name) {
+                showAlert('❌ يرجى إدخال الاسم الكامل');
+                document.getElementById('fullName').focus();
+                document.getElementById('fullName').classList.add('error');
+                return;
+            }
+            
+            // التحقق من العمر
+            if (!age || age < 18) {
+                showAlert('❌ العمر يجب أن يكون 18 سنة أو أكثر');
+                document.getElementById('age').focus();
+                document.getElementById('age').classList.add('error');
+                return;
+            }
+            
+            // التحقق من رقم الهوية
+            if (!nationalId) {
+                showAlert('❌ يرجى إدخال رقم الهوية');
+                document.getElementById('nationalId').focus();
+                document.getElementById('nationalId').classList.add('error');
+                return;
+            }
+            
+            if (nationalId.length !== 10) {
+                showAlert(`❌ رقم الهوية يجب أن يكون 10 أرقام بالضبط (أنت أدخلت ${nationalId.length})`);
+                document.getElementById('nationalId').focus();
+                document.getElementById('nationalId').classList.add('error');
+                return;
+            }
+            
+            // التحقق من الصورة
+            if (!currentFile) {
+                showAlert('📸 يرجى رفع صورة الهوية');
+                return;
+            }
+            
+            // إذا كل شيء صحيح
+            console.log('✅ جميع البيانات صحيحة');
+            
+            // إخفاء التحذيرات وإظهار النجاح
+            document.getElementById('alertBox').style.display = 'none';
+            
+            // إنشاء رقم طلب
+            const requestNum = 'KR-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+            document.getElementById('requestNumber').textContent = requestNum;
+            
+            // إظهار رسالة النجاح
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // إخفاء الفورم
+            document.querySelectorAll('input').forEach(input => {
+                input.style.display = 'none';
+            });
+            document.querySelectorAll('label').forEach(label => {
+                label.style.display = 'none';
+            });
+            submitBtn.style.display = 'none';
+            
+            // طباعة البيانات في الكونسول (محاكاة الإرسال)
+            console.log('📤 بيانات الطلب المرسلة:', {
+                name: name,
+                age: age,
+                nationalId: nationalId,
+                file: currentFile.name,
+                requestNumber: requestNum
+            });
+        }
+        
+        // دالة لعرض التحذير
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            
+            // تغيير اللون حسب النوع
+            if (type === 'success') {
+                alertBox.style.background = '#4CAF50';
+            } else {
+                alertBox.style.background = '#ff4444';
+            }
+            
+            // إخفاء التحذير بعد 4 ثواني
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 4000);
+            
+            // اهتزاز الصفحة
+            document.body.style.animation = 'none';
+            setTimeout(() => {
+                document.body.style.animation = 'shake 0.5s';
+            }, 10);
+        }
+        
+        // إضافة أنيميشن الاهتزاز
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
