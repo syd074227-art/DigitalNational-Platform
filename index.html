@@ -3,24 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هيئة KR الرقمية</title>
+    <title>هيئة KR</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <!-- الهيدر -->
         <header>
             <div class="logo">
                 <i class="fas fa-id-card"></i>
-                <div>
-                    <h1>هيئة KR الرقمية</h1>
-                    <p>نظام تفعيل الهوية الوطنية</p>
-                </div>
+                <h1>هيئة KR الرقمية</h1>
             </div>
         </header>
 
-        <!-- الفورم -->
         <main class="form-box">
             <!-- الخطوة 1 -->
             <div class="form-step active" id="step1">
@@ -28,22 +23,22 @@
                 
                 <div class="input-field">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="fullName" placeholder="الاسم الكامل" required>
+                    <input type="text" id="fullName" placeholder="الاسم الكامل">
                 </div>
                 
                 <div class="input-field">
                     <i class="fas fa-birthday-cake"></i>
-                    <input type="number" id="age" placeholder="العمر" min="18" required>
+                    <input type="number" id="age" placeholder="العمر (18+)">
                 </div>
                 
                 <div class="input-field">
                     <i class="fab fa-discord"></i>
-                    <input type="text" id="discord" placeholder="اسم المستخدم في الديسكورد" required>
+                    <input type="text" id="discord" placeholder="اسمك في الديسكورد">
                 </div>
                 
                 <div class="input-field">
                     <i class="fas fa-id-card"></i>
-                    <input type="text" id="nationalId" placeholder="رقم الهوية في اللعبة (10 أرقام)" maxlength="10" required>
+                    <input type="text" id="nationalId" placeholder="رقم الهوية (10 أرقام فقط)">
                 </div>
                 
                 <button class="btn next-btn" onclick="goToStep(2)">التالي</button>
@@ -63,108 +58,48 @@
                         <i class="fas fa-shield-alt"></i>
                         <span>منسوب الداخلية</span>
                     </div>
-                    
-                    <div class="option" onclick="selectJob('health')">
-                        <i class="fas fa-heartbeat"></i>
-                        <span>منسوب الصحة</span>
-                    </div>
-                    
-                    <div class="option" onclick="selectJob('justice')">
-                        <i class="fas fa-balance-scale"></i>
-                        <span>منسوب العدل</span>
-                    </div>
                 </div>
                 
                 <div class="btn-group">
                     <button class="btn prev-btn" onclick="goToStep(1)">السابق</button>
-                    <button class="btn next-btn" id="next2" onclick="goToStep(3)" disabled>التالي</button>
+                    <button class="btn next-btn" onclick="goToStep(3)">التالي</button>
                 </div>
             </div>
 
             <!-- الخطوة 3 -->
             <div class="form-step" id="step3">
-                <h2 id="position-title">اختيار المنصب</h2>
+                <h2>رفع صورة الهوية</h2>
                 
-                <div class="positions" id="positions-list">
-                    <!-- المناصب تظهر هنا -->
+                <div class="upload-area" onclick="uploadFile()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>اضغط لرفع صورة هوية اللعبة</p>
+                    <input type="file" id="idImage" accept="image/*" hidden>
+                </div>
+                
+                <div class="file-info" id="fileInfo">لم يتم رفع أي صورة</div>
+                
+                <div class="example">
+                    <p><strong>مثال على الهوية الصحيحة:</strong></p>
+                    <img src="https://image2url.com/r2/default/images/1769695282320-2ade9dfa-ea7d-4f34-b1f5-81fd757f4464.jpeg" alt="مثال" width="100%">
                 </div>
                 
                 <div class="btn-group">
                     <button class="btn prev-btn" onclick="goToStep(2)">السابق</button>
-                    <button class="btn next-btn" id="next3" onclick="goToStep(4)" disabled>التالي</button>
-                </div>
-            </div>
-
-            <!-- الخطوة 4 -->
-            <div class="form-step" id="step4">
-                <h2>المناصب الإضافية</h2>
-                
-                <div class="additional" id="additional-list">
-                    <!-- المناصب الإضافية تظهر هنا -->
-                </div>
-                
-                <div class="no-positions">
-                    <input type="checkbox" id="no-pos" onchange="toggleAdditional()">
-                    <label for="no-pos">لا أملك مناصب إضافية</label>
-                </div>
-                
-                <div class="btn-group">
-                    <button class="btn prev-btn" onclick="goToStep(3)">السابق</button>
-                    <button class="btn next-btn" onclick="goToStep(5)">التالي</button>
-                </div>
-            </div>
-
-            <!-- الخطوة 5: رفع صورة الهوية -->
-            <div class="form-step" id="step5">
-                <h2><i class="fas fa-camera"></i> رفع صورة الهوية</h2>
-                <p>يرجى ارفاق صورة لهويتك المتواجدة في اللعبة</p>
-                
-                <!-- منطقة رفع الملف -->
-                <div class="upload-area" id="uploadArea">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <h3>اسحب وأفلت الصورة هنا</h3>
-                    <p>أو اضغط لاختيار الملف</p>
-                    <input type="file" id="idImage" accept="image/*" hidden>
-                    <button type="button" class="btn" onclick="document.getElementById('idImage').click()">
-                        اختر ملفاً
-                    </button>
-                    <div class="file-info" id="fileInfo">
-                        <i class="fas fa-info-circle"></i>
-                        <span>لم يتم اختيار أي ملف</span>
-                    </div>
-                </div>
-                
-                <!-- مثال توضيحي -->
-                <div class="id-example">
-                    <h4><i class="fas fa-check-circle"></i> مثال على الهوية الصحيحة:</h4>
-                    <div class="example-image">
-                        <img src="https://image2url.com/r2/default/images/1769695282320-2ade9dfa-ea7d-4f34-b1f5-81fd757f4464.jpeg" alt="مثال هوية اللعبة">
-                    </div>
-                    <div class="example-instructions">
-                        <ul>
-                            <li>تأكد من ظهور رقم الهوية واسم الشخصية بوضوح</li>
-                            <li>يجب أن تكون الصورة مأخوذة من داخل اللعبة</li>
-                            <li>الصيغ المقبولة: JPG, PNG</li>
-                            <li>الحجم الأقصى: 5 ميجابايت</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="btn-group">
-                    <button class="btn prev-btn" onclick="goToStep(4)">السابق</button>
                     <button class="btn submit-btn" onclick="submitForm()">إرسال الطلب</button>
                 </div>
             </div>
 
             <!-- رسالة النجاح -->
-            <div class="success-message" id="success">
+            <div class="success" id="success" style="display:none">
                 <i class="fas fa-check-circle"></i>
-                <h3>تم إرسال طلبك بنجاح!</h3>
-                <p>رقم الطلب: <span id="request-id">KR-001</span></p>
-                <button class="btn new-btn" onclick="resetForm()">طلب جديد</button>
+                <h3>تم الإرسال بنجاح!</h3>
+                <button class="btn" onclick="resetForm()">طلب جديد</button>
             </div>
         </main>
     </div>
+
+    <!-- مكان ظهور التحذيرات -->
+    <div class="error-box" id="errorBox"></div>
 
     <script src="script.js"></script>
 </body>
