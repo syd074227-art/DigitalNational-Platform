@@ -1,508 +1,164 @@
-/* الأساسيات */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    font-family: system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
     min-height: 100vh;
     padding: 20px;
-    color: #333;
 }
 
 .container {
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 500px;
+    margin: auto;
     background: white;
-    border-radius: 20px;
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-/* الهيدر */
 header {
-    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+    background: #1e3a8a;
     color: white;
-    padding: 25px 30px;
+    padding: 20px;
+    text-align: center;
 }
 
 .logo {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 15px;
 }
 
-.logo i {
-    font-size: 40px;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 15px;
-    border-radius: 12px;
-}
+.logo i { font-size: 30px; }
 
-.logo h1 {
-    font-size: 28px;
-    margin-bottom: 5px;
-}
+h1 { font-size: 24px; }
 
-.logo p {
-    opacity: 0.9;
-    font-size: 16px;
-}
+.form-box { padding: 25px; }
 
-/* صندوق الفورم */
-.form-box {
-    padding: 30px;
-}
-
-.form-step {
-    display: none;
-}
-
-.form-step.active {
-    display: block;
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+.form-step { display: none; }
+.form-step.active { display: block; }
 
 h2 {
     color: #1e3a8a;
-    margin-bottom: 20px;
-    font-size: 24px;
+    margin-bottom: 25px;
     text-align: center;
 }
 
-h2 i {
-    margin-left: 10px;
-}
-
-p {
-    color: #64748b;
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-/* حقول الإدخال */
 .input-field {
     display: flex;
     align-items: center;
-    background: white;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 0 20px;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-}
-
-.input-field:focus-within {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 0 15px;
+    margin-bottom: 15px;
 }
 
 .input-field i {
-    color: #64748b;
-    font-size: 20px;
+    color: #666;
     margin-left: 10px;
 }
 
 .input-field input {
     flex: 1;
-    padding: 18px 0;
+    padding: 15px 0;
     border: none;
     outline: none;
     font-size: 16px;
-    background: transparent;
 }
 
-.input-field input::placeholder {
-    color: #94a3b8;
+.btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
 }
 
-/* الخيارات */
+.btn:hover { background: #2563eb; }
+
 .options {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 15px;
-    margin: 30px 0;
+    margin: 25px 0;
 }
 
 .option {
-    background: white;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 25px 20px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-}
-
-.option:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .option.selected {
     border-color: #3b82f6;
-    background: #eff6ff;
+    background: #e0f2fe;
 }
 
-.option i {
-    font-size: 32px;
-}
-
-.option.citizen { color: #7c3aed; }
-.option.interior { color: #1e3a8a; }
-.option.health { color: #dc2626; }
-.option.justice { color: #059669; }
-
-.option span {
-    font-weight: 600;
-    color: #334155;
-}
-
-/* المناصب */
-.positions {
-    margin: 25px 0;
-    max-height: 300px;
-    overflow-y: auto;
-    padding: 10px;
-}
-
-.position {
-    padding: 15px;
-    background: white;
-    border: 2px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.position:hover {
-    background: #f8fafc;
-}
-
-.position.selected {
-    background: #3b82f6;
-    color: white;
-    border-color: #3b82f6;
-}
-
-/* المناصب الإضافية */
-.additional {
-    margin: 25px 0;
-}
-
-.additional-item {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    background: #f8fafc;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.additional-item input {
-    margin-left: 10px;
-    width: 18px;
-    height: 18px;
-}
-
-.additional-item label {
-    flex: 1;
-    cursor: pointer;
-    color: #334155;
-}
-
-.no-positions {
-    padding: 15px;
-    background: #fef3c7;
-    border-radius: 10px;
-    border: 2px dashed #f59e0b;
-    margin-top: 20px;
-}
-
-.no-positions input {
-    margin-left: 10px;
-}
-
-.no-positions label {
-    color: #92400e;
-    cursor: pointer;
-    font-weight: 500;
-}
-
-/* منطقة رفع الصورة */
 .upload-area {
-    border: 3px dashed #cbd5e1;
+    border: 3px dashed #3b82f6;
     border-radius: 15px;
     padding: 40px 20px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    background: #f8fafc;
-    margin-bottom: 30px;
-}
-
-.upload-area:hover, .upload-area.drag-over {
-    border-color: #3b82f6;
-    background: #eff6ff;
-}
-
-.upload-area i {
-    font-size: 60px;
-    color: #94a3b8;
-    margin-bottom: 20px;
-}
-
-.upload-area h3 {
-    color: #334155;
-    margin-bottom: 10px;
-    font-size: 1.3rem;
-}
-
-.upload-area p {
-    color: #64748b;
-    margin-bottom: 20px;
+    margin: 20px 0;
+    background: #f0f9ff;
 }
 
 .file-info {
-    margin-top: 20px;
-    padding: 12px;
-    background: white;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.file-info i {
-    font-size: 16px;
-    color: #3b82f6;
-}
-
-/* مثال الهوية */
-.id-example {
-    background: #e8f5e9;
-    border-radius: 15px;
-    padding: 25px;
-    margin-bottom: 30px;
-    border: 2px solid #c8e6c9;
-}
-
-.id-example h4 {
-    color: #2e7d32;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.example-image {
-    width: 100%;
-    height: 200px;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    border: 2px solid #a5d6a7;
-}
-
-.example-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.example-instructions ul {
-    list-style: none;
-    padding: 0;
-}
-
-.example-instructions li {
-    padding: 8px 0;
-    color: #2e7d32;
-    display: flex;
-    align-items: center;
-}
-
-.example-instructions li:before {
-    content: "•";
-    color: #4caf50;
-    font-weight: bold;
-    margin-left: 10px;
-}
-
-/* الأزرار */
-.btn {
-    padding: 16px 32px;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 120px;
-}
-
-.btn-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 40px;
-}
-
-.prev-btn {
     background: #f1f5f9;
-    color: #475569;
-}
-
-.prev-btn:hover {
-    background: #e2e8f0;
-}
-
-.next-btn, .submit-btn {
-    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-    color: white;
-}
-
-.next-btn:hover, .submit-btn:hover {
-    background: linear-gradient(135deg, #1d4ed8, #2563eb);
-    transform: translateY(-2px);
-}
-
-.next-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.submit-btn {
-    background: linear-gradient(135deg, #059669, #10b981);
-}
-
-.submit-btn:hover {
-    background: linear-gradient(135deg, #047857, #0d9488);
-}
-
-/* رسالة النجاح */
-.success-message {
-    display: none;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 15px 0;
     text-align: center;
-    padding: 40px 30px;
+}
+
+.example {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.success {
+    text-align: center;
+    padding: 30px;
     background: #d1fae5;
-    border-radius: 20px;
-    border: 3px solid #10b981;
+    border-radius: 15px;
+    margin-top: 20px;
 }
 
-.success-message i {
-    font-size: 60px;
+.success i {
     color: #10b981;
-    margin-bottom: 20px;
-}
-
-.success-message h3 {
-    color: #065f46;
+    font-size: 50px;
     margin-bottom: 15px;
-    font-size: 24px;
 }
 
-.success-message p {
-    color: #047857;
-    font-size: 18px;
-    margin-bottom: 25px;
-}
-
-.new-btn {
-    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
-    color: white;
-    margin-top: 10px;
-}
-
-.new-btn:hover {
-    background: linear-gradient(135deg, #6d28d9, #7c3aed);
-}
-
-/* التجاوب */
-@media (max-width: 768px) {
-    .container {
-        margin: 10px;
-        border-radius: 15px;
-    }
-    
-    .options {
-        grid-template-columns: 1fr;
-    }
-    
-    .btn-group {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .btn {
-        width: 100%;
-    }
-    
-    .upload-area {
-        padding: 30px 15px;
-    }
-    
-    .example-image {
-        height: 150px;
-    }
-}
-/* رسالة الخطأ */
-.error-message {
+/* صندوق التحذير */
+.error-box {
     position: fixed;
     top: 20px;
     right: 20px;
     left: 20px;
-    background: #fee2e2;
+    background: #fef2f2;
     color: #991b1b;
-    padding: 16px;
-    border-radius: 12px;
+    padding: 15px;
+    border-radius: 10px;
     text-align: center;
-    font-weight: 600;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    font-weight: bold;
     border: 2px solid #f87171;
     display: none;
-    animation: slideDown 0.3s ease;
+    z-index: 1000;
+    animation: fadeIn 0.3s;
 }
 
-@keyframes slideDown {
-    from {
-        transform: translateY(-20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.error-message i {
-    margin-left: 8px;
-}
-
-/* اهتزاز لحقول الإدخال عند الخطأ */
-.input-field.error {
-    border-color: #ef4444;
-    animation: shake 0.5s ease;
-}
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
