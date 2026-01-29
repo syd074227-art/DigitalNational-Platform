@@ -7,15 +7,16 @@
 
 body {
     font-family: system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
     min-height: 100vh;
     padding: 20px;
+    color: #333;
 }
 
 .container {
     max-width: 800px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.95);
+    background: white;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -72,9 +73,19 @@ header {
 
 h2 {
     color: #1e3a8a;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     font-size: 24px;
     text-align: center;
+}
+
+h2 i {
+    margin-left: 10px;
+}
+
+p {
+    color: #64748b;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 /* حقول الإدخال */
@@ -232,6 +243,108 @@ h2 {
     font-weight: 500;
 }
 
+/* منطقة رفع الصورة */
+.upload-area {
+    border: 3px dashed #cbd5e1;
+    border-radius: 15px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+    margin-bottom: 30px;
+}
+
+.upload-area:hover, .upload-area.drag-over {
+    border-color: #3b82f6;
+    background: #eff6ff;
+}
+
+.upload-area i {
+    font-size: 60px;
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+
+.upload-area h3 {
+    color: #334155;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.upload-area p {
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+.file-info {
+    margin-top: 20px;
+    padding: 12px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.file-info i {
+    font-size: 16px;
+    color: #3b82f6;
+}
+
+/* مثال الهوية */
+.id-example {
+    background: #e8f5e9;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 2px solid #c8e6c9;
+}
+
+.id-example h4 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.example-image {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 2px solid #a5d6a7;
+}
+
+.example-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.example-instructions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.example-instructions li {
+    padding: 8px 0;
+    color: #2e7d32;
+    display: flex;
+    align-items: center;
+}
+
+.example-instructions li:before {
+    content: "•";
+    color: #4caf50;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
 /* الأزرار */
 .btn {
     padding: 16px 32px;
@@ -338,5 +451,13 @@ h2 {
     
     .btn {
         width: 100%;
+    }
+    
+    .upload-area {
+        padding: 30px 15px;
+    }
+    
+    .example-image {
+        height: 150px;
     }
 }
