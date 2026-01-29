@@ -4,297 +4,924 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام تفعيل الهوية - KR</title>
-    <!-- استخدم رابط مباشر من CDN للتأكد من عدم وجود مشاكل -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* نضع CSS هنا مباشرة لتجنب مشاكل الملفات */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
             min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+        
         .container {
+            width: 100%;
             max-width: 600px;
-            margin: 0 auto;
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
         }
-        header {
-            background: #1e3a8a;
+        
+        /* الهيدر */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
             padding: 25px;
             text-align: center;
         }
-        .form-box { padding: 30px; }
-        h2 {
-            color: #1e3a8a;
-            margin-bottom: 25px;
-            text-align: center;
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
         }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        /* المحتوى */
+        .content {
+            padding: 30px;
+        }
+        
+        /* الخطوات */
+        .step {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .step-title {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+        }
+        
+        .step-title .number {
+            background: #3b82f6;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* حقول الإدخال */
         .input-group {
             margin-bottom: 20px;
         }
-        input {
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-weight: 600;
+        }
+        
+        .input-group input {
             width: 100%;
             padding: 15px;
-            border: 2px solid #ddd;
+            border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 16px;
-            margin-top: 8px;
+            transition: all 0.3s;
+            font-family: inherit;
         }
-        input.error {
-            border-color: #ff4444;
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .input-group input.error {
+            border-color: #ef4444;
             animation: shake 0.5s;
         }
+        
+        /* قائمة الوظائف */
+        .jobs-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .job-item {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .job-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .job-item.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .job-item i {
+            font-size: 28px;
+        }
+        
+        .job-item.citizen i { color: #7c3aed; }
+        .job-item.interior i { color: #1e3a8a; }
+        .job-item.health i { color: #dc2626; }
+        .job-item.justice i { color: #059669; }
+        
+        /* قائمة الرتب */
+        .ranks-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .rank-item {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .rank-item:last-child {
+            border-bottom: none;
+        }
+        
+        .rank-item:hover {
+            background: #f8fafc;
+        }
+        
+        .rank-item.selected {
+            background: #3b82f6;
+            color: white;
+            border-radius: 8px;
+        }
+        
+        /* المناصب الإضافية */
+        .additional-list {
+            margin: 15px 0;
+        }
+        
+        .additional-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+        }
+        
+        .additional-item:hover {
+            background: #f8fafc;
+        }
+        
+        .additional-item input {
+            margin-left: 10px;
+        }
+        
+        /* رفع الصورة */
+        .upload-area {
+            border: 3px dashed #3b82f6;
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f0f9ff;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: #e0f2fe;
+        }
+        
+        .upload-area i {
+            font-size: 50px;
+            color: #3b82f6;
+            margin-bottom: 15px;
+        }
+        
+        .file-info {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            color: #64748b;
+        }
+        
+        /* مثال الهوية */
+        .id-example {
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+        
+        .id-example img {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 2px solid #a5d6a7;
+        }
+        
+        /* الأزرار */
+        .btn {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 25px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* رسالة النجاح */
+        .success {
+            text-align: center;
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #d1fae5, #bbf7d0);
+            border-radius: 15px;
+            border: 3px solid #10b981;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .success i {
+            font-size: 60px;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+        
+        /* التحذيرات */
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            left: 20px;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid #f87171;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
-        .alert {
-            background: #ff4444;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: center;
-            font-weight: bold;
-            display: none;
+        
+        /* خاصية التمرير */
+        .scrollable {
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 5px;
         }
-        .btn {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
+        
+        .scrollable::-webkit-scrollbar {
+            width: 8px;
         }
-        .btn:hover { background: #2563eb; }
+        
+        .scrollable::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .scrollable::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        
+        .scrollable::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+        
+        /* التجاوب */
+        @media (max-width: 768px) {
+            .jobs-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
+        <!-- الهيدر -->
+        <div class="header">
             <h1><i class="fas fa-id-card"></i> نظام تفعيل الهوية</h1>
-            <p>هيئة KR الرقمية</p>
-        </header>
+            <p>هيئة KR الرقمية - تفعيل الهوية الوطنية</p>
+        </div>
         
-        <div class="form-box">
-            <!-- صندوق التحذيرات -->
-            <div class="alert" id="alertBox">⚠️ هنا سيظهر التحذير</div>
+        <!-- المحتوى الرئيسي -->
+        <div class="content">
+            <!-- تحذير الأخطاء -->
+            <div class="alert" id="alertBox"></div>
             
-            <!-- الفورم -->
-            <h2>البيانات الأساسية</h2>
-            
-            <div class="input-group">
-                <label>الاسم الكامل:</label>
-                <input type="text" id="fullName" placeholder="أدخل اسمك الكامل">
+            <!-- الخطوة 1: البيانات الأساسية -->
+            <div class="step" id="step1">
+                <div class="step-title">
+                    <span class="number">1</span>
+                    <span>البيانات الأساسية</span>
+                </div>
+                
+                <div class="input-group">
+                    <label>الاسم الكامل:</label>
+                    <input type="text" id="fullName" placeholder="أدخل اسمك الكامل">
+                </div>
+                
+                <div class="input-group">
+                    <label>العمر:</label>
+                    <input type="number" id="age" placeholder="أدخل عمرك" min="18">
+                </div>
+                
+                <div class="input-group">
+                    <label>رقم الهوية في اللعبة:</label>
+                    <input type="text" id="gameId" placeholder="10 أرقام فقط" maxlength="10">
+                </div>
             </div>
             
-            <div class="input-group">
-                <label>العمر:</label>
-                <input type="number" id="age" placeholder="مثال: 25">
+            <!-- الخطوة 2: اختيار الوظيفة -->
+            <div class="step" id="step2">
+                <div class="step-title">
+                    <span class="number">2</span>
+                    <span>اختيار الوظيفة</span>
+                </div>
+                
+                <div class="jobs-list">
+                    <div class="job-item citizen" data-job="citizen" onclick="selectJob('citizen')">
+                        <i class="fas fa-user"></i>
+                        <div>
+                            <h4>مواطن</h4>
+                            <small>الوظيفة الأساسية</small>
+                        </div>
+                    </div>
+                    
+                    <div class="job-item interior" data-job="interior" onclick="selectJob('interior')">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h4>منسوب الداخلية</h4>
+                            <small>القطاع الأمني</small>
+                        </div>
+                    </div>
+                    
+                    <div class="job-item health" data-job="health" onclick="selectJob('health')">
+                        <i class="fas fa-heartbeat"></i>
+                        <div>
+                            <h4>منسوب الصحة</h4>
+                            <small>القطاع الطبي</small>
+                        </div>
+                    </div>
+                    
+                    <div class="job-item justice" data-job="justice" onclick="selectJob('justice')">
+                        <i class="fas fa-balance-scale"></i>
+                        <div>
+                            <h4>منسوب العدل</h4>
+                            <small>القطاع القضائي</small>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="input-group">
-                <label>رقم الهوية (10 أرقام فقط):</label>
-                <input type="text" id="nationalId" placeholder="1234567890">
+            <!-- الخطوة 3: اختيار الرتبة (تظهر فقط لمنسوبي الوزارات) -->
+            <div class="step" id="step3" style="display: none;">
+                <div class="step-title">
+                    <span class="number">3</span>
+                    <span id="rankTitle">اختيار الرتبة</span>
+                </div>
+                
+                <div class="ranks-list scrollable" id="ranksList">
+                    <!-- الرتب ستظهر هنا حسب الوزارة -->
+                </div>
             </div>
             
-            <div class="input-group">
-                <label>صورة الهوية:</label>
-                <input type="file" id="idImage" accept="image/*">
+            <!-- الخطوة 4: المناصب الإضافية (تظهر فقط لمنسوبي الوزارات) -->
+            <div class="step" id="step4" style="display: none;">
+                <div class="step-title">
+                    <span class="number">4</span>
+                    <span>المناصب الإضافية</span>
+                </div>
+                
+                <div class="additional-list" id="additionalList">
+                    <!-- المناصب الإضافية ستظهر هنا -->
+                </div>
+                
+                <div style="background: #fef3c7; padding: 15px; border-radius: 10px; border: 2px dashed #f59e0b;">
+                    <input type="checkbox" id="noAdditional" onchange="toggleAdditional()">
+                    <label for="noAdditional" style="color: #92400e; cursor: pointer;">لا أملك مناصب إضافية</label>
+                </div>
             </div>
             
-            <!-- مثال الصورة -->
-            <div style="margin: 25px 0; text-align: center;">
-                <p><strong>مثال على الهوية الصحيحة:</strong></p>
-                <img src="https://image2url.com/r2/default/images/1769695282320-2ade9dfa-ea7d-4f34-b1f5-81fd757f4464.jpeg" 
-                     alt="مثال" style="width: 100%; border-radius: 10px; margin-top: 10px;">
+            <!-- الخطوة 5: رفع صورة الهوية -->
+            <div class="step" id="step5">
+                <div class="step-title">
+                    <span class="number">5</span>
+                    <span>رفع صورة الهوية</span>
+                </div>
+                
+                <div class="upload-area" onclick="document.getElementById('idImage').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>اضغط لرفع صورة الهوية</h3>
+                    <p>اسحب وأفلت أو اضغط لاختيار الملف</p>
+                    <input type="file" id="idImage" accept="image/*" hidden>
+                </div>
+                
+                <div class="file-info" id="fileInfo">
+                    <i class="fas fa-info-circle"></i>
+                    <span>لم يتم رفع أي ملف</span>
+                </div>
+                
+                <div class="id-example">
+                    <p><strong>مثال على الهوية الصحيحة:</strong></p>
+                    <img src="https://image2url.com/r2/default/images/1769695282320-2ade9dfa-ea7d-4f34-b1f5-81fd757f4464.jpeg" 
+                         alt="مثال هوية اللعبة">
+                    <p style="color: #666; margin-top: 10px; font-size: 14px;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        يرجى رفع صورة واضحة لهويتك داخل اللعبة
+                    </p>
+                </div>
             </div>
             
-            <button class="btn" id="submitBtn">إرسال الطلب</button>
+            <!-- زر الإرسال -->
+            <button class="btn" id="submitBtn" onclick="submitForm()">إرسال طلب التفعيل</button>
             
             <!-- رسالة النجاح -->
-            <div id="successMessage" style="display: none; text-align: center; margin-top: 30px; padding: 20px; background: #4CAF50; color: white; border-radius: 10px;">
-                <h3>✅ تم إرسال طلبك بنجاح!</h3>
-                <p>رقم الطلب: <span id="requestNumber">KR-001</span></p>
+            <div class="success" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <h3>تم إرسال طلبك بنجاح! 🎉</h3>
+                <p>رقم الطلب: <strong id="requestNumber">KR-0000</strong></p>
+                <p>سيتم مراجعة طلبك خلال 24-48 ساعة</p>
+                <button class="btn" onclick="resetForm()" style="background: #7c3aed; margin-top: 20px;">
+                    تقديم طلب جديد
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- نضع JavaScript هنا مباشرة -->
+    <!-- JavaScript -->
     <script>
-        // متغيرات التطبيق
-        let currentFile = null;
+        // البيانات الكاملة للرتب والمناصب
+        const ministryData = {
+            interior: {
+                name: "وزارة الداخلية",
+                ranks: [
+                    "جندي", "جندي أول", "عريف", "وكيل رقيب", "رقيب", "رقيب أول", 
+                    "رئيس رقباء", "ملازم", "ملازم أول", "نقيب", "رائد", "مقدم",
+                    "عقيد", "عميد", "لواء", "فريق", "فريق أول",
+                    "نائب مدير الأمن العام", "مدير الأمن العام",
+                    "نائب وزير الداخلية", "وزير الداخلية"
+                ],
+                additional: [
+                    "إدارة القبول والتجنيد",
+                    "إدارة الشؤون",
+                    "إدارة شؤون الأفراد",
+                    "الإدارة العامة لوزارة الداخلية",
+                    "إدارة الشكاوى بوزارة الداخلية"
+                ]
+            },
+            health: {
+                name: "وزارة الصحة",
+                ranks: [
+                    "مسعف", "طبيب", "طبيب عام", "طبيب مختص",
+                    "دكتور", "دكتور عام", "دكتور مختص",
+                    "استشاري أمراض جلدية وجراحة",
+                    "استشاري طب الأسنان",
+                    "أخصائي", "جراح", "مساعد جراح",
+                    "بروفسور", "نائب مدير مستشفى",
+                    "مدير مستشفى", "مستشار وزير الصحة",
+                    "نائب وزير الصحة", "وزير الصحة"
+                ],
+                additional: [
+                    "إدارة القبول والتسجيل",
+                    "إدارة الشؤون الصحية",
+                    "إدارة الكلية الصحية",
+                    "مسؤول الشؤون الصحية",
+                    "إدارة الشكاوى بوزارة الصحة"
+                ]
+            },
+            justice: {
+                name: "وزارة العدل",
+                ranks: [
+                    "محامي", "محامي متمرس", "محامي متخصص",
+                    "قاضي", "قاضي متمرس", "قاضي استئناف",
+                    "قاضي درجة أولى", "قاضي محكمة عليا",
+                    "قاضي محترف", "مستشار وزير العدل",
+                    "نائب وزير العدل", "وزير العدل"
+                ],
+                additional: [
+                    "إدارة القبول والتسجيل بوزارة العدل",
+                    "المجلس الأعلى للقضاء",
+                    "إدارة الشؤون العدلية"
+                ]
+            }
+        };
         
-        // 1. عندما يتم تحميل الصفحة
+        // حالة التطبيق
+        let selectedJob = null;
+        let selectedRank = null;
+        let selectedAdditional = [];
+        let selectedFile = null;
+        let errorTimeout = null;
+        
+        // عند تحميل الصفحة
         window.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ الصفحة تم تحميلها بنجاح');
+            console.log('✅ الصفحة جاهزة');
             
-            // 2. ربط زر الإرسال
-            const submitBtn = document.getElementById('submitBtn');
-            if (submitBtn) {
-                submitBtn.addEventListener('click', validateAndSubmit);
-                console.log('✅ زر الإرسال متصل');
-            } else {
-                console.error('❌ زر الإرسال غير موجود');
-            }
+            // التحكم في حقل رقم الهوية
+            const gameIdInput = document.getElementById('gameId');
+            gameIdInput.addEventListener('input', function() {
+                // السماح فقط بالأرقام
+                this.value = this.value.replace(/\D/g, '').slice(0, 10);
+                
+                // عرض عدد الأرقام
+                const remaining = 10 - this.value.length;
+                if (remaining > 0) {
+                    this.style.borderColor = '#f59e0b';
+                } else {
+                    this.style.borderColor = '#10b981';
+                }
+            });
             
-            // 3. التحكم في حقل رقم الهوية
-            const idInput = document.getElementById('nationalId');
-            if (idInput) {
-                idInput.addEventListener('input', function(e) {
-                    // السماح فقط بالأرقام
-                    let value = e.target.value;
-                    let numbersOnly = value.replace(/\D/g, '');
-                    
-                    // إذا كان هناك حروف، نعرض تحذير فوري
-                    if (value !== numbersOnly) {
-                        showAlert('⚠️ رقم الهوية يقبل أرقام فقط!');
-                        e.target.classList.add('error');
-                        setTimeout(() => e.target.classList.remove('error'), 500);
-                    }
-                    
-                    // تحديث القيمة بالأرقام فقط
-                    e.target.value = numbersOnly.slice(0, 10);
-                });
-            }
-            
-            // 4. رفع الملف
+            // رفع الملف
             const fileInput = document.getElementById('idImage');
-            if (fileInput) {
-                fileInput.addEventListener('change', function(e) {
-                    if (e.target.files.length > 0) {
-                        currentFile = e.target.files[0];
-                        console.log('📁 المرفوع:', currentFile.name);
-                        showAlert(`✅ تم رفع الملف: ${currentFile.name}`, 'success');
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    
+                    // التحقق من نوع الملف
+                    if (!file.type.startsWith('image/')) {
+                        showAlert('يرجى رفع ملف صورة فقط (JPG, PNG)');
+                        return;
                     }
-                });
-            }
+                    
+                    // التحقق من حجم الملف
+                    if (file.size > 5 * 1024 * 1024) {
+                        showAlert('حجم الصورة يجب أن يكون أقل من 5 ميجابايت');
+                        return;
+                    }
+                    
+                    selectedFile = file;
+                    
+                    // تحديث عرض المعلومات
+                    document.getElementById('fileInfo').innerHTML = `
+                        <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                        <span>تم رفع: ${file.name} (${(file.size / 1024).toFixed(1)} KB)</span>
+                    `;
+                }
+            });
+            
+            // سحب وإفلات الملفات
+            const uploadArea = document.querySelector('.upload-area');
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#2563eb';
+                this.style.background = '#e0f2fe';
+            });
+            
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#3b82f6';
+                this.style.background = '#f0f9ff';
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#3b82f6';
+                this.style.background = '#f0f9ff';
+                
+                if (e.dataTransfer.files.length > 0) {
+                    fileInput.files = e.dataTransfer.files;
+                    const changeEvent = new Event('change');
+                    fileInput.dispatchEvent(changeEvent);
+                }
+            });
         });
         
-        // دالة التحقق والإرسال
-        function validateAndSubmit() {
-            console.log('🔍 بدأ التحقق...');
+        // اختيار الوظيفة
+        function selectJob(jobType) {
+            selectedJob = jobType;
+            selectedRank = null;
+            selectedAdditional = [];
             
-            // جمع البيانات
+            // إعادة تعيين التحديد
+            document.querySelectorAll('.job-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // تحديد العنصر المضغوط
+            event.currentTarget.classList.add('selected');
+            
+            // إذا كان مواطن، إخفاء الخطوات 3 و 4
+            if (jobType === 'citizen') {
+                document.getElementById('step3').style.display = 'none';
+                document.getElementById('step4').style.display = 'none';
+            } else {
+                // إذا كان منسوب وزارة، إظهار الخطوات 3 و 4
+                document.getElementById('step3').style.display = 'block';
+                document.getElementById('step4').style.display = 'block';
+                
+                // تحديث عنوان الرتبة
+                document.getElementById('rankTitle').textContent = `اختيار الرتبة - ${ministryData[jobType].name}`;
+                
+                // تعبئة الرتب
+                loadRanks(jobType);
+                
+                // تعبئة المناصب الإضافية
+                loadAdditionalPositions(jobType);
+            }
+        }
+        
+        // تحميل الرتب
+        function loadRanks(jobType) {
+            const container = document.getElementById('ranksList');
+            const ranks = ministryData[jobType].ranks;
+            
+            container.innerHTML = ranks.map(rank => `
+                <div class="rank-item" onclick="selectRank(this, '${rank}')">${rank}</div>
+            `).join('');
+        }
+        
+        // اختيار الرتبة
+        function selectRank(element, rank) {
+            // إزالة التحديد السابق
+            document.querySelectorAll('.rank-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // تحديد الجديد
+            element.classList.add('selected');
+            selectedRank = rank;
+        }
+        
+        // تحميل المناصب الإضافية
+        function loadAdditionalPositions(jobType) {
+            const container = document.getElementById('additionalList');
+            const positions = ministryData[jobType].additional;
+            
+            container.innerHTML = positions.map(pos => `
+                <div class="additional-item">
+                    <input type="checkbox" id="add-${pos}" value="${pos}" onchange="updateAdditional(this)">
+                    <label for="add-${pos}" style="flex: 1; cursor: pointer;">${pos}</label>
+                </div>
+            `).join('');
+        }
+        
+        // تحديث المناصب الإضافية
+        function updateAdditional(checkbox) {
+            if (checkbox.checked) {
+                selectedAdditional.push(checkbox.value);
+            } else {
+                selectedAdditional = selectedAdditional.filter(item => item !== checkbox.value);
+            }
+        }
+        
+        // تبديل "لا أملك مناصب إضافية"
+        function toggleAdditional() {
+            const noAdditional = document.getElementById('noAdditional').checked;
+            const checkboxes = document.querySelectorAll('.additional-item input');
+            
+            checkboxes.forEach(cb => {
+                cb.disabled = noAdditional;
+                if (noAdditional) {
+                    cb.checked = false;
+                }
+            });
+            
+            if (noAdditional) {
+                selectedAdditional = [];
+            }
+        }
+        
+        // إرسال الفورم
+        function submitForm() {
+            // 1. التحقق من البيانات الأساسية
+            if (!validateBasicData()) return;
+            
+            // 2. التحقق من اختيار الوظيفة
+            if (!selectedJob) {
+                showAlert('يرجى اختيار الوظيفة');
+                return;
+            }
+            
+            // 3. التحقق من الرتبة (إذا لم يكن مواطن)
+            if (selectedJob !== 'citizen' && !selectedRank) {
+                showAlert('يرجى اختيار الرتبة');
+                return;
+            }
+            
+            // 4. التحقق من صورة الهوية
+            if (!selectedFile) {
+                showAlert('يرجى رفع صورة الهوية');
+                return;
+            }
+            
+            // 5. كل شيء صحيح - إظهار رسالة النجاح
+            showSuccess();
+        }
+        
+        // التحقق من البيانات الأساسية
+        function validateBasicData() {
             const name = document.getElementById('fullName').value.trim();
             const age = document.getElementById('age').value;
-            const nationalId = document.getElementById('nationalId').value.trim();
+            const gameId = document.getElementById('gameId').value.trim();
             
-            // التحقق من الاسم
+            // الاسم
             if (!name) {
-                showAlert('❌ يرجى إدخال الاسم الكامل');
-                document.getElementById('fullName').focus();
+                showAlert('يرجى إدخال الاسم الكامل');
                 document.getElementById('fullName').classList.add('error');
-                return;
+                setTimeout(() => document.getElementById('fullName').classList.remove('error'), 500);
+                return false;
             }
             
-            // التحقق من العمر
+            // العمر
             if (!age || age < 18) {
-                showAlert('❌ العمر يجب أن يكون 18 سنة أو أكثر');
-                document.getElementById('age').focus();
+                showAlert('العمر يجب أن يكون 18 سنة أو أكثر');
                 document.getElementById('age').classList.add('error');
-                return;
+                setTimeout(() => document.getElementById('age').classList.remove('error'), 500);
+                return false;
             }
             
-            // التحقق من رقم الهوية
-            if (!nationalId) {
-                showAlert('❌ يرجى إدخال رقم الهوية');
-                document.getElementById('nationalId').focus();
-                document.getElementById('nationalId').classList.add('error');
-                return;
+            // رقم الهوية
+            if (!gameId || gameId.length !== 10) {
+                showAlert('رقم الهوية يجب أن يكون 10 أرقام بالضبط');
+                document.getElementById('gameId').classList.add('error');
+                setTimeout(() => document.getElementById('gameId').classList.remove('error'), 500);
+                return false;
             }
             
-            if (nationalId.length !== 10) {
-                showAlert(`❌ رقم الهوية يجب أن يكون 10 أرقام بالضبط (أنت أدخلت ${nationalId.length})`);
-                document.getElementById('nationalId').focus();
-                document.getElementById('nationalId').classList.add('error');
-                return;
-            }
-            
-            // التحقق من الصورة
-            if (!currentFile) {
-                showAlert('📸 يرجى رفع صورة الهوية');
-                return;
-            }
-            
-            // إذا كل شيء صحيح
-            console.log('✅ جميع البيانات صحيحة');
-            
-            // إخفاء التحذيرات وإظهار النجاح
-            document.getElementById('alertBox').style.display = 'none';
-            
+            return true;
+        }
+        
+        // عرض رسالة النجاح
+        function showSuccess() {
             // إنشاء رقم طلب
-            const requestNum = 'KR-' + Math.random().toString(36).substr(2, 6).toUpperCase();
-            document.getElementById('requestNumber').textContent = requestNum;
+            const requestNumber = 'KR-' + new Date().getTime().toString().slice(-6);
+            document.getElementById('requestNumber').textContent = requestNumber;
             
-            // إظهار رسالة النجاح
+            // إخفاء الفورم وإظهار رسالة النجاح
+            document.querySelectorAll('.step').forEach(step => {
+                step.style.display = 'none';
+            });
+            document.getElementById('submitBtn').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             
-            // إخفاء الفورم
-            document.querySelectorAll('input').forEach(input => {
-                input.style.display = 'none';
-            });
-            document.querySelectorAll('label').forEach(label => {
-                label.style.display = 'none';
-            });
-            submitBtn.style.display = 'none';
-            
-            // طباعة البيانات في الكونسول (محاكاة الإرسال)
-            console.log('📤 بيانات الطلب المرسلة:', {
-                name: name,
-                age: age,
-                nationalId: nationalId,
-                file: currentFile.name,
-                requestNumber: requestNum
+            // طباعة البيانات
+            console.log('📤 تم إرسال الطلب بنجاح:', {
+                name: document.getElementById('fullName').value,
+                age: document.getElementById('age').value,
+                gameId: document.getElementById('gameId').value,
+                job: selectedJob,
+                rank: selectedRank,
+                additional: selectedAdditional,
+                file: selectedFile.name,
+                requestNumber: requestNumber
             });
         }
         
-        // دالة لعرض التحذير
-        function showAlert(message, type = 'error') {
+        // عرض تحذير
+        function showAlert(message) {
             const alertBox = document.getElementById('alertBox');
             
+            // إزالة التحذير السابق
+            if (errorTimeout) clearTimeout(errorTimeout);
+            
+            // عرض التحذير الجديد
             alertBox.textContent = message;
             alertBox.style.display = 'block';
             
-            // تغيير اللون حسب النوع
-            if (type === 'success') {
-                alertBox.style.background = '#4CAF50';
-            } else {
-                alertBox.style.background = '#ff4444';
-            }
-            
             // إخفاء التحذير بعد 4 ثواني
-            setTimeout(() => {
+            errorTimeout = setTimeout(() => {
                 alertBox.style.display = 'none';
             }, 4000);
-            
-            // اهتزاز الصفحة
-            document.body.style.animation = 'none';
-            setTimeout(() => {
-                document.body.style.animation = 'shake 0.5s';
-            }, 10);
         }
         
-        // إضافة أنيميشن الاهتزاز
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-                20%, 40%, 60%, 80% { transform: translateX(5px); }
-            }
-        `;
-        document.head.appendChild(style);
+        // إعادة تعيين الفورم
+        function resetForm() {
+            // إعادة تعيين القيم
+            selectedJob = null;
+            selectedRank = null;
+            selectedAdditional = [];
+            selectedFile = null;
+            
+            // إعادة تعيين الحقول
+            document.getElementById('fullName').value = '';
+            document.getElementById('age').value = '';
+            document.getElementById('gameId').value = '';
+            document.getElementById('idImage').value = '';
+            
+            // إعادة تعيين التحديدات
+            document.querySelectorAll('.job-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            document.querySelectorAll('.rank-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            document.querySelectorAll('.additional-item input').forEach(cb => {
+                cb.checked = false;
+                cb.disabled = false;
+            });
+            
+            document.getElementById('noAdditional').checked = false;
+            
+            // إعادة تعيين عرض الملف
+            document.getElementById('fileInfo').innerHTML = `
+                <i class="fas fa-info-circle"></i>
+                <span>لم يتم رفع أي ملف</span>
+            `;
+            
+            // إعادة إظهار الفورم
+            document.querySelectorAll('.step').forEach(step => {
+                step.style.display = 'block';
+            });
+            
+            document.getElementById('step3').style.display = 'none';
+            document.getElementById('step4').style.display = 'none';
+            
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+            
+            // إخفاء التحذيرات
+            const alertBox = document.getElementById('alertBox');
+            if (alertBox) alertBox.style.display = 'none';
+        }
     </script>
 </body>
 </html>
