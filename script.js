@@ -53,16 +53,17 @@ let selectedJob = null;
 let selectedPosition = null;
 let selectedAdditional = [];
 let selectedFile = null;
+let errorTimeout = null;
 
 // عند تحميل الصفحة
 window.onload = function() {
-    // جعل رقم الهوية يقبل أرقاماً فقط[citation:2]
+    // جعل رقم الهوية يقبل أرقاماً فقط
     const idInput = document.getElementById('nationalId');
     idInput.addEventListener('input', function() {
         this.value = this.value.replace(/\D/g, '').slice(0, 10);
     });
     
-    // إعداد رفع الملف[citation:2]
+    // إعداد رفع الملف
     setupFileUpload();
     
     // إخفاء رسالة النجاح
@@ -75,25 +76,27 @@ function setupFileUpload() {
     const fileInput = document.getElementById('idImage');
     const fileInfo = document.getElementById('fileInfo');
     
+    if (!uploadArea || !fileInput) return;
+    
     // النقر على منطقة الرفع
     uploadArea.addEventListener('click', function() {
         fileInput.click();
     });
     
-    // تغيير الملف[citation:5]
+    // تغيير الملف
     fileInput.addEventListener('change', function(e) {
         if (e.target.files.length > 0) {
             const file = e.target.files[0];
             
-            // التحقق من نوع الملف[citation:2]
+            // التحقق من نوع الملف
             if (!file.type.startsWith('image/')) {
-                alert('يرجى رفع ملف صورة فقط (JPG, PNG)');
+                showError('يرجى رفع ملف صورة فقط (JPG, PNG)');
                 return;
             }
             
             // التحقق من حجم الملف (5MB كحد أقصى)
             if (file.size > 5 * 1024 * 1024) {
-                alert('حجم الصورة يجب أن يكون أقل من 5 ميجابايت');
+                showError('حجم الصورة يجب أن يكون أقل من 5 ميجابايت');
                 return;
             }
             
@@ -107,7 +110,7 @@ function setupFileUpload() {
         }
     });
     
-    // سحب وإفلات الملفات[citation:2]
+    // سحب وإفلات الملفات
     uploadArea.addEventListener('dragover', function(e) {
         e.preventDefault();
         this.classList.add('drag-over');
@@ -130,7 +133,8 @@ function setupFileUpload() {
         
         if (e.dataTransfer.files.length > 0) {
             fileInput.files = e.dataTransfer.files;
-            fileInput.dispatchEvent(new Event('change'));
+            const changeEvent = new Event('change', { bubbles: true });
+            fileInput.dispatchEvent(changeEvent);
         }
     });
 }
@@ -153,7 +157,10 @@ function goToStep(step) {
     currentStep = step;
     
     // إظهار الخطوة المطلوبة
-    document.getElementById(`step${step}`).classList.add('active');
+    const stepElement = document.getElementById(`step${step}`);
+    if (stepElement) {
+        stepElement.classList.add('active');
+    }
     
     // إذا كانت الخطوة 3، تعبئة المناصب
     if (step === 3 && selectedJob && selectedJob !== 'citizen') {
@@ -176,7 +183,7 @@ function validateStep(step) {
         case 3:
             return validateStep3();
         case 4:
-            return true;
+            return true; // المناصب الإضافية اختيارية
         default:
             return true;
     }
@@ -189,22 +196,26 @@ function validateStep1() {
     const nationalId = document.getElementById('nationalId').value.trim();
     
     if (!name) {
-        alert('يرجى إدخال الاسم الكامل');
+        showError('يرجى إدخال الاسم الكامل');
+        document.getElementById('fullName').focus();
         return false;
     }
     
     if (!age || age < 18) {
-        alert('يرجى إدخال عمر صحيح (18 سنة على الأقل)');
+        showError('يرجى إدخال عمر صحيح (18 سنة على الأقل)');
+        document.getElementById('age').focus();
         return false;
     }
     
     if (!discord) {
-        alert('يرجى إدخال اسم المستخدم في الديسكورد');
+        showError('يرجى إدخال اسم المستخدم في الديسكورد');
+        document.getElementById('discord').focus();
         return false;
     }
     
     if (!nationalId || nationalId.length !== 10) {
-        alert('يرجى إدخال رقم الهوية الوطنية (10 أرقام)');
+        showError('يرجى إدخال رقم الهوية في اللعبة (10 أرقام)');
+        document.getElementById('nationalId').focus();
         return false;
     }
     
@@ -213,7 +224,7 @@ function validateStep1() {
 
 function validateStep2() {
     if (!selectedJob) {
-        alert('يرجى اختيار الوظيفة');
+        showError('يرجى اختيار الوظيفة');
         return false;
     }
     return true;
@@ -221,7 +232,7 @@ function validateStep2() {
 
 function validateStep3() {
     if (selectedJob !== 'citizen' && !selectedPosition) {
-        alert('يرجى اختيار المنصب الرئيسي');
+        showError('يرجى اختيار المنصب الرئيسي');
         return false;
     }
     return true;
@@ -241,7 +252,10 @@ function selectJob(job) {
     event.currentTarget.classList.add('selected');
     
     // تمكين الزر التالي
-    document.getElementById('next2').disabled = false;
+    const nextBtn = document.getElementById('next2');
+    if (nextBtn) {
+        nextBtn.disabled = false;
+    }
     
     // تحديث العنوان
     const titles = {
@@ -250,7 +264,10 @@ function selectJob(job) {
         health: 'وزارة الصحة',
         justice: 'وزارة العدل'
     };
-    document.getElementById('position-title').textContent = `اختيار المنصب - ${titles[job]}`;
+    const titleElement = document.getElementById('position-title');
+    if (titleElement) {
+        titleElement.textContent = `اختيار المنصب - ${titles[job]}`;
+    }
 }
 
 // تحميل المناصب
@@ -260,9 +277,29 @@ function loadPositions() {
     
     const positions = data[selectedJob] || [];
     
+    if (positions.length === 0) {
+        container.innerHTML = '<p>لا توجد مناصب متاحة</p>';
+        return;
+    }
+    
     container.innerHTML = positions.map(pos => `
         <div class="position" onclick="selectPosition(this, '${pos}')">${pos}</div>
     `).join('');
+    
+    // إضافة مستمعي الأحداث للمناصب
+    document.querySelectorAll('.position').forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.position').forEach(p => {
+                p.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            selectedPosition = this.textContent;
+            const nextBtn = document.getElementById('next3');
+            if (nextBtn) {
+                nextBtn.disabled = false;
+            }
+        });
+    });
 }
 
 // اختيار المنصب
@@ -273,7 +310,10 @@ function selectPosition(el, position) {
     
     el.classList.add('selected');
     selectedPosition = position;
-    document.getElementById('next3').disabled = false;
+    const nextBtn = document.getElementById('next3');
+    if (nextBtn) {
+        nextBtn.disabled = false;
+    }
 }
 
 // تحميل المناصب الإضافية
@@ -283,10 +323,15 @@ function loadAdditional() {
     
     const additional = data.additional[selectedJob] || [];
     
+    if (additional.length === 0) {
+        container.innerHTML = '<p>لا توجد مناصب إضافية</p>';
+        return;
+    }
+    
     container.innerHTML = additional.map(item => `
         <div class="additional-item">
-            <input type="checkbox" id="add-${item}" value="${item}" onchange="updateAdditional(this)">
-            <label for="add-${item}">${item}</label>
+            <input type="checkbox" id="add-${item.replace(/\s+/g, '-')}" value="${item}" onchange="updateAdditional(this)">
+            <label for="add-${item.replace(/\s+/g, '-')}">${item}</label>
         </div>
     `).join('');
 }
@@ -343,8 +388,15 @@ function submitForm() {
     });
     
     // إظهار رسالة النجاح
-    document.getElementById('success').style.display = 'block';
-    document.getElementById('request-id').textContent = requestId;
+    const successElement = document.getElementById('success');
+    if (successElement) {
+        successElement.style.display = 'block';
+    }
+    
+    const requestIdElement = document.getElementById('request-id');
+    if (requestIdElement) {
+        requestIdElement.textContent = requestId;
+    }
     
     // طباعة البيانات (محاكاة الإرسال)
     console.log('📋 بيانات الطلب المرسلة:', formData);
@@ -361,11 +413,62 @@ function validateForm() {
     
     // التحقق من صورة الهوية
     if (!selectedFile) {
-        alert('يرجى رفع صورة هوية اللعبة قبل الإرسال');
+        showError('يرجى رفع صورة هوية اللعبة قبل الإرسال');
         return false;
     }
     
     return true;
+}
+
+// عرض رسالة خطأ
+function showError(message) {
+    // إزالة التحذير السابق إن وجد
+    if (errorTimeout) {
+        clearTimeout(errorTimeout);
+    }
+    
+    // إنشاء عنصر رسالة الخطأ
+    let errorDiv = document.getElementById('errorMessage');
+    
+    if (!errorDiv) {
+        errorDiv = document.createElement('div');
+        errorDiv.id = 'errorMessage';
+        errorDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            left: 20px;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid #f87171;
+            animation: pulseError 0.5s;
+        `;
+        document.body.appendChild(errorDiv);
+        
+        // إضافة أنيميشن
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulseError {
+                0% { transform: translateY(-20px); opacity: 0; }
+                100% { transform: translateY(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+    errorDiv.style.display = 'block';
+    
+    // إخفاء الرسالة بعد 4 ثواني
+    errorTimeout = setTimeout(() => {
+        errorDiv.style.display = 'none';
+    }, 4000);
 }
 
 // إعادة تعيين الفورم
@@ -382,7 +485,8 @@ function resetForm() {
     document.getElementById('age').value = '';
     document.getElementById('discord').value = '';
     document.getElementById('nationalId').value = '';
-    document.getElementById('idImage').value = '';
+    const fileInput = document.getElementById('idImage');
+    if (fileInput) fileInput.value = '';
     
     // إعادة تعيين التحديدات
     document.querySelectorAll('.option').forEach(el => {
@@ -394,7 +498,9 @@ function resetForm() {
     });
     
     // إعادة تعيين المربعات
-    document.getElementById('no-pos').checked = false;
+    const noPosCheckbox = document.getElementById('no-pos');
+    if (noPosCheckbox) noPosCheckbox.checked = false;
+    
     const checkboxes = document.querySelectorAll('.additional-item input');
     checkboxes.forEach(cb => {
         if (cb) {
@@ -404,17 +510,27 @@ function resetForm() {
     });
     
     // إعادة تعيين عرض الملف
-    document.getElementById('fileInfo').innerHTML = `
-        <i class="fas fa-info-circle"></i>
-        <span>لم يتم اختيار أي ملف</span>
-    `;
+    const fileInfo = document.getElementById('fileInfo');
+    if (fileInfo) {
+        fileInfo.innerHTML = `
+            <i class="fas fa-info-circle"></i>
+            <span>لم يتم اختيار أي ملف</span>
+        `;
+    }
     
     // إعادة تعيين الأزرار
-    document.getElementById('next2').disabled = true;
-    document.getElementById('next3').disabled = true;
+    const next2 = document.getElementById('next2');
+    const next3 = document.getElementById('next3');
+    if (next2) next2.disabled = true;
+    if (next3) next3.disabled = true;
     
     // إخفاء رسالة النجاح
-    document.getElementById('success').style.display = 'none';
+    const success = document.getElementById('success');
+    if (success) success.style.display = 'none';
+    
+    // إخفاء رسالة الخطأ
+    const errorDiv = document.getElementById('errorMessage');
+    if (errorDiv) errorDiv.style.display = 'none';
     
     // العودة للخطوة الأولى
     goToStep(1);
