@@ -6,23 +6,29 @@
     <title>هيئة KR الرقمية - الرئيسية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* الأساسيات */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: white;
         }
         
-        /* الهيدر */
-        header {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 20px 40px;
+        /* الشريط العلوي */
+        .top-bar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .logo {
@@ -34,7 +40,7 @@
         .logo i {
             font-size: 32px;
             background: white;
-            color: #1e3a8a;
+            color: #3b82f6;
             padding: 12px;
             border-radius: 50%;
         }
@@ -43,10 +49,11 @@
             font-size: 24px;
         }
         
+        /* القائمة */
         nav ul {
             display: flex;
             list-style: none;
-            gap: 30px;
+            gap: 25px;
         }
         
         nav a {
@@ -54,7 +61,7 @@
             text-decoration: none;
             font-weight: 500;
             padding: 10px 20px;
-            border-radius: 8px;
+            border-radius: 30px;
             transition: all 0.3s;
         }
         
@@ -64,20 +71,20 @@
         
         nav a.active {
             background: white;
-            color: #1e3a8a;
+            color: #3b82f6;
         }
         
         /* المحتوى الرئيسي */
         .hero {
             text-align: center;
             padding: 100px 20px;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
         
         .hero h2 {
             font-size: 48px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             line-height: 1.2;
         }
         
@@ -88,17 +95,47 @@
             line-height: 1.6;
         }
         
-        /* البطاقات */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 0 20px;
+        /* الأزرار */
+        .btn {
+            display: inline-block;
+            background: white;
+            color: #3b82f6;
+            text-decoration: none;
+            padding: 18px 45px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
         }
         
-        .card {
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .btn-large {
+            padding: 22px 60px;
+            font-size: 20px;
+        }
+        
+        /* البطاقات */
+        .features {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 30px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 40px 30px;
@@ -108,16 +145,17 @@
             transition: all 0.3s;
         }
         
-        .card:hover {
+        .feature-card:hover {
             transform: translateY(-10px);
             background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
         
-        .card i {
+        .feature-card i {
             font-size: 50px;
             margin-bottom: 25px;
             background: white;
-            color: #1e3a8a;
+            color: #3b82f6;
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -127,54 +165,68 @@
             margin: 0 auto 25px;
         }
         
-        .card h3 {
+        .feature-card h3 {
             font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        
+        /* قسم المعلومات */
+        .info-section {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 80px 30px;
+            margin-top: 100px;
+        }
+        
+        .info-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .info-item {
+            text-align: center;
+        }
+        
+        .info-item i {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #a78bfa;
+        }
+        
+        .info-item h4 {
+            font-size: 20px;
             margin-bottom: 15px;
         }
         
-        .card p {
-            opacity: 0.9;
-            margin-bottom: 25px;
-            line-height: 1.6;
+        .info-item p {
+            opacity: 0.8;
+            font-size: 15px;
         }
         
-        /* الأزرار */
-        .btn {
-            display: inline-block;
-            background: white;
-            color: #1e3a8a;
-            text-decoration: none;
-            padding: 16px 40px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 18px;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            background: #f1f5f9;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        
-        .btn-large {
-            padding: 20px 50px;
-            font-size: 20px;
-        }
-        
-        /* الفوتر */
+        /* التذييل */
         footer {
             text-align: center;
-            padding: 40px 20px;
+            padding: 50px 20px;
             background: rgba(0, 0, 0, 0.3);
-            margin-top: 100px;
+            margin-top: 80px;
+        }
+        
+        footer p {
+            opacity: 0.8;
+            margin-bottom: 10px;
         }
         
         /* التجاوب */
         @media (max-width: 768px) {
-            header {
+            .top-bar {
                 flex-direction: column;
                 gap: 20px;
                 text-align: center;
@@ -193,16 +245,20 @@
                 font-size: 18px;
             }
             
-            .cards {
+            .features-grid {
                 grid-template-columns: 1fr;
                 padding: 0 15px;
+            }
+            
+            .feature-card {
+                padding: 30px 20px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- الهيدر -->
-    <header>
+    <!-- الشريط العلوي -->
+    <div class="top-bar">
         <div class="logo">
             <i class="fas fa-id-card"></i>
             <h1>هيئة KR الرقمية</h1>
@@ -213,58 +269,107 @@
                 <li><a href="index.html" class="active">الرئيسية</a></li>
                 <li><a href="apply.html">تقديم طلب</a></li>
                 <li><a href="admin.html">لوحة الإدارة</a></li>
-                <li><a href="#">الاتصال</a></li>
             </ul>
         </nav>
-    </header>
+    </div>
     
     <!-- المحتوى الرئيسي -->
     <main>
         <section class="hero">
-            <h2>نظام تفعيل الهوية الوطنية الرقمية</h2>
-            <p>نظام متكامل لإدارة وتفعيل الهويات الرقمية لموظفي الوزارات والمواطنين ضمن السيرفر</p>
+            <h2>🚀 نظام تفعيل الهوية الرقمية المتكامل</h2>
+            <p>
+                نظام احترافي لإدارة وتفعيل الهويات الرقمية لموظفي الوزارات والمواطنين.<br>
+                انضم إلى نظامنا الرقمي المتكامل وتمتع بأفضل تجربة تفعيل هوية.
+            </p>
             <a href="apply.html" class="btn btn-large">
                 <i class="fas fa-rocket"></i> ابدأ الآن
             </a>
         </section>
         
-        <section class="cards">
-            <div class="card">
-                <i class="fas fa-user-check"></i>
-                <h3>تفعيل الهوية</h3>
-                <p>نظام تفعيل متكامل للهويات الرقمية مع التحقق من البيانات ورفع المستندات</p>
-                <a href="apply.html" class="btn">تقديم طلب جديد</a>
+        <!-- المميزات -->
+        <section class="features">
+            <div class="features-grid">
+                <!-- بطاقة 1 -->
+                <div class="feature-card">
+                    <i class="fas fa-user-check"></i>
+                    <h3>تفعيل سريع</h3>
+                    <p>
+                        نظام تفعيل الهوية بأسهل الخطوات، كل ما تحتاجه في مكان واحد.
+                        تقديم الطلب والمتابعة خلال دقائق.
+                    </p>
+                    <a href="apply.html" class="btn">تفعيل الهوية</a>
+                </div>
+                
+                <!-- بطاقة 2 -->
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>أنظمة الوزارات</h3>
+                    <p>
+                        أنظمة متخصصة لكل وزارة: الداخلية، الصحة، العدل.
+                        رتب ومناصب منظمة بشكل احترافي.
+                    </p>
+                    <a href="apply.html" class="btn">عرض الرتب</a>
+                </div>
+                
+                <!-- بطاقة 3 -->
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>لوحة تحكم متقدمة</h3>
+                    <p>
+                        نظام إداري متكامل لمتابعة الطلبات، التحكم في الصلاحيات،
+                        وعرض الإحصائيات الدقيقة.
+                    </p>
+                    <a href="admin.html" class="btn">الدخول للإدارة</a>
+                </div>
             </div>
-            
-            <div class="card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>أنظمة الوزارات</h3>
-                <p>أنظمة متخصصة لكل وزارة (الداخلية، الصحة، العدل) مع رتب ومناصب منظمة</p>
-                <a href="#" class="btn">عرض الأنظمة</a>
-            </div>
-            
-            <div class="card">
-                <i class="fas fa-tachometer-alt"></i>
-                <h3>لوحة الإدارة</h3>
-                <p>نظام إداري متكامل لمتابعة الطلبات والتحكم في الصلاحيات والإحصائيات</p>
-                <a href="admin.html" class="btn">الدخول للإدارة</a>
+        </section>
+        
+        <!-- معلومات إضافية -->
+        <section class="info-section">
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="fas fa-bolt"></i>
+                    <h4>سرعة في المعالجة</h4>
+                    <p>طلباتك تعالج خلال 24-48 ساعة</p>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-lock"></i>
+                    <h4>أمان تام</h4>
+                    <p>بياناتك محمية بأفضل أنظمة التشفير</p>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-headset"></i>
+                    <h4>دعم فني</h4>
+                    <p>فريق دعم جاهز لمساعدتك 24/7</p>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>متوافق مع جميع الأجهزة</h4>
+                    <p>يعمل على الجوال والكمبيوتر</p>
+                </div>
             </div>
         </section>
     </main>
     
-    <!-- الفوتر -->
+    <!-- التذييل -->
     <footer>
         <p>© 2024 هيئة KR الرقمية. جميع الحقوق محفوظة.</p>
-        <p style="opacity: 0.7; margin-top: 10px;">نظام تفعيل الهوية الوطنية الرقمية - الإصدار 3.0</p>
+        <p>نظام تفعيل الهوية الوطنية الرقمية - الإصدار 3.0</p>
+        <p style="margin-top: 20px; opacity: 0.6;">
+            <i class="fas fa-phone"></i> للدعم الفني: support@kr-digital.gov
+        </p>
     </footer>
     
     <script>
         // إضافة تأثيرات تفاعلية بسيطة
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🏠 الصفحة الرئيسية جاهزة');
+            console.log('🏠 الصفحة الرئيسية جاهزة للاستخدام');
             
             // إضافة تأثير على البطاقات عند التمرير
-            const cards = document.querySelectorAll('.card');
+            const cards = document.querySelectorAll('.feature-card');
             cards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-10px)';
@@ -272,6 +377,18 @@
                 
                 card.addEventListener('mouseleave', function() {
                     this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // تحسين تجربة الأزرار
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mousedown', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                btn.addEventListener('mouseup', function() {
+                    this.style.transform = 'translateY(-5px)';
                 });
             });
         });
