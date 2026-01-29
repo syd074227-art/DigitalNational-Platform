@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تقديم طلب تفعيل الهوية</title>
+    <title>تقديم طلب تفعيل الهوية - هيئة KR الرقمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -24,7 +23,6 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         
-        /* الهيدر */
         header {
             background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
@@ -63,12 +61,10 @@
             color: #1e3a8a;
         }
         
-        /* المحتوى */
         .content {
             padding: 30px;
         }
         
-        /* التحذيرات */
         .alert {
             background: #fee2e2;
             color: #991b1b;
@@ -78,7 +74,6 @@
             text-align: center;
             border: 2px solid #f87171;
             display: none;
-            animation: slideDown 0.3s ease;
         }
         
         .alert.success {
@@ -87,18 +82,12 @@
             border-color: #10b981;
         }
         
-        @keyframes slideDown {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .alert.warning {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #f59e0b;
         }
         
-        /* الخطوات */
         .step {
             background: #f8fafc;
             border-radius: 15px;
@@ -128,7 +117,6 @@
             font-weight: bold;
         }
         
-        /* حقول الإدخال */
         .input-group {
             margin-bottom: 20px;
         }
@@ -138,23 +126,18 @@
             margin-bottom: 8px;
             color: #334155;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         
-        .input-group input, .input-group select, .input-group textarea {
+        .input-group input {
             width: 100%;
             padding: 15px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s;
-            font-family: inherit;
-            background: white;
         }
         
-        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+        .input-group input:focus {
             outline: none;
             border-color: #3b82f6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
@@ -162,13 +145,6 @@
         
         .input-group input.error {
             border-color: #ef4444;
-            animation: shake 0.5s;
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
         
         .input-hint {
@@ -176,12 +152,8 @@
             color: #64748b;
             margin-top: 5px;
             padding-right: 5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
         
-        /* أمثلة */
         .example-box {
             background: #f0f9ff;
             border-radius: 10px;
@@ -196,7 +168,6 @@
             font-size: 14px;
         }
         
-        /* قائمة الوظائف */
         .jobs-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -234,129 +205,87 @@
         .job-card.health i { color: #dc2626; }
         .job-card.justice i { color: #059669; }
         
-        /* قائمة الرتب/المناصب */
         .ranks-container {
             background: white;
             border-radius: 15px;
             padding: 20px;
             border: 2px solid #e2e8f0;
             margin-top: 20px;
-        }
-        
-        .ranks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-            max-height: 400px;
+            max-height: 300px;
             overflow-y: auto;
-            padding: 10px;
         }
         
-        .rank-card {
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
+        .rank-item {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
             cursor: pointer;
             transition: all 0.3s;
         }
         
-        .rank-card:hover {
-            border-color: #3b82f6;
-            transform: translateY(-3px);
+        .rank-item:hover {
+            background: #f8fafc;
         }
         
-        .rank-card.selected {
-            border-color: #3b82f6;
-            background: #eff6ff;
+        .rank-item.selected {
+            background: #3b82f6;
+            color: white;
+            border-radius: 8px;
         }
         
-        .rank-card i {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #3b82f6;
-        }
-        
-        .rank-card h4 {
-            color: #1e3a8a;
-            margin-bottom: 5px;
-            font-size: 16px;
-        }
-        
-        .rank-card p {
-            color: #64748b;
-            font-size: 12px;
-        }
-        
-        /* المناصب الإضافية */
         .additional-posts {
             background: #fefce8;
             border-radius: 15px;
             padding: 25px;
             border: 2px solid #fde047;
             margin-top: 20px;
-        }
-        
-        .additional-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
             max-height: 300px;
             overflow-y: auto;
-            padding: 10px;
         }
         
-        .additional-card {
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 20px;
+        .additional-item {
             display: flex;
             align-items: center;
-            gap: 15px;
-            transition: all 0.3s;
+            padding: 12px 15px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #e2e8f0;
         }
         
-        .additional-card:hover {
-            border-color: #3b82f6;
+        .additional-item input {
+            margin-left: 10px;
         }
         
-        .additional-card input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: #3b82f6;
-        }
-        
-        .additional-info {
-            flex: 1;
-        }
-        
-        .additional-info h4 {
-            color: #1e3a8a;
-            margin-bottom: 5px;
-            font-size: 15px;
-        }
-        
-        .additional-info p {
-            color: #64748b;
-            font-size: 12px;
-        }
-        
-        .additional-card i {
-            color: #8b5cf6;
-            font-size: 24px;
-        }
-        
-        /* قسم رفع الصور */
-        .upload-section {
+        .id-example {
             background: #f0f9ff;
             border-radius: 15px;
             padding: 25px;
             border: 2px solid #e0f2fe;
-            margin-top: 20px;
+            margin: 25px 0;
+        }
+        
+        .id-example h4 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .id-example-img {
+            width: 100%;
+            max-width: 400px;
+            margin: 15px auto;
+            border: 3px solid #3b82f6;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .id-example-img img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
         
         .upload-area {
@@ -365,14 +294,13 @@
             padding: 40px 20px;
             text-align: center;
             cursor: pointer;
-            background: white;
+            background: #f0f9ff;
             margin: 20px 0;
             transition: all 0.3s;
         }
         
         .upload-area:hover {
-            background: #f8fafc;
-            border-color: #1e3a8a;
+            background: #e0f2fe;
         }
         
         .upload-area i {
@@ -381,81 +309,15 @@
             margin-bottom: 15px;
         }
         
-        .uploaded-files {
-            margin-top: 20px;
-        }
-        
-        .file-item {
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
         .file-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .file-info i {
-            color: #3b82f6;
-            font-size: 20px;
-        }
-        
-        .file-actions button {
-            background: #fee2e2;
-            color: #dc2626;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        
-        /* قسم التأكيد */
-        .confirmation-box {
-            background: #f0f9ff;
-            border-radius: 15px;
-            padding: 25px;
-            border: 2px solid #e0f2fe;
-            margin-top: 20px;
-        }
-        
-        .request-summary {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            border: 2px solid #e2e8f0;
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
             margin-top: 15px;
-        }
-        
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .summary-item:last-child {
-            border-bottom: none;
-        }
-        
-        .summary-label {
+            text-align: center;
             color: #64748b;
-            font-weight: 500;
         }
         
-        .summary-value {
-            color: #1e3a8a;
-            font-weight: 600;
-        }
-        
-        /* الأزرار */
         .btn {
             background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
@@ -468,16 +330,17 @@
             width: 100%;
             margin-top: 25px;
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
         
         .btn:hover {
             background: linear-gradient(135deg, #1d4ed8, #2563eb);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
         }
         
         .btn-group {
@@ -499,15 +362,51 @@
             background: #475569;
         }
         
-        .btn-success {
-            background: linear-gradient(135deg, #059669, #10b981);
+        /* رسالة حالة الطلب */
+        .request-status {
+            text-align: center;
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 15px;
+            border: 3px solid #f59e0b;
+            margin-top: 30px;
         }
         
-        .btn-success:hover {
-            background: linear-gradient(135deg, #047857, #0d9669);
+        .request-status i {
+            font-size: 60px;
+            color: #f59e0b;
+            margin-bottom: 20px;
         }
         
-        /* رسالة النجاح */
+        .request-info-box {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .status-value {
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+        
         .success-message {
             text-align: center;
             padding: 40px 30px;
@@ -524,72 +423,16 @@
             margin-bottom: 20px;
         }
         
-        .success-message h3 {
-            color: #065f46;
-            margin-bottom: 15px;
-        }
-        
-        /* معلومات الطلب */
-        .request-info {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 2px solid #e2e8f0;
-        }
-        
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        
-        .info-card {
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .info-label {
-            color: #64748b;
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-        
-        .info-value {
-            color: #1e3a8a;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        
-        /* التجاوب */
         @media (max-width: 768px) {
-            .jobs-grid,
-            .ranks-grid,
-            .additional-grid,
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .container {
-                margin: 10px;
-                border-radius: 15px;
-            }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
+            .jobs-grid { grid-template-columns: 1fr; }
+            .container { margin: 10px; border-radius: 15px; }
+            .content { padding: 20px; }
+            .btn-group { flex-direction: column; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- الهيدر -->
         <header>
             <div class="logo">
                 <i class="fas fa-id-card"></i>
@@ -602,266 +445,269 @@
             <nav>
                 <a href="index.html">الرئيسية</a>
                 <a href="apply.html" class="active">تقديم طلب</a>
-                <a href="admin.html">لوحة الإدارة</a>
                 <a href="check.html">الاستعلام عن الطلب</a>
+                <a href="admin.html">لوحة الإدارة</a>
             </nav>
         </header>
         
-        <!-- المحتوى -->
         <div class="content">
-            <!-- تحذير الأخطاء -->
-            <div class="alert" id="alertBox"></div>
+            <!-- تحذير ممنوع التقديم المتكرر -->
+            <div class="alert warning" id="alreadySubmittedAlert" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>لقد طلبت تفعيل الهوية بالفعل!</strong>
+                <p id="existingRequestInfo"></p>
+            </div>
             
-            <!-- تحذير النجاح -->
+            <div class="alert" id="alertBox"></div>
             <div class="alert success" id="successAlert" style="display: none;"></div>
             
-            <!-- الخطوة 1: البيانات الأساسية -->
-            <div class="step" id="step1">
-                <div class="step-title">
-                    <span class="number">1</span>
-                    <span>البيانات الأساسية</span>
+            <!-- حالة الطلب الحالي -->
+            <div class="request-status" id="requestStatus" style="display: none;">
+                <i class="fas fa-clock"></i>
+                <h3>لديك طلب قيد المراجعة ⏳</h3>
+                
+                <div class="request-info-box" id="currentRequestInfo">
+                    <!-- معلومات الطلب الحالي -->
                 </div>
                 
-                <div class="input-group">
-                    <label><i class="fas fa-user"></i> الاسم الكامل:</label>
-                    <input type="text" id="fullName" placeholder="أدخل اسمك الكامل ثلاثي">
-                    <div class="input-hint"><i class="fas fa-info-circle"></i> الاسم كما في الهوية الرسمية</div>
-                </div>
-                
-                <div class="input-group">
-                    <label><i class="fas fa-birthday-cake"></i> العمر:</label>
-                    <input type="number" id="age" placeholder="أدخل عمرك" min="18">
-                    <div class="input-hint"><i class="fas fa-info-circle"></i> يجب أن يكون 18 سنة أو أكثر</div>
-                </div>
-                
-                <div class="input-group">
-                    <label><i class="fas fa-gamepad"></i> اسم المستخدم في اللعبة:</label>
-                    <input type="text" id="gameUsername" placeholder="أدخل اسمك في اللعبة">
-                    <div class="example-box">
-                        <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> Ahmed_KR, KR_Sniper, ProGamer_SA</p>
-                    </div>
-                </div>
-                
-                <div class="input-group">
-                    <label><i class="fab fa-discord"></i> اسم المستخدم في الديسكورد:</label>
-                    <input type="text" id="discordUsername" placeholder="أدخل اسمك في الديسكورد">
-                    <div class="example-box">
-                        <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> Ahmed#1234, KR_Player#5678, SaudiGamer#9999</p>
-                    </div>
-                </div>
-                
-                <div class="input-group">
-                    <label><i class="fas fa-id-card"></i> رقم الهوية في اللعبة:</label>
-                    <input type="text" id="gameId" placeholder="10 أرقام فقط" maxlength="10">
-                    <div class="example-box">
-                        <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> 39193738, 82282717, 12345678</p>
-                    </div>
-                </div>
-                
-                <button class="btn" onclick="validateStep1()">التالي <i class="fas fa-arrow-left"></i></button>
-            </div>
-            
-            <!-- الخطوة 2: اختيار الوظيفة -->
-            <div class="step" id="step2" style="display: none;">
-                <div class="step-title">
-                    <span class="number">2</span>
-                    <span>اختيار الوظيفة الأساسية</span>
-                </div>
-                
-                <div class="jobs-grid">
-                    <div class="job-card citizen" onclick="selectJob(this, 'citizen')">
-                        <i class="fas fa-user"></i>
-                        <div>
-                            <h4>مواطن</h4>
-                            <small>الوظيفة الأساسية</small>
-                        </div>
-                    </div>
-                    
-                    <div class="job-card interior" onclick="selectJob(this, 'interior')">
-                        <i class="fas fa-shield-alt"></i>
-                        <div>
-                            <h4>منسوب الداخلية</h4>
-                            <small>القطاع الأمني</small>
-                        </div>
-                    </div>
-                    
-                    <div class="job-card health" onclick="selectJob(this, 'health')">
-                        <i class="fas fa-heartbeat"></i>
-                        <div>
-                            <h4>منسوب الصحة</h4>
-                            <small>القطاع الطبي</small>
-                        </div>
-                    </div>
-                    
-                    <div class="job-card justice" onclick="selectJob(this, 'justice')">
-                        <i class="fas fa-balance-scale"></i>
-                        <div>
-                            <h4>منسوب العدل</h4>
-                            <small>القطاع القضائي</small>
-                        </div>
-                    </div>
-                </div>
+                <p style="color: #92400e; margin-bottom: 20px;">
+                    <i class="fas fa-info-circle"></i> لا يمكنك تقديم طلب جديد حتى يتم البت في طلبك الحالي
+                </p>
                 
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="goBackToStep1()">
-                        <i class="fas fa-arrow-right"></i> السابق
+                    <button class="btn btn-secondary" onclick="goToHome()">
+                        <i class="fas fa-home"></i> الرئيسية
                     </button>
-                    <button class="btn" onclick="showStep3()">
-                        التالي <i class="fas fa-arrow-left"></i>
+                    <button class="btn" onclick="goToCheckPage()">
+                        <i class="fas fa-search"></i> تتبع حالة الطلب
                     </button>
                 </div>
             </div>
             
-            <!-- الخطوة 3: اختيار المنصب -->
-            <div class="step" id="step3" style="display: none;">
-                <div class="step-title">
-                    <span class="number">3</span>
-                    <span id="step3Title">اختر منصبك</span>
+            <!-- نموذج التقديم -->
+            <div id="applicationForm">
+                <div class="step" id="step1">
+                    <div class="step-title">
+                        <span class="number">1</span>
+                        <span>البيانات الأساسية</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-user"></i> الاسم الكامل:</label>
+                        <input type="text" id="fullName" placeholder="أدخل اسمك الكامل ثلاثي">
+                        <div class="input-hint"><i class="fas fa-info-circle"></i> الاسم كما في الهوية الرسمية</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-birthday-cake"></i> العمر:</label>
+                        <input type="number" id="age" placeholder="أدخل عمرك" min="18">
+                        <div class="input-hint"><i class="fas fa-info-circle"></i> يجب أن يكون 18 سنة أو أكثر</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-gamepad"></i> اسم المستخدم في اللعبة:</label>
+                        <input type="text" id="gameUsername" placeholder="أدخل اسمك في اللعبة">
+                        <div class="example-box">
+                            <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> Ahmed_KR, KR_Sniper, ProGamer_SA</p>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fab fa-discord"></i> اسم المستخدم في الديسكورد:</label>
+                        <input type="text" id="discordUsername" placeholder="أدخل اسمك في الديسكورد">
+                        <div class="example-box">
+                            <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> Ahmed#1234, KR_Player#5678, SaudiGamer#9999</p>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-id-card"></i> رقم الهوية في اللعبة:</label>
+                        <input type="text" id="gameId" placeholder="10 أرقام فقط" maxlength="10">
+                        <div class="example-box">
+                            <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> 39193738, 82282717, 12345678</p>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" onclick="validateStep1()">التالي <i class="fas fa-arrow-left"></i></button>
                 </div>
                 
-                <div class="ranks-container">
-                    <h4 style="color: #1e3a8a; margin-bottom: 15px;" id="ranksTitle">
-                        اختر منصبك حسب الوظيفة المختارة
-                    </h4>
+                <div class="step" id="step2" style="display: none;">
+                    <div class="step-title">
+                        <span class="number">2</span>
+                        <span>اختيار الوظيفة</span>
+                    </div>
                     
-                    <div class="ranks-grid" id="ranksGrid">
+                    <div class="jobs-grid">
+                        <div class="job-card citizen" onclick="selectJob(this, 'citizen')">
+                            <i class="fas fa-user"></i>
+                            <div>
+                                <h4>مواطن</h4>
+                                <small>الوظيفة الأساسية</small>
+                            </div>
+                        </div>
+                        
+                        <div class="job-card interior" onclick="selectJob(this, 'interior')">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <h4>منسوب الداخلية</h4>
+                                <small>القطاع الأمني</small>
+                            </div>
+                        </div>
+                        
+                        <div class="job-card health" onclick="selectJob(this, 'health')">
+                            <i class="fas fa-heartbeat"></i>
+                            <div>
+                                <h4>منسوب الصحة</h4>
+                                <small>القطاع الطبي</small>
+                            </div>
+                        </div>
+                        
+                        <div class="job-card justice" onclick="selectJob(this, 'justice')">
+                            <i class="fas fa-balance-scale"></i>
+                            <div>
+                                <h4>منسوب العدل</h4>
+                                <small>القطاع القضائي</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="goBackToStep1()">
+                            <i class="fas fa-arrow-right"></i> السابق
+                        </button>
+                        <button class="btn" onclick="showStep3()">
+                            التالي <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="step" id="step3" style="display: none;">
+                    <div class="step-title">
+                        <span class="number">3</span>
+                        <span>اختيار المنصب</span>
+                    </div>
+                    
+                    <div id="ranksContainer">
                         <!-- الرتب تظهر حسب الوظيفة -->
                     </div>
-                </div>
-                
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="goBackToStep2()">
-                        <i class="fas fa-arrow-right"></i> السابق
-                    </button>
-                    <button class="btn" onclick="showStep4()">
-                        التالي <i class="fas fa-arrow-left"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- الخطوة 4: المناصب الإضافية -->
-            <div class="step" id="step4" style="display: none;">
-                <div class="step-title">
-                    <span class="number">4</span>
-                    <span id="step4Title">المناصب الإضافية (اختياري)</span>
-                </div>
-                
-                <div class="additional-posts">
-                    <h4 style="color: #92400e; margin-bottom: 15px;">
-                        <i class="fas fa-star"></i> يمكنك اختيار مناصب إضافية
-                    </h4>
-                    <p style="color: #92400e; margin-bottom: 20px;">
-                        هذه المناصب اختيارية وتضاف إلى منصبك الأساسي
-                    </p>
                     
-                    <div class="additional-grid" id="additionalPosts">
-                        <!-- المناصب الإضافية -->
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="goBackToStep2()">
+                            <i class="fas fa-arrow-right"></i> السابق
+                        </button>
+                        <button class="btn" onclick="showStep4()">
+                            التالي <i class="fas fa-arrow-left"></i>
+                        </button>
                     </div>
                 </div>
                 
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="goBackToStep3()">
-                        <i class="fas fa-arrow-right"></i> السابق
-                    </button>
-                    <button class="btn" onclick="showStep5()">
-                        التالي <i class="fas fa-arrow-left"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- الخطوة 5: رفع المستندات -->
-            <div class="step" id="step5" style="display: none;">
-                <div class="step-title">
-                    <span class="number">5</span>
-                    <span>رفع صورة الهوية</span>
+                <div class="step" id="step4" style="display: none;">
+                    <div class="step-title">
+                        <span class="number">4</span>
+                        <span>المناصب الإضافية (اختياري)</span>
+                    </div>
+                    
+                    <div id="additionalContainer">
+                        <!-- المناصب الإضافية تظهر حسب الوظيفة -->
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="goBackToStep3()">
+                            <i class="fas fa-arrow-right"></i> السابق
+                        </button>
+                        <button class="btn" onclick="showStep5()">
+                            التالي <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="upload-section">
-                    <div class="input-group">
-                        <label><i class="fas fa-image"></i> صورة الهوية الرقمية</label>
-                        <p class="input-hint">
-                            <i class="fas fa-info-circle"></i> يرجى رفع صورة واضحة للهوية الرقمية في اللعبة
+                <div class="step" id="step5" style="display: none;">
+                    <div class="step-title">
+                        <span class="number">5</span>
+                        <span>رفع صورة الهوية</span>
+                    </div>
+                    
+                    <div class="id-example">
+                        <h4><i class="fas fa-info-circle"></i> مثال صورة الهوية المطلوبة:</h4>
+                        <p style="color: #64748b; margin-bottom: 15px;">
+                            يجب أن تكون صورة واضحة للهوية الرقمية في اللعبة كما في المثال التالي:
                         </p>
+                        
+                        <div class="id-example-img">
+                            <img src="https://image2url.com/r2/default/images/1769695282320-2ade9dfa-ea7d-4f34-b1f5-81fd757f4464.jpeg" 
+                                 alt="مثال الهوية الرقمية" 
+                                 onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"250\"><rect width=\"100%\" height=\"100%\" fill=\"%23f0f9ff\"/><text x=\"50%\" y=\"50%\" text-anchor=\"middle\" dy=\".3em\" font-family=\"Arial\" font-size=\"16\" fill=\"%233b82f6\">مثال: صورة الهوية الرقمية</text></svg>'">
+                        </div>
+                        
+                        <div class="id-example-note">
+                            <p><i class="fas fa-exclamation-circle"></i> <strong>ملاحظات مهمة:</strong></p>
+                            <ul style="margin-top: 10px; padding-right: 20px;">
+                                <li>يجب أن تكون الصورة واضحة وجيدة الإضاءة</li>
+                                <li>يجب أن تظهر جميع بيانات الهوية بوضوح</li>
+                                <li>لا تقم بتعديل الصورة أو التلاعب بها</li>
+                                <li>الصيغ المقبولة: JPG, PNG, GIF</li>
+                                <li>الحد الأقصى للحجم: 5 ميجابايت</li>
+                            </ul>
+                        </div>
                     </div>
                     
-                    <div class="upload-area" onclick="triggerFileUpload('idImage')">
+                    <div class="upload-area" onclick="document.getElementById('idImage').click()">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <h4 style="color: #1e3a8a; margin-bottom: 10px;">انقر لرفع صورة الهوية</h4>
-                        <p style="color: #64748b;">الصيغ المقبولة: JPG, PNG, GIF</p>
+                        <p style="color: #64748b;">اسحب وأفلت الصورة هنا أو انقر للاختيار من الجهاز</p>
                         <p style="color: #dc2626; font-size: 14px; margin-top: 10px;">
                             <i class="fas fa-exclamation-triangle"></i> الحد الأقصى لحجم الملف: 5MB
                         </p>
                     </div>
                     
-                    <div class="uploaded-files" id="idUploadedFiles"></div>
-                </div>
-                
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="goBackToStep4()">
-                        <i class="fas fa-arrow-right"></i> السابق
-                    </button>
-                    <button class="btn btn-success" onclick="showStep6()">
-                        <i class="fas fa-arrow-left"></i> تأكيد الطلب
-                    </button>
-                </div>
-            </div>
-            
-            <!-- الخطوة 6: تأكيد الطلب -->
-            <div class="step" id="step6" style="display: none;">
-                <div class="step-title">
-                    <span class="number">6</span>
-                    <span>تأكيد المعلومات</span>
-                </div>
-                
-                <div class="confirmation-box">
-                    <h4 style="color: #1e3a8a; margin-bottom: 20px;">
-                        <i class="fas fa-check-circle"></i> راجع معلومات طلبك قبل الإرسال
-                    </h4>
+                    <input type="file" id="idImage" accept="image/*" style="display: none;" onchange="handleImageUpload()">
+                    <div class="file-info" id="fileInfo" style="display: none;"></div>
                     
-                    <div class="request-summary" id="requestSummary">
-                        <!-- ملخص الطلب يظهر هنا -->
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="goBackToStep4()">
+                            <i class="fas fa-arrow-right"></i> السابق
+                        </button>
+                        <button class="btn" onclick="submitRequest()">
+                            <i class="fas fa-paper-plane"></i> إرسال الطلب
+                        </button>
                     </div>
-                    
-                    <div class="input-group" style="margin-top: 25px;">
-                        <label>
-                            <input type="checkbox" id="agreeTerms" style="width: 20px; height: 20px; accent-color: #3b82f6; margin-left: 10px;">
-                            أوافق على شروط واستخدام نظام الهوية الرقمية
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="goBackToStep5()">
-                        <i class="fas fa-arrow-right"></i> السابق
-                    </button>
-                    <button class="btn btn-success" onclick="submitRequest()">
-                        <i class="fas fa-paper-plane"></i> إرسال الطلب
-                    </button>
                 </div>
             </div>
             
             <!-- رسالة النجاح -->
-            <div class="success-message" id="successMessage">
+            <div class="success-message" id="successMessage" style="display: none;">
                 <i class="fas fa-check-circle"></i>
                 <h3>تم إرسال طلبك بنجاح! 🎉</h3>
+                <p>رقم الطلب: <strong id="requestNumber">KR-0000</strong></p>
+                <p>الاسم: <strong id="requestName"></strong></p>
+                <p>الوظيفة: <strong id="requestJob"></strong></p>
+                <p>المنصب: <strong id="requestRank"></strong></p>
                 
-                <div class="request-info">
-                    <div class="info-grid" id="finalRequestDetails">
-                        <!-- معلومات الطلب النهائية -->
+                <div class="request-info-box" style="margin: 20px 0;">
+                    <div class="status-item">
+                        <span class="status-label">حالة الطلب:</span>
+                        <span class="status-value" style="color: #f59e0b;">⏳ قيد المراجعة</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">تاريخ التقديم:</span>
+                        <span class="status-value" id="requestDate"></span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">وقت التقديم:</span>
+                        <span class="status-value" id="requestTime"></span>
                     </div>
                 </div>
                 
-                <p><strong>سيتم مراجعة طلبك خلال 24-48 ساعة</strong></p>
-                <p style="color: #64748b; margin-top: 10px;">
-                    يمكنك الاستعلام عن حالة طلبك في أي وقت
+                <p style="color: #065f46; margin-bottom: 20px;">
+                    <i class="fas fa-clock"></i> سيتم مراجعة طلبك خلال 24-48 ساعة
+                </p>
+                <p style="color: #64748b; font-size: 14px;">
+                    <i class="fas fa-info-circle"></i> لا يمكنك تقديم طلب جديد حتى يتم البت في هذا الطلب
                 </p>
                 
                 <div class="btn-group" style="margin-top: 30px;">
                     <button class="btn btn-secondary" onclick="goToHome()">
                         <i class="fas fa-home"></i> الرئيسية
-                    </button>
-                    <button class="btn" onclick="checkRequestStatus()">
-                        <i class="fas fa-search"></i> الاستعلام عن الطلب
                     </button>
                     <button class="btn" onclick="printRequest()">
                         <i class="fas fa-print"></i> طباعة الطلب
@@ -871,60 +717,593 @@
         </div>
     </div>
 
-    <!-- مدخلات الملفات المخفية -->
-    <input type="file" id="idImageUpload" accept="image/*" style="display: none;" onchange="handleFileUpload(this, 'idImage')">
-
-    <!-- JavaScript -->
     <script>
-        // حالة التطبيق
+        // البيانات
         let selectedJob = null;
         let selectedRank = null;
-        let selectedAdditionalPosts = [];
-        let uploadedFiles = [];
+        let selectedAdditionals = [];
+        let uploadedImage = null;
+        let userGameId = '';
         let currentRequest = null;
-        
-        // بيانات المناصب حسب الوزارة
-        const POSITIONS_DATA = {
+
+        const RANKS = {
             citizen: [
-                { id: 'citizen_1', name: 'مواطن عادي', description: 'المستوى الأساسي', icon: 'fas fa-user' },
-                { id: 'citizen_2', name: 'مواطن متميز', description: 'مستوى متوسط', icon: 'fas fa-user-tie' },
-                { id: 'citizen_3', name: 'مواطن فخري', description: 'مستوى متقدم', icon: 'fas fa-crown' }
+                'مواطن عادي',
+                'مواطن متميز', 
+                'مواطن فخري'
             ],
             interior: [
-                { id: 'interior_1', name: 'جندي', description: 'الرتبة الأساسية', icon: 'fas fa-user-shield' },
-                { id: 'interior_2', name: 'جندي أول', description: 'مستوى متقدم', icon: 'fas fa-user-shield' },
-                { id: 'interior_3', name: 'عريف', description: 'مسؤول فريق', icon: 'fas fa-chess-pawn' },
-                { id: 'interior_4', name: 'وكيل رقيب', description: 'مساعد المشرف', icon: 'fas fa-user-check' },
-                { id: 'interior_5', name: 'رقيب', description: 'مشرف قسم', icon: 'fas fa-chess-knight' },
-                { id: 'interior_6', name: 'رقيب أول', description: 'مشرف أول', icon: 'fas fa-chess-knight' },
-                { id: 'interior_7', name: 'رئيس رقباء', description: 'رئيس المشرفين', icon: 'fas fa-crown' },
-                { id: 'interior_8', name: 'ملازم', description: 'قائد وحدة', icon: 'fas fa-chess-rook' },
-                { id: 'interior_9', name: 'ملازم أول', description: 'قائد وحدة أول', icon: 'fas fa-chess-rook' },
-                { id: 'interior_10', name: 'نقيب', description: 'مدير قسم', icon: 'fas fa-chess-queen' },
-                { id: 'interior_11', name: 'رائد', description: 'مدير قسم متقدم', icon: 'fas fa-chess-queen' },
-                { id: 'interior_12', name: 'مقدم', description: 'قائد منطقة', icon: 'fas fa-flag' },
-                { id: 'interior_13', name: 'عقيد', description: 'قائد قطاع', icon: 'fas fa-chess-king' },
-                { id: 'interior_14', name: 'عميد', description: 'قائد منطقة كبيرة', icon: 'fas fa-chess-king' },
-                { id: 'interior_15', name: 'لواء', description: 'قائد إقليم', icon: 'fas fa-star' },
-                { id: 'interior_16', name: 'فريق', description: 'قائد قوة', icon: 'fas fa-star' },
-                { id: 'interior_17', name: 'فريق أول', description: 'قائد عام', icon: 'fas fa-star' },
-                { id: 'interior_18', name: 'نائب مدير الأمن العام', description: 'المركز الثالث', icon: 'fas fa-user-tie' },
-                { id: 'interior_19', name: 'مدير الأمن العام', description: 'المركز الثاني', icon: 'fas fa-user-tie' },
-                { id: 'interior_20', name: 'نائب وزير الداخلية', description: 'المركز الأول', icon: 'fas fa-user-tie' },
-                { id: 'interior_21', name: 'وزير الداخلية', description: 'أعلى منصب', icon: 'fas fa-user-tie' }
+                'جندي',
+                'جندي أول',
+                'عريف',
+                'وكيل رقيب',
+                'رقيب',
+                'رقيب أول',
+                'رئيس رقباء',
+                'ملازم',
+                'ملازم أول',
+                'نقيب',
+                'رائد',
+                'مقدم',
+                'عقيد',
+                'عميد',
+                'لواء',
+                'فريق',
+                'فريق أول',
+                'نائب مدير الأمن العام',
+                'مدير الأمن العام',
+                'نائب وزير الداخلية',
+                'وزير الداخلية'
             ],
             health: [
-                { id: 'health_1', name: 'مسعف', description: 'المستوى الأساسي', icon: 'fas fa-ambulance' },
-                { id: 'health_2', name: 'طبيب', description: 'المستوى المتوسط', icon: 'fas fa-user-md' },
-                { id: 'health_3', name: 'طبيب عام', description: 'طبيب ممارس', icon: 'fas fa-stethoscope' },
-                { id: 'health_4', name: 'طبيب مختص', description: 'طبيب تخصصي', icon: 'fas fa-stethoscope' },
-                { id: 'health_5', name: 'دكتور', description: 'حامل دكتوراه', icon: 'fas fa-user-graduate' },
-                { id: 'health_6', name: 'دكتور عام', description: 'دكتور ممارس', icon: 'fas fa-user-graduate' },
-                { id: 'health_7', name: 'دكتور مختص', description: 'دكتور تخصصي', icon: 'fas fa-user-graduate' },
-                { id: 'health_8', name: 'استشاري أمراض جلدية وجراحة', description: 'تخصص دقيق', icon: 'fas fa-user-md' },
-                { id: 'health_9', name: 'استشاري طب الأسنان', description: 'تخصص أسنان', icon: 'fas fa-tooth' },
-                { id: 'health_10', name: 'أخصائي', description: 'أخصائي طبي', icon: 'fas fa-user-nurse' },
-                { id: 'health_11', name: 'جراح', description: 'جراح متخصص', icon: 'fas fa-syringe' },
-                { id: 'health_12', name: 'مساعد جراح', description: 'مساعد جراحة', icon: 'fas fa-hands-helping' },
-                { id: 'health_13', name: 'بروفسور', description: 'أستاذ جامعي', icon: 'fas fa-chalkboard-teacher' },
-                { id
+                'مسعف',
+                'طبيب',
+                'طبيب عام',
+                'طبيب مختص',
+                'دكتور',
+                'دكتور عام',
+                'دكتور مختص',
+                'استشاري أمراض جلدية وجراحة',
+                'استشاري طب الأسنان',
+                'أخصائي',
+                'جراح',
+                'مساعد جراح',
+                'بروفسور',
+                'نائب مدير مستشفى',
+                'مدير مستشفى',
+                'مستشار وزير الصحة',
+                'نائب وزير الصحة',
+                'وزير الصحة'
+            ],
+            justice: [
+                'محامي',
+                'محامي متمرس',
+                'محامي متخصص',
+                'قاضي',
+                'قاضي متمرس',
+                'قاضي استئناف',
+                'قاضي درجة أولى',
+                'قاضي محكمة عليا',
+                'قاضي محترف',
+                'مستشار وزير العدل',
+                'نائب وزير العدل',
+                'وزير العدل'
+            ]
+        };
+
+        const ADDITIONAL_POSTS = {
+            interior: [
+                'إدارة القبول والتجنيد',
+                'إدارة الشؤون',
+                'إدارة شؤون الأفراد',
+                'الإدارة العامة لوزارة الداخلية',
+                'إدارة الشكاوى بوزارة الداخلية'
+            ],
+            health: [
+                'إدارة القبول والتسجيل',
+                'إدارة الشؤون الصحية',
+                'إدارة الكلية الصحية',
+                'مسؤول الشؤون الصحية',
+                'إدارة الشكاوى بوزارة الصحة'
+            ],
+            justice: [
+                'إدارة القبول والتسجيل بوزارة العدل',
+                'المجلس الأعلى للقضاء',
+                'إدارة الشؤون العدلية'
+            ],
+            citizen: []
+        };
+
+        // عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // التحكم في رقم الهوية (أرقام فقط)
+            const gameIdInput = document.getElementById('gameId');
+            gameIdInput.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '').slice(0, 10);
+                userGameId = this.value;
+                checkExistingRequest();
+            });
+            
+            // التحقق من الطلبات الحالية
+            checkExistingRequest();
+        });
+
+        // التحقق من وجود طلب سابق
+        function checkExistingRequest() {
+            if (!userGameId || userGameId.length !== 10) return;
+            
+            const requests = JSON.parse(localStorage.getItem('kr_requests') || '[]');
+            
+            // البحث عن طلبات لهذا الرقم
+            const existingRequests = requests.filter(req => 
+                req.gameId === userGameId && 
+                (req.status === 'pending' || req.status === 'approved')
+            );
+            
+            if (existingRequests.length > 0) {
+                currentRequest = existingRequests[0];
+                showExistingRequestWarning();
+            } else {
+                hideExistingRequestWarning();
+            }
+        }
+
+        function showExistingRequestWarning() {
+            if (!currentRequest) return;
+            
+            const alertBox = document.getElementById('alreadySubmittedAlert');
+            const infoBox = document.getElementById('existingRequestInfo');
+            const requestStatus = document.getElementById('requestStatus');
+            const applicationForm = document.getElementById('applicationForm');
+            
+            // تحديث المعلومات
+            infoBox.innerHTML = `
+                رقم الطلب: <strong>${currentRequest.id}</strong> | 
+                الحالة: <strong>${getStatusText(currentRequest.status)}</strong> | 
+                التاريخ: ${currentRequest.date}
+            `;
+            
+            // تحديث حالة الطلب الحالي
+            document.getElementById('currentRequestInfo').innerHTML = `
+                <div class="status-item">
+                    <span class="status-label">رقم الطلب:</span>
+                    <span class="status-value">${currentRequest.id}</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">الاسم:</span>
+                    <span class="status-value">${currentRequest.name}</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">الوظيفة:</span>
+                    <span class="status-value">${getJobText(currentRequest.job)}</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">المنصب:</span>
+                    <span class="status-value">${currentRequest.rank}</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">الحالة:</span>
+                    <span class="status-value" style="color: ${currentRequest.status === 'pending' ? '#f59e0b' : '#10b981'}">
+                        ${getStatusText(currentRequest.status)}
+                    </span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">تاريخ التقديم:</span>
+                    <span class="status-value">${currentRequest.date}</span>
+                </div>
+            `;
+            
+            // إظهار التحذير وإخفاء النموذج
+            alertBox.style.display = 'block';
+            requestStatus.style.display = 'block';
+            applicationForm.style.display = 'none';
+            
+            // تعطيل الحقول لمنع التعديل
+            disableFormFields();
+        }
+
+        function hideExistingRequestWarning() {
+            document.getElementById('alreadySubmittedAlert').style.display = 'none';
+            document.getElementById('requestStatus').style.display = 'none';
+            document.getElementById('applicationForm').style.display = 'block';
+            enableFormFields();
+        }
+
+        function disableFormFields() {
+            document.getElementById('fullName').disabled = true;
+            document.getElementById('age').disabled = true;
+            document.getElementById('gameUsername').disabled = true;
+            document.getElementById('discordUsername').disabled = true;
+            document.getElementById('gameId').disabled = true;
+        }
+
+        function enableFormFields() {
+            document.getElementById('fullName').disabled = false;
+            document.getElementById('age').disabled = false;
+            document.getElementById('gameUsername').disabled = false;
+            document.getElementById('discordUsername').disabled = false;
+            document.getElementById('gameId').disabled = false;
+        }
+
+        // الدوال الأساسية
+        function validateStep1() {
+            // التحقق من وجود طلب سابق
+            if (currentRequest) {
+                showAlert('⚠️ لديك طلب قيد المراجعة بالفعل!');
+                return;
+            }
+            
+            const name = document.getElementById('fullName').value.trim();
+            const age = document.getElementById('age').value;
+            const gameUsername = document.getElementById('gameUsername').value.trim();
+            const discordUsername = document.getElementById('discordUsername').value.trim();
+            const gameId = document.getElementById('gameId').value.trim();
+
+            let isValid = true;
+            let errorMessage = '';
+
+            if (!name) {
+                errorMessage = '❌ يرجى إدخال الاسم الكامل';
+                document.getElementById('fullName').classList.add('error');
+                isValid = false;
+            } else if (!age || age < 18) {
+                errorMessage = '❌ العمر يجب أن يكون 18 سنة أو أكثر';
+                document.getElementById('age').classList.add('error');
+                isValid = false;
+            } else if (!gameUsername) {
+                errorMessage = '❌ يرجى إدخال اسم المستخدم في اللعبة';
+                document.getElementById('gameUsername').classList.add('error');
+                isValid = false;
+            } else if (!discordUsername) {
+                errorMessage = '❌ يرجى إدخال اسم المستخدم في الديسكورد';
+                document.getElementById('discordUsername').classList.add('error');
+                isValid = false;
+            } else if (!gameId || gameId.length !== 10) {
+                errorMessage = '❌ رقم الهوية يجب أن يكون 10 أرقام بالضبط';
+                document.getElementById('gameId').classList.add('error');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                showAlert(errorMessage);
+                return;
+            }
+
+            showStep2();
+        }
+
+        function showAlert(message, isSuccess = false) {
+            const alertBox = document.getElementById(isSuccess ? 'successAlert' : 'alertBox');
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            
+            if (isSuccess) {
+                alertBox.className = 'alert success';
+            } else {
+                alertBox.className = 'alert';
+            }
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 4000);
+        }
+
+        function selectJob(element, jobType) {
+            document.querySelectorAll('.job-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedJob = jobType;
+        }
+
+        function showStep2() {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+        }
+
+        function goBackToStep1() {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step1').style.display = 'block';
+        }
+
+        function showStep3() {
+            if (!selectedJob) {
+                showAlert('❌ يرجى اختيار الوظيفة');
+                return;
+            }
+
+            // عرض الرتب حسب الوظيفة
+            const container = document.getElementById('ranksContainer');
+            container.innerHTML = `
+                <div class="ranks-container">
+                    <h4 style="color: #1e3a8a; margin-bottom: 15px;">اختر منصبك:</h4>
+                    ${RANKS[selectedJob].map((rank, index) => `
+                        <div class="rank-item" onclick="selectRank(this, '${rank}')">
+                            ${rank}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step3').style.display = 'block';
+        }
+
+        function selectRank(element, rank) {
+            document.querySelectorAll('.rank-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedRank = rank;
+        }
+
+        function goBackToStep2() {
+            document.getElementById('step3').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+        }
+
+        function showStep4() {
+            if (!selectedRank) {
+                showAlert('❌ يرجى اختيار المنصب');
+                return;
+            }
+
+            const posts = ADDITIONAL_POSTS[selectedJob];
+            if (!posts || posts.length === 0) {
+                // إذا لا توجد مناصب إضافية، انتقل للخطوة التالية
+                showStep5();
+                return;
+            }
+
+            const container = document.getElementById('additionalContainer');
+            container.innerHTML = `
+                <div class="additional-posts">
+                    <h4 style="color: #92400e; margin-bottom: 15px;">اختر مناصب إضافية (اختياري):</h4>
+                    ${posts.map((post, index) => `
+                        <div class="additional-item">
+                            <input type="checkbox" id="add_${index}" value="${post}" onchange="toggleAdditionalPost(this, '${post}')">
+                            <label for="add_${index}" style="flex: 1; cursor: pointer;">${post}</label>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            document.getElementById('step3').style.display = 'none';
+            document.getElementById('step4').style.display = 'block';
+        }
+
+        function toggleAdditionalPost(checkbox, post) {
+            if (checkbox.checked) {
+                selectedAdditionals.push(post);
+            } else {
+                selectedAdditionals = selectedAdditionals.filter(p => p !== post);
+            }
+        }
+
+        function goBackToStep3() {
+            document.getElementById('step4').style.display = 'none';
+            document.getElementById('step3').style.display = 'block';
+        }
+
+        function showStep5() {
+            document.getElementById('step4').style.display = 'none';
+            document.getElementById('step5').style.display = 'block';
+        }
+
+        function goBackToStep4() {
+            document.getElementById('step5').style.display = 'none';
+            document.getElementById('step4').style.display = 'block';
+        }
+
+        function handleImageUpload() {
+            const fileInput = document.getElementById('idImage');
+            const fileInfo = document.getElementById('fileInfo');
+            
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                
+                // التحقق من نوع الملف
+                const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(file.type)) {
+                    showAlert('❌ نوع الملف غير مدعوم. يرجى رفع صورة (JPG, PNG, GIF)');
+                    return;
+                }
+                
+                // التحقق من الحجم
+                if (file.size > 5 * 1024 * 1024) {
+                    showAlert('❌ حجم الملف كبير جداً (الحد الأقصى 5MB)');
+                    return;
+                }
+                
+                // عرض معاينة الصورة
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    fileInfo.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 60px; height: 60px; border-radius: 8px; overflow: hidden; border: 2px solid #3b82f6;">
+                                <img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div>
+                                <p style="margin: 0;"><i class="fas fa-check-circle" style="color: #10b981;"></i> تم رفع الصورة بنجاح</p>
+                                <p style="margin: 5px 0 0 0; color: #64748b; font-size: 14px;">
+                                    ${file.name} (${(file.size / 1024).toFixed(1)}KB)
+                                </p>
+                            </div>
+                            <button onclick="removeImage()" style="background: #fee2e2; color: #dc2626; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px;">
+                                <i class="fas fa-trash"></i> إزالة
+                            </button>
+                        </div>
+                    `;
+                    fileInfo.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+                
+                uploadedImage = file;
+            }
+        }
+
+        function removeImage() {
+            document.getElementById('idImage').value = '';
+            document.getElementById('fileInfo').style.display = 'none';
+            uploadedImage = null;
+        }
+
+        function submitRequest() {
+            // التحقق النهائي من وجود طلب سابق
+            if (currentRequest) {
+                showAlert('⚠️ لديك طلب قيد المراجعة بالفعل!');
+                return;
+            }
+            
+            if (!uploadedImage) {
+                showAlert('❌ يرجى رفع صورة الهوية');
+                return;
+            }
+
+            // إنشاء رقم طلب
+            const requestNumber = 'KR-' + Math.floor(1000 + Math.random() * 9000);
+            const now = new Date();
+            const date = now.toLocaleDateString('ar-SA');
+            const time = now.toLocaleTimeString('ar-SA');
+            
+            // تحديث عرض رسالة النجاح
+            document.getElementById('requestNumber').textContent = requestNumber;
+            document.getElementById('requestName').textContent = document.getElementById('fullName').value;
+            document.getElementById('requestJob').textContent = getJobText(selectedJob);
+            document.getElementById('requestRank').textContent = selectedRank;
+            document.getElementById('requestDate').textContent = date;
+            document.getElementById('requestTime').textContent = time;
+
+            // حفظ الطلب في localStorage
+            const request = {
+                id: requestNumber,
+                name: document.getElementById('fullName').value,
+                age: document.getElementById('age').value,
+                gameUsername: document.getElementById('gameUsername').value,
+                discordUsername: document.getElementById('discordUsername').value,
+                gameId: document.getElementById('gameId').value,
+                job: selectedJob,
+                jobText: getJobText(selectedJob),
+                rank: selectedRank,
+                additionalPosts: selectedAdditionals,
+                status: 'pending',
+                date: date,
+                time: time,
+                timestamp: Date.now(),
+                submittedFrom: location.href,
+                ipAddress: 'user_ip_placeholder' // يمكن إضافة IP حقيقي
+            };
+
+            // الحصول على الطلبات الحالية
+            let requests = JSON.parse(localStorage.getItem('kr_requests') || '[]');
+            
+            // التحقق من عدم وجود طلب مكرر لنفس رقم الهوية
+            const duplicate = requests.find(req => req.gameId === request.gameId && req.status === 'pending');
+            if (duplicate) {
+                showAlert('⚠️ لديك طلب قيد المراجعة بالفعل لنفس رقم الهوية!');
+                return;
+            }
+            
+            requests.push(request);
+            localStorage.setItem('kr_requests', JSON.stringify(requests));
+            
+            // تحديث currentRequest لمنع التقديم مرة أخرى
+            currentRequest = request;
+            
+            // تعطيل النموذج وإظهار رسالة النجاح
+            document.getElementById('step5').style.display = 'none';
+            document.getElementById('applicationForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // تعطيل الحقول لمنع التقديم مرة أخرى
+            disableFormFields();
+            
+            // حفظ في sessionStorage لمنع التقديم خلال هذه الجلسة
+            sessionStorage.setItem('kr_last_submission', Date.now());
+            sessionStorage.setItem('kr_current_request', JSON.stringify(request));
+            
+            // طباعة بيانات الطلب في الكونسول
+            console.log('📤 تم إرسال الطلب بنجاح:', request);
+            showAlert('✅ تم إرسال طلبك بنجاح! سيتم مراجعة طلبك خلال 24-48 ساعة', true);
+        }
+
+        function getJobText(job) {
+            const jobs = {
+                'citizen': 'مواطن',
+                'interior': 'منسوب الداخلية',
+                'health': 'منسوب الصحة',
+                'justice': 'منسوب العدل'
+            };
+            return jobs[job] || job;
+        }
+
+        function getStatusText(status) {
+            const statuses = {
+                'pending': 'قيد المراجعة',
+                'approved': 'مقبول',
+                'rejected': 'مرفوض',
+                'suspended': 'معلق مؤقت',
+                'banned': 'محظور'
+            };
+            return statuses[status] || status;
+        }
+
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+
+        function goToCheckPage() {
+            window.location.href = 'check.html';
+        }
+
+        function printRequest() {
+            const printContent = `
+                <div style="font-family: Arial, sans-serif; padding: 20px; text-align: right; direction: rtl;">
+                    <h2 style="color: #1e3a8a; border-bottom: 2px solid #1e3a8a; padding-bottom: 10px;">
+                        <i class="fas fa-id-card"></i> إيصال تقديم طلب تفعيل الهوية
+                    </h2>
+                    <p><strong>هيئة KR الرقمية</strong></p>
+                    
+                    <div style="background: #f8fafc; padding: 15px; border-radius: 10px; margin: 20px 0; border: 1px solid #e2e8f0;">
+                        <h3 style="color: #1e3a8a;">معلومات الطلب:</h3>
+                        <p><strong>رقم الطلب:</strong> ${document.getElementById('requestNumber').textContent}</p>
+                        <p><strong>اسم مقدم الطلب:</strong> ${document.getElementById('requestName').textContent}</p>
+                        <p><strong>الوظيفة المطلوبة:</strong> ${document.getElementById('requestJob').textContent}</p>
+                        <p><strong>المنصب:</strong> ${document.getElementById('requestRank').textContent}</p>
+                        <p><strong>حالة الطلب:</strong> <span style="color: #f59e0b;">قيد المراجعة</span></p>
+                        <p><strong>تاريخ التقديم:</strong> ${document.getElementById('requestDate').textContent}</p>
+                        <p><strong>وقت التقديم:</strong> ${document.getElementById('requestTime').textContent}</p>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+                        <p style="color: #64748b; font-size: 14px;">
+                            <i class="fas fa-info-circle"></i> هذا الإيصال يؤكد تقديم طلب تفعيل الهوية الرقمية.
+                            سيتم مراجعة الطلب خلال 24-48 ساعة عمل.
+                        </p>
+                        <p style="color: #dc2626; font-size: 14px; margin-top: 10px;">
+                            <i class="fas fa-exclamation-triangle"></i> يحظر تقديم طلب جديد قبل البت في هذا الطلب.
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>إيصال طلب تفعيل الهوية</title>
+                        <style>
+                            @media print {
+                                body { margin: 0; padding: 20px; }
+                            }
+                        </style>
+                    </head>
+                    <body>${printContent}</body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+</html>
