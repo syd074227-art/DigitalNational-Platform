@@ -78,6 +78,18 @@
             text-align: center;
             border: 2px solid #f87171;
             display: none;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
         
         /* الخطوات */
@@ -455,10 +467,10 @@
                     </div>
                 </div>
                 
-                <button class="btn" onclick="nextStep()">التالي <i class="fas fa-arrow-left"></i></button>
+                <button class="btn" onclick="validateStep1()">التالي <i class="fas fa-arrow-left"></i></button>
             </div>
             
-            <!-- الخطوة 2: اختيار الوظيفة (ستظهر لاحقاً) -->
+            <!-- الخطوة 2: اختيار الوظيفة -->
             <div class="step" id="step2" style="display: none;">
                 <div class="step-title">
                     <span class="number">2</span>
@@ -466,7 +478,7 @@
                 </div>
                 
                 <div class="jobs-grid">
-                    <div class="job-card citizen" data-job="citizen" onclick="selectJob('citizen')">
+                    <div class="job-card citizen" onclick="selectJob(this, 'citizen')">
                         <i class="fas fa-user"></i>
                         <div>
                             <h4>مواطن</h4>
@@ -474,7 +486,7 @@
                         </div>
                     </div>
                     
-                    <div class="job-card interior" data-job="interior" onclick="selectJob('interior')">
+                    <div class="job-card interior" onclick="selectJob(this, 'interior')">
                         <i class="fas fa-shield-alt"></i>
                         <div>
                             <h4>منسوب الداخلية</h4>
@@ -482,7 +494,7 @@
                         </div>
                     </div>
                     
-                    <div class="job-card health" data-job="health" onclick="selectJob('health')">
+                    <div class="job-card health" onclick="selectJob(this, 'health')">
                         <i class="fas fa-heartbeat"></i>
                         <div>
                             <h4>منسوب الصحة</h4>
@@ -490,7 +502,7 @@
                         </div>
                     </div>
                     
-                    <div class="job-card justice" data-job="justice" onclick="selectJob('justice')">
+                    <div class="job-card justice" onclick="selectJob(this, 'justice')">
                         <i class="fas fa-balance-scale"></i>
                         <div>
                             <h4>منسوب العدل</h4>
@@ -500,97 +512,11 @@
                 </div>
                 
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="prevStep()">
+                    <button class="btn btn-secondary" onclick="goBackToStep1()">
                         <i class="fas fa-arrow-right"></i> السابق
                     </button>
-                    <button class="btn" onclick="nextStep()">
+                    <button class="btn" onclick="validateStep2()">
                         التالي <i class="fas fa-arrow-left"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- الخطوة 3: اختيار الرتبة (ستظهر لاحقاً) -->
-            <div class="step" id="step3" style="display: none;">
-                <div class="step-title">
-                    <span class="number">3</span>
-                    <span id="rankTitle">اختيار الرتبة</span>
-                </div>
-                
-                <div class="ranks-list" id="ranksList">
-                    <!-- الرتب ستظهر هنا -->
-                </div>
-                
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="prevStep()">
-                        <i class="fas fa-arrow-right"></i> السابق
-                    </button>
-                    <button class="btn" onclick="nextStep()">
-                        التالي <i class="fas fa-arrow-left"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- الخطوة 4: المناصب الإضافية (ستظهر لاحقاً) -->
-            <div class="step" id="step4" style="display: none;">
-                <div class="step-title">
-                    <span class="number">4</span>
-                    <span>المناصب الإضافية</span>
-                </div>
-                
-                <div class="additional-list" id="additionalList">
-                    <!-- المناصب الإضافية ستظهر هنا -->
-                </div>
-                
-                <div style="background: #fef3c7; padding: 15px; border-radius: 10px; border: 2px dashed #f59e0b; margin-top: 20px;">
-                    <input type="checkbox" id="noAdditional" onchange="toggleAdditional()">
-                    <label for="noAdditional" style="color: #92400e; cursor: pointer;">لا أملك مناصب إضافية</label>
-                </div>
-                
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="prevStep()">
-                        <i class="fas fa-arrow-right"></i> السابق
-                    </button>
-                    <button class="btn" onclick="nextStep()">
-                        التالي <i class="fas fa-arrow-left"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- الخطوة 5: رفع صورة الهوية -->
-            <div class="step" id="step5" style="display: none;">
-                <div class="step-title">
-                    <span class="number">5</span>
-                    <span>رفع صورة الهوية</span>
-                </div>
-                
-                <div class="upload-area" onclick="document.getElementById('idImage').click()">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <h3>اضغط لرفع صورة الهوية</h3>
-                    <p>اسحب وأفلت أو اضغط لاختيار الملف</p>
-                    <input type="file" id="idImage" accept="image/*" hidden>
-                </div>
-                
-                <div class="file-info" id="fileInfo">
-                    <i class="fas fa-info-circle"></i>
-                    <span>لم يتم رفع أي ملف</span>
-                </div>
-                
-                <div class="id-example">
-                    <p><strong>مثال على الهوية الصحيحة:</strong></p>
-                    <img src="https://image2url.com/r2/default/images/1769695282320-2ade9dfa-ea7d-4f34-b1f5-81fd757f4464.jpeg" 
-                         alt="مثال هوية اللعبة">
-                    <p style="color: #666; margin-top: 10px; font-size: 14px;">
-                        <i class="fas fa-exclamation-circle"></i>
-                        يرجى رفع صورة واضحة لهويتك داخل اللعبة
-                    </p>
-                </div>
-                
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="prevStep()">
-                        <i class="fas fa-arrow-right"></i> السابق
-                    </button>
-                    <button class="btn" onclick="submitForm()">
-                        <i class="fas fa-paper-plane"></i> إرسال الطلب
                     </button>
                 </div>
             </div>
@@ -601,41 +527,184 @@
                 <h3>تم إرسال طلبك بنجاح! 🎉</h3>
                 <p>رقم الطلب: <strong id="requestNumber">KR-0000</strong></p>
                 <p>سيتم مراجعة طلبك خلال 24-48 ساعة</p>
-                <button class="btn" onclick="resetForm()" style="background: #7c3aed; margin-top: 20px;">
-                    تقديم طلب جديد
-                </button>
+                <p style="margin-top: 20px;">
+                    <a href="index.html" style="color: #1e3a8a; text-decoration: none; font-weight: bold;">
+                        العودة للصفحة الرئيسية
+                    </a>
+                </p>
             </div>
         </div>
     </div>
 
     <!-- JavaScript -->
     <script>
-        // البيانات الكاملة للرتب والمناصب
-        const ministryData = {
-            interior: {
-                name: "وزارة الداخلية",
-                ranks: [
-                    "جندي", "جندي أول", "عريف", "وكيل رقيب", "رقيب", "رقيب أول", 
-                    "رئيس رقباء", "ملازم", "ملازم أول", "نقيب", "رائد", "مقدم",
-                    "عقيد", "عميد", "لواء", "فريق", "فريق أول",
-                    "نائب مدير الأمن العام", "مدير الأمن العام",
-                    "نائب وزير الداخلية", "وزير الداخلية"
-                ],
-                additional: [
-                    "إدارة القبول والتجنيد",
-                    "إدارة الشؤون",
-                    "إدارة شؤون الأفراد",
-                    "الإدارة العامة لوزارة الداخلية",
-                    "إدارة الشكاوى بوزارة الداخلية"
-                ]
-            },
-            health: {
-                name: "وزارة الصحة",
-                ranks: [
-                    "مسعف", "طبيب", "طبيب عام", "طبيب مختص",
-                    "دكتور", "دكتور عام", "دكتور مختص",
-                    "استشاري أمراض جلدية وجراحة",
-                    "استشاري طب الأسنان",
-                    "أخصائي", "جراح", "مساعد جراح",
-                    "بروفسور", "نائب مدير مستشفى",
-                    "مدير مستشفى", "م
+        // حالة التطبيق
+        let selectedJob = null;
+        
+        // التحقق من الخطوة 1
+        function validateStep1() {
+            console.log('🔍 بدأ التحقق من الخطوة 1...');
+            
+            const name = document.getElementById('fullName').value.trim();
+            const age = document.getElementById('age').value;
+            const gameUsername = document.getElementById('gameUsername').value.trim();
+            const discordUsername = document.getElementById('discordUsername').value.trim();
+            const gameId = document.getElementById('gameId').value.trim();
+            
+            // إعادة تعيين ألوان الحقول
+            document.querySelectorAll('input').forEach(input => {
+                input.classList.remove('error');
+            });
+            
+            let isValid = true;
+            let errorMessage = '';
+            
+            // التحقق من الاسم
+            if (!name) {
+                errorMessage = '❌ يرجى إدخال الاسم الكامل';
+                document.getElementById('fullName').classList.add('error');
+                isValid = false;
+            }
+            
+            // التحقق من العمر
+            else if (!age || age < 18) {
+                errorMessage = '❌ العمر يجب أن يكون 18 سنة أو أكثر';
+                document.getElementById('age').classList.add('error');
+                isValid = false;
+            }
+            
+            // التحقق من اسم اللعبة
+            else if (!gameUsername) {
+                errorMessage = '❌ يرجى إدخال اسم المستخدم في اللعبة';
+                document.getElementById('gameUsername').classList.add('error');
+                isValid = false;
+            }
+            
+            // التحقق من اسم الديسكورد
+            else if (!discordUsername) {
+                errorMessage = '❌ يرجى إدخال اسم المستخدم في الديسكورد';
+                document.getElementById('discordUsername').classList.add('error');
+                isValid = false;
+            }
+            
+            // التحقق من رقم الهوية
+            else if (!gameId || gameId.length !== 10) {
+                errorMessage = '❌ رقم الهوية يجب أن يكون 10 أرقام بالضبط';
+                document.getElementById('gameId').classList.add('error');
+                isValid = false;
+            }
+            
+            // إذا كان هناك خطأ
+            if (!isValid) {
+                showError(errorMessage);
+                return;
+            }
+            
+            // إذا كل شيء صحيح
+            console.log('✅ التحقق ناجح، الانتقال للخطوة 2');
+            showStep2();
+        }
+        
+        // التحقق من الخطوة 2
+        function validateStep2() {
+            console.log('🔍 بدأ التحقق من الخطوة 2...');
+            
+            if (!selectedJob) {
+                showError('❌ يرجى اختيار الوظيفة');
+                return;
+            }
+            
+            // إذا كل شيء صحيح، إظهار النجاح
+            console.log('✅ التحقق ناجح، إظهار النجاح');
+            showSuccess();
+        }
+        
+        // إظهار الخطوة 2
+        function showStep2() {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+            document.getElementById('alertBox').style.display = 'none';
+        }
+        
+        // الرجوع للخطوة 1
+        function goBackToStep1() {
+            document.getElementById('step1').style.display = 'block';
+            document.getElementById('step2').style.display = 'none';
+        }
+        
+        // اختيار الوظيفة
+        function selectJob(element, jobType) {
+            // إعادة تعيين التحديد
+            document.querySelectorAll('.job-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // تحديد الجديد
+            element.classList.add('selected');
+            selectedJob = jobType;
+            
+            console.log('✅ تم اختيار الوظيفة:', jobType);
+        }
+        
+        // إظهار النجاح
+        function showSuccess() {
+            // إنشاء رقم طلب
+            const requestNumber = 'KR-' + Date.now().toString().slice(-6);
+            document.getElementById('requestNumber').textContent = requestNumber;
+            
+            // إخفاء الخطوات وإظهار النجاح
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // طباعة البيانات
+            console.log('📤 تم إرسال الطلب بنجاح:', {
+                name: document.getElementById('fullName').value,
+                age: document.getElementById('age').value,
+                gameUsername: document.getElementById('gameUsername').value,
+                discordUsername: document.getElementById('discordUsername').value,
+                gameId: document.getElementById('gameId').value,
+                job: selectedJob,
+                requestNumber: requestNumber
+            });
+        }
+        
+        // عرض تحذير
+        function showError(message) {
+            console.log('⚠️ عرض تحذير:', message);
+            
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            
+            // إخفاء التحذير بعد 4 ثواني
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 4000);
+        }
+        
+        // عند تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ صفحة التقديم جاهزة');
+            
+            // تحكم في رقم الهوية (أرقام فقط)
+            const gameIdInput = document.getElementById('gameId');
+            gameIdInput.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '').slice(0, 10);
+            });
+            
+            // رفع الملف
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.hidden = true;
+            
+            // إضافة تأثير للحقول عند الخطأ
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('error');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
