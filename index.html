@@ -117,6 +117,32 @@
             animation: shake 0.5s;
         }
         
+        .input-hint {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 5px;
+            padding-right: 5px;
+        }
+        
+        .input-hint i {
+            margin-left: 5px;
+        }
+        
+        /* أمثلة */
+        .example-box {
+            background: #f0f9ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+            border: 2px solid #e0f2fe;
+        }
+        
+        .example-box p {
+            color: #0369a1;
+            margin: 0;
+            font-size: 14px;
+        }
+        
         /* قائمة الوظائف */
         .jobs-list {
             display: grid;
@@ -402,18 +428,40 @@
                 </div>
                 
                 <div class="input-group">
-                    <label>الاسم الكامل:</label>
-                    <input type="text" id="fullName" placeholder="أدخل اسمك الكامل">
+                    <label><i class="fas fa-user"></i> الاسم الكامل:</label>
+                    <input type="text" id="fullName" placeholder="أدخل اسمك الكامل ثلاثي">
+                    <div class="input-hint"><i class="fas fa-info-circle"></i> الاسم كما في الهوية الرسمية</div>
                 </div>
                 
                 <div class="input-group">
-                    <label>العمر:</label>
+                    <label><i class="fas fa-birthday-cake"></i> العمر:</label>
                     <input type="number" id="age" placeholder="أدخل عمرك" min="18">
+                    <div class="input-hint"><i class="fas fa-info-circle"></i> يجب أن يكون 18 سنة أو أكثر</div>
+                </div>
+                
+                <!-- الحقول الجديدة -->
+                <div class="input-group">
+                    <label><i class="fas fa-gamepad"></i> اسم المستخدم في اللعبة:</label>
+                    <input type="text" id="gameUsername" placeholder="أدخل اسمك في اللعبة">
+                    <div class="example-box">
+                        <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> Ahmed_KR, KR_Sniper, ProGamer_SA</p>
+                    </div>
                 </div>
                 
                 <div class="input-group">
-                    <label>رقم الهوية في اللعبة:</label>
+                    <label><i class="fab fa-discord"></i> اسم المستخدم في الديسكورد:</label>
+                    <input type="text" id="discordUsername" placeholder="أدخل اسمك في الديسكورد">
+                    <div class="example-box">
+                        <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> Ahmed#1234, KR_Player#5678, SaudiGamer#9999</p>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-id-card"></i> رقم الهوية في اللعبة:</label>
                     <input type="text" id="gameId" placeholder="10 أرقام فقط" maxlength="10">
+                    <div class="example-box">
+                        <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> 39193738, 82282717, 12345678</p>
+                    </div>
                 </div>
             </div>
             
@@ -799,6 +847,8 @@
         function validateBasicData() {
             const name = document.getElementById('fullName').value.trim();
             const age = document.getElementById('age').value;
+            const gameUsername = document.getElementById('gameUsername').value.trim();
+            const discordUsername = document.getElementById('discordUsername').value.trim();
             const gameId = document.getElementById('gameId').value.trim();
             
             // الاسم
@@ -814,6 +864,22 @@
                 showAlert('العمر يجب أن يكون 18 سنة أو أكثر');
                 document.getElementById('age').classList.add('error');
                 setTimeout(() => document.getElementById('age').classList.remove('error'), 500);
+                return false;
+            }
+            
+            // اسم المستخدم في اللعبة
+            if (!gameUsername) {
+                showAlert('يرجى إدخال اسم المستخدم في اللعبة');
+                document.getElementById('gameUsername').classList.add('error');
+                setTimeout(() => document.getElementById('gameUsername').classList.remove('error'), 500);
+                return false;
+            }
+            
+            // اسم المستخدم في الديسكورد
+            if (!discordUsername) {
+                showAlert('يرجى إدخال اسم المستخدم في الديسكورد');
+                document.getElementById('discordUsername').classList.add('error');
+                setTimeout(() => document.getElementById('discordUsername').classList.remove('error'), 500);
                 return false;
             }
             
@@ -845,6 +911,8 @@
             console.log('📤 تم إرسال الطلب بنجاح:', {
                 name: document.getElementById('fullName').value,
                 age: document.getElementById('age').value,
+                gameUsername: document.getElementById('gameUsername').value,
+                discordUsername: document.getElementById('discordUsername').value,
                 gameId: document.getElementById('gameId').value,
                 job: selectedJob,
                 rank: selectedRank,
@@ -882,6 +950,8 @@
             // إعادة تعيين الحقول
             document.getElementById('fullName').value = '';
             document.getElementById('age').value = '';
+            document.getElementById('gameUsername').value = '';
+            document.getElementById('discordUsername').value = '';
             document.getElementById('gameId').value = '';
             document.getElementById('idImage').value = '';
             
