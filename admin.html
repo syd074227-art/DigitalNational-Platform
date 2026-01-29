@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام إدارة KR - لوحة التحكم</title>
+    <title>نظام إدارة KR - لوحة التحكم المتقدمة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -11,6 +11,21 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary: #059669;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --info: #0ea5e9;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --border: #e5e7eb;
+            --suspended: #f59e0b;
+            --banned: #dc2626;
         }
         
         body {
@@ -38,7 +53,7 @@
         
         .admin-container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1800px;
             background: white;
             border-radius: 25px;
             overflow: hidden;
@@ -233,7 +248,7 @@
         
         .admin-stats {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 20px;
             margin-top: 30px;
             position: relative;
@@ -268,120 +283,237 @@
         
         .admin-content {
             padding: 30px;
-        }
-        
-        .filters {
-            background: #f8fafc;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            border: 2px solid #e2e8f0;
-        }
-        
-        .filters-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
         }
         
-        .filter-group {
-            margin-bottom: 15px;
+        /* القائمة الجانبية */
+        .admin-sidebar {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid var(--border);
+            height: fit-content;
         }
         
-        .filter-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #1f2937;
-            font-weight: 600;
+        .admin-sidebar h3 {
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .filter-select, .filter-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e5e7eb;
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: var(--dark);
+            text-decoration: none;
             border-radius: 10px;
-            font-size: 16px;
-            background: white;
-            color: #1f2937;
-        }
-        
-        .filter-select:focus, .filter-input:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
-        
-        .search-btn {
-            background: #1e3a8a;
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
             transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .sidebar-menu a:hover {
+            background: #eff6ff;
+            color: var(--primary);
+        }
+        
+        .sidebar-menu a.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .sidebar-menu i {
+            width: 25px;
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        
+        /* المحتوى الرئيسي */
+        .admin-main {
+            flex: 1;
+        }
+        
+        /* كروت المستخدمين */
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .user-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: var(--primary-light);
+        }
+        
+        .user-card.suspended::before {
+            content: '⏸️ معلق مؤقتاً';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--warning);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .user-card.banned::before {
+            content: '🚫 محظور نهائياً';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--danger);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-top: 25px;
-            width: 100%;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
         }
         
-        .search-btn:hover {
-            background: #3b82f6;
+        .user-info h4 {
+            color: var(--primary);
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .user-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .detail-item {
+            background: var(--light);
+            padding: 12px;
+            border-radius: 10px;
+        }
+        
+        .detail-label {
+            color: var(--gray);
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .user-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .btn-view {
+            background: var(--info);
+            color: white;
+        }
+        
+        .btn-edit {
+            background: var(--primary-light);
+            color: white;
+        }
+        
+        .btn-suspend {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-ban {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-change-job {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-approve {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-reject {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .action-btn:hover {
+            opacity: 0.9;
             transform: translateY(-2px);
         }
         
-        .requests-table {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 2px solid #e5e7eb;
-            margin-bottom: 30px;
-        }
-        
-        .table-header {
-            background: #f8fafc;
-            padding: 20px;
-            border-bottom: 2px solid #e5e7eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .table-header h3 {
-            color: #1e3a8a;
-            font-size: 22px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        thead {
-            background: #f8fafc;
-        }
-        
-        th {
-            padding: 18px 20px;
-            text-align: right;
-            color: #1f2937;
-            font-weight: 600;
-            border-bottom: 2px solid #e5e7eb;
-        }
-        
-        td {
-            padding: 20px;
-            border-bottom: 1px solid #e5e7eb;
-            color: #1f2937;
-        }
-        
-        tbody tr:hover {
-            background: #f8fafc;
-        }
-        
+        /* أنظمة الحالة */
         .status-badge {
             padding: 8px 16px;
             border-radius: 20px;
@@ -405,6 +537,228 @@
             color: #991b1b;
         }
         
+        .status-suspended {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-banned {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        /* الفلاتر */
+        .filters {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid var(--border);
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-select, .filter-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 16px;
+            background: white;
+            color: var(--dark);
+        }
+        
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+        }
+        
+        .search-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+            width: 100%;
+        }
+        
+        .search-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        
+        /* جدول الطلبات */
+        .requests-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+            margin-bottom: 30px;
+        }
+        
+        .table-header {
+            background: var(--light);
+            padding: 20px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-header h3 {
+            color: var(--primary);
+            font-size: 22px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: var(--light);
+        }
+        
+        th {
+            padding: 18px 20px;
+            text-align: right;
+            color: var(--dark);
+            font-weight: 600;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        td {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            color: var(--dark);
+        }
+        
+        tbody tr:hover {
+            background: var(--light);
+        }
+        
+        /* تعديل البيانات */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .modal-header h3 {
+            color: var(--primary);
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--danger);
+        }
+        
+        .modal-body {
+            margin-bottom: 30px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .modal-actions button {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-confirm {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-cancel {
+            background: var(--gray);
+            color: white;
+        }
+        
+        /* الوظائف */
         .job-badge {
             padding: 8px 16px;
             border-radius: 20px;
@@ -433,50 +787,27 @@
             color: #166534;
         }
         
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
+        /* التصميم المتجاوب */
+        @media (max-width: 1400px) {
+            .admin-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .users-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
         }
         
-        .btn-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        
-        .btn-view {
-            background: #dbeafe;
-            color: #1e3a8a;
-        }
-        
-        .btn-approve {
-            background: #d1fae5;
-            color: #059669;
-        }
-        
-        .btn-reject {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        
-        .request-details {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            border: 2px solid #e5e7eb;
-            display: none;
-        }
-        
-        @media (max-width: 1200px) {
-            .admin-stats,
+        @media (max-width: 992px) {
             .filters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .admin-stats {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -491,8 +822,19 @@
                 border-radius: 15px;
             }
             
-            .admin-stats,
             .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .users-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-details {
                 grid-template-columns: 1fr;
             }
             
@@ -509,7 +851,7 @@
         <div class="login-header">
             <i class="fas fa-user-shield login-icon"></i>
             <h1>لوحة تحكم متقدمة</h1>
-            <p>نظام إداري متكامل لتتبع الطلبات والتحكم في الصلاحيات</p>
+            <p>نظام إداري متكامل لإدارة المستخدمين والطلبات</p>
         </div>
         
         <div class="login-form">
@@ -551,156 +893,468 @@
                 <div class="admin-logo">
                     <i class="fas fa-user-shield"></i>
                     <div>
-                        <h1>لوحة إدارة الطلبات</h1>
-                        <p>هيئة KR الرقمية - نظام تفعيل الهوية</p>
+                        <h1>لوحة الإدارة المتقدمة</h1>
+                        <p>هيئة KR الرقمية - نظام إدارة الهويات الكامل</p>
                     </div>
                 </div>
                 
                 <div class="admin-actions">
+                    <button class="admin-btn" onclick="showAdminProfile()">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="currentAdmin">المشرف العام</span>
+                    </button>
                     <button class="admin-btn" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i>
                         تسجيل الخروج
-                    </button>
-                    <button class="admin-btn" onclick="refreshData()">
-                        <i class="fas fa-sync-alt"></i>
-                        تحديث البيانات
                     </button>
                 </div>
             </div>
             
             <div class="admin-stats">
                 <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-number" id="totalUsers">85</div>
+                    <div class="stat-label">إجمالي المستخدمين</div>
+                </div>
+                
+                <div class="stat-card">
                     <i class="fas fa-clock"></i>
-                    <div class="stat-number" id="pendingCount">15</div>
+                    <div class="stat-number" id="pendingRequests">15</div>
                     <div class="stat-label">طلبات قيد المراجعة</div>
                 </div>
                 
                 <div class="stat-card">
-                    <i class="fas fa-check-circle"></i>
-                    <div class="stat-number" id="approvedCount">48</div>
-                    <div class="stat-label">طلبات مفعلة</div>
+                    <i class="fas fa-user-slash"></i>
+                    <div class="stat-number" id="suspendedUsers">5</div>
+                    <div class="stat-label">حسابات معلقة</div>
                 </div>
                 
                 <div class="stat-card">
-                    <i class="fas fa-times-circle"></i>
-                    <div class="stat-number" id="rejectedCount">7</div>
-                    <div class="stat-label">طلبات مرفوضة</div>
+                    <i class="fas fa-ban"></i>
+                    <div class="stat-number" id="bannedUsers">2</div>
+                    <div class="stat-label">حسابات محظورة</div>
                 </div>
                 
                 <div class="stat-card">
-                    <i class="fas fa-users"></i>
-                    <div class="stat-number" id="totalCount">70</div>
-                    <div class="stat-label">إجمالي الطلبات</div>
+                    <i class="fas fa-exchange-alt"></i>
+                    <div class="stat-number" id="jobChanges">12</div>
+                    <div class="stat-label">تغييرات وظيفية</div>
                 </div>
             </div>
         </div>
         
         <div class="admin-content">
-            <div class="filters">
-                <h3 style="margin-bottom: 20px; color: #1e3a8a;">
-                    <i class="fas fa-filter"></i> فلترة الطلبات
-                </h3>
+            <!-- القائمة الجانبية -->
+            <div class="admin-sidebar">
+                <h3><i class="fas fa-bars"></i> القائمة الرئيسية</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" onclick="showSection('dashboard')"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a></li>
+                    <li><a href="#" onclick="showSection('users')"><i class="fas fa-users"></i> إدارة المستخدمين</a></li>
+                    <li><a href="#" onclick="showSection('requests')"><i class="fas fa-file-alt"></i> طلبات جديدة</a></li>
+                    <li><a href="#" onclick="showSection('suspended')"><i class="fas fa-user-clock"></i> الحسابات المعلقة</a></li>
+                    <li><a href="#" onclick="showSection('reports')"><i class="fas fa-chart-bar"></i> التقارير والإحصائيات</a></li>
+                    <li><a href="#" onclick="showSection('settings')"><i class="fas fa-cog"></i> إعدادات النظام</a></li>
+                </ul>
                 
-                <div class="filters-grid">
-                    <div class="filter-group">
-                        <label><i class="fas fa-search"></i> بحث بالاسم</label>
-                        <input type="text" class="filter-input" id="searchName" placeholder="ابحث باسم المستخدم...">
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label><i class="fas fa-briefcase"></i> الوظيفة</label>
-                        <select class="filter-select" id="filterJob">
-                            <option value="">جميع الوظائف</option>
-                            <option value="citizen">مواطن</option>
-                            <option value="interior">منسوب الداخلية</option>
-                            <option value="health">منسوب الصحة</option>
-                            <option value="justice">منسوب العدل</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label><i class="fas fa-flag"></i> الحالة</label>
-                        <select class="filter-select" id="filterStatus">
-                            <option value="">جميع الحالات</option>
-                            <option value="pending">قيد المراجعة</option>
-                            <option value="approved">مقبولة</option>
-                            <option value="rejected">مرفوضة</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label><i class="fas fa-calendar"></i> التاريخ</label>
-                        <input type="date" class="filter-input" id="filterDate">
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--border);">
+                    <h3><i class="fas fa-tools"></i> أدوات سريعة</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                        <button class="action-btn btn-approve" onclick="showAddUserModal()">
+                            <i class="fas fa-user-plus"></i> إضافة مستخدم جديد
+                        </button>
+                        <button class="action-btn btn-view" onclick="generateReport()">
+                            <i class="fas fa-file-export"></i> تصدير تقرير
+                        </button>
+                        <button class="action-btn btn-change-job" onclick="showJobChangeModal()">
+                            <i class="fas fa-exchange-alt"></i> تغيير وظيفة جماعي
+                        </button>
                     </div>
                 </div>
-                
-                <button class="search-btn" onclick="filterRequests()">
-                    <i class="fas fa-search"></i>
-                    تطبيق الفلترة
-                </button>
             </div>
             
-            <div class="requests-table">
-                <div class="table-header">
-                    <h3><i class="fas fa-list-alt"></i> قائمة الطلبات الأخيرة</h3>
-                    <div class="table-actions">
-                        <button class="action-btn export-btn">
-                            <i class="fas fa-download"></i> تصدير
-                        </button>
-                        <button class="action-btn refresh-btn" onclick="refreshData()">
-                            <i class="fas fa-sync-alt"></i> تحديث
-                        </button>
+            <!-- المحتوى الرئيسي -->
+            <div class="admin-main">
+                <!-- قسم لوحة التحكم -->
+                <div id="dashboardSection" class="section-content">
+                    <div class="filters">
+                        <h3><i class="fas fa-chart-line"></i> نظرة عامة</h3>
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-top: 20px;">
+                            <div>
+                                <h4 style="color: var(--primary); margin-bottom: 15px;">أحدث الأنشطة</h4>
+                                <div style="background: white; border-radius: 10px; padding: 20px; border: 2px solid var(--border);">
+                                    <div id="activityLog" style="height: 300px; overflow-y: auto;">
+                                        <!-- الأنشطة تظهر هنا -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 style="color: var(--primary); margin-bottom: 15px;">توزيع الوظائف</h4>
+                                <div style="background: white; border-radius: 10px; padding: 20px; border: 2px solid var(--border);">
+                                    <div id="jobDistribution">
+                                        <!-- توزيع الوظائف -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>رقم الطلب</th>
-                            <th>الاسم</th>
-                            <th>الوظيفة</th>
-                            <th>الحالة</th>
-                            <th>التاريخ</th>
-                            <th>الإجراءات</th>
-                        </tr>
-                    </thead>
-                    <tbody id="requestsTable">
-                        <!-- البيانات تظهر هنا -->
-                    </tbody>
-                </table>
+                <!-- قسم إدارة المستخدمين -->
+                <div id="usersSection" class="section-content" style="display: none;">
+                    <div class="filters">
+                        <h3><i class="fas fa-users-cog"></i> إدارة المستخدمين</h3>
+                        
+                        <div class="filters-grid">
+                            <div class="filter-group">
+                                <label><i class="fas fa-search"></i> بحث</label>
+                                <input type="text" class="filter-input" id="userSearch" placeholder="ابحث باسم أو رقم هوية...">
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label><i class="fas fa-briefcase"></i> الوظيفة</label>
+                                <select class="filter-select" id="userJobFilter">
+                                    <option value="">جميع الوظائف</option>
+                                    <option value="citizen">مواطن</option>
+                                    <option value="interior">منسوب الداخلية</option>
+                                    <option value="health">منسوب الصحة</option>
+                                    <option value="justice">منسوب العدل</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label><i class="fas fa-user-tag"></i> حالة الحساب</label>
+                                <select class="filter-select" id="userStatusFilter">
+                                    <option value="">جميع الحالات</option>
+                                    <option value="active">نشط</option>
+                                    <option value="suspended">معلق مؤقت</option>
+                                    <option value="banned">محظور نهائي</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label><i class="fas fa-sort"></i> ترتيب حسب</label>
+                                <select class="filter-select" id="userSort">
+                                    <option value="newest">الأحدث أولاً</option>
+                                    <option value="oldest">الأقدم أولاً</option>
+                                    <option value="name">الاسم أبجديًا</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button class="search-btn" onclick="filterUsers()">
+                            <i class="fas fa-filter"></i>
+                            تطبيق الفلترة
+                        </button>
+                    </div>
+                    
+                    <div class="users-grid" id="usersGrid">
+                        <!-- بطاقات المستخدمين تظهر هنا -->
+                    </div>
+                </div>
+                
+                <!-- قسم طلبات جديدة -->
+                <div id="requestsSection" class="section-content" style="display: none;">
+                    <div class="filters">
+                        <h3><i class="fas fa-file-signature"></i> الطلبات الجديدة</h3>
+                    </div>
+                    
+                    <div class="requests-table">
+                        <div class="table-header">
+                            <h3><i class="fas fa-list-alt"></i> قائمة الطلبات المعلقة</h3>
+                        </div>
+                        
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>رقم الطلب</th>
+                                    <th>الاسم</th>
+                                    <th>الوظيفة المطلوبة</th>
+                                    <th>التاريخ</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="requestsTable">
+                                <!-- الطلبات تظهر هنا -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- مودال تعطيل مؤقت -->
+    <div class="modal" id="suspendModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-clock"></i> تعطيل حساب مؤقت</h3>
+                <button class="close-modal" onclick="closeModal('suspendModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> المستخدم</label>
+                    <input type="text" id="suspendUserName" class="filter-input" readonly>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-calendar-alt"></i> مدة التعطيل</label>
+                    <select class="filter-select" id="suspendDuration">
+                        <option value="1">يوم واحد</option>
+                        <option value="3">3 أيام</option>
+                        <option value="7">أسبوع</option>
+                        <option value="30">شهر</option>
+                        <option value="custom">مخصص</option>
+                    </select>
+                </div>
+                <div class="input-group" id="customDuration" style="display: none;">
+                    <label><i class="fas fa-calendar"></i> عدد الأيام</label>
+                    <input type="number" class="filter-input" id="customDays" min="1" max="365">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-comment-alt"></i> سبب التعطيل</label>
+                    <textarea class="filter-input" id="suspendReason" rows="3" placeholder="أدخل سبب تعطيل الحساب..."></textarea>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-confirm" onclick="confirmSuspend()">تعطيل الحساب</button>
+                <button class="btn-cancel" onclick="closeModal('suspendModal')">إلغاء</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- مودال تعطيل نهائي -->
+    <div class="modal" id="banModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-slash"></i> تعطيل حساب نهائي</h3>
+                <button class="close-modal" onclick="closeModal('banModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> المستخدم</label>
+                    <input type="text" id="banUserName" class="filter-input" readonly>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-exclamation-triangle"></i> هذا الإجراء لا يمكن التراجع عنه!</label>
+                    <p style="color: var(--danger); padding: 10px; background: #fee2e2; border-radius: 8px;">
+                        <i class="fas fa-exclamation-circle"></i> سيتم حذف جميع بيانات المستخدم ومنعه من الدخول نهائياً.
+                    </p>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-comment-alt"></i> سبب التعطيل النهائي</label>
+                    <textarea class="filter-input" id="banReason" rows="4" placeholder="أدخل سبب التعطيل النهائي..."></textarea>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-confirm" style="background: var(--danger);" onclick="confirmBan()">تعطيل نهائي</button>
+                <button class="btn-cancel" onclick="closeModal('banModal')">إلغاء</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- مودال تغيير الوظيفة -->
+    <div class="modal" id="changeJobModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exchange-alt"></i> تغيير الوظيفة</h3>
+                <button class="close-modal" onclick="closeModal('changeJobModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> المستخدم</label>
+                    <input type="text" id="changeJobUserName" class="filter-input" readonly>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-briefcase"></i> الوظيفة الحالية</label>
+                    <input type="text" id="currentJob" class="filter-input" readonly>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-briefcase"></i> الوظيفة الجديدة</label>
+                    <select class="filter-select" id="newJob">
+                        <option value="citizen">مواطن</option>
+                        <option value="interior">منسوب الداخلية</option>
+                        <option value="health">منسوب الصحة</option>
+                        <option value="justice">منسوب العدل</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-comment-alt"></i> سبب التغيير</label>
+                    <select class="filter-select" id="changeReason">
+                        <option value="retirement">تقاعد</option>
+                        <option value="transfer">نقل</option>
+                        <option value="resignation">استقالة</option>
+                        <option value="promotion">ترقية</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-calendar"></i> تاريخ التغيير</label>
+                    <input type="date" class="filter-input" id="changeDate" value="">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-confirm" onclick="confirmJobChange()">تغيير الوظيفة</button>
+                <button class="btn-cancel" onclick="closeModal('changeJobModal')">إلغاء</button>
             </div>
         </div>
     </div>
 
     <script>
-        // بيانات تسجيل الدخول الثابتة
-        const ADMIN_CREDENTIALS = {
-            username: "admin_kr",
-            password: "KR@2024"
+        // بيانات النظام
+        const SYSTEM = {
+            admins: [
+                { username: "admin_kr", password: "KR@2024", name: "المشرف العام", role: "super_admin" },
+                { username: "moderator", password: "Mod@2024", name: "المشرف المساعد", role: "moderator" },
+                { username: "reviewer", password: "Rev@2024", name: "مراجع الطلبات", role: "reviewer" }
+            ],
+            users: [],
+            requests: [],
+            activities: [],
+            currentAdmin: null
         };
-        
-        // بيانات الطلبات
-        let requests = [
-            {id: 'KR-1001', name: 'أحمد محمد', job: 'citizen', status: 'pending', date: '2024-03-15'},
-            {id: 'KR-1002', name: 'سعود علي', job: 'interior', status: 'approved', date: '2024-03-14'},
-            {id: 'KR-1003', name: 'فهد عبدالله', job: 'health', status: 'rejected', date: '2024-03-13'},
-            {id: 'KR-1004', name: 'محمد خالد', job: 'justice', status: 'pending', date: '2024-03-12'},
-            {id: 'KR-1005', name: 'عبدالعزيز سعد', job: 'citizen', status: 'approved', date: '2024-03-11'},
-            {id: 'KR-1006', name: 'تركي ناصر', job: 'interior', status: 'pending', date: '2024-03-10'},
-            {id: 'KR-1007', name: 'خالد راشد', job: 'health', status: 'approved', date: '2024-03-09'},
-            {id: 'KR-1008', name: 'ياسر فارس', job: 'justice', status: 'rejected', date: '2024-03-08'}
-        ];
-        
+
+        // تهيئة بيانات تجريبية
+        function initializeData() {
+            // بيانات المستخدمين التجريبية
+            SYSTEM.users = [
+                {
+                    id: 1,
+                    name: "أحمد محمد",
+                    gameId: "39193738",
+                    gameUsername: "Ahmed_KR",
+                    discord: "Ahmed#1234",
+                    age: 25,
+                    job: "interior",
+                    status: "active",
+                    registrationDate: "2024-01-15",
+                    lastActive: "2024-03-20",
+                    identityNumber: "1234567890"
+                },
+                {
+                    id: 2,
+                    name: "سعود علي",
+                    gameId: "82282717",
+                    gameUsername: "KR_Sniper",
+                    discord: "Saud#5678",
+                    age: 30,
+                    job: "health",
+                    status: "suspended",
+                    suspensionEnd: "2024-04-01",
+                    suspensionReason: "انتهاك القواعد",
+                    registrationDate: "2024-02-10",
+                    lastActive: "2024-03-18",
+                    identityNumber: "2345678901"
+                },
+                {
+                    id: 3,
+                    name: "فهد عبدالله",
+                    gameId: "12345678",
+                    gameUsername: "ProGamer_SA",
+                    discord: "Fahad#9999",
+                    age: 22,
+                    job: "citizen",
+                    status: "active",
+                    registrationDate: "2024-03-01",
+                    lastActive: "2024-03-20",
+                    identityNumber: "3456789012"
+                },
+                {
+                    id: 4,
+                    name: "محمد خالد",
+                    gameId: "87654321",
+                    gameUsername: "KR_Justice",
+                    discord: "Mohammed#7777",
+                    age: 35,
+                    job: "justice",
+                    status: "banned",
+                    banDate: "2024-03-15",
+                    banReason: "انتحال شخصية",
+                    registrationDate: "2024-01-20",
+                    lastActive: "2024-03-14",
+                    identityNumber: "4567890123"
+                },
+                {
+                    id: 5,
+                    name: "عبدالعزيز سعد",
+                    gameId: "11112222",
+                    gameUsername: "Interior_SA",
+                    discord: "Aziz#5555",
+                    age: 28,
+                    job: "interior",
+                    status: "active",
+                    registrationDate: "2024-02-28",
+                    lastActive: "2024-03-20",
+                    identityNumber: "5678901234"
+                },
+                {
+                    id: 6,
+                    name: "تركي ناصر",
+                    gameId: "33334444",
+                    gameUsername: "Medic_KR",
+                    discord: "Turki#3333",
+                    age: 26,
+                    job: "health",
+                    status: "active",
+                    registrationDate: "2024-03-05",
+                    lastActive: "2024-03-19",
+                    identityNumber: "6789012345"
+                },
+                {
+                    id: 7,
+                    name: "خالد راشد",
+                    gameId: "55556666",
+                    gameUsername: "Judge_SA",
+                    discord: "Khaled#2222",
+                    age: 40,
+                    job: "justice",
+                    status: "suspended",
+                    suspensionEnd: "2024-03-25",
+                    suspensionReason: "سلوك غير لائق",
+                    registrationDate: "2024-01-10",
+                    lastActive: "2024-03-17",
+                    identityNumber: "7890123456"
+                },
+                {
+                    id: 8,
+                    name: "ياسر فارس",
+                    gameId: "77778888",
+                    gameUsername: "Civilian_KR",
+                    discord: "Yaser#1111",
+                    age: 19,
+                    job: "citizen",
+                    status: "active",
+                    registrationDate: "2024-03-10",
+                    lastActive: "2024-03-20",
+                    identityNumber: "8901234567"
+                }
+            ];
+
+            // بيانات الطلبات التجريبية
+            SYSTEM.requests = [
+                {id: 'KR-1001', name: 'نواف أحمد', job: 'citizen', status: 'pending', date: '2024-03-20'},
+                {id: 'KR-1002', name: 'بدر سلمان', job: 'interior', status: 'pending', date: '2024-03-20'},
+                {id: 'KR-1003', name: 'ماجد ناصر', job: 'health', status: 'pending', date: '2024-03-19'},
+                {id: 'KR-1004', name: 'وليد محمد', job: 'justice', status: 'pending', date: '2024-03-19'},
+                {id: 'KR-1005', name: 'صالح عبدالله', job: 'citizen', status: 'pending', date: '2024-03-18'}
+            ];
+
+            // بيانات الأنشطة
+            SYSTEM.activities = [
+                {type: 'approve', user: 'أحمد محمد', admin: 'المشرف العام', time: '10:30', date: '2024-03-20'},
+                {type: 'suspend', user: 'سعود علي', admin: 'المشرف العام', time: '09:15', date: '2024-03-20'},
+                {type: 'job_change', user: 'محمد خالد', admin: 'المشرف المساعد', time: '16:45', date: '2024-03-19'},
+                {type: 'reject', user: 'فهد عبدالله', admin: 'مراجع الطلبات', time: '14:20', date: '2024-03-19'},
+                {type: 'ban', user: 'ناصر محمد', admin: 'المشرف العام', time: '11:00', date: '2024-03-18'}
+            ];
+        }
+
         // تسجيل الدخول
         function loginToAdmin() {
             const username = document.getElementById('adminUsername').value;
             const password = document.getElementById('adminPassword').value;
             
-            // إخفاء أخطاء سابقة
             document.getElementById('usernameError').style.display = 'none';
             document.getElementById('passwordError').style.display = 'none';
             
-            // التحقق من الحقول
             if (!username) {
                 document.getElementById('usernameError').style.display = 'flex';
                 return;
@@ -711,168 +1365,734 @@
                 return;
             }
             
-            // التحقق من بيانات الدخول
-            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-                // تسجيل الدخول الناجح
+            const admin = SYSTEM.admins.find(a => a.username === username && a.password === password);
+            
+            if (admin) {
+                SYSTEM.currentAdmin = admin;
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('adminPage').style.display = 'block';
                 document.body.style.background = '#f1f5f9';
-                loadAdminData();
+                document.getElementById('currentAdmin').textContent = admin.name;
+                
+                initializeData();
+                loadDashboard();
+                logActivity('login', null, `${admin.name} قام بتسجيل الدخول`);
             } else {
                 alert('❌ بيانات الدخول غير صحيحة!');
             }
         }
-        
-        // تسجيل الخروج
-        function logout() {
-            document.getElementById('adminPage').style.display = 'none';
-            document.getElementById('loginPage').style.display = 'block';
-            document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-            document.getElementById('adminUsername').value = '';
-            document.getElementById('adminPassword').value = '';
-        }
-        
-        // تحميل بيانات الإدارة
-        function loadAdminData() {
+
+        // تحميل لوحة التحكم
+        function loadDashboard() {
             updateStats();
-            populateRequestsTable();
+            loadActivityLog();
+            loadJobDistribution();
         }
-        
+
         // تحديث الإحصائيات
         function updateStats() {
-            const pending = requests.filter(r => r.status === 'pending').length;
-            const approved = requests.filter(r => r.status === 'approved').length;
-            const rejected = requests.filter(r => r.status === 'rejected').length;
+            const totalUsers = SYSTEM.users.length;
+            const pendingRequests = SYSTEM.requests.filter(r => r.status === 'pending').length;
+            const suspendedUsers = SYSTEM.users.filter(u => u.status === 'suspended').length;
+            const bannedUsers = SYSTEM.users.filter(u => u.status === 'banned').length;
+            const jobChanges = SYSTEM.activities.filter(a => a.type === 'job_change').length;
             
-            document.getElementById('pendingCount').textContent = pending;
-            document.getElementById('approvedCount').textContent = approved;
-            document.getElementById('rejectedCount').textContent = rejected;
-            document.getElementById('totalCount').textContent = requests.length;
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('pendingRequests').textContent = pendingRequests;
+            document.getElementById('suspendedUsers').textContent = suspendedUsers;
+            document.getElementById('bannedUsers').textContent = bannedUsers;
+            document.getElementById('jobChanges').textContent = jobChanges;
         }
-        
-        // تعبئة جدول الطلبات
-        function populateRequestsTable() {
-            const tableBody = document.getElementById('requestsTable');
-            tableBody.innerHTML = '';
+
+        // تحميل سجل الأنشطة
+        function loadActivityLog() {
+            const container = document.getElementById('activityLog');
+            container.innerHTML = '';
             
-            requests.forEach(request => {
-                const jobText = getJobText(request.job);
-                const jobClass = `job-${request.job}`;
-                const statusText = getStatusText(request.status);
-                const statusClass = `status-${request.status}`;
-                
-                const row = `
-                    <tr>
-                        <td><strong>${request.id}</strong></td>
-                        <td>${request.name}</td>
-                        <td><span class="job-badge ${jobClass}">${jobText}</span></td>
-                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                        <td>${request.date}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon btn-view" onclick="viewRequest('${request.id}')">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-icon btn-approve" onclick="approveRequest('${request.id}')">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                                <button class="btn-icon btn-reject" onclick="rejectRequest('${request.id}')">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+            SYSTEM.activities.slice().reverse().forEach(activity => {
+                const activityItem = document.createElement('div');
+                activityItem.style.cssText = `
+                    padding: 15px;
+                    margin-bottom: 10px;
+                    background: white;
+                    border-radius: 8px;
+                    border: 1px solid var(--border);
                 `;
-                tableBody.innerHTML += row;
-            });
-        }
-        
-        // فلترة الطلبات
-        function filterRequests() {
-            const searchName = document.getElementById('searchName').value.toLowerCase();
-            const filterJob = document.getElementById('filterJob').value;
-            const filterStatus = document.getElementById('filterStatus').value;
-            const filterDate = document.getElementById('filterDate').value;
-            
-            const tableBody = document.getElementById('requestsTable');
-            tableBody.innerHTML = '';
-            
-            const filteredRequests = requests.filter(request => {
-                const matchesName = !searchName || request.name.toLowerCase().includes(searchName);
-                const matchesJob = !filterJob || request.job === filterJob;
-                const matchesStatus = !filterStatus || request.status === filterStatus;
-                const matchesDate = !filterDate || request.date === filterDate;
                 
-                return matchesName && matchesJob && matchesStatus && matchesDate;
-            });
-            
-            filteredRequests.forEach(request => {
-                const jobText = getJobText(request.job);
-                const jobClass = `job-${request.job}`;
-                const statusText = getStatusText(request.status);
-                const statusClass = `status-${request.status}`;
+                let icon = '';
+                let color = '';
+                let text = '';
                 
-                const row = `
-                    <tr>
-                        <td><strong>${request.id}</strong></td>
-                        <td>${request.name}</td>
-                        <td><span class="job-badge ${jobClass}">${jobText}</span></td>
-                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                        <td>${request.date}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon btn-view" onclick="viewRequest('${request.id}')">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-icon btn-approve" onclick="approveRequest('${request.id}')">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                                <button class="btn-icon btn-reject" onclick="rejectRequest('${request.id}')">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                tableBody.innerHTML += row;
-            });
-        }
-        
-        // عرض تفاصيل الطلب
-        function viewRequest(id) {
-            alert(`عرض تفاصيل الطلب: ${id}`);
-        }
-        
-        // قبول الطلب
-        function approveRequest(id) {
-            if (confirm(`هل تريد قبول الطلب ${id}؟`)) {
-                const index = requests.findIndex(r => r.id === id);
-                if (index !== -1) {
-                    requests[index].status = 'approved';
-                    loadAdminData();
-                    alert(`✅ تم قبول الطلب ${id} بنجاح`);
+                switch(activity.type) {
+                    case 'approve':
+                        icon = '✅';
+                        color = '#10b981';
+                        text = 'قبول طلب';
+                        break;
+                    case 'reject':
+                        icon = '❌';
+                        color = '#ef4444';
+                        text = 'رفض طلب';
+                        break;
+                    case 'suspend':
+                        icon = '⏸️';
+                        color = '#f59e0b';
+                        text = 'تعطيل مؤقت';
+                        break;
+                    case 'ban':
+                        icon = '🚫';
+                        color = '#dc2626';
+                        text = 'تعطيل نهائي';
+                        break;
+                    case 'job_change':
+                        icon = '🔄';
+                        color = '#3b82f6';
+                        text = 'تغيير وظيفة';
+                        break;
+                    case 'login':
+                        icon = '🔐';
+                        color = '#8b5cf6';
+                        text = 'تسجيل دخول';
+                        break;
                 }
+                
+                activityItem.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="font-weight: bold; color: ${color};">
+                            ${icon} ${text}
+                        </span>
+                        <span style="color: var(--gray); font-size: 12px;">
+                            ${activity.date} ${activity.time}
+                        </span>
+                    </div>
+                    <div style="color: var(--dark); font-size: 14px;">
+                        <strong>${activity.user || 'النظام'}</strong> - بواسطة ${activity.admin}
+                    </div>
+                `;
+                
+                container.appendChild(activityItem);
+            });
+        }
+
+        // تحميل توزيع الوظائف
+        function loadJobDistribution() {
+            const container = document.getElementById('jobDistribution');
+            const jobs = {
+                citizen: { name: 'مواطن', count: 0, color: '#8b5cf6' },
+                interior: { name: 'داخلية', count: 0, color: '#3b82f6' },
+                health: { name: 'صحة', count: 0, color: '#ef4444' },
+                justice: { name: 'عدل', count: 0, color: '#10b981' }
+            };
+            
+            SYSTEM.users.forEach(user => {
+                if (jobs[user.job]) {
+                    jobs[user.job].count++;
+                }
+            });
+            
+            container.innerHTML = '';
+            
+            Object.values(jobs).forEach(job => {
+                const percentage = SYSTEM.users.length > 0 ? (job.count / SYSTEM.users.length * 100).toFixed(1) : 0;
+                
+                const jobItem = document.createElement('div');
+                jobItem.style.cssText = `
+                    margin-bottom: 15px;
+                    padding: 10px;
+                    background: white;
+                    border-radius: 8px;
+                    border-left: 4px solid ${job.color};
+                `;
+                
+                jobItem.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="font-weight: bold;">${job.name}</span>
+                        <span style="color: var(--dark);">${job.count} مستخدم</span>
+                    </div>
+                    <div style="width: 100%; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
+                        <div style="width: ${percentage}%; height: 100%; background: ${job.color};"></div>
+                    </div>
+                    <div style="text-align: left; margin-top: 5px; color: var(--gray); font-size: 12px;">
+                        ${percentage}%
+                    </div>
+                `;
+                
+                container.appendChild(jobItem);
+            });
+        }
+
+        // عرض قسم معين
+        function showSection(section) {
+            // إخفاء جميع الأقسام
+            document.querySelectorAll('.section-content').forEach(div => {
+                div.style.display = 'none';
+            });
+            
+            // تحديث القائمة الجانبية
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            
+            // إظهار القسم المطلوب
+            document.getElementById(section + 'Section').style.display = 'block';
+            
+            // تحميل بيانات القسم
+            switch(section) {
+                case 'dashboard':
+                    loadDashboard();
+                    break;
+                case 'users':
+                    loadUsers();
+                    break;
+                case 'requests':
+                    loadRequests();
+                    break;
+                case 'suspended':
+                    loadSuspendedUsers();
+                    break;
             }
         }
-        
-        // رفض الطلب
-        function rejectRequest(id) {
-            if (confirm(`هل تريد رفض الطلب ${id}؟`)) {
-                const index = requests.findIndex(r => r.id === id);
-                if (index !== -1) {
-                    requests[index].status = 'rejected';
-                    loadAdminData();
-                    alert(`❌ تم رفض الطلب ${id}`);
-                }
+
+        // تحميل المستخدمين
+        function loadUsers() {
+            const container = document.getElementById('usersGrid');
+            container.innerHTML = '';
+            
+            SYSTEM.users.forEach(user => {
+                const userCard = document.createElement('div');
+                userCard.className = `user-card ${user.status === 'suspended' ? 'suspended' : ''} ${user.status === 'banned' ? 'banned' : ''}`;
+                
+                const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                const jobText = getJobText(user.job);
+                const jobClass = `job-${user.job}`;
+                const statusText = getStatusText(user.status);
+                const statusClass = `status-${user.status}`;
+                
+                userCard.innerHTML = `
+                    <div class="user-header">
+                        <div class="user-avatar">${initials}</div>
+                        <div class="user-info">
+                            <h4>${user.name}</h4>
+                            <p>رقم الهوية: ${user.identityNumber}</p>
+                            <p>آخر نشاط: ${user.lastActive}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="user-details">
+                        <div class="detail-item">
+                            <div class="detail-label">اسم اللعبة</div>
+                            <div class="detail-value">${user.gameUsername}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">الديسكورد</div>
+                            <div class="detail-value">${user.discord}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">الوظيفة</div>
+                            <div class="detail-value"><span class="job-badge ${jobClass}">${jobText}</span></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">حالة الحساب</div>
+                            <div class="detail-value"><span class="status-badge ${statusClass}">${statusText}</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-actions">
+                        <button class="action-btn btn-view" onclick="viewUserDetails(${user.id})">
+                            <i class="fas fa-eye"></i> عرض
+                        </button>
+                        <button class="action-btn btn-edit" onclick="editUser(${user.id})">
+                            <i class="fas fa-edit"></i> تعديل
+                        </button>
+                        ${user.status === 'active' ? `
+                            <button class="action-btn btn-suspend" onclick="suspendUser(${user.id})">
+                                <i class="fas fa-pause"></i> تعطيل مؤقت
+                            </button>
+                        ` : ''}
+                        ${user.status !== 'banned' ? `
+                            <button class="action-btn btn-ban" onclick="banUser(${user.id})">
+                                <i class="fas fa-ban"></i> تعطيل نهائي
+                            </button>
+                        ` : ''}
+                        <button class="action-btn btn-change-job" onclick="changeUserJob(${user.id})">
+                            <i class="fas fa-exchange-alt"></i> تغيير وظيفة
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(userCard);
+            });
+        }
+
+        // تحميل الطلبات
+        function loadRequests() {
+            const container = document.getElementById('requestsTable');
+            container.innerHTML = '';
+            
+            SYSTEM.requests.forEach(request => {
+                const jobText = getJobText(request.job);
+                const jobClass = `job-${request.job}`;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${request.id}</strong></td>
+                    <td>${request.name}</td>
+                    <td><span class="job-badge ${jobClass}">${jobText}</span></td>
+                    <td>${request.date}</td>
+                    <td>
+                        <div class="user-actions" style="justify-content: flex-start;">
+                            <button class="action-btn btn-approve" onclick="approveRequest('${request.id}')">
+                                <i class="fas fa-check"></i> قبول
+                            </button>
+                            <button class="action-btn btn-reject" onclick="rejectRequest('${request.id}')">
+                                <i class="fas fa-times"></i> رفض
+                            </button>
+                            <button class="action-btn btn-view" onclick="viewRequest('${request.id}')">
+                                <i class="fas fa-eye"></i> عرض
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                container.appendChild(row);
+            });
+        }
+
+        // تحميل المستخدمين المعلقين
+        function loadSuspendedUsers() {
+            const suspendedUsers = SYSTEM.users.filter(u => u.status === 'suspended' || u.status === 'banned');
+            const container = document.getElementById('usersGrid');
+            container.innerHTML = '';
+            
+            if (suspendedUsers.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-user-check" style="font-size: 48px; margin-bottom: 20px;"></i>
+                        <h3>لا توجد حسابات معلقة أو محظورة</h3>
+                    </div>
+                `;
+                return;
+            }
+            
+            suspendedUsers.forEach(user => {
+                const userCard = document.createElement('div');
+                userCard.className = `user-card ${user.status === 'suspended' ? 'suspended' : 'banned'}`;
+                
+                const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                const jobText = getJobText(user.job);
+                const jobClass = `job-${user.job}`;
+                const statusText = getStatusText(user.status);
+                const statusClass = `status-${user.status}`;
+                
+                userCard.innerHTML = `
+                    <div class="user-header">
+                        <div class="user-avatar">${initials}</div>
+                        <div class="user-info">
+                            <h4>${user.name}</h4>
+                            <p style="color: ${user.status === 'suspended' ? 'var(--warning)' : 'var(--danger)'};">
+                                ${user.status === 'suspended' ? `⏸️ ينتهي التعطيل: ${user.suspensionEnd}` : '🚫 محظور نهائياً'}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="user-details">
+                        <div class="detail-item">
+                            <div class="detail-label">سبب ${user.status === 'suspended' ? 'التعطيل' : 'الحظر'}</div>
+                            <div class="detail-value">${user.suspensionReason || user.banReason}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">الوظيفة</div>
+                            <div class="detail-value"><span class="job-badge ${jobClass}">${jobText}</span></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">رقم الهوية</div>
+                            <div class="detail-value">${user.identityNumber}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">تاريخ ${user.status === 'suspended' ? 'التعطيل' : 'الحظر'}</div>
+                            <div class="detail-value">${user.suspensionEnd || user.banDate}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-actions">
+                        ${user.status === 'suspended' ? `
+                            <button class="action-btn btn-approve" onclick="unsuspendUser(${user.id})">
+                                <i class="fas fa-play"></i> إلغاء التعطيل
+                            </button>
+                        ` : ''}
+                        <button class="action-btn btn-view" onclick="viewUserDetails(${user.id})">
+                            <i class="fas fa-eye"></i> تفاصيل
+                        </button>
+                        <button class="action-btn btn-change-job" onclick="changeUserJob(${user.id})">
+                            <i class="fas fa-exchange-alt"></i> تغيير وظيفة
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(userCard);
+            });
+        }
+
+        // فلترة المستخدمين
+        function filterUsers() {
+            const search = document.getElementById('userSearch').value.toLowerCase();
+            const jobFilter = document.getElementById('userJobFilter').value;
+            const statusFilter = document.getElementById('userStatusFilter').value;
+            const sortBy = document.getElementById('userSort').value;
+            
+            let filteredUsers = SYSTEM.users.filter(user => {
+                const matchesSearch = !search || 
+                    user.name.toLowerCase().includes(search) ||
+                    user.identityNumber.includes(search) ||
+                    user.gameUsername.toLowerCase().includes(search);
+                
+                const matchesJob = !jobFilter || user.job === jobFilter;
+                const matchesStatus = !statusFilter || user.status === statusFilter;
+                
+                return matchesSearch && matchesJob && matchesStatus;
+            });
+            
+            // الترتيب
+            switch(sortBy) {
+                case 'newest':
+                    filteredUsers.sort((a, b) => new Date(b.registrationDate) - new Date(a.registrationDate));
+                    break;
+                case 'oldest':
+                    filteredUsers.sort((a, b) => new Date(a.registrationDate) - new Date(b.registrationDate));
+                    break;
+                case 'name':
+                    filteredUsers.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+            }
+            
+            const container = document.getElementById('usersGrid');
+            container.innerHTML = '';
+            
+            if (filteredUsers.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-search" style="font-size: 48px; margin-bottom: 20px;"></i>
+                        <h3>لا توجد نتائج</h3>
+                        <p>لم يتم العثور على مستخدمين مطابقين للبحث</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredUsers.forEach(user => {
+                const userCard = document.createElement('div');
+                userCard.className = `user-card ${user.status === 'suspended' ? 'suspended' : ''} ${user.status === 'banned' ? 'banned' : ''}`;
+                
+                const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                const jobText = getJobText(user.job);
+                const jobClass = `job-${user.job}`;
+                const statusText = getStatusText(user.status);
+                const statusClass = `status-${user.status}`;
+                
+                userCard.innerHTML = `
+                    <div class="user-header">
+                        <div class="user-avatar">${initials}</div>
+                        <div class="user-info">
+                            <h4>${user.name}</h4>
+                            <p>رقم الهوية: ${user.identityNumber}</p>
+                            <p>آخر نشاط: ${user.lastActive}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="user-details">
+                        <div class="detail-item">
+                            <div class="detail-label">اسم اللعبة</div>
+                            <div class="detail-value">${user.gameUsername}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">الوظيفة</div>
+                            <div class="detail-value"><span class="job-badge ${jobClass}">${jobText}</span></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">حالة الحساب</div>
+                            <div class="detail-value"><span class="status-badge ${statusClass}">${statusText}</span></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">تاريخ التسجيل</div>
+                            <div class="detail-value">${user.registrationDate}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-actions">
+                        <button class="action-btn btn-view" onclick="viewUserDetails(${user.id})">
+                            <i class="fas fa-eye"></i> عرض
+                        </button>
+                        ${user.status === 'active' ? `
+                            <button class="action-btn btn-suspend" onclick="suspendUser(${user.id})">
+                                <i class="fas fa-pause"></i> تعطيل مؤقت
+                            </button>
+                        ` : ''}
+                        ${user.status !== 'banned' ? `
+                            <button class="action-btn btn-ban" onclick="banUser(${user.id})">
+                                <i class="fas fa-ban"></i> تعطيل نهائي
+                            </button>
+                        ` : ''}
+                        <button class="action-btn btn-change-job" onclick="changeUserJob(${user.id})">
+                            <i class="fas fa-exchange-alt"></i> تغيير وظيفة
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(userCard);
+            });
+        }
+
+        // تعطيل مؤقت
+        function suspendUser(userId) {
+            const user = SYSTEM.users.find(u => u.id === userId);
+            if (!user) return;
+            
+            document.getElementById('suspendUserName').value = user.name;
+            document.getElementById('suspendDuration').addEventListener('change', function() {
+                document.getElementById('customDuration').style.display = this.value === 'custom' ? 'block' : 'none';
+            });
+            
+            openModal('suspendModal');
+            window.currentSuspendedUser = userId;
+        }
+
+        // تعطيل نهائي
+        function banUser(userId) {
+            const user = SYSTEM.users.find(u => u.id === userId);
+            if (!user) return;
+            
+            document.getElementById('banUserName').value = user.name;
+            openModal('banModal');
+            window.currentBannedUser = userId;
+        }
+
+        // تغيير الوظيفة
+        function changeUserJob(userId) {
+            const user = SYSTEM.users.find(u => u.id === userId);
+            if (!user) return;
+            
+            document.getElementById('changeJobUserName').value = user.name;
+            document.getElementById('currentJob').value = getJobText(user.job);
+            document.getElementById('newJob').value = user.job;
+            document.getElementById('changeDate').value = new Date().toISOString().split('T')[0];
+            
+            openModal('changeJobModal');
+            window.currentJobChangeUser = userId;
+        }
+
+        // تأكيد التعطيل المؤقت
+        function confirmSuspend() {
+            const userId = window.currentSuspendedUser;
+            const user = SYSTEM.users.find(u => u.id === userId);
+            if (!user) return;
+            
+            const duration = document.getElementById('suspendDuration').value;
+            const customDays = document.getElementById('customDays').value;
+            const reason = document.getElementById('suspendReason').value;
+            
+            let days = duration === 'custom' ? parseInt(customDays) : parseInt(duration);
+            if (isNaN(days) || days < 1) days = 1;
+            
+            // حساب تاريخ انتهاء التعطيل
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + days);
+            const endDateStr = endDate.toISOString().split('T')[0];
+            
+            // تحديث حالة المستخدم
+            user.status = 'suspended';
+            user.suspensionEnd = endDateStr;
+            user.suspensionReason = reason;
+            
+            logActivity('suspend', user.name, `تعطيل مؤقت لمدة ${days} يوم - ${reason}`);
+            
+            closeModal('suspendModal');
+            loadUsers();
+            updateStats();
+            
+            alert(`✅ تم تعطيل حساب ${user.name} مؤقتاً لمدة ${days} يوم`);
+        }
+
+        // تأكيد التعطيل النهائي
+        function confirmBan() {
+            const userId = window.currentBannedUser;
+            const user = SYSTEM.users.find(u => u.id === userId);
+            if (!user) return;
+            
+            const reason = document.getElementById('banReason').value;
+            
+            // تحديث حالة المستخدم
+            user.status = 'banned';
+            user.banDate = new Date().toISOString().split('T')[0];
+            user.banReason = reason;
+            
+            logActivity('ban', user.name, `تعطيل نهائي - ${reason}`);
+            
+            closeModal('banModal');
+            loadUsers();
+            updateStats();
+            
+            alert(`🚫 تم تعطيل حساب ${user.name} نهائياً`);
+        }
+
+        // تأكيد تغيير الوظيفة
+        function confirmJobChange() {
+            const userId = window.currentJobChangeUser;
+            const user = SYSTEM.users.find(u => u.id === userId);
+            if (!user) return;
+            
+            const newJob = document.getElementById('newJob').value;
+            const reason = document.getElementById('changeReason').value;
+            const date = document.getElementById('changeDate').value;
+            
+            const oldJob = user.job;
+            user.job = newJob;
+            
+            logActivity('job_change', user.name, `تغيير الوظيفة من ${getJobText(oldJob)} إلى ${getJobText(newJob)} - ${reason}`);
+            
+            closeModal('changeJobModal');
+            loadUsers();
+            updateStats();
+            
+            alert(`🔄 تم تغيير وظيفة ${user.name} إلى ${getJobText(newJob)}`);
+        }
+
+        // إلغاء التعطيل المؤقت
+        function unsuspendUser(userId) {
+            const user = SYSTEM.users.find(u => u.id === userId);
+            if (!user) return;
+            
+            if (confirm(`هل تريد إلغاء تعطيل حساب ${user.name}؟`)) {
+                user.status = 'active';
+                delete user.suspensionEnd;
+                delete user.suspensionReason;
+                
+                logActivity('unsuspend', user.name, 'إلغاء التعطيل المؤقت');
+                
+                loadSuspendedUsers();
+                updateStats();
+                
+                alert(`✅ تم إلغاء تعطيل حساب ${user.name}`);
             }
         }
-        
-        // تحديث البيانات
-        function refreshData() {
-            loadAdminData();
-            alert('🔄 تم تحديث البيانات بنجاح');
+
+        // قبول طلب
+        function approveRequest(requestId) {
+            const request = SYSTEM.requests.find(r => r.id === requestId);
+            if (!request) return;
+            
+            if (confirm(`هل تريد قبول طلب ${requestId} لـ ${request.name}؟`)) {
+                request.status = 'approved';
+                
+                // إضافة مستخدم جديد
+                const newUser = {
+                    id: SYSTEM.users.length + 1,
+                    name: request.name,
+                    gameId: 'NEW_' + requestId,
+                    gameUsername: request.name.replace(/\s+/g, '_') + '_KR',
+                    discord: request.name.split(' ')[0] + '#0000',
+                    age: 25,
+                    job: request.job,
+                    status: 'active',
+                    registrationDate: new Date().toISOString().split('T')[0],
+                    lastActive: new Date().toISOString().split('T')[0],
+                    identityNumber: '1' + Date.now().toString().slice(-9)
+                };
+                
+                SYSTEM.users.push(newUser);
+                
+                logActivity('approve', request.name, `قبول طلب جديد للوظيفة: ${getJobText(request.job)}`);
+                
+                loadRequests();
+                updateStats();
+                
+                alert(`✅ تم قبول طلب ${requestId} وإضافة ${request.name} كـ ${getJobText(request.job)}`);
+            }
         }
-        
+
+        // رفض طلب
+        function rejectRequest(requestId) {
+            const request = SYSTEM.requests.find(r => r.id === requestId);
+            if (!request) return;
+            
+            const reason = prompt(`أدخل سبب رفض طلب ${requestId}:`, 'عدم اكتمال البيانات');
+            
+            if (reason) {
+                request.status = 'rejected';
+                
+                logActivity('reject', request.name, `رفض طلب - ${reason}`);
+                
+                loadRequests();
+                updateStats();
+                
+                alert(`❌ تم رفض طلب ${requestId}`);
+            }
+        }
+
+        // عرض تفاصيل المستخدم
+        function viewUserDetails(userId) {
+            const user = SYSTEM.users.find(u => u.id === userId);
+            if (!user) return;
+            
+            let details = `
+                **معلومات المستخدم**
+                الاسم: ${user.name}
+                رقم الهوية: ${user.identityNumber}
+                العمر: ${user.age}
+                
+                **حسابات الألعاب**
+                اسم اللعبة: ${user.gameUsername}
+                رقم الهوية في اللعبة: ${user.gameId}
+                الديسكورد: ${user.discord}
+                
+                **الحالة**
+                الوظيفة: ${getJobText(user.job)}
+                حالة الحساب: ${getStatusText(user.status)}
+                تاريخ التسجيل: ${user.registrationDate}
+                آخر نشاط: ${user.lastActive}
+            `;
+            
+            if (user.status === 'suspended') {
+                details += `\n\n**تفاصيل التعطيل**\nينتهي في: ${user.suspensionEnd}\nالسبب: ${user.suspensionReason}`;
+            } else if (user.status === 'banned') {
+                details += `\n\n**تفاصيل الحظر**\nتاريخ الحظر: ${user.banDate}\nالسبب: ${user.banReason}`;
+            }
+            
+            alert(details);
+        }
+
+        // سجل الأنشطة
+        function logActivity(type, user, description) {
+            const now = new Date();
+            const activity = {
+                type: type,
+                user: user,
+                admin: SYSTEM.currentAdmin.name,
+                time: now.toLocaleTimeString('ar-SA', { hour12: false }),
+                date: now.toISOString().split('T')[0],
+                description: description
+            };
+            
+            SYSTEM.activities.push(activity);
+            
+            if (document.getElementById('dashboardSection').style.display !== 'none') {
+                loadActivityLog();
+            }
+        }
+
+        // فتح وإغلاق المودال
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            window.currentSuspendedUser = null;
+            window.currentBannedUser = null;
+            window.currentJobChangeUser = null;
+        }
+
         // دعم اللغة العربية
         function getJobText(job) {
             const jobs = {
@@ -883,21 +2103,92 @@
             };
             return jobs[job] || job;
         }
-        
+
         function getStatusText(status) {
             const statuses = {
+                'active': 'نشط',
+                'suspended': 'معلق مؤقت',
+                'banned': 'محظور نهائي',
                 'pending': 'قيد المراجعة',
                 'approved': 'مقبول',
                 'rejected': 'مرفوض'
             };
             return statuses[status] || status;
         }
-        
+
+        // تسجيل الخروج
+        function logout() {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
+                logActivity('logout', null, `${SYSTEM.currentAdmin.name} قام بتسجيل الخروج`);
+                
+                document.getElementById('adminPage').style.display = 'none';
+                document.getElementById('loginPage').style.display = 'block';
+                document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                document.getElementById('adminUsername').value = '';
+                document.getElementById('adminPassword').value = '';
+                
+                SYSTEM.currentAdmin = null;
+            }
+        }
+
         // عند الضغط على Enter في كلمة المرور
         document.getElementById('adminPassword').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 loginToAdmin();
             }
+        });
+
+        // إظهار بروفايل المشرف
+        function showAdminProfile() {
+            if (!SYSTEM.currentAdmin) return;
+            
+            alert(`
+                **معلومات المشرف**
+                الاسم: ${SYSTEM.currentAdmin.name}
+                الدور: ${SYSTEM.currentAdmin.role === 'super_admin' ? 'المشرف العام' : 'مشرف'}
+                اسم المستخدم: ${SYSTEM.currentAdmin.username}
+                
+                **الإحصائيات الشخصية**
+                إجمالي الإجراءات: ${SYSTEM.activities.filter(a => a.admin === SYSTEM.currentAdmin.name).length}
+                آخر نشاط: ${SYSTEM.activities.length > 0 ? SYSTEM.activities[SYSTEM.activities.length-1].date : 'لا يوجد'}
+            `);
+        }
+
+        // إنشاء تقرير
+        function generateReport() {
+            const report = `
+                **تقرير نظام KR الرقمي**
+                تاريخ الإصدار: ${new Date().toLocaleDateString('ar-SA')}
+                
+                **الإحصائيات العامة**
+                إجمالي المستخدمين: ${SYSTEM.users.length}
+                المستخدمين النشطين: ${SYSTEM.users.filter(u => u.status === 'active').length}
+                الحسابات المعلقة: ${SYSTEM.users.filter(u => u.status === 'suspended').length}
+                الحسابات المحظورة: ${SYSTEM.users.filter(u => u.status === 'banned').length}
+                الطلبات المعلقة: ${SYSTEM.requests.filter(r => r.status === 'pending').length}
+                
+                **توزيع الوظائف**
+                مواطن: ${SYSTEM.users.filter(u => u.job === 'citizen').length}
+                داخلية: ${SYSTEM.users.filter(u => u.job === 'interior').length}
+                صحة: ${SYSTEM.users.filter(u => u.job === 'health').length}
+                عدل: ${SYSTEM.users.filter(u => u.job === 'justice').length}
+                
+                **آخر 5 أنشطة**
+                ${SYSTEM.activities.slice(-5).map(a => 
+                    `- ${a.date} ${a.time}: ${a.description}`
+                ).join('\n')}
+            `;
+            
+            alert(report);
+            
+            // يمكن إضافة ميزة تنزيل التقرير كملف
+            logActivity('report', null, 'إنشاء تقرير النظام');
+        }
+
+        // عند تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', function() {
+            // إعداد تاريخ اليوم في مودال تغيير الوظيفة
+            document.getElementById('changeDate').value = new Date().toISOString().split('T')[0];
         });
     </script>
 </body>
