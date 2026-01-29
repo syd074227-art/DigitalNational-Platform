@@ -1,54 +1,473 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هيئة KR - تفعيل الهوية</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <!-- الهيدر -->
-        <header>
-            <div class="logo">
-                <i class="fas fa-id-card"></i>
-                <h1>هيئة KR الرقمية</h1>
-                <p>نظام تفعيل الهوية الوطنية</p>
-            </div>
-        </header>
+/* إعادة الضبط */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        <!-- خطوات التقدم -->
-        <div class="steps">
-            <div class="step active">1. البيانات</div>
-            <div class="step">2. الوظيفة</div>
-            <div class="step">3. المنصب</div>
-            <div class="step">4. المناصب الإضافية</div>
-            <div class="step">5. رفع الهوية</div>
-            <div class="step">6. الإرسال</div>
-        </div>
+body {
+    font-family: 'Noto Sans Arabic', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
 
-        <!-- الفورم -->
-        <main class="form-container">
-            <!-- الخطوة 1 -->
-            <section class="form-step active" id="step1">
-                <h2><i class="fas fa-user"></i> البيانات الأساسية</h2>
-                
-                <div class="input-group">
-                    <label>الاسم الكامل:</label>
-                    <input type="text" id="fullName" placeholder="أحمد محمد علي" required>
-                </div>
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        rgba(102, 126, 234, 0.1) 0%,
+        rgba(118, 75, 162, 0.1) 25%,
+        rgba(30, 58, 138, 0.1) 50%,
+        rgba(220, 38, 38, 0.1) 75%,
+        rgba(5, 150, 105, 0.1) 100%);
+    z-index: -1;
+}
 
-                <div class="input-group">
-                    <label>العمر:</label>
-                    <input type="number" id="age" min="18" max="100" placeholder="25" required>
-                </div>
+/* الحاوية الرئيسية */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
 
-                <div class="input-group">
-                    <label>اسم الديسكورد:</label>
-                    <input type="text" id="discord" placeholder="Ahmed#1234" required>
-                </div>
+/* الهيدر */
+.header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 25px 30px;
+}
 
-                <div class="input-group">
-                    <label>رقم الهوية في اللعبة:</label
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo i {
+    font-size: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.logo-text h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.logo-text p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* الخطوات */
+.steps {
+    display: flex;
+    padding: 20px 30px;
+    background: #f8fafc;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.step {
+    flex: 1;
+    height: 8px;
+    background: #cbd5e1;
+    border-radius: 4px;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.step.active {
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+}
+
+/* الفورم */
+.form {
+    padding: 30px;
+}
+
+.form-step {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.form-step.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-step h2 {
+    color: #1e3a8a;
+    margin-bottom: 30px;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+/* حقول الإدخال */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0 15px;
+    transition: all 0.3s ease;
+}
+
+.input-container:focus-within {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input-container i {
+    color: #64748b;
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.input-container input {
+    flex: 1;
+    padding: 18px 0;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-family: 'Noto Sans Arabic', sans-serif;
+    background: transparent;
+    color: #334155;
+}
+
+.input-container input::placeholder {
+    color: #94a3b8;
+}
+
+/* شبكة الخيارات */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.option-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 15px;
+    padding: 25px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.option-card.selected {
+    border-color: #3b82f6;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+}
+
+.option-card i {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.option-card.citizen { color: #7c3aed; }
+.option-card.interior { color: #1e3a8a; }
+.option-card.health { color: #dc2626; }
+.option-card.justice { color: #059669; }
+
+.option-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #334155;
+}
+
+/* المناصب */
+.positions-container {
+    margin: 25px 0;
+}
+
+.position-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.position-item {
+    padding: 18px 15px;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-weight: 500;
+    color: #475569;
+}
+
+.position-item:hover {
+    background: #f8fafc;
+}
+
+.position-item.selected {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+/* المناصب الإضافية */
+.additional-positions {
+    margin: 25px 0;
+}
+
+.position-checkbox {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px;
+    background: #f8fafc;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.position-checkbox:hover {
+    background: #f1f5f9;
+}
+
+.position-checkbox input {
+    margin-left: 12px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.position-checkbox label {
+    flex: 1;
+    cursor: pointer;
+    font-weight: 500;
+    color: #475569;
+}
+
+.no-positions {
+    padding: 15px;
+    background: #fef3c7;
+    border-radius: 12px;
+    border: 2px dashed #f59e0b;
+    margin-top: 20px;
+}
+
+.no-positions input {
+    margin-left: 10px;
+}
+
+.no-positions label {
+    font-weight: 500;
+    color: #92400e;
+    cursor: pointer;
+}
+
+/* الأزرار */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.btn {
+    padding: 16px 32px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Noto Sans Arabic', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-prev {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.btn-prev:hover {
+    background: #e2e8f0;
+}
+
+.btn-next, .btn-submit {
+    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+    color: white;
+}
+
+.btn-next:hover, .btn-submit:hover {
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(30, 58, 138, 0.3);
+}
+
+.btn-next:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, #059669, #10b981);
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #047857, #0d9488);
+    box-shadow: 0 5px 15px rgba(5, 150, 105, 0.3);
+}
+
+.btn-new {
+    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+    color: white;
+    margin-top: 20px;
+}
+
+.btn-new:hover {
+    background: linear-gradient(135deg, #6d28d9, #7c3aed);
+}
+
+/* رسالة النجاح */
+.success-message {
+    display: none;
+    text-align: center;
+    padding: 40px 30px;
+    background: linear-gradient(135deg, #d1fae5, #bbf7d0);
+    border-radius: 20px;
+    margin: 20px 0;
+    border: 3px solid #10b981;
+}
+
+.success-message i {
+    font-size: 60px;
+    color: #10b981;
+    margin-bottom: 20px;
+}
+
+.success-message h3 {
+    color: #065f46;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.success-message p {
+    color: #047857;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+/* رسالة الخطأ */
+.error-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    left: 20px;
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+    display: none;
+    z-index: 1000;
+    animation: pulse 0.5s;
+    border: 2px solid #f87171;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+/* التجاوب */
+@media (max-width: 768px) {
+    .container {
+        margin: 10px;
+        border-radius: 15px;
+    }
+    
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .position-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 20px;
+    }
+    
+    .logo {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .logo i {
+        font-size: 35px;
+        padding: 12px;
+    }
+    
+    .form {
+        padding: 20px;
+    }
+    
+    .input-container {
+        padding: 0 12px;
+    }
+    
+    .input-container input {
+        padding: 16px 0;
+        font-size: 15px;
+    }
+}
