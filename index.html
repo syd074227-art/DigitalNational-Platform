@@ -3,45 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار</title>
+    <title>هيئة KR الرقمية - الرئيسية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #667eea; padding: 20px; font-family: Arial; }
-        .box { background: white; padding: 30px; border-radius: 15px; max-width: 500px; margin: auto; }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #ddd; border-radius: 10px; }
-        .btn { background: #3b82f6; color: white; border: none; padding: 16px; width: 100%; border-radius: 10px; cursor: pointer; }
-        .alert { background: red; color: white; padding: 15px; margin: 10px 0; border-radius: 10px; text-align: center; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        /* الهيدر */
+        header {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 32px;
+            background: white;
+            color: #1e3a8a;
+            padding: 12px;
+            border-radius: 50%;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        nav a.active {
+            background: white;
+            color: #1e3a8a;
+        }
+        
+        /* المحتوى الرئيسي */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        /* البطاقات */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .card i {
+            font-size: 50px;
+            margin-bottom: 25px;
+            background: white;
+            color: #1e3a8a;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+        
+        .card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .card p {
+            opacity: 0.9;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        /* الأزرار */
+        .btn {
+            display: inline-block;
+            background: white;
+            color: #1e3a8a;
+            text-decoration: none;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #f1f5f9;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .btn-large {
+            padding: 20px 50px;
+            font-size: 20px;
+        }
+        
+        /* الفوتر */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            margin-top: 100px;
+        }
+        
+        /* التجاوب */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .hero h2 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .cards {
+                grid-template-columns: 1fr;
+                padding: 0 15px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1 style="text-align: center;">اختبار الحقول الجديدة</h1>
+    <!-- الهيدر -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-id-card"></i>
+            <h1>هيئة KR الرقمية</h1>
+        </div>
         
-        <input type="text" id="gameName" placeholder="اسمك في اللعبة">
-        <input type="text" id="discordName" placeholder="اسمك في الديسكورد">
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">الرئيسية</a></li>
+                <li><a href="apply.html">تقديم طلب</a></li>
+                <li><a href="admin.html">لوحة الإدارة</a></li>
+                <li><a href="#">الاتصال</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- المحتوى الرئيسي -->
+    <main>
+        <section class="hero">
+            <h2>نظام تفعيل الهوية الوطنية الرقمية</h2>
+            <p>نظام متكامل لإدارة وتفعيل الهويات الرقمية لموظفي الوزارات والمواطنين ضمن السيرفر</p>
+            <a href="apply.html" class="btn btn-large">
+                <i class="fas fa-rocket"></i> ابدأ الآن
+            </a>
+        </section>
         
-        <button class="btn" onclick="test()">اختبر</button>
-        
-        <div class="alert" id="alert" style="display: none;"></div>
-    </div>
-
-    <script>
-        function test() {
-            const gameName = document.getElementById('gameName').value;
-            const discordName = document.getElementById('discordName').value;
-            const alertBox = document.getElementById('alert');
+        <section class="cards">
+            <div class="card">
+                <i class="fas fa-user-check"></i>
+                <h3>تفعيل الهوية</h3>
+                <p>نظام تفعيل متكامل للهويات الرقمية مع التحقق من البيانات ورفع المستندات</p>
+                <a href="apply.html" class="btn">تقديم طلب جديد</a>
+            </div>
             
-            if (!gameName || !discordName) {
-                alertBox.textContent = '❌ املأ الحقول أولاً!';
-                alertBox.style.display = 'block';
-                alertBox.style.background = 'red';
-            } else {
-                alertBox.textContent = '✅ كتبت: ' + gameName + ' | ديسكورد: ' + discordName;
-                alertBox.style.display = 'block';
-                alertBox.style.background = 'green';
-            }
-        }
-        
-        console.log('الصفحة جاهزة للاختبار');
+            <div class="card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>أنظمة الوزارات</h3>
+                <p>أنظمة متخصصة لكل وزارة (الداخلية، الصحة، العدل) مع رتب ومناصب منظمة</p>
+                <a href="#" class="btn">عرض الأنظمة</a>
+            </div>
+            
+            <div class="card">
+                <i class="fas fa-tachometer-alt"></i>
+                <h3>لوحة الإدارة</h3>
+                <p>نظام إداري متكامل لمتابعة الطلبات والتحكم في الصلاحيات والإحصائيات</p>
+                <a href="admin.html" class="btn">الدخول للإدارة</a>
+            </div>
+        </section>
+    </main>
+    
+    <!-- الفوتر -->
+    <footer>
+        <p>© 2024 هيئة KR الرقمية. جميع الحقوق محفوظة.</p>
+        <p style="opacity: 0.7; margin-top: 10px;">نظام تفعيل الهوية الوطنية الرقمية - الإصدار 3.0</p>
+    </footer>
+    
+    <script>
+        // إضافة تأثيرات تفاعلية بسيطة
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🏠 الصفحة الرئيسية جاهزة');
+            
+            // إضافة تأثير على البطاقات عند التمرير
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
     </script>
 </body>
 </html>
