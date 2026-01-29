@@ -43,7 +43,7 @@
                 
                 <div class="input-field">
                     <i class="fas fa-id-card"></i>
-                    <input type="text" id="nationalId" placeholder="رقم الهوية الوطنية (10 أرقام)" maxlength="10" required>
+                    <input type="text" id="nationalId" placeholder="رقم الهوية في اللعبة (10 أرقام)" maxlength="10" required>
                 </div>
                 
                 <button class="btn next-btn" onclick="goToStep(2)">التالي</button>
@@ -110,6 +110,48 @@
                 
                 <div class="btn-group">
                     <button class="btn prev-btn" onclick="goToStep(3)">السابق</button>
+                    <button class="btn next-btn" onclick="goToStep(5)">التالي</button>
+                </div>
+            </div>
+
+            <!-- الخطوة 5: رفع صورة الهوية -->
+            <div class="form-step" id="step5">
+                <h2><i class="fas fa-camera"></i> رفع صورة الهوية</h2>
+                <p>يرجى ارفاق صورة لهويتك المتواجدة في اللعبة</p>
+                
+                <!-- منطقة رفع الملف -->
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>اسحب وأفلت الصورة هنا</h3>
+                    <p>أو اضغط لاختيار الملف</p>
+                    <input type="file" id="idImage" accept="image/*" hidden>
+                    <button type="button" class="btn" onclick="document.getElementById('idImage').click()">
+                        اختر ملفاً
+                    </button>
+                    <div class="file-info" id="fileInfo">
+                        <i class="fas fa-info-circle"></i>
+                        <span>لم يتم اختيار أي ملف</span>
+                    </div>
+                </div>
+                
+                <!-- مثال توضيحي -->
+                <div class="id-example">
+                    <h4><i class="fas fa-check-circle"></i> مثال على الهوية الصحيحة:</h4>
+                    <div class="example-image">
+                        <img src="https://image2url.com/r2/default/images/1769695282320-2ade9dfa-ea7d-4f34-b1f5-81fd757f4464.jpeg" alt="مثال هوية اللعبة">
+                    </div>
+                    <div class="example-instructions">
+                        <ul>
+                            <li>تأكد من ظهور رقم الهوية واسم الشخصية بوضوح</li>
+                            <li>يجب أن تكون الصورة مأخوذة من داخل اللعبة</li>
+                            <li>الصيغ المقبولة: JPG, PNG</li>
+                            <li>الحجم الأقصى: 5 ميجابايت</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn prev-btn" onclick="goToStep(4)">السابق</button>
                     <button class="btn submit-btn" onclick="submitForm()">إرسال الطلب</button>
                 </div>
             </div>
