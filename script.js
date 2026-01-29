@@ -192,5 +192,54 @@ style.textContent = `
         10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
         20%, 40%, 60%, 80% { transform: translateX(5px); }
     }
-`;
+
 document.head.appendChild(style);
+// ====== نظام الحظر التلقائي ======
+const BAN_CONFIG = {
+    MAX_REQUESTS: 3,          // الحد الأقصى للطلبات
+    BAN_HOURS: 24,            // مدة الحظر بالساعات
+    CHECK_INTERVAL: 30        // كل 30 دقيقة يفحص المحظورين
+};
+
+// دالة للحصول على معرف الجهاز
+function getDeviceId() {
+    let deviceId = localStorage.getItem('device_id');
+    
+    if (!deviceId) {
+        deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('device_id', deviceId);
+    }
+    
+    return deviceId;
+}
+
+// تحقق من حالة الجهاز إذا كان محظورًا
+function checkDeviceBanned() {
+    const deviceId = getDeviceId();
+    const deviceRecords = JSON.parse(localStorage.getItem('device_records') || '{}');
+    const device = deviceRecords[deviceId];
+    
+    if (!device) return false;
+    
+    // إذا كان محظورًا، تحقق من انتهاء المدة
+    if (device.isBanned && device.banUntil) {
+        const now = Date.now();
+        
+        if (now >= device.banUntil) {
+            // انتهت مدة الحظر
+            device.isBanned = false;
+            device.banUntil = null;
+            device.requestCount = 0;
+            device.requestTimes = [];
+            localStorage.setItem('device_records', JSON.stringify(deviceRecords));
+            hideBanMessage();
+            return false;
+        } else {
+            // لا يزال محظورًا
+            showBanMessage(device.banUntil);
+            return true;
+        }
+    }
+    
+    // التحقق من عدد الطلبات في آخر 24 ساعة
+    const twentyFourHoursA
