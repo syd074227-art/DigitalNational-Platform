@@ -3,420 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هيئة KR الرقمية - تفعيل الهوية</title>
+    <title>نظام تفعيل الهوية - KR الرقمية</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
+    <div class="background-animation"></div>
+    
+    <div class="container">
+        <!-- الشعار والترحيب -->
+        <header class="header">
             <div class="logo">
-                <i class="fas fa-id-card"></i>
-                <h1>هيئة KR الرقمية</h1>
+                <i class="fas fa-id-card-alt"></i>
+                <h1>نظام تفعيل الهوية الرقمية</h1>
+                <p class="subtitle">هيئة KR الرقمية - النسخة الاحترافية</p>
             </div>
-            <p class="subtitle">نظام تفعيل الهوية الوطنية الرقمية - النسخة 2.0</p>
-        </div>
-    </header>
+        </header>
 
-    <!-- Progress Steps -->
-    <div class="progress-container">
-        <div class="progress-steps">
-            <div class="step active" data-step="1">
-                <div class="step-circle">1</div>
-                <p>الوظيفة</p>
-            </div>
-            <div class="step" data-step="2">
-                <div class="step-circle">2</div>
-                <p>الرتبة</p>
-            </div>
-            <div class="step" data-step="3">
-                <div class="step-circle">3</div>
-                <p>المناصب</p>
-            </div>
-            <div class="step" data-step="4">
-                <div class="step-circle">4</div>
-                <p>البيانات</p>
-            </div>
-            <div class="step" data-step="5">
-                <div class="step-circle">5</div>
-                <p>الهوية</p>
-            </div>
-            <div class="step" data-step="6">
-                <div class="step-circle">6</div>
-                <p>التفعيل</p>
-            </div>
-        </div>
-    </div>
+        <!-- الفورم الرئيسي -->
+        <form id="identityForm" class="form-container">
+            <!-- البطاقة 1: البيانات الأساسية -->
+            <div class="form-card active" id="step1">
+                <div class="card-header">
+                    <div class="step-number">1</div>
+                    <h2><i class="fas fa-user-circle"></i> البيانات الأساسية</h2>
+                    <p>يرجى تعبئة جميع البيانات المطلوبة</p>
+                </div>
 
-    <!-- Main Container -->
-    <main class="container main-container">
-        <!-- Step 1: Job Selection -->
-        <section id="step1" class="form-step active">
-            <div class="step-header">
-                <h2><i class="fas fa-user-tie"></i> الخطوة الأولى: اختر وظيفتك</h2>
-                <p>حدد صفتك لتحديد المسار المناسب</p>
-            </div>
-            
-            <div class="job-grid">
-                <div class="job-card citizen" data-job="citizen">
-                    <div class="job-icon">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h3>مواطن</h3>
-                    <p>تفعيل الهوية للمواطنين</p>
-                    <div class="job-badge">نظام أساسي</div>
-                </div>
-                
-                <div class="job-card ministry interior" data-job="interior">
-                    <div class="job-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>منسوب وزارة الداخلية</h3>
-                    <p>تفعيل هوية المنسوبين</p>
-                    <div class="job-badge">وزاري</div>
-                </div>
-                
-                <div class="job-card ministry health" data-job="health">
-                    <div class="job-icon">
-                        <i class="fas fa-heartbeat"></i>
-                    </div>
-                    <h3>منسوب وزارة الصحة</h3>
-                    <p>تفعيل هوية المنسوبين</p>
-                    <div class="job-badge">وزاري</div>
-                </div>
-                
-                <div class="job-card ministry justice" data-job="justice">
-                    <div class="job-icon">
-                        <i class="fas fa-balance-scale"></i>
-                    </div>
-                    <h3>منسوب وزارة العدل</h3>
-                    <p>تفعيل هوية المنسوبين</p>
-                    <div class="job-badge">وزاري</div>
-                </div>
-            </div>
-            
-            <div class="step-footer">
-                <button id="nextStep1" class="btn btn-primary" disabled>
-                    التالي <i class="fas fa-arrow-left"></i>
-                </button>
-            </div>
-        </section>
-
-        <!-- Step 2: Rank Selection -->
-        <section id="step2" class="form-step">
-            <div class="step-header">
-                <h2><i class="fas fa-ranking-star"></i> الخطوة الثانية: اختر رتبتك الأساسية</h2>
-                <p>الرتبة الأساسية (اختيار واحد فقط)</p>
-                <div class="ministry-badge" id="ministryBadge">وزارة الداخلية</div>
-            </div>
-            
-            <div class="ranks-container">
-                <div class="ranks-grid" id="ranksGrid">
-                    <!-- رتب وزارة الداخلية -->
-                    <div class="rank-card" data-rank="جندي">
-                        <div class="rank-number">1</div>
-                        <h4>جندي</h4>
-                        <p>الرتبة الأساسية</p>
-                    </div>
-                    <div class="rank-card" data-rank="جندي أول">
-                        <div class="rank-number">2</div>
-                        <h4>جندي أول</h4>
-                        <p>الرتبة الأساسية</p>
-                    </div>
-                    <div class="rank-card" data-rank="عريف">
-                        <div class="rank-number">3</div>
-                        <h4>عريف</h4>
-                        <p>الرتبة الأساسية</p>
-                    </div>
-                    <div class="rank-card" data-rank="وكيل رقيب">
-                        <div class="rank-number">4</div>
-                        <h4>وكيل رقيب</h4>
-                        <p>الرتبة الأساسية</p>
-                    </div>
-                    <div class="rank-card" data-rank="رقيب">
-                        <div class="rank-number">5</div>
-                        <h4>رقيب</h4>
-                        <p>الرتبة الأساسية</p>
-                    </div>
-                    <div class="rank-card" data-rank="رقيب أول">
-                        <div class="rank-number">6</div>
-                        <h4>رقيب أول</h4>
-                        <p>الرتبة الأساسية</p>
-                    </div>
-                    <div class="rank-card" data-rank="رئيس رقباء">
-                        <div class="rank-number">7</div>
-                        <h4>رئيس رقباء</h4>
-                        <p>الرتبة الأساسية</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="step-footer">
-                <button id="prevStep2" class="btn btn-secondary">
-                    <i class="fas fa-arrow-right"></i> السابق
-                </button>
-                <button id="nextStep2" class="btn btn-primary" disabled>
-                    التالي <i class="fas fa-arrow-left"></i>
-                </button>
-            </div>
-        </section>
-
-        <!-- Step 3: Administrative Positions -->
-        <section id="step3" class="form-step">
-            <div class="step-header">
-                <h2><i class="fas fa-briefcase"></i> الخطوة الثالثة: المناصب الإدارية</h2>
-                <p>يمكنك اختيار أكثر من منصب إداري (اختيار متعدد)</p>
-                <div class="ministry-badge" id="ministryBadge3">وزارة الداخلية</div>
-            </div>
-            
-            <div class="positions-container">
-                <div class="positions-grid" id="positionsGrid">
-                    <!-- مناصب وزارة الداخلية -->
-                    <div class="position-checkbox">
-                        <input type="checkbox" id="pos1" value="إدارة القبول والتجنيد">
-                        <label for="pos1">
-                            <span class="position-title">إدارة القبول والتجنيد</span>
-                            <span class="position-desc">إدارة عمليات القبول والتجنيد</span>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="fullName">
+                            <i class="fas fa-signature"></i> الاسم الكامل
                         </label>
+                        <input type="text" id="fullName" placeholder="أدخل اسمك الكامل ثلاثي" required>
+                        <div class="input-hint">الاسم كما في الهوية الرسمية</div>
                     </div>
-                    <div class="position-checkbox">
-                        <input type="checkbox" id="pos2" value="إدارة شؤون الداخلية">
-                        <label for="pos2">
-                            <span class="position-title">إدارة شؤون الداخلية</span>
-                            <span class="position-desc">إدارة الشؤون الداخلية</span>
-                        </label>
-                    </div>
-                    <div class="position-checkbox">
-                        <input type="checkbox" id="pos3" value="إدارة شؤون الأفراد">
-                        <label for="pos3">
-                            <span class="position-title">إدارة شؤون الأفراد</span>
-                            <span class="position-desc">إدارة شؤون الأفراد والموظفين</span>
-                        </label>
-                    </div>
-                    <div class="position-checkbox">
-                        <input type="checkbox" id="pos4" value="سلك الضباط">
-                        <label for="pos4">
-                            <span class="position-title">سلك الضباط</span>
-                            <span class="position-desc">السلك الإداري للضباط</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="no-position-option">
-                    <input type="checkbox" id="noPosition">
-                    <label for="noPosition">
-                        <span class="position-title">لا يوجد منصب إداري إضافي</span>
-                        <span class="position-desc">لا أمتلك أي منصب إداري إضافي</span>
-                    </label>
-                </div>
-            </div>
-            
-            <div class="step-footer">
-                <button id="prevStep3" class="btn btn-secondary">
-                    <i class="fas fa-arrow-right"></i> السابق
-                </button>
-                <button id="nextStep3" class="btn btn-primary" disabled>
-                    التالي <i class="fas fa-arrow-left"></i>
-                </button>
-            </div>
-        </section>
 
-        <!-- Step 4: Personal Data -->
-        <section id="step4" class="form-step">
-            <div class="step-header">
-                <h2><i class="fas fa-user-edit"></i> الخطوة الرابعة: البيانات الشخصية</h2>
-                <p>جميع الحقول إلزامية</p>
-            </div>
-            
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="gameName">
-                        <i class="fas fa-gamepad"></i> اسمك في اللعبة
-                    </label>
-                    <input type="text" id="gameName" placeholder="أدخل اسم شخصيتك في اللعبة">
-                    <div class="form-hint">اسم الشخصية كما تظهر في اللعبة</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="gameId">
-                        <i class="fas fa-id-badge"></i> رقم الهوية في اللعبة
-                    </label>
-                    <input type="text" id="gameId" placeholder="مثال: 39193738" maxlength="8">
-                    <div class="form-hint">8 أرقام فقط - كما في المثال</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="discordName">
-                        <i class="fab fa-discord"></i> اسم حساب الديسكورد
-                    </label>
-                    <input type="text" id="discordName" placeholder="مثال: User#1234">
-                    <div class="form-hint">اسم المستخدم كاملاً مع التاق</div>
-                </div>
-            </div>
-            
-            <div class="step-footer">
-                <button id="prevStep4" class="btn btn-secondary">
-                    <i class="fas fa-arrow-right"></i> السابق
-                </button>
-                <button id="nextStep4" class="btn btn-primary" disabled>
-                    التالي <i class="fas fa-arrow-left"></i>
-                </button>
-            </div>
-        </section>
+                    <div class="input-group">
+                        <label for="age">
+                            <i class="fas fa-birthday-cake"></i> العمر
+                        </label>
+                        <input type="number" id="age" min="18" max="80" placeholder="أدخل عمرك" required>
+                        <div class="input-hint">يجب أن يكون 18 سنة أو أكثر</div>
+                    </div>
 
-        <!-- Step 5: ID Upload -->
-        <section id="step5" class="form-step">
-            <div class="step-header">
-                <h2><i class="fas fa-id-card"></i> الخطوة الخامسة: رفع صورة الهوية</h2>
-                <p>يجب أن تكون الهوية واضحة ويظهر الوجه فيها</p>
-            </div>
-            
-            <div class="upload-container">
-                <div class="upload-area" id="uploadArea">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <h3>اسحب وأفلت الصورة هنا</h3>
-                    <p>أو اضغط لاختيار الملف</p>
-                    <input type="file" id="idFile" accept="image/*" hidden>
-                    <button class="btn btn-secondary" onclick="document.getElementById('idFile').click()">
-                        اختر ملف
+                    <div class="input-group">
+                        <label for="discordUsername">
+                            <i class="fab fa-discord"></i> اسم المستخدم في الديسكورد
+                        </label>
+                        <input type="text" id="discordUsername" placeholder="مثال: Ahmed#1234" required>
+                        <div class="input-hint">اسم المستخدم مع التاق (#)</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="gameId">
+                            <i class="fas fa-id-card"></i> رقم الهوية الوطنية في اللعبة
+                        </label>
+                        <div class="id-input-container">
+                            <span class="id-prefix">ID:</span>
+                            <input type="text" id="gameId" placeholder="82282717" maxlength="8" required>
+                        </div>
+                        <div class="input-hint example">مثال: [82282717] - 8 أرقام فقط</div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="button" class="btn btn-next" onclick="nextStep(2)">
+                        التالي <i class="fas fa-arrow-left"></i>
                     </button>
-                    <p class="file-info" id="fileInfo">لم يتم رفع أي ملف</p>
                 </div>
-                
-                <div class="id-example">
-                    <div class="example-card">
-                        <div class="example-header">
+            </div>
+
+            <!-- البطاقة 2: اختيار الوظيفة -->
+            <div class="form-card" id="step2">
+                <div class="card-header">
+                    <div class="step-number">2</div>
+                    <h2><i class="fas fa-briefcase"></i> اختيار الوظيفة المهنية</h2>
+                    <p>اختر الوظيفة المناسبة لك</p>
+                </div>
+
+                <div class="jobs-grid">
+                    <!-- مواطن -->
+                    <div class="job-option" data-job="citizen">
+                        <div class="job-icon citizen">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="job-content">
+                            <h3>مواطن</h3>
+                            <p>الوظيفة الأساسية للمواطنين</p>
+                            <div class="job-badge">عام</div>
+                        </div>
+                        <div class="job-select">
                             <i class="fas fa-check-circle"></i>
-                            <h4>مثال على الهوية الصحيحة</h4>
-                        </div>
-                        <div class="example-image">
-                            <img src="https://via.placeholder.com/300x200/4CAF50/FFFFFF?text=صورة+الهوية+واضحة+مع+الوجه" alt="مثال الهوية" id="exampleImage">
-                        </div>
-                        <div class="example-text">
-                            <p><i class="fas fa-info-circle"></i> <strong>يرجى رفع الهوية مع الوجه بشكل واضح</strong></p>
-                            <ul>
-                                <li>يجب أن تكون الصورة واضحة</li>
-                                <li>يظهر الوجه بشكل كامل</li>
-                                <li>الهوية مقروءة وضوحاً</li>
-                                <li>بدون انعكاسات أو ظلال</li>
-                            </ul>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="step-footer">
-                <button id="prevStep5" class="btn btn-secondary">
-                    <i class="fas fa-arrow-right"></i> السابق
-                </button>
-                <button id="nextStep5" class="btn btn-primary" disabled>
-                    التالي <i class="fas fa-arrow-left"></i>
-                </button>
-            </div>
-        </section>
 
-        <!-- Step 6: Activation -->
-        <section id="step6" class="form-step">
-            <div class="step-header">
-                <h2><i class="fas fa-check-double"></i> الخطوة السادسة: تأكيد المعلومات</h2>
-                <p>راجع معلوماتك قبل إرسال طلب التفعيل</p>
-            </div>
-            
-            <div class="review-container">
-                <div class="review-card">
-                    <h3><i class="fas fa-clipboard-check"></i> ملخص المعلومات</h3>
-                    
-                    <div class="review-grid">
-                        <div class="review-item">
-                            <span class="review-label">الوظيفة:</span>
-                            <span class="review-value" id="reviewJob">غير محدد</span>
+                    <!-- الداخلية -->
+                    <div class="job-option" data-job="interior">
+                        <div class="job-icon interior">
+                            <i class="fas fa-shield-alt"></i>
                         </div>
-                        <div class="review-item">
-                            <span class="review-label">الرتبة:</span>
-                            <span class="review-value" id="reviewRank">غير محدد</span>
+                        <div class="job-content">
+                            <h3>منسوب وزارة الداخلية</h3>
+                            <p>القطاع الأمني والعسكري</p>
+                            <div class="job-badge">أمني</div>
                         </div>
-                        <div class="review-item">
-                            <span class="review-label">المناصب الإدارية:</span>
-                            <span class="review-value" id="reviewPositions">لا يوجد</span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">اسم اللعبة:</span>
-                            <span class="review-value" id="reviewGameName">غير محدد</span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">رقم الهوية:</span>
-                            <span class="review-value" id="reviewGameId">غير محدد</span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">حساب الديسكورد:</span>
-                            <span class="review-value" id="reviewDiscord">غير محدد</span>
-                        </div>
-                        <div class="review-item full-width">
-                            <span class="review-label">صورة الهوية:</span>
-                            <span class="review-value" id="reviewIdImage">لم يتم رفع صورة</span>
+                        <div class="job-select">
+                            <i class="fas fa-check-circle"></i>
                         </div>
                     </div>
-                    
-                    <div class="terms-agreement">
-                        <input type="checkbox" id="agreeTerms">
-                        <label for="agreeTerms">
-                            أوافق على أن جميع المعلومات المقدمة صحيحة، وأعطي الإذن للتحقق من الهوية
-                        </label>
+
+                    <!-- الصحة -->
+                    <div class="job-option" data-job="health">
+                        <div class="job-icon health">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="job-content">
+                            <h3>منسوب وزارة الصحة</h3>
+                            <p>القطاع الطبي والصحي</p>
+                            <div class="job-badge">طبي</div>
+                        </div>
+                        <div class="job-select">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+
+                    <!-- العدل -->
+                    <div class="job-option" data-job="justice">
+                        <div class="job-icon justice">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <div class="job-content">
+                            <h3>منسوب وزارة العدل</h3>
+                            <p>القطاع القضائي والقانوني</p>
+                            <div class="job-badge">قضائي</div>
+                        </div>
+                        <div class="job-select">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="success-message" id="successMessage">
-                    <div class="success-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h3>تم استلام طلبك بنجاح!</h3>
-                    <p>تم إرسال طلب تفعيل الهوية للإدارة المختصة. سيتم مراجعته خلال 24-48 ساعة.</p>
-                    <div class="success-details">
-                        <p><strong>رقم الطلب:</strong> <span id="requestNumber">KR-2024-001</span></p>
-                        <p><strong>تاريخ الطلب:</strong> <span id="requestDate">...</span></p>
-                    </div>
-                    <button class="btn btn-primary" id="newRequest">
-                        <i class="fas fa-plus"></i> تقديم طلب جديد
+
+                <div class="card-footer">
+                    <button type="button" class="btn btn-prev" onclick="prevStep(1)">
+                        <i class="fas fa-arrow-right"></i> السابق
+                    </button>
+                    <button type="button" class="btn btn-next" onclick="nextStep(3)" id="nextStep2" disabled>
+                        التالي <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
             </div>
-            
-            <div class="step-footer">
-                <button id="prevStep6" class="btn btn-secondary">
-                    <i class="fas fa-arrow-right"></i> السابق
-                </button>
-                <button id="submitRequest" class="btn btn-success" disabled>
-                    <i class="fas fa-paper-plane"></i> طلب تفعيل الهوية
-                </button>
-            </div>
-        </section>
-    </main>
-
-    <!-- Error Alert -->
-    <div class="error-alert" id="errorAlert">
-        <div class="alert-content">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span id="errorMessage">حدث خطأ! يرجى التاكد من البيانات.</span>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <i class="fas fa-id-card"></i>
-                    <h3>هيئة KR الرقمية</h3>
-                </div>
-                <p>نظام تفعيل الهوية الوطنية الرقمية © 2024. جميع الحقوق محفوظة.</p>
-                <p class="footer-version">الإصدار 2.0 | آخر تحديث: نوفمبر 2024</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="ministry-data.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
