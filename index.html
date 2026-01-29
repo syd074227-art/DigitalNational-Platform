@@ -3,32 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>بوابة الخدمات الحكومية</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<title>هيئة KR الرقمية</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="login-container">
-  <div class="login-box">
-    <div class="logo">
-      🏛️ بوابة الخدمات الحكومية
-    </div>
-    <h2>تسجيل الدخول</h2>
-    
-    <div class="input-group">
-      <span class="icon">🆔</span>
-      <input id="id" type="text" placeholder="الهوية">
-    </div>
+<div class="container">
 
-    <div class="input-group">
-      <span class="icon">🔒</span>
-      <input id="pass" type="password" placeholder="كلمة المرور">
-    </div>
+  <h1 class="title">الهيئة الرقمية KR</h1>
 
-    <button onclick="login()">دخول</button>
-    <p id="err" class="error-msg"></p>
-  </div>
+  <!-- خطوة 1: اختيار الوظيفة -->
+  <section class="step">
+    <h2>اختر الوظيفة</h2>
+    <div class="cards" id="roleCards">
+      <div class="card" data-role="citizen">مواطن</div>
+      <div class="card" data-role="interior">منسوب وزارة الداخلية</div>
+      <div class="card" data-role="health">منسوب وزارة الصحة</div>
+      <div class="card" data-role="justice">منسوب وزارة العدل</div>
+    </div>
+  </section>
+
+  <!-- خطوة 2: المنصب الرئيسي -->
+  <section class="step hidden" id="rankStep">
+    <h2>اختر المنصب الرئيسي</h2>
+    <div class="cards" id="rankCards"></div>
+  </section>
+
+  <!-- خطوة 3: المناصب الإدارية -->
+  <section class="step hidden" id="adminStep">
+    <h2>المناصب الإدارية (اختيار متعدد)</h2>
+    <div class="cards multi" id="adminCards"></div>
+  </section>
+
+  <!-- خطوة 4: رفع صورة الهوية -->
+  <section class="step hidden" id="idUploadStep">
+    <h2>رفع صورة الهوية مع الوجه</h2>
+    <input type="file" id="idImage" accept="image/*">
+    <div class="id-preview">
+      <p class="example-text">يرجى رفع الهوية مع الوجه مثال:</p>
+      <img src="https://image2url.com/r2/default/images/1769695282320-2ade9dfa-ea7d-4f34-b1f5-81fd757f4464.jpeg" alt="مثال الهوية" />
+    </div>
+    <div id="message" class="hidden"></div>
+    <button id="submitBtn">طلب تفعيل الهوية</button>
+  </section>
+
 </div>
 
 <script src="script.js"></script>
