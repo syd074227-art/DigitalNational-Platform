@@ -448,8 +448,8 @@
             <nav>
                 <a href="index.html">الرئيسية</a>
                 <a href="apply.html" class="active">تقديم طلب</a>
-                <a href="#" onclick="alert('ستتوفر قريباً')">الاستعلام عن الطلب</a>
-                <a href="#" onclick="alert('ستتوفر قريباً')">لوحة الإدارة</a>
+                <a href="#" onclick="alert('صفحة الاستعلام ستتوفر قريباً')">الاستعلام عن الطلب</a>
+                <a href="#" onclick="alert('سيتم تفعيل لوحة الإدارة قريباً')">لوحة الإدارة</a>
             </nav>
         </header>
         
@@ -1019,108 +1019,4 @@
                     <span class="status-value">${document.getElementById('fullName').value}</span>
                 </div>
                 <div class="status-item">
-                    <span class="status-label">العمر:</span>
-                    <span class="status-value">${document.getElementById('age').value} سنة</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">اسم اللعبة:</span>
-                    <span class="status-value">${document.getElementById('gameUsername').value}</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">رقم الهوية:</span>
-                    <span class="status-value">${document.getElementById('gameId').value}</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">الوظيفة:</span>
-                    <span class="status-value">${getJobText(selectedJob)}</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">المنصب:</span>
-                    <span class="status-value">${selectedRank}</span>
-                </div>
-                ${selectedAdditionals.length > 0 ? `
-                <div class="status-item">
-                    <span class="status-label">المناصب الإضافية:</span>
-                    <span class="status-value">${selectedAdditionals.join(', ')}</span>
-                </div>
-                ` : ''}
-            `;
-
-            document.getElementById('step4').style.display = 'none';
-            document.getElementById('step5').style.display = 'block';
-        }
-
-        function goBackToStep4() {
-            document.getElementById('step5').style.display = 'none';
-            document.getElementById('step4').style.display = 'block';
-        }
-
-        function submitRequest() {
-            // التحقق من الموافقة على الشروط
-            if (!document.getElementById('agreeTerms').checked) {
-                showAlert('❌ يجب الموافقة على الشروط والأحكام');
-                return;
-            }
-
-            // إنشاء رقم طلب
-            const requestNumber = 'KR-' + Math.floor(1000 + Math.random() * 9000);
-            const now = new Date();
-            const date = now.toLocaleDateString('ar-SA');
-            
-            // حفظ الطلب في localStorage
-            const request = {
-                id: requestNumber,
-                name: document.getElementById('fullName').value,
-                age: document.getElementById('age').value,
-                gameUsername: document.getElementById('gameUsername').value,
-                discordUsername: document.getElementById('discordUsername').value,
-                gameId: document.getElementById('gameId').value,
-                job: selectedJob,
-                jobText: getJobText(selectedJob),
-                rank: selectedRank,
-                additionalPosts: selectedAdditionals,
-                status: 'pending',
-                date: date,
-                time: now.toLocaleTimeString('ar-SA'),
-                timestamp: Date.now()
-            };
-
-            // الحصول على الطلبات الحالية
-            let requests = JSON.parse(localStorage.getItem('kr_requests') || '[]');
-            requests.push(request);
-            localStorage.setItem('kr_requests', JSON.stringify(requests));
-
-            // تحديث عرض رسالة النجاح
-            document.getElementById('requestNumberDisplay').textContent = requestNumber;
-            document.getElementById('requestNameDisplay').textContent = request.name;
-            document.getElementById('requestJobDisplay').textContent = request.jobText;
-            document.getElementById('requestRankDisplay').textContent = request.rank;
-
-            // إخفاء النموذج وإظهار رسالة النجاح
-            document.getElementById('applicationForm').style.display = 'none';
-            document.getElementById('successMessage').classList.add('show');
-
-            showAlert('✅ تم إرسال طلبك بنجاح!', true);
-        }
-
-        function getJobText(job) {
-            const jobs = {
-                'citizen': 'مواطن',
-                'interior': 'منسوب الداخلية',
-                'health': 'منسوب الصحة',
-                'justice': 'منسوب العدل'
-            };
-            return jobs[job] || job;
-        }
-
-        function getStatusText(status) {
-            const statuses = {
-                'pending': 'قيد المراجعة',
-                'approved': 'مقبول',
-                'rejected': 'مرفوض'
-            };
-            return statuses[status] || status;
-        }
-    </script>
-</body>
-</html>
+                    <span class="status-label">العمر:</span
