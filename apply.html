@@ -1013,10 +1013,758 @@
         function showStep5() {
             // تحديث ملخص الطلب
             const summary = document.getElementById('requestSummary');
-            summary.innerHTML = `
+            summary.innerHTMLت = `
                 <div class="status-item">
                     <span class="status-label">الاسم الكامل:</span>
                     <span class="status-value">${document.getElementById('fullName').value}</span>
                 </div>
                 <div class="status-item">
                     <span class="status-label">العمر:</span
+                    
+                    // البيانات
+let selectedJob = null;
+let selectedRank = null;
+let selectedAdditionals = [];
+
+// تعريف البيانات كاملة
+const RANKS = {
+    citizen: [
+        'مواطن عادي',
+        'مواطن متميز', 
+        'مواطن فخري'
+    ],
+    interior: [
+        'جندي',
+        'جندي أول',
+        'عريف',
+        'وكيل رقيب',
+        'رقيب',
+        'رقيب أول',
+        'رئيس رقباء',
+        'ملازم',
+        'ملازم أول',
+        'نقيب',
+        'رائد',
+        'مقدم',
+        'عقيد',
+        'عميد',
+        'لواء',
+        'فريق',
+        'فريق أول',
+        'نائب مدير الأمن العام',
+        'مدير الأمن العام',
+        'نائب وزير الداخلية',
+        'وزير الداخلية'
+    ],
+    health: [
+        'مسعف',
+        'طبيب',
+        'طبيب عام',
+        'طبيب مختص',
+        'دكتور',
+        'دكتور عام',
+        'دكتور مختص',
+        'استشاري أمراض جلدية وجراحة',
+        'استشاري طب الأسنان',
+        'أخصائي',
+        'جراح',
+        'مساعد جراح',
+        'بروفسور',
+        'نائب مدير مستشفى',
+        'مدير مستشفى',
+        'مستشار وزير الصحة',
+        'نائب وزير الصحة',
+        'وزير الصحة'
+    ],
+    justice: [
+        'محامي',
+        'محامي متمرس',
+        'محامي متخصص',
+        'قاضي',
+        'قاضي متمرس',
+        'قاضي استئناف',
+        'قاضي درجة أولى',
+        'قاضي محكمة عليا',
+        'قاضي محترف',
+        'مستشار وزير العدل',
+        'نائب وزير العدل',
+        'وزير العدل'
+    ]
+};
+
+const ADDITIONAL_POSTS = {
+    interior: [
+        'إدارة القبول والتجنيد',
+        'إدارة الشؤون',
+        'إدارة شؤون الأفراد',
+        'الإدارة العامة لوزارة الداخلية',
+        'إدارة الشكاوى بوزارة الداخلية'
+    ],
+    health: [
+        'إدارة القبول والتسجيل',
+        'إدارة الشؤون الصحية',
+        'إدارة الكلية الصحية',
+        'مسؤول الشؤون الصحية',
+        'إدارة الشكاوى بوزارة الصحة'
+    ],
+    justice: [
+        'إدارة القبول والتسجيل بوزارة العدل',
+        'المجلس الأعلى للقضاء',
+        'إدارة الشؤون العدلية'
+    ],
+    citizen: []
+};
+
+// ====== نظام الحظر التلقائي ======
+const BAN_CONFIG = {
+    MAX_REQUESTS: 3,
+    BAN_HOURS: 24
+};
+
+// عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔥 تطبيق تفعيل الهوية - جاهز');
+    
+    // التحكم في رقم الهوية (أرقام فقط)
+    const gameIdInput = document.getElementById('gameId');
+    if (gameIdInput) {
+        setupGameIdField();
+    }
+    
+    // التحقق من الحظر أولاً
+    checkBanStatus();
+    
+    // عرض الطلبات المتبقية
+    showRemainingRequests();
+    
+    // التحميل التلقائي كل دقيقة
+    setInterval(checkBanStatus, 60000);
+    
+    // إخفاء التحذيرات
+    hideAllAlerts();
+});
+
+// ====== نظام الحظر ======
+function getDeviceId() {
+    let deviceId = localStorage.getItem('device_id');
+    if (!deviceId) {
+        deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('device_id', deviceId);
+    }
+    return deviceId;
+}
+
+function checkBanStatus() {
+    const deviceId = getDeviceId();
+    const banData = JSON.parse(localStorage.getItem('ban_data') || '{}');
+    
+    if (banData[deviceId]) {
+        const { bannedUntil } = banData[deviceId];
+        const now = Date.now();
+        
+        if (bannedUntil > now) {
+            // الجهاز محظور
+            showBanMessage(bannedUntil);
+            disableForm();
+            return true;
+        } else {
+            // انتهت مدة الحظر
+            delete banData[deviceId];
+            localStorage.setItem('ban_data', JSON.stringify(banData));
+            hideBanMessage();
+            enableForm();
+        }
+    }
+    return false;
+}
+
+// ====== نظام حقل رقم الهوية (منع الحروف) ======
+function setupGameIdField() {
+    const gameIdInput = document.getElementById('gameId');
+    
+    // منع اللصق غير المرغوب
+    gameIdInput.addEventListener('paste', function(e) {
+        e.preventDefault();
+        const pastedText = e.clipboardData.getData('text');
+        const numbersOnly = pastedText.replace(/\D/g, '');
+        this.value = numbersOnly.slice(0, 10);
+    });
+    
+    // منع الكتابة غير الرقمية
+    gameIdInput.addEventListener('keydown', function(e) {
+        const allowedKeys = [8, 9, 13, 16, 17, 18, 20, 27, 35, 36, 37, 38, 39, 40, 45, 46, 144];
+        const isNumber = e.keyCode >= 48 && e.keyCode <= 57;
+        const isNumpad = e.keyCode >= 96 && e.keyCode <= 105;
+        
+        if (!isNumber && !isNumpad && !allowedKeys.includes(e.keyCode)) {
+            e.preventDefault();
+            showAlert('❌ هذا الحقل للأرقام فقط!', false);
+            return false;
+        }
+        return true;
+    });
+    
+    // التحقق أثناء الكتابة
+    gameIdInput.addEventListener('input', function() {
+        let originalValue = this.value;
+        let cleanValue = originalValue.replace(/\D/g, '');
+        
+        if (originalValue !== cleanValue) {
+            showAlert('تم حذف الأحرف، الرجاء إدخال أرقام فقط', false);
+        }
+        
+        this.value = cleanValue.slice(0, 10);
+        
+        // تغيير المظهر
+        if (this.value.length === 10 && /^\d{10}$/.test(this.value)) {
+            this.classList.remove('error');
+            this.style.borderColor = '#10b981';
+            this.style.backgroundColor = '#f0fdf4';
+        } else {
+            this.style.borderColor = '#e2e8f0';
+            this.style.backgroundColor = 'white';
+        }
+    });
+}
+
+// ====== وظائف الطلبات المتبقية ======
+function checkRequestLimit() {
+    const deviceId = getDeviceId();
+    const requestsData = JSON.parse(localStorage.getItem('requests_data') || '{}');
+    
+    if (!requestsData[deviceId]) {
+        return true;
+    }
+    
+    const twentyFourHoursAgo = Date.now() - (24 * 60 * 60 * 1000);
+    const recentRequests = requestsData[deviceId].filter(time => time > twentyFourHoursAgo);
+    
+    return recentRequests.length < BAN_CONFIG.MAX_REQUESTS;
+}
+
+function showRemainingRequests() {
+    const deviceId = getDeviceId();
+    const requestsData = JSON.parse(localStorage.getItem('requests_data') || '{}');
+    const requests = requestsData[deviceId] || [];
+    
+    const twentyFourHoursAgo = Date.now() - (24 * 60 * 60 * 1000);
+    const recentRequests = requests.filter(time => time > twentyFourHoursAgo);
+    const remaining = BAN_CONFIG.MAX_REQUESTS - recentRequests.length;
+    
+    if (remaining >= 0) {
+        const counter = document.createElement('div');
+        counter.id = 'requestsCounter';
+        counter.innerHTML = `
+            <div style="background: ${remaining > 1 ? '#dbeafe' : (remaining === 1 ? '#fef3c7' : '#fee2e2')}; 
+                        padding: 12px; 
+                        border-radius: 8px; 
+                        margin: 10px 0;
+                        text-align: center;
+                        border: 2px solid ${remaining > 1 ? '#3b82f6' : (remaining === 1 ? '#f59e0b' : '#dc2626')};
+                        animation: pulse 2s infinite;">
+                <i class="fas fa-${remaining > 1 ? 'info-circle' : (remaining === 1 ? 'exclamation-triangle' : 'exclamation-circle')}"></i>
+                <strong>الطلبات المتبقية:</strong> ${remaining} من ${BAN_CONFIG.MAX_REQUESTS}
+                <br>
+                <small style="color: #64748b; font-size: 13px;">
+                    (خلال 24 ساعة)
+                </small>
+            </div>
+        `;
+        
+        const form = document.getElementById('applicationForm');
+        if (form) {
+            const firstStep = document.querySelector('.step');
+            if (firstStep) {
+                firstStep.insertBefore(counter, firstStep.firstChild);
+            }
+        }
+    }
+}
+
+function updateRequestCount() {
+    const deviceId = getDeviceId();
+    const requestsData = JSON.parse(localStorage.getItem('requests_data') || '{}');
+    
+    if (!requestsData[deviceId]) {
+        requestsData[deviceId] = [];
+    }
+    
+    requestsData[deviceId].push(Date.now());
+    
+    // حذف الطلبات القديمة
+    const twentyFourHoursAgo = Date.now() - (24 * 60 * 60 * 1000);
+    requestsData[deviceId] = requestsData[deviceId].filter(time => time > twentyFourHoursAgo);
+    
+    localStorage.setItem('requests_data', JSON.stringify(requestsData));
+}
+
+function banDevice() {
+    const deviceId = getDeviceId();
+    const banData = JSON.parse(localStorage.getItem('ban_data') || '{}');
+    
+    banData[deviceId] = {
+        bannedUntil: Date.now() + (BAN_CONFIG.BAN_HOURS * 60 * 60 * 1000)
+    };
+    
+    localStorage.setItem('ban_data', JSON.stringify(banData));
+    showBanMessage(banData[deviceId].bannedUntil);
+    disableForm();
+}
+
+// ====== رسائل الحظر ======
+function showBanMessage(banUntil) {
+    document.getElementById('applicationForm').style.display = 'none';
+    
+    const banDiv = document.createElement('div');
+    banDiv.id = 'banMessage';
+    banDiv.style.cssText = `
+        background: linear-gradient(135deg, #991b1b, #dc2626);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        margin: 20px 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    `;
+    
+    const banEnd = new Date(banUntil);
+    const now = new Date();
+    const hoursLeft = Math.ceil((banEnd - now) / (1000 * 60 * 60));
+    
+    banDiv.innerHTML = `
+        <i class="fas fa-ban" style="font-size: 50px; margin-bottom: 20px;"></i>
+        <h3 style="margin-bottom: 15px; font-size: 24px;">🚫 تم حظر جهازك!</h3>
+        <p style="margin-bottom: 10px; font-size: 18px;">
+            لقد تجاوزت الحد المسموح به (${BAN_CONFIG.MAX_REQUESTS} طلبات كحد أقصى خلال 24 ساعة)
+        </p>
+        <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="margin-bottom: 10px;">⏳ مدة الحظر:</h4>
+            <div style="font-size: 32px; font-weight: bold; font-family: monospace;" id="banCountdown">
+                ${hoursLeft}:00:00
+            </div>
+            <p style="margin-top: 10px; font-size: 14px;">
+                حتى ${banEnd.toLocaleTimeString('ar-SA')} | ${banEnd.toLocaleDateString('ar-SA')}
+            </p>
+        </div>
+        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; font-size: 14px;">
+            <i class="fas fa-info-circle"></i> هذا الحظر تلقائي لحماية النظام من الاستخدام المفرط
+        </div>
+    `;
+    
+    const content = document.querySelector('.content');
+    if (content) {
+        content.insertBefore(banDiv, content.firstChild);
+    }
+    
+    // بدء العد التنازلي
+    updateBanCountdown(banUntil);
+}
+
+function updateBanCountdown(banUntil) {
+    const countdownElement = document.getElementById('banCountdown');
+    if (!countdownElement) return;
+    
+    function update() {
+        const now = new Date().getTime();
+        const distance = banUntil - now;
+        
+        if (distance < 0) {
+            countdownElement.innerHTML = "00:00:00";
+            setTimeout(() => location.reload(), 2000);
+            return;
+        }
+        
+        const hours = Math.floor(distance / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        countdownElement.innerHTML = 
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+    
+    update();
+    setInterval(update, 1000);
+}
+
+function hideBanMessage() {
+    const banMessage = document.getElementById('banMessage');
+    if (banMessage) {
+        banMessage.remove();
+    }
+}
+
+function disableForm() {
+    const form = document.getElementById('applicationForm');
+    if (form) form.style.display = 'none';
+}
+
+function enableForm() {
+    const form = document.getElementById('applicationForm');
+    if (form) form.style.display = 'block';
+}
+
+function hideAllAlerts() {
+    const alreadySubmittedAlert = document.getElementById('alreadySubmittedAlert');
+    const alertBox = document.getElementById('alertBox');
+    
+    if (alreadySubmittedAlert) alreadySubmittedAlert.classList.remove('show');
+    if (alertBox) alertBox.classList.remove('show');
+}
+
+function showAlert(message, isSuccess = false) {
+    const alertBox = document.getElementById('alertBox');
+    if (!alertBox) return;
+    
+    alertBox.textContent = message;
+    alertBox.className = 'alert';
+    
+    if (isSuccess) {
+        alertBox.classList.add('success');
+    } else {
+        alertBox.classList.add('warning');
+    }
+    
+    alertBox.classList.add('show');
+    
+    setTimeout(() => {
+        alertBox.classList.remove('show');
+    }, 4000);
+}
+
+// التحقق من الخطوة 1
+function validateStep1() {
+    // التحقق من الحظر
+    if (checkBanStatus()) {
+        showAlert('🚫 جهازك محظور حالياً. الرجاء المحاولة لاحقًا');
+        return;
+    }
+    
+    // التحقق من عدد الطلبات
+    if (!checkRequestLimit()) {
+        showAlert('⚠️ لقد تجاوزت الحد المسموح به للطلبات (3 طلبات كحد أقصى في 24 ساعة)');
+        return;
+    }
+    
+    // إعادة تعيين الأخطاء
+    document.querySelectorAll('input').forEach(input => {
+        input.classList.remove('error');
+    });
+    
+    const name = document.getElementById('fullName').value.trim();
+    const age = document.getElementById('age').value;
+    const gameUsername = document.getElementById('gameUsername').value.trim();
+    const discordUsername = document.getElementById('discordUsername').value.trim();
+    const gameId = document.getElementById('gameId').value.trim();
+
+    let isValid = true;
+    let errorMessage = '';
+
+    // التحقق من الاسم
+    if (!name) {
+        errorMessage = '❌ يرجى إدخال الاسم الكامل';
+        document.getElementById('fullName').classList.add('error');
+        isValid = false;
+    }
+    
+    // التحقق من العمر
+    else if (!age || age < 18) {
+        errorMessage = '❌ العمر يجب أن يكون 18 سنة أو أكثر';
+        document.getElementById('age').classList.add('error');
+        isValid = false;
+    }
+    
+    // التحقق من اسم اللعبة
+    else if (!gameUsername) {
+        errorMessage = '❌ يرجى إدخال اسم المستخدم في اللعبة';
+        document.getElementById('gameUsername').classList.add('error');
+        isValid = false;
+    }
+    
+    // التحقق من اسم الديسكورد
+    else if (!discordUsername || !discordUsername.includes('#')) {
+        errorMessage = '❌ يرجى إدخال اسم المستخدم في الديسكورد (يجب أن يحتوي على #)';
+        document.getElementById('discordUsername').classList.add('error');
+        isValid = false;
+    }
+    
+    // التحقق من رقم الهوية
+    else if (!gameId) {
+        errorMessage = '❌ يرجى إدخال رقم الهوية';
+        document.getElementById('gameId').classList.add('error');
+        isValid = false;
+    }
+    else if (gameId.length !== 10) {
+        errorMessage = '❌ رقم الهوية يجب أن يكون 10 أرقام بالضبط';
+        document.getElementById('gameId').classList.add('error');
+        isValid = false;
+    }
+    else if (!/^\d{10}$/.test(gameId)) {
+        errorMessage = '❌ رقم الهوية يجب أن يحتوي على أرقام فقط';
+        document.getElementById('gameId').classList.add('error');
+        isValid = false;
+    }
+
+    if (!isValid) {
+        showAlert(errorMessage);
+        return;
+    }
+
+    showStep2();
+}
+
+function showStep2() {
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
+}
+
+function goBackToStep1() {
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step1').style.display = 'block';
+}
+
+function selectJob(element, jobType) {
+    document.querySelectorAll('.job-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    element.classList.add('selected');
+    selectedJob = jobType;
+}
+
+function showStep3() {
+    if (!selectedJob) {
+        showAlert('❌ يرجى اختيار الوظيفة');
+        return;
+    }
+
+    // عرض الرتب حسب الوظيفة
+    const container = document.getElementById('ranksContainer');
+    container.innerHTML = `
+        <div class="ranks-container">
+            <h4 style="color: #1e3a8a; margin-bottom: 15px;">اختر منصبك:</h4>
+            ${RANKS[selectedJob].map(rank => `
+                <div class="rank-item" onclick="selectRank(this, '${rank}')">
+                    ${rank}
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step3').style.display = 'block';
+}
+
+function selectRank(element, rank) {
+    document.querySelectorAll('.rank-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    element.classList.add('selected');
+    selectedRank = rank;
+}
+
+function goBackToStep2() {
+    document.getElementById('step3').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
+}
+
+function showStep4() {
+    if (!selectedRank) {
+        showAlert('❌ يرجى اختيار المنصب');
+        return;
+    }
+
+    const posts = ADDITIONAL_POSTS[selectedJob];
+    if (!posts || posts.length === 0) {
+        // إذا لا توجد مناصب إضافية، انتقل للخطوة التالية
+        showStep5();
+        return;
+    }
+
+    const container = document.getElementById('additionalContainer');
+    container.innerHTML = `
+        <div class="additional-posts">
+            <h4 style="color: #92400e; margin-bottom: 15px;">اختر مناصب إضافية (اختياري):</h4>
+            ${posts.map(post => `
+                <div class="additional-item">
+                    <input type="checkbox" id="add_${post}" value="${post}" onchange="toggleAdditionalPost(this, '${post}')">
+                    <label for="add_${post}" style="flex: 1; cursor: pointer;">${post}</label>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    document.getElementById('step3').style.display = 'none';
+    document.getElementById('step4').style.display = 'block';
+}
+
+function toggleAdditionalPost(checkbox, post) {
+    if (checkbox.checked) {
+        selectedAdditionals.push(post);
+    } else {
+        selectedAdditionals = selectedAdditionals.filter(p => p !== post);
+    }
+}
+
+function goBackToStep3() {
+    document.getElementById('step4').style.display = 'none';
+    document.getElementById('step3').style.display = 'block';
+}
+
+function showStep5() {
+    // تحديث ملخص الطلب
+    const summary = document.getElementById('requestSummary');
+    summary.innerHTML = `
+        <div class="status-item">
+            <span class="status-label">الاسم الكامل:</span>
+            <span class="status-value">${document.getElementById('fullName').value}</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">العمر:</span>
+            <span class="status-value">${document.getElementById('age').value} سنة</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">اسم اللعبة:</span>
+            <span class="status-value">${document.getElementById('gameUsername').value}</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">الديسكورد:</span>
+            <span class="status-value">${document.getElementById('discordUsername').value}</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">رقم الهوية:</span>
+            <span class="status-value">${document.getElementById('gameId').value}</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">الوظيفة:</span>
+            <span class="status-value">${getJobName(selectedJob)}</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">المنصب:</span>
+            <span class="status-value">${selectedRank}</span>
+        </div>
+        ${selectedAdditionals.length > 0 ? `
+            <div class="status-item">
+                <span class="status-label">المناصب الإضافية:</span>
+                <span class="status-value">${selectedAdditionals.join(', ')}</span>
+            </div>
+        ` : ''}
+    `;
+
+    document.getElementById('step4').style.display = 'none';
+    document.getElementById('step5').style.display = 'block';
+}
+
+function getJobName(jobType) {
+    const jobNames = {
+        citizen: 'مواطن',
+        interior: 'منسوب الداخلية',
+        health: 'منسوب الصحة',
+        justice: 'منسوب العدل'
+    };
+    return jobNames[jobType] || jobType;
+}
+
+function goBackToStep4() {
+    document.getElementById('step5').style.display = 'none';
+    document.getElementById('step4').style.display = 'block';
+}
+
+function submitRequest() {
+    // التحقق من الموافقة على الشروط
+    const agreeTerms = document.getElementById('agreeTerms');
+    if (!agreeTerms || !agreeTerms.checked) {
+        showAlert('❌ يجب الموافقة على الشروط والأحكام أولاً');
+        return;
+    }
+    
+    // التحقق من الحظر
+    if (checkBanStatus()) {
+        showAlert('🚫 جهازك محظور حالياً. الرجاء المحاولة لاحقًا');
+        return;
+    }
+    
+    // التحقق من عدد الطلبات
+    if (!checkRequestLimit()) {
+        // تجاوز الحد، يتم حظره تلقائيًا
+        banDevice();
+        showAlert('⚠️ تم حظر جهازك لمدة 24 ساعة لتجاوز الحد المسموح');
+        return;
+    }
+    
+    // جمع البيانات
+    const requestData = {
+        id: 'KR-' + Date.now().toString().slice(-8),
+        fullName: document.getElementById('fullName').value.trim(),
+        age: document.getElementById('age').value,
+        gameUsername: document.getElementById('gameUsername').value.trim(),
+        discordUsername: document.getElementById('discordUsername').value.trim(),
+        gameId: document.getElementById('gameId').value.trim(),
+        job: selectedJob,
+        rank: selectedRank,
+        additionals: selectedAdditionals,
+        date: new Date().toLocaleString('ar-SA'),
+        status: 'pending',
+        deviceId: getDeviceId()
+    };
+    
+    // حفظ الطلب
+    saveRequest(requestData);
+    
+    // تحديث عدد الطلبات
+    updateRequestCount();
+    
+    // إظهار رسالة النجاح
+    showSuccessMessage(requestData);
+}
+
+function saveRequest(requestData) {
+    const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+    requests.push(requestData);
+    localStorage.setItem('identityRequests', JSON.stringify(requests));
+}
+
+function showSuccessMessage(requestData) {
+    const successMessage = document.getElementById('successMessage');
+    const requestNumberDisplay = document.getElementById('requestNumberDisplay');
+    const requestNameDisplay = document.getElementById('requestNameDisplay');
+    const requestJobDisplay = document.getElementById('requestJobDisplay');
+    const requestRankDisplay = document.getElementById('requestRankDisplay');
+    
+    // تحديث البيانات
+    requestNumberDisplay.textContent = requestData.id;
+    requestNameDisplay.textContent = requestData.fullName;
+    requestJobDisplay.textContent = getJobName(requestData.job);
+    requestRankDisplay.textContent = requestData.rank;
+    
+    // إخفاء النموذج
+    document.getElementById('applicationForm').style.display = 'none';
+    
+    // إظهار رسالة النجاح
+    successMessage.classList.add('show');
+}
+
+// ====== إضافة تنسيقات إضافية في الـ CSS ======
+const additionalStyles = document.createElement('style');
+additionalStyles.textContent = `
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    .input-group input.success {
+        border-color: #10b981 !important;
+        background-color: #f0fdf4 !important;
+    }
+    
+    .input-group input.error {
+        border-color: #dc2626 !important;
+        background-color: #fef2f2 !important;
+    }
+`;
+document.head.appendChild(additionalStyles);
