@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقديم طلب تفعيل الهوية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        /* الهيدر */
+        header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 25px 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 32px;
+        }
+        
+        nav {
+            margin-top: 15px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        nav a.active {
+            background: white;
+            color: #1e3a8a;
+        }
+        
+        /* المحتوى */
+        .content {
+            padding: 30px;
+        }
+        
+        /* التحذيرات */
+        .alert {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid #f87171;
+            display: none;
+        }
+        
+        /* الخطوات */
+        .step {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .step-title {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+        }
+        
+        .step-title .number {
+            background: #3b82f6;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* حقول الإدخال */
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-weight: 600;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .input-group input.error {
+            border-color: #ef4444;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .input-hint {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 5px;
+            padding-right: 5px;
+        }
+        
+        /* أمثلة */
+        .example-box {
+            background: #f0f9ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+            border: 2px solid #e0f2fe;
+        }
+        
+        .example-box p {
+            color: #0369a1;
+            margin: 0;
+            font-size: 14px;
+        }
+        
+        /* قائمة الوظائف */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .job-card {
+            background: white;
+            border: 3px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .job-card.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .job-card i {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+        
+        .job-card.citizen i { color: #7c3aed; }
+        .job-card.interior i { color: #1e3a8a; }
+        .job-card.health i { color: #dc2626; }
+        .job-card.justice i { color: #059669; }
+        
+        /* قائمة الرتب */
+        .ranks-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .rank-item {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .rank-item:last-child {
+            border-bottom: none;
+        }
+        
+        .rank-item:hover {
+            background: #f8fafc;
+        }
+        
+        .rank-item.selected {
+            background: #3b82f6;
+            color: white;
+            border-radius: 8px;
+        }
+        
+        /* المناصب الإضافية */
+        .additional-list {
+            margin: 15px 0;
+        }
+        
+        .additional-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+        }
+        
+        .additional-item:hover {
+            background: #f8fafc;
+        }
+        
+        .additional-item input {
+            margin-left: 10px;
+        }
+        
+        /* رفع الصورة */
+        .upload-area {
+            border: 3px dashed #3b82f6;
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f0f9ff;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: #e0f2fe;
+        }
+        
+        .upload-area i {
+            font-size: 50px;
+            color: #3b82f6;
+            margin-bottom: 15px;
+        }
+        
+        .file-info {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            color: #64748b;
+        }
+        
+        /* مثال الهوية */
+        .id-example {
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+        
+        .id-example img {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 2px solid #a5d6a7;
+        }
+        
+        /* الأزرار */
+        .btn {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 25px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-group .btn {
+            flex: 1;
+            margin-top: 0;
+        }
+        
+        .btn-secondary {
+            background: #64748b;
+        }
+        
+        .btn-secondary:hover {
+            background: #475569;
+        }
+        
+        /* رسالة النجاح */
+        .success {
+            text-align: center;
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #d1fae5, #bbf7d0);
+            border-radius: 15px;
+            border: 3px solid #10b981;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .success i {
+            font-size: 60px;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+        
+        /* التجاوب */
+        @media (max-width: 768px) {
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- الهيدر -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-id-card"></i>
+                <div>
+                    <h2>تقديم طلب تفعيل الهوية</h2>
+                    <p>هيئة KR الرقمية</p>
+                </div>
+            </div>
+            
+            <nav>
+                <a href="index.html">الرئيسية</a>
+                <a href="apply.html" class="active">تقديم طلب</a>
+                <a href="admin.html">لوحة الإدارة</a>
+            </nav>
+        </header>
+        
+        <!-- المحتوى -->
+        <div class="content">
+            <!-- تحذير الأخطاء -->
+            <div class="alert" id="alertBox"></div>
+            
+            <!-- الخطوة 1: البيانات الأساسية -->
+            <div class="step" id="step1">
+                <div class="step-title">
+                    <span class="number">1</span>
+                    <span>البيانات الأساسية</span>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> الاسم الكامل:</label>
+                    <input type="text" id="fullName" placeholder="أدخل اسمك الكامل ثلاثي">
+                    <div class="input-hint"><i class="fas fa-info-circle"></i> الاسم كما في الهوية الرسمية</div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-birthday-cake"></i> العمر:</label>
+                    <input type="number" id="age" placeholder="أدخل عمرك" min="18">
+                    <div class="input-hint"><i class="fas fa-info-circle"></i> يجب أن يكون 18 سنة أو أكثر</div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-gamepad"></i> اسم المستخدم في اللعبة:</label>
+                    <input type="text" id="gameUsername" placeholder="أدخل اسمك في اللعبة">
+                    <div class="example-box">
+                        <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> Ahmed_KR, KR_Sniper, ProGamer_SA</p>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fab fa-discord"></i> اسم المستخدم في الديسكورد:</label>
+                    <input type="text" id="discordUsername" placeholder="أدخل اسمك في الديسكورد">
+                    <div class="example-box">
+                        <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> Ahmed#1234, KR_Player#5678, SaudiGamer#9999</p>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-id-card"></i> رقم الهوية في اللعبة:</label>
+                    <input type="text" id="gameId" placeholder="10 أرقام فقط" maxlength="10">
+                    <div class="example-box">
+                        <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> 39193738, 82282717, 12345678</p>
+                    </div>
+                </div>
+                
+                <button class="btn" onclick="nextStep()">التالي <i class="fas fa-arrow-left"></i></button>
+            </div>
+            
+            <!-- الخطوة 2: اختيار الوظيفة (ستظهر لاحقاً) -->
+            <div class="step" id="step2" style="display: none;">
+                <div class="step-title">
+                    <span class="number">2</span>
+                    <span>اختيار الوظيفة</span>
+                </div>
+                
+                <div class="jobs-grid">
+                    <div class="job-card citizen" data-job="citizen" onclick="selectJob('citizen')">
+                        <i class="fas fa-user"></i>
+                        <div>
+                            <h4>مواطن</h4>
+                            <small>الوظيفة الأساسية</small>
+                        </div>
+                    </div>
+                    
+                    <div class="job-card interior" data-job="interior" onclick="selectJob('interior')">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h4>منسوب الداخلية</h4>
+                            <small>القطاع الأمني</small>
+                        </div>
+                    </div>
+                    
+                    <div class="job-card health" data-job="health" onclick="selectJob('health')">
+                        <i class="fas fa-heartbeat"></i>
+                        <div>
+                            <h4>منسوب الصحة</h4>
+                            <small>القطاع الطبي</small>
+                        </div>
+                    </div>
+                    
+                    <div class="job-card justice" data-job="justice" onclick="selectJob('justice')">
+                        <i class="fas fa-balance-scale"></i>
+                        <div>
+                            <h4>منسوب العدل</h4>
+                            <small>القطاع القضائي</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <i class="fas fa-arrow-right"></i> السابق
+                    </button>
+                    <button class="btn" onclick="nextStep()">
+                        التالي <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- الخطوة 3: اختيار الرتبة (ستظهر لاحقاً) -->
+            <div class="step" id="step3" style="display: none;">
+                <div class="step-title">
+                    <span class="number">3</span>
+                    <span id="rankTitle">اختيار الرتبة</span>
+                </div>
+                
+                <div class="ranks-list" id="ranksList">
+                    <!-- الرتب ستظهر هنا -->
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <i class="fas fa-arrow-right"></i> السابق
+                    </button>
+                    <button class="btn" onclick="nextStep()">
+                        التالي <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- الخطوة 4: المناصب الإضافية (ستظهر لاحقاً) -->
+            <div class="step" id="step4" style="display: none;">
+                <div class="step-title">
+                    <span class="number">4</span>
+                    <span>المناصب الإضافية</span>
+                </div>
+                
+                <div class="additional-list" id="additionalList">
+                    <!-- المناصب الإضافية ستظهر هنا -->
+                </div>
+                
+                <div style="background: #fef3c7; padding: 15px; border-radius: 10px; border: 2px dashed #f59e0b; margin-top: 20px;">
+                    <input type="checkbox" id="noAdditional" onchange="toggleAdditional()">
+                    <label for="noAdditional" style="color: #92400e; cursor: pointer;">لا أملك مناصب إضافية</label>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <i class="fas fa-arrow-right"></i> السابق
+                    </button>
+                    <button class="btn" onclick="nextStep()">
+                        التالي <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- الخطوة 5: رفع صورة الهوية -->
+            <div class="step" id="step5" style="display: none;">
+                <div class="step-title">
+                    <span class="number">5</span>
+                    <span>رفع صورة الهوية</span>
+                </div>
+                
+                <div class="upload-area" onclick="document.getElementById('idImage').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>اضغط لرفع صورة الهوية</h3>
+                    <p>اسحب وأفلت أو اضغط لاختيار الملف</p>
+                    <input type="file" id="idImage" accept="image/*" hidden>
+                </div>
+                
+                <div class="file-info" id="fileInfo">
+                    <i class="fas fa-info-circle"></i>
+                    <span>لم يتم رفع أي ملف</span>
+                </div>
+                
+                <div class="id-example">
+                    <p><strong>مثال على الهوية الصحيحة:</strong></p>
+                    <img src="https://image2url.com/r2/default/images/1769695282320-2ade9dfa-ea7d-4f34-b1f5-81fd757f4464.jpeg" 
+                         alt="مثال هوية اللعبة">
+                    <p style="color: #666; margin-top: 10px; font-size: 14px;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        يرجى رفع صورة واضحة لهويتك داخل اللعبة
+                    </p>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <i class="fas fa-arrow-right"></i> السابق
+                    </button>
+                    <button class="btn" onclick="submitForm()">
+                        <i class="fas fa-paper-plane"></i> إرسال الطلب
+                    </button>
+                </div>
+            </div>
+            
+            <!-- رسالة النجاح -->
+            <div class="success" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <h3>تم إرسال طلبك بنجاح! 🎉</h3>
+                <p>رقم الطلب: <strong id="requestNumber">KR-0000</strong></p>
+                <p>سيتم مراجعة طلبك خلال 24-48 ساعة</p>
+                <button class="btn" onclick="resetForm()" style="background: #7c3aed; margin-top: 20px;">
+                    تقديم طلب جديد
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // البيانات الكاملة للرتب والمناصب
+        const ministryData = {
+            interior: {
+                name: "وزارة الداخلية",
+                ranks: [
+                    "جندي", "جندي أول", "عريف", "وكيل رقيب", "رقيب", "رقيب أول", 
+                    "رئيس رقباء", "ملازم", "ملازم أول", "نقيب", "رائد", "مقدم",
+                    "عقيد", "عميد", "لواء", "فريق", "فريق أول",
+                    "نائب مدير الأمن العام", "مدير الأمن العام",
+                    "نائب وزير الداخلية", "وزير الداخلية"
+                ],
+                additional: [
+                    "إدارة القبول والتجنيد",
+                    "إدارة الشؤون",
+                    "إدارة شؤون الأفراد",
+                    "الإدارة العامة لوزارة الداخلية",
+                    "إدارة الشكاوى بوزارة الداخلية"
+                ]
+            },
+            health: {
+                name: "وزارة الصحة",
+                ranks: [
+                    "مسعف", "طبيب", "طبيب عام", "طبيب مختص",
+                    "دكتور", "دكتور عام", "دكتور مختص",
+                    "استشاري أمراض جلدية وجراحة",
+                    "استشاري طب الأسنان",
+                    "أخصائي", "جراح", "مساعد جراح",
+                    "بروفسور", "نائب مدير مستشفى",
+                    "مدير مستشفى", "م
