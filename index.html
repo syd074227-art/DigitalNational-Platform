@@ -3,57 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KR System</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial; background: linear-gradient(135deg, #667eea, #764ba2); padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; border-radius: 15px; padding: 30px; }
-        h1 { color: #1e3a8a; margin-bottom: 20px; text-align: center; }
-        .input-group { margin: 15px 0; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; }
-        .btn { background: #3b82f6; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        .btn:hover { background: #2563eb; }
-    </style>
+    <title>هيئة KR الرقمية</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>🏛️ نظام KR الرقمية</h1>
-        
-        <div class="input-group">
-            <label>الاسم الكامل:</label>
-            <input type="text" id="name" placeholder="أحمد محمد">
-        </div>
-        
-        <div class="input-group">
-            <label>العمر:</label>
-            <input type="number" id="age" placeholder="25">
-        </div>
-        
-        <div class="input-group">
-            <label>رقم الهوية (10 أرقام):</label>
-            <input type="text" id="id" placeholder="1234567890" maxlength="10">
-        </div>
-        
-        <button class="btn" onclick="showMessage()">إرسال الطلب</button>
-        
-        <div id="message" style="margin-top: 20px; padding: 15px; background: #d1fae5; border-radius: 8px; display: none;">
-            ✅ تم إرسال الطلب بنجاح!
-        </div>
+        <!-- الهيدر -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-id-card"></i>
+                <div>
+                    <h1>هيئة KR الرقمية</h1>
+                    <p>نظام تفعيل الهوية الوطنية</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- الفورم -->
+        <main class="form-box">
+            <!-- الخطوة 1 -->
+            <div class="form-step active" id="step1">
+                <h2>البيانات الأساسية</h2>
+                
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="fullName" placeholder="الاسم الكامل" required>
+                </div>
+                
+                <div class="input-field">
+                    <i class="fas fa-birthday-cake"></i>
+                    <input type="number" id="age" placeholder="العمر" min="18" required>
+                </div>
+                
+                <div class="input-field">
+                    <i class="fab fa-discord"></i>
+                    <input type="text" id="discord" placeholder="اسم المستخدم في الديسكورد" required>
+                </div>
+                
+                <div class="input-field">
+                    <i class="fas fa-id-card"></i>
+                    <input type="text" id="nationalId" placeholder="رقم الهوية الوطنية (10 أرقام)" maxlength="10" required>
+                </div>
+                
+                <button class="btn next-btn" onclick="goToStep(2)">التالي</button>
+            </div>
+
+            <!-- الخطوة 2 -->
+            <div class="form-step" id="step2">
+                <h2>اختيار الوظيفة</h2>
+                
+                <div class="options">
+                    <div class="option" onclick="selectJob('citizen')">
+                        <i class="fas fa-user-tie"></i>
+                        <span>مواطن</span>
+                    </div>
+                    
+                    <div class="option" onclick="selectJob('interior')">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>منسوب الداخلية</span>
+                    </div>
+                    
+                    <div class="option" onclick="selectJob('health')">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>منسوب الصحة</span>
+                    </div>
+                    
+                    <div class="option" onclick="selectJob('justice')">
+                        <i class="fas fa-balance-scale"></i>
+                        <span>منسوب العدل</span>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn prev-btn" onclick="goToStep(1)">السابق</button>
+                    <button class="btn next-btn" id="next2" onclick="goToStep(3)" disabled>التالي</button>
+                </div>
+            </div>
+
+            <!-- الخطوة 3 -->
+            <div class="form-step" id="step3">
+                <h2 id="position-title">اختيار المنصب</h2>
+                
+                <div class="positions" id="positions-list">
+                    <!-- المناصب تظهر هنا -->
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn prev-btn" onclick="goToStep(2)">السابق</button>
+                    <button class="btn next-btn" id="next3" onclick="goToStep(4)" disabled>التالي</button>
+                </div>
+            </div>
+
+            <!-- الخطوة 4 -->
+            <div class="form-step" id="step4">
+                <h2>المناصب الإضافية</h2>
+                
+                <div class="additional" id="additional-list">
+                    <!-- المناصب الإضافية تظهر هنا -->
+                </div>
+                
+                <div class="no-positions">
+                    <input type="checkbox" id="no-pos" onchange="toggleAdditional()">
+                    <label for="no-pos">لا أملك مناصب إضافية</label>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn prev-btn" onclick="goToStep(3)">السابق</button>
+                    <button class="btn submit-btn" onclick="submitForm()">إرسال الطلب</button>
+                </div>
+            </div>
+
+            <!-- رسالة النجاح -->
+            <div class="success-message" id="success">
+                <i class="fas fa-check-circle"></i>
+                <h3>تم إرسال طلبك بنجاح!</h3>
+                <p>رقم الطلب: <span id="request-id">KR-001</span></p>
+                <button class="btn new-btn" onclick="resetForm()">طلب جديد</button>
+            </div>
+        </main>
     </div>
 
-    <script>
-        function showMessage() {
-            const name = document.getElementById('name').value;
-            const age = document.getElementById('age').value;
-            const id = document.getElementById('id').value;
-            
-            if(name && age && id.length === 10) {
-                document.getElementById('message').style.display = 'block';
-            } else {
-                alert('❌ يرجى تعبئة جميع الحقول بشكل صحيح');
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
