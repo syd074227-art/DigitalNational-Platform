@@ -3,364 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل دخول المسؤولين - هيئة KR الرقمية</title>
+    <title>تسجيل دخول المسؤول</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
         body {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
             padding: 20px;
         }
-        
-        .login-container {
+        .login-box {
             background: white;
-            width: 100%;
-            max-width: 450px;
+            padding: 40px;
             border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.5s ease;
-        }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .login-header {
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-            color: white;
-            padding: 40px 30px;
+            width: 100%;
+            max-width: 400px;
             text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        
-        .login-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
+        .login-box h2 {
+            color: #1e3a8a;
+            margin-bottom: 30px;
         }
-        
-        .login-header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        
-        .login-form {
-            padding: 40px 30px;
-        }
-        
-        .input-group {
-            margin-bottom: 25px;
-        }
-        
-        .input-group label {
-            display: block;
-            margin-bottom: 10px;
-            color: #1f2937;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .input-group input {
+        .login-box input {
             width: 100%;
             padding: 15px;
-            border: 2px solid #e5e7eb;
+            margin-bottom: 20px;
+            border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 16px;
-            transition: all 0.3s;
         }
-        
-        .input-group input:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        
-        .password-field {
-            position: relative;
-        }
-        
-        .toggle-password {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #6b7280;
-            cursor: pointer;
-            font-size: 18px;
-        }
-        
-        .login-btn {
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+        .login-box button {
+            width: 100%;
+            padding: 15px;
+            background: #3b82f6;
             color: white;
             border: none;
-            padding: 16px;
             border-radius: 10px;
             font-size: 18px;
-            font-weight: 600;
             cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-        }
-        
-        .login-btn:active {
-            transform: translateY(0);
-        }
-        
-        .login-footer {
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid #e5e7eb;
-        }
-        
-        .login-footer a {
-            color: #6b7280;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .login-footer a:hover {
-            color: #1e3a8a;
-        }
-        
-        .error-message {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <div class="login-icon">
-                <i class="fas fa-user-shield"></i>
-            </div>
-            <h1>النظام الإداري</h1>
-            <p>هيئة KR الرقمية</p>
-        </div>
-        
-        <div class="login-form">
-            <div class="error-message" id="errorMessage">
-                <i class="fas fa-exclamation-circle"></i>
-                <span id="errorText"></span>
-            </div>
-            
-            <div class="input-group">
-                <label for="username">
-                    <i class="fas fa-user"></i>
-                    اسم المستخدم
-                </label>
-                <input type="text" id="username" placeholder="أدخل اسم المستخدم">
-            </div>
-            
-            <div class="input-group password-field">
-                <label for="password">
-                    <i class="fas fa-lock"></i>
-                    كلمة المرور
-                </label>
-                <input type="password" id="password" placeholder="أدخل كلمة المرور">
-                <button type="button" class="toggle-password" onclick="togglePassword()">
-                    <i class="fas fa-eye"></i>
-                </button>
-            </div>
-            
-            <button class="login-btn" onclick="login()">
-                <i class="fas fa-sign-in-alt"></i>
-                تسجيل الدخول
-            </button>
-        </div>
-        
-        <div class="login-footer">
-            <a href="../index.html">
-                <i class="fas fa-arrow-right"></i>
-                العودة للرئيسية
-            </a>
-        </div>
+    <div class="login-box">
+        <h2><i class="fas fa-user-shield"></i> تسجيل دخول المسؤول</h2>
+        <input type="text" id="adminUser" placeholder="اسم المستخدم">
+        <input type="password" id="adminPass" placeholder="كلمة المرور">
+        <button onclick="login()">دخول لوحة التحكم</button>
     </div>
-
+    
     <script>
-        // بيانات المستخدمين
-        const adminUsers = [
-            { username: "admin", password: "admin123", role: "admin" },
-            { username: "owner", password: "owner123", role: "owner" }
-        ];
-        
-        // عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('صفحة تسجيل دخول المسؤولين - جاهزة');
-            
-            // وضع التركيز على حقل اسم المستخدم
-            document.getElementById('username').focus();
-            
-            // تفعيل زر الإدخال بالضغط على Enter
-            document.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    login();
-                }
-            });
-            
-            // إنشاء بيانات تجريبية إذا لم تكن موجودة
-            createSampleData();
-        });
-        
-        // تبديل رؤية كلمة المرور
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.querySelector('.toggle-password i');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.className = 'fas fa-eye-slash';
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.className = 'fas fa-eye';
-            }
-        }
-        
-        // تسجيل الدخول
         function login() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
+            const username = document.getElementById('adminUser').value;
+            const password = document.getElementById('adminPass').value;
             
-            // التحقق من الحقول الفارغة
-            if (!username || !password) {
-                showError('يرجى ملء جميع الحقول');
-                return;
-            }
-            
-            // البحث عن المستخدم
-            const user = adminUsers.find(u => u.username === username && u.password === password);
-            
-            if (user) {
-                // تسجيل الدخول الناجح
-                localStorage.setItem('admin_session', JSON.stringify({
-                    username: user.username,
-                    role: user.role,
-                    loginTime: new Date().getTime(),
-                    token: generateToken()
-                }));
-                
-                // إخفاء رسالة الخطأ
-                hideError();
-                
-                // توجيه المستخدم حسب الدور
-                if (user.role === 'owner') {
-                    alert('👑 مرحباً بك يا مالك النظام!');
-                    window.location.href = 'owner.html';
-                } else {
-                    alert('✅ تم تسجيل الدخول بنجاح!');
-                    window.location.href = 'index.html';
-                }
+            // بيانات الدخول الافتراضية
+            if (username === 'admin' && password === 'admin123') {
+                localStorage.setItem('admin_logged_in', 'true');
+                window.location.href = 'admin-panel.html'; // أو اسم ملف لوحة التحكم
             } else {
-                showError('اسم المستخدم أو كلمة المرور غير صحيحة');
+                alert('خطأ في اسم المستخدم أو كلمة المرور');
             }
-        }
-        
-        // عرض رسالة خطأ
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            const errorText = document.getElementById('errorText');
-            
-            errorText.textContent = message;
-            errorDiv.style.display = 'block';
-            
-            // اهتزاز الحقول
-            document.getElementById('username').style.borderColor = '#ef4444';
-            document.getElementById('password').style.borderColor = '#ef4444';
-            
-            // إخفاء الخطأ بعد 5 ثواني
-            setTimeout(hideError, 5000);
-        }
-        
-        // إخفاء رسالة الخطأ
-        function hideError() {
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('username').style.borderColor = '#e5e7eb';
-            document.getElementById('password').style.borderColor = '#e5e7eb';
-        }
-        
-        // إنشاء بيانات تجريبية
-        function createSampleData() {
-            // فقط إذا لم تكن هناك بيانات
-            if (!localStorage.getItem('identityRequests')) {
-                const sampleRequests = [
-                    {
-                        id: 'KR-' + Date.now().toString().slice(-6),
-                        fullName: 'أحمد محمد',
-                        gameId: '1234567890',
-                        gameUsername: 'Ahmed_KR',
-                        discordUsername: 'Ahmed#1234',
-                        job: 'interior',
-                        rank: 'رقيب',
-                        age: 25,
-                        date: new Date().toLocaleString('ar-SA'),
-                        status: 'pending'
-                    },
-                    {
-                        id: 'KR-' + (Date.now() + 1000).toString().slice(-6),
-                        fullName: 'سارة علي',
-                        gameId: '0987654321',
-                        gameUsername: 'Sara_Health',
-                        discordUsername: 'Sara#5678',
-                        job: 'health',
-                        rank: 'طبيب',
-                        age: 28,
-                        date: new Date().toLocaleString('ar-SA'),
-                        status: 'approved',
-                        approvedDate: new Date().toLocaleString('ar-SA')
-                    },
-                    {
-                        id: 'KR-' + (Date.now() + 2000).toString().slice(-6),
-                        fullName: 'خالد عبدالله',
-                        gameId: '1122334455',
-                        gameUsername: 'Khalid_J',
-                        discordUsername: 'Khalid#9999',
-                        job: 'justice',
-                        rank: 'محامي',
-                        age: 30,
-                        date: new Date().toLocaleString('ar-SA'),
-                        status: 'rejected',
-                        rejectedDate: new Date().toLocaleString('ar-SA'),
-                        rejectionReason: 'صورة الهوية غير واضحة'
-                    }
-                ];
-                
-                localStorage.setItem('identityRequests', JSON.stringify(sampleRequests));
-                console.log('تم إنشاء بيانات تجريبية');
-            }
-        }
-        
-        // إنشاء رمز مميز للجلسة
-        function generateToken() {
-            return 'token_' + Math.random().toString(36).substr(2) + Date.now().toString(36);
         }
     </script>
 </body>
