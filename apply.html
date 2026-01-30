@@ -166,6 +166,21 @@
             display: block;
         }
 
+        .status-message.pending {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(30, 58, 138, 0.2));
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .status-message.accepted {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.2), rgba(30, 58, 138, 0.2));
+            border-color: rgba(5, 150, 105, 0.3);
+        }
+
+        .status-message.rejected {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(30, 58, 138, 0.2));
+            border-color: rgba(220, 38, 38, 0.3);
+        }
+
         .alert {
             background: rgba(220, 38, 38, 0.1);
             backdrop-filter: blur(10px);
@@ -187,6 +202,12 @@
             background: rgba(5, 150, 105, 0.1);
             border-color: rgba(5, 150, 105, 0.3);
             color: #a7f3d0;
+        }
+
+        .alert.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.3);
+            color: #fef3c7;
         }
 
         /* ===== خطوات النموذج ===== */
@@ -275,6 +296,10 @@
         .input-group input.error {
             border-color: var(--secondary);
             animation: shake 0.5s;
+        }
+
+        .input-group input.success {
+            border-color: var(--accent);
         }
 
         .input-hint {
@@ -555,6 +580,17 @@
             border: 1px solid rgba(212, 175, 55, 0.2);
             max-height: 300px;
             overflow-y: auto;
+        }
+
+        .additional-note {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--gold);
+            font-size: 14px;
         }
 
         .additional-item {
@@ -956,7 +992,7 @@
             <div class="alert" id="alertBox"></div>
             
             <!-- النموذج الرئيسي -->
-            <div id="applicationForm">
+            <div id="applicationForm" style="display: none;">
                 <!-- الخطوة 1: البيانات الأساسية -->
                 <div class="step" id="step1">
                     <div class="step-title">
@@ -965,10 +1001,10 @@
                     </div>
                     
                     <div class="input-group">
-                        <label><i class="fas fa-user"></i> الاسم الكامل:</label>
-                        <input type="text" id="fullName" placeholder="الاسم كما في الوثيقة الرسمية">
+                        <label><i class="fas fa-user"></i> الاسم الكامل ثلاثي:</label>
+                        <input type="text" id="fullName" placeholder="مثال: محمد بن فهد الحربي">
                         <div class="input-hint">
-                            <i class="fas fa-info-circle"></i> يرجى كتابة الاسم ثلاثي كما في الوثيقة الرسمية
+                            <i class="fas fa-info-circle"></i> يجب أن يكون الاسم ثلاثي باللغة العربية فقط (الاسم + اسم الأب + اسم العائلة)
                         </div>
                     </div>
                     
@@ -982,15 +1018,15 @@
                     
                     <div class="input-group">
                         <label><i class="fas fa-gamepad"></i> اسم المستخدم في اللعبة:</label>
-                        <input type="text" id="gameUsername" placeholder="مثال: Ahmed_KR">
+                        <input type="text" id="gameUsername" placeholder="مثال: Ahmed_KR" dir="ltr">
                         <div class="input-hint">
-                            <i class="fas fa-info-circle"></i> اسم المستخدم المستخدم في الخوادم الرسمية
+                            <i class="fas fa-info-circle"></i> يجب أن يكون باللغة الإنجليزية والأرقام الإنجليزية فقط
                         </div>
                     </div>
                     
                     <div class="input-group">
                         <label><i class="fab fa-discord"></i> اسم المستخدم في الديسكورد:</label>
-                        <input type="text" id="discordUsername" placeholder="مثال: Ahmed#1234">
+                        <input type="text" id="discordUsername" placeholder="مثال: Ahmed#1234" dir="ltr">
                         <div class="input-hint">
                             <i class="fas fa-info-circle"></i> ضروري للتواصل معك في حالة وجود استفسار
                         </div>
@@ -1003,6 +1039,7 @@
                                maxlength="10" 
                                pattern="\d*"
                                inputmode="numeric"
+                               dir="ltr"
                                oninput="validateGameId(this)">
                         <div class="char-counter" id="gameIdCounter">0/10</div>
                         <div class="input-hint">
@@ -1207,19 +1244,25 @@
             </div>
             
             <!-- رسالة النجاح -->
-            <div class="success-message" id="successMessage">
+            <div class="success-message" id="successMessage" style="display: none;">
                 <div class="success-icon">
                     <i class="fas fa-check-circle"></i>
                 </div>
-                <h3>تم إرسال طلبك بنجاح! 🎉</h3>
+                <h3>تم إرسال طلبك بنجاح</h3>
                 <p>سيتم مراجعة طلبك خلال 24-48 ساعة عمل</p>
                 
                 <div class="request-summary" id="successDetails"></div>
                 
-                <button class="btn" onclick="checkRequestStatus()" style="margin-top: 30px;">
-                    <i class="fas fa-sync-alt"></i>
-                    <span>تحديث حالة الطلب</span>
-                </button>
+                <div class="btn-group">
+                    <button class="btn" onclick="checkRequestStatus()">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>تحديث حالة الطلب</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="goToHomePage()">
+                        <i class="fas fa-home"></i>
+                        <span>العودة للصفحة الرئيسية</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1230,9 +1273,12 @@
         let selectedRank = null;
         let selectedAdditionals = [];
         let identityFile = null;
+        let hasExistingRequest = false;
+        let existingRequestData = null;
 
+        // ====== البيانات المعدلة حسب الطلب ======
         const RANKS = {
-            citizen: ['مواطن عادي', 'مواطن متميز', 'مواطن فخري'],
+            citizen: ['مواطن'],
             interior: ['جندي', 'جندي أول', 'عريف', 'وكيل رقيب', 'رقيب', 'رقيب أول', 'رئيس رقباء', 'ملازم', 'ملازم أول', 'نقيب', 'رائد', 'مقدم', 'عقيد', 'عميد', 'لواء', 'فريق', 'فريق أول', 'نائب مدير الأمن العام', 'مدير الأمن العام', 'نائب وزير الداخلية', 'وزير الداخلية'],
             health: ['مسعف', 'طبيب', 'طبيب عام', 'طبيب مختص', 'دكتور', 'دكتور عام', 'دكتور مختص', 'استشاري أمراض جلدية وجراحة', 'استشاري طب الأسنان', 'أخصائي', 'جراح', 'مساعد جراح', 'بروفسور', 'نائب مدير مستشفى', 'مدير مستشفى', 'مستشار وزير الصحة', 'نائب وزير الصحة', 'وزير الصحة'],
             justice: ['محامي', 'محامي متمرس', 'محامي متخصص', 'قاضي', 'قاضي متمرس', 'قاضي استئناف', 'قاضي درجة أولى', 'قاضي محكمة عليا', 'قاضي محترف', 'مستشار وزير العدل', 'نائب وزير العدل', 'وزير العدل']
@@ -1248,75 +1294,243 @@
         // ====== عند تحميل الصفحة ======
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 نظام تفعيل الهوية الحكومي - جاهز');
-            checkPreviousRequest();
+            checkExistingRequest();
             setupAnimations();
             setupGameIdField();
+            setupInputValidation();
         });
+
+        // ====== التحقق من الطلب الحالي ======
+        function checkExistingRequest() {
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const deviceId = getDeviceId();
+            const userRequests = requests.filter(req => req.deviceId === deviceId);
+            
+            if (userRequests.length > 0) {
+                const latestRequest = userRequests.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate))[0];
+                existingRequestData = latestRequest;
+                hasExistingRequest = true;
+                
+                if (latestRequest.status === 'pending' || latestRequest.status === 'accepted') {
+                    showExistingRequest(latestRequest);
+                    return;
+                }
+            }
+            
+            // إذا لم يكن هناك طلب معلق أو مقبول، اعرض النموذج
+            document.getElementById('applicationForm').style.display = 'block';
+        }
+
+        // ====== عرض الطلب الحالي ======
+        function showExistingRequest(request) {
+            const messageDiv = document.getElementById('previousRequestMessage');
+            const formDiv = document.getElementById('applicationForm');
+            
+            let statusText, statusIcon, statusClass;
+            
+            if (request.status === 'pending') {
+                statusText = 'طلبك قيد المراجعة';
+                statusIcon = 'fas fa-clock';
+                statusClass = 'pending';
+            } else if (request.status === 'accepted') {
+                statusText = 'تم تفعيل هويتك';
+                statusIcon = 'fas fa-check-circle';
+                statusClass = 'accepted';
+            } else {
+                statusText = 'تم رفض طلبك';
+                statusIcon = 'fas fa-times-circle';
+                statusClass = 'rejected';
+            }
+            
+            messageDiv.innerHTML = `
+                <i class="${statusIcon}" style="font-size: 50px; margin-bottom: 20px; color: ${
+                    request.status === 'accepted' ? '#10b981' : 
+                    request.status === 'pending' ? '#f59e0b' : '#ef4444'
+                }"></i>
+                <h2 style="margin-bottom: 15px;">${statusText}</h2>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 20px 0;">
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span style="color: rgba(255,255,255,0.7);">رقم الطلب:</span>
+                        <span style="color: white; font-weight: 600;">${request.id}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span style="color: rgba(255,255,255,0.7);">التاريخ:</span>
+                        <span style="color: white;">${request.date}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span style="color: rgba(255,255,255,0.7);">الوظيفة:</span>
+                        <span style="color: white;">${getJobName(request.job)}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span style="color: rgba(255,255,255,0.7);">الحالة:</span>
+                        <span style="color: ${
+                            request.status === 'accepted' ? '#10b981' : 
+                            request.status === 'pending' ? '#f59e0b' : '#ef4444'
+                        }; font-weight: 600;">
+                            ${request.status === 'accepted' ? 'مقبول' : 
+                              request.status === 'pending' ? 'قيد المراجعة' : 'مرفوض'}
+                        </span>
+                    </div>
+                </div>
+                
+                <p style="color: ${
+                    request.status === 'accepted' ? '#10b981' : 
+                    request.status === 'pending' ? '#f59e0b' : '#ef4444'
+                }; margin-top: 15px;">
+                    <i class="fas fa-info-circle"></i>
+                    ${request.status === 'accepted' ? 
+                        'هويتك مفعلة ولا يمكنك تقديم طلب جديد' : 
+                      request.status === 'pending' ? 
+                        'لا يمكن تقديم طلب جديد حتى يتم الرد على طلبك الحالي' : 
+                        'يمكنك تقديم طلب جديد بعد تصحيح المعلومات'}
+                </p>
+                
+                ${request.status === 'rejected' ? `
+                    <button class="btn" onclick="startNewRequest()" style="margin-top: 20px;">
+                        <i class="fas fa-redo"></i>
+                        <span>تقديم طلب جديد</span>
+                    </button>
+                ` : ''}
+            `;
+            
+            messageDiv.className = `status-message show ${statusClass}`;
+            formDiv.style.display = 'none';
+            
+            // إذا كان الطلب مقبول، أضف زر العودة للرئيسية
+            if (request.status === 'accepted' || request.status === 'pending') {
+                const backBtn = document.createElement('button');
+                backBtn.className = 'btn btn-secondary';
+                backBtn.style.marginTop = '20px';
+                backBtn.innerHTML = `
+                    <i class="fas fa-home"></i>
+                    <span>العودة للصفحة الرئيسية</span>
+                `;
+                backBtn.onclick = goToHomePage;
+                messageDiv.appendChild(backBtn);
+            }
+        }
+
+        function startNewRequest() {
+            document.getElementById('previousRequestMessage').style.display = 'none';
+            document.getElementById('applicationForm').style.display = 'block';
+            hasExistingRequest = false;
+            existingRequestData = null;
+        }
 
         // ====== إعداد حقل رقم الهوية مع التحكم بالأرقام فقط ======
         function setupGameIdField() {
             const gameIdInput = document.getElementById('gameId');
             const counter = document.getElementById('gameIdCounter');
             
-            // السماح بالأرقام فقط
             gameIdInput.addEventListener('input', function() {
-                // إزالة أي حروف أو رموز
                 let value = this.value.replace(/\D/g, '');
-                
-                // تقييد بـ 10 أرقام فقط
                 value = value.slice(0, 10);
-                
-                // تحديث القيمة
                 this.value = value;
-                
-                // تحديث العداد
                 counter.textContent = `${value.length}/10`;
                 
-                // تغيير لون العداد حسب الطول
                 if (value.length === 10) {
                     counter.className = 'char-counter success';
                     counter.innerHTML = `<i class="fas fa-check"></i> ${value.length}/10`;
-                    this.style.borderColor = '#059669';
-                } else if (value.length > 0 && value.length < 10) {
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                } else if (value.length > 0) {
                     counter.className = 'char-counter';
-                    this.style.borderColor = '#f59e0b';
+                    this.classList.remove('error', 'success');
                 } else {
                     counter.className = 'char-counter';
-                    this.style.borderColor = '';
+                    this.classList.remove('error', 'success');
                 }
             });
             
-            // منع اللصق غير الرقمي
             gameIdInput.addEventListener('paste', function(e) {
                 e.preventDefault();
                 const pastedData = e.clipboardData.getData('text');
                 const numbersOnly = pastedData.replace(/\D/g, '').slice(0, 10);
                 this.value = numbersOnly;
-                
-                // تحديث العداد
                 counter.textContent = `${numbersOnly.length}/10`;
                 if (numbersOnly.length === 10) {
                     counter.className = 'char-counter success';
+                    this.classList.add('success');
                 }
             });
             
-            // منع إدخال الحروف من الكيبورد
             gameIdInput.addEventListener('keypress', function(e) {
-                // السماح فقط بالأرقام (0-9)
                 if (!/\d/.test(e.key)) {
                     e.preventDefault();
-                    
-                    // تأثير اهتزاز للتحذير
                     counter.className = 'char-counter error';
                     counter.innerHTML = `<i class="fas fa-times"></i> أرقام فقط!`;
+                    this.classList.add('error');
                     
                     setTimeout(() => {
                         if (this.value.length === 10) {
                             counter.className = 'char-counter success';
+                            this.classList.remove('error');
+                            this.classList.add('success');
                         } else {
                             counter.className = 'char-counter';
+                            this.classList.remove('error');
                         }
                     }, 1000);
+                }
+            });
+        }
+
+        // ====== إعداد التحقق من الحقول ======
+        function setupInputValidation() {
+            // الاسم ثلاثي عربي فقط
+            const nameInput = document.getElementById('fullName');
+            nameInput.addEventListener('input', function() {
+                const arabicRegex = /^[\u0600-\u06FF\s]+$/;
+                const words = this.value.trim().split(/\s+/);
+                
+                if (this.value.trim() === '') {
+                    this.classList.remove('error', 'success');
+                } else if (!arabicRegex.test(this.value)) {
+                    this.classList.add('error');
+                    this.classList.remove('success');
+                    showAlert('يجب أن يكون الاسم باللغة العربية فقط', false);
+                } else if (words.length < 3) {
+                    this.classList.add('error');
+                    this.classList.remove('success');
+                    showAlert('يجب أن يكون الاسم ثلاثي (الاسم + اسم الأب + اسم العائلة)', false);
+                } else {
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                }
+            });
+            
+            // اسم المستخدم باللعبة (إنجليزي فقط)
+            const gameUsernameInput = document.getElementById('gameUsername');
+            gameUsernameInput.addEventListener('input', function() {
+                const englishRegex = /^[A-Za-z0-9_]+$/;
+                
+                if (this.value.trim() === '') {
+                    this.classList.remove('error', 'success');
+                } else if (!englishRegex.test(this.value)) {
+                    this.classList.add('error');
+                    this.classList.remove('success');
+                    showAlert('يجب أن يكون اسم المستخدم باللغة الإنجليزية والأرقام الإنجليزية فقط', false);
+                } else {
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                }
+            });
+            
+            // اسم الديسكورد (إنجليزي وأرقام إنجليزية فقط)
+            const discordInput = document.getElementById('discordUsername');
+            discordInput.addEventListener('input', function() {
+                const discordRegex = /^[A-Za-z0-9_#]+$/;
+                
+                if (this.value.trim() === '') {
+                    this.classList.remove('error', 'success');
+                } else if (!discordRegex.test(this.value)) {
+                    this.classList.add('error');
+                    this.classList.remove('success');
+                    showAlert('يجب أن يكون اسم الديسكورد باللغة الإنجليزية والأرقام الإنجليزية فقط', false);
+                } else {
+                    this.classList.remove('error');
+                    this.classList.add('success');
                 }
             });
         }
@@ -1329,10 +1543,11 @@
             if (value.length === 10 && /^\d+$/.test(value)) {
                 counter.className = 'char-counter success';
                 counter.innerHTML = `<i class="fas fa-check"></i> ${value.length}/10`;
-                input.style.borderColor = '#059669';
+                input.classList.remove('error');
+                input.classList.add('success');
                 return true;
             } else if (value.length > 0) {
-                input.style.borderColor = '#f59e0b';
+                input.classList.remove('success');
                 return false;
             }
             
@@ -1378,7 +1593,7 @@
             }
         }
 
-        // ====== التحقق من الطلبات السابقة ======
+        // ====== الحصول على معرف الجهاز ======
         function getDeviceId() {
             let deviceId = localStorage.getItem('device_id');
             if (!deviceId) {
@@ -1386,73 +1601,6 @@
                 localStorage.setItem('device_id', deviceId);
             }
             return deviceId;
-        }
-
-        function checkPreviousRequest() {
-            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-            const deviceId = getDeviceId();
-            const userRequests = requests.filter(req => req.deviceId === deviceId);
-            
-            if (userRequests.length > 0) {
-                const latestRequest = userRequests.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-                
-                if (latestRequest.status === 'pending' || latestRequest.status === 'accepted') {
-                    showExistingRequest(latestRequest);
-                    return true;
-                } else if (latestRequest.status === 'rejected') {
-                    showRejectedMessage(latestRequest);
-                    return false;
-                }
-            }
-            
-            return false;
-        }
-
-        function showExistingRequest(request) {
-            const messageDiv = document.getElementById('previousRequestMessage');
-            const formDiv = document.getElementById('applicationForm');
-            
-            messageDiv.innerHTML = `
-                <i class="fas fa-${request.status === 'accepted' ? 'check-circle' : 'clock'}" 
-                   style="font-size: 50px; margin-bottom: 20px; color: ${request.status === 'accepted' ? '#10b981' : '#f59e0b'}"></i>
-                <h2 style="margin-bottom: 15px;">${request.status === 'accepted' ? '✅ هويتك مفعلة' : '⏳ طلبك قيد المراجعة'}</h2>
-                
-                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 20px 0;">
-                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
-                        <span style="color: rgba(255,255,255,0.7);">رقم الطلب:</span>
-                        <span style="color: white; font-weight: 600;">${request.id}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
-                        <span style="color: rgba(255,255,255,0.7);">التاريخ:</span>
-                        <span style="color: white;">${request.date}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
-                        <span style="color: rgba(255,255,255,0.7);">الحالة:</span>
-                        <span style="color: ${request.status === 'accepted' ? '#10b981' : '#f59e0b'};">
-                            ${request.status === 'accepted' ? 'مقبول' : 'قيد المراجعة'}
-                        </span>
-                    </div>
-                </div>
-            `;
-            
-            messageDiv.classList.add('show');
-            formDiv.style.display = 'none';
-        }
-
-        function showRejectedMessage(request) {
-            const messageDiv = document.getElementById('previousRequestMessage');
-            
-            messageDiv.innerHTML = `
-                <i class="fas fa-exclamation-triangle" style="font-size: 50px; margin-bottom: 20px; color: #ef4444;"></i>
-                <h2 style="margin-bottom: 15px;">❌ تم رفض طلبك السابق</h2>
-                <p style="margin-bottom: 20px;">يمكنك تقديم طلب جديد بعد تصحيح المعلومات</p>
-            `;
-            
-            messageDiv.classList.add('show');
-            
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 3000);
         }
 
         // ====== التحقق من الخطوات ======
@@ -1463,44 +1611,69 @@
             const discordUsername = document.getElementById('discordUsername').value.trim();
             const gameId = document.getElementById('gameId').value.trim();
             
-            // إعادة تعيين الأخطاء
             document.querySelectorAll('input').forEach(input => {
                 input.classList.remove('error');
             });
 
             let isValid = true;
+            let errorMessage = '';
             
-            if (!name || name.split(' ').length < 2) {
-                showAlert('❌ يرجى إدخال الاسم الكامل ثلاثي', false);
+            // التحقق من الاسم الثلاثي العربي
+            const arabicRegex = /^[\u0600-\u06FF\s]+$/;
+            const words = name.split(/\s+/);
+            if (!name || words.length < 3) {
+                errorMessage = 'يجب أن يكون الاسم ثلاثي بالكامل باللغة العربية (الاسم + اسم الأب + اسم العائلة)';
                 document.getElementById('fullName').classList.add('error');
                 isValid = false;
-            } else if (!age || age < 18) {
-                showAlert('❌ العمر يجب أن يكون 18 سنة أو أكثر', false);
+            } else if (!arabicRegex.test(name)) {
+                errorMessage = 'يجب أن يكون الاسم باللغة العربية فقط';
+                document.getElementById('fullName').classList.add('error');
+                isValid = false;
+            }
+            
+            // التحقق من العمر
+            else if (!age || age < 18) {
+                errorMessage = 'العمر يجب أن يكون 18 سنة أو أكثر';
                 document.getElementById('age').classList.add('error');
                 isValid = false;
-            } else if (!gameUsername) {
-                showAlert('❌ يرجى إدخال اسم المستخدم في اللعبة', false);
+            }
+            
+            // التحقق من اسم اللعبة (إنجليزي فقط)
+            else if (!gameUsername || !/^[A-Za-z0-9_]+$/.test(gameUsername)) {
+                errorMessage = 'اسم المستخدم في اللعبة يجب أن يكون باللغة الإنجليزية والأرقام الإنجليزية فقط';
                 document.getElementById('gameUsername').classList.add('error');
                 isValid = false;
-            } else if (!discordUsername) {
-                showAlert('❌ يرجى إدخال اسم المستخدم في الديسكورد', false);
+            }
+            
+            // التحقق من اسم الديسكورد (إنجليزي فقط)
+            else if (!discordUsername || !/^[A-Za-z0-9_#]+$/.test(discordUsername)) {
+                errorMessage = 'اسم الديسكورد يجب أن يكون باللغة الإنجليزية والأرقام الإنجليزية فقط';
                 document.getElementById('discordUsername').classList.add('error');
                 isValid = false;
-            } else if (!gameId || gameId.length !== 10 || !/^\d+$/.test(gameId)) {
-                showAlert('❌ رقم الهوية يجب أن يكون 10 أرقام بالضبط', false);
+            }
+            
+            // التحقق من رقم الهوية
+            else if (!gameId || gameId.length !== 10 || !/^\d+$/.test(gameId)) {
+                errorMessage = 'رقم الهوية يجب أن يكون 10 أرقام بالضبط (أرقام إنجليزية فقط)';
                 document.getElementById('gameId').classList.add('error');
                 const counter = document.getElementById('gameIdCounter');
                 counter.className = 'char-counter error';
                 counter.innerHTML = `<i class="fas fa-times"></i> ${gameId.length}/10`;
                 isValid = false;
-            } else if (!identityFile) {
-                showAlert('❌ يجب رفع صورة الهوية', false);
+            }
+            
+            // التحقق من رفع صورة الهوية
+            else if (!identityFile) {
+                errorMessage = 'يجب رفع صورة الهوية';
                 isValid = false;
             }
 
-            if (isValid) {
-                showStep2();
+            if (!isValid) {
+                showAlert(errorMessage, false);
+                return;
             }
+
+            showStep2();
         }
 
         function showStep2() {
@@ -1525,7 +1698,7 @@
 
         function showStep3() {
             if (!selectedJob) {
-                showAlert('❌ يرجى اختيار الوظيفة', false);
+                showAlert('يرجى اختيار الوظيفة', false);
                 return;
             }
 
@@ -1565,23 +1738,24 @@
 
         function showStep4() {
             if (!selectedRank) {
-                showAlert('❌ يرجى اختيار المنصب', false);
+                showAlert('يرجى اختيار المنصب', false);
                 return;
             }
 
             const posts = ADDITIONAL_POSTS[selectedJob];
-            if (!posts || posts.length === 0) {
+            const container = document.getElementById('additionalContainer');
+            
+            if (!posts || posts.length === 0 || selectedJob === 'citizen') {
                 showStep5();
                 return;
             }
 
-            const container = document.getElementById('additionalContainer');
             container.innerHTML = `
                 <div class="additional-posts">
-                    <h4 style="color: var(--gold); margin-bottom: 15px; text-align: center;">
-                        <i class="fas fa-plus-circle"></i>
-                        اختر مناصب إضافية (اختياري):
-                    </h4>
+                    <div class="additional-note">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>ملاحظة:</strong> في حال وجود مناصب إضافية الرجاء اختيارها لفتح النظام للرتبة
+                    </div>
                     ${posts.map(post => `
                         <div class="additional-item">
                             <input type="checkbox" id="add_${post}" value="${post}" onchange="toggleAdditionalPost(this, '${post}')">
@@ -1678,13 +1852,19 @@
 
         // ====== إرسال الطلب ======
         function submitRequest() {
+            // التحقق من وجود طلب سابق
+            if (hasExistingRequest) {
+                showAlert('لديك طلب قيد المراجعة أو مقبول بالفعل', false);
+                return;
+            }
+            
             // التحقق من الشروط
             const terms1 = document.getElementById('agreeTerms1');
             const terms2 = document.getElementById('agreeTerms2');
             const terms3 = document.getElementById('agreeTerms3');
             
             if (!terms1.checked || !terms2.checked || !terms3.checked) {
-                showAlert('❌ يجب الموافقة على جميع الشروط والأحكام', false);
+                showAlert('يجب الموافقة على جميع الشروط والأحكام', false);
                 return;
             }
             
@@ -1714,6 +1894,10 @@
             
             // حفظ الطلب
             saveRequest(requestData);
+            
+            // تحديث حالة النظام
+            hasExistingRequest = true;
+            existingRequestData = requestData;
             
             // إظهار رسالة النجاح
             showSuccessMessage(requestData);
@@ -1749,10 +1933,50 @@
                         <i class="fas fa-clock"></i> قيد المراجعة
                     </span>
                 </div>
+                <div class="summary-item">
+                    <span class="summary-label">ملاحظة:</span>
+                    <span class="summary-value" style="color: var(--gold);">
+                        <i class="fas fa-exclamation-circle"></i> لا يمكن تعديل الطلب بعد الإرسال
+                    </span>
+                </div>
             `;
             
             form.style.display = 'none';
-            successMessage.classList.add('show');
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.classList.add('show');
+            }, 10);
+        }
+
+        // ====== تحديث حالة الطلب ======
+        function checkRequestStatus() {
+            if (!hasExistingRequest || !existingRequestData) {
+                showAlert('لا يوجد طلب مقدم', false);
+                return;
+            }
+            
+            showAlert('جاري تحديث حالة الطلب...', true);
+            
+            // محاكاة تحديث من النظام
+            setTimeout(() => {
+                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+                const currentRequest = requests.find(req => req.id === existingRequestData.id);
+                
+                if (currentRequest) {
+                    if (currentRequest.status !== existingRequestData.status) {
+                        existingRequestData = currentRequest;
+                        showAlert('تم تحديث حالة الطلب', true);
+                        location.reload(); // إعادة تحميل الصفحة لعرض الحالة الجديدة
+                    } else {
+                        showAlert('حالة الطلب لم تتغير', false);
+                    }
+                }
+            }, 1500);
+        }
+
+        // ====== العودة للصفحة الرئيسية ======
+        function goToHomePage() {
+            window.location.href = 'index.html';
         }
 
         // ====== دوال مساعدة ======
@@ -1763,6 +1987,8 @@
             
             if (isSuccess) {
                 alertBox.classList.add('success');
+            } else {
+                alertBox.classList.add('warning');
             }
             
             alertBox.classList.add('show');
@@ -1778,13 +2004,6 @@
             setTimeout(() => {
                 step.style.animation = 'stepAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards';
             }, 10);
-        }
-
-        function checkRequestStatus() {
-            showAlert('🔍 جاري التحقق من حالة طلبك...', true);
-            setTimeout(() => {
-                showAlert('يمكنك التحقق من حالة طلبك في قسم "متابعة الطلبات"', true);
-            }, 1500);
         }
     </script>
 </body>
