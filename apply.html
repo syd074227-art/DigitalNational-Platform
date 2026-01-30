@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تقديم طلب تفعيل الهوية - هيئة KR الرقمية</title>
+    <title>تقديم طلب تفعيل الهوية - نظام KR الرقمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ===== RESET & BASE STYLES ===== */
         * { 
             margin: 0; 
             padding: 0; 
@@ -17,68 +18,58 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
+        /* ===== MAIN CONTAINER ===== */
         .container {
+            width: 100%;
             max-width: 900px;
-            margin: 0 auto;
             background: white;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         
-        header {
+        /* ===== HEADER ===== */
+        .header {
             background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
             padding: 25px 30px;
+            text-align: center;
         }
         
         .logo {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
-        }
-        
-        .logo i {
-            font-size: 32px;
-        }
-        
-        nav {
-            margin-top: 15px;
-            display: flex;
-            flex-wrap: wrap;
             gap: 10px;
         }
         
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            transition: all 0.3s;
-            background: rgba(255, 255, 255, 0.1);
+        .logo i {
+            font-size: 48px;
         }
         
-        nav a:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .logo h1 {
+            font-size: 24px;
+            margin: 0;
         }
         
-        nav a.active {
-            background: white;
-            color: #1e3a8a;
+        .logo p {
+            opacity: 0.9;
+            font-size: 16px;
+            margin: 5px 0 0 0;
         }
         
-        .content {
-            padding: 30px;
-        }
-        
+        /* ===== ALERTS ===== */
         .alert {
             background: #fee2e2;
             color: #991b1b;
             padding: 16px;
             border-radius: 12px;
-            margin-bottom: 25px;
+            margin: 20px;
             text-align: center;
             border: 2px solid #f87171;
             display: none;
@@ -87,11 +78,6 @@
         .alert.show {
             display: block;
             animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         
         .alert.success {
@@ -106,6 +92,17 @@
             border-color: #f59e0b;
         }
         
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ===== CONTENT AREA ===== */
+        .content {
+            padding: 30px;
+        }
+        
+        /* ===== STEPS ===== */
         .step {
             background: #f8fafc;
             border-radius: 15px;
@@ -135,6 +132,7 @@
             font-weight: bold;
         }
         
+        /* ===== INPUT GROUPS ===== */
         .input-group {
             margin-bottom: 20px;
         }
@@ -175,7 +173,7 @@
             padding-right: 5px;
         }
         
-        /* مثال صورة الهوية */
+        /* ===== ID EXAMPLE ===== */
         .id-example {
             background: #f0f9ff;
             border-radius: 15px;
@@ -237,6 +235,7 @@
             border: 1px solid #e2e8f0;
         }
         
+        /* ===== JOBS GRID ===== */
         .jobs-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -274,6 +273,7 @@
         .job-card.health i { color: #dc2626; }
         .job-card.justice i { color: #059669; }
         
+        /* ===== RANKS CONTAINER ===== */
         .ranks-container {
             background: white;
             border-radius: 15px;
@@ -301,6 +301,7 @@
             border-radius: 8px;
         }
         
+        /* ===== ADDITIONAL POSTS ===== */
         .additional-posts {
             background: #fefce8;
             border-radius: 15px;
@@ -327,6 +328,7 @@
             height: 20px;
         }
         
+        /* ===== BUTTONS ===== */
         .btn {
             background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
@@ -370,6 +372,7 @@
             background: #475569;
         }
         
+        /* ===== SUCCESS MESSAGE ===== */
         .success-message {
             text-align: center;
             padding: 40px 30px;
@@ -382,6 +385,7 @@
         
         .success-message.show {
             display: block;
+            animation: fadeIn 0.5s ease;
         }
         
         .success-message i {
@@ -390,6 +394,7 @@
             margin-bottom: 20px;
         }
         
+        /* ===== STATUS ITEMS ===== */
         .status-item {
             display: flex;
             justify-content: space-between;
@@ -411,6 +416,7 @@
             font-weight: 600;
         }
         
+        /* ===== EXAMPLE BOX ===== */
         .example-box {
             background: #f0f9ff;
             border-radius: 10px;
@@ -425,33 +431,43 @@
             font-size: 14px;
         }
         
+        /* ===== REQUESTS COUNTER ===== */
+        #requestsCounter {
+            background: #dbeafe;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+            border: 2px solid #3b82f6;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+        
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .jobs-grid { grid-template-columns: 1fr; }
             .container { margin: 10px; border-radius: 15px; }
             .content { padding: 20px; }
             .btn-group { flex-direction: column; }
-            nav { flex-direction: column; }
+            body { padding: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
+        <!-- ترويسة النموذج فقط -->
+        <div class="header">
             <div class="logo">
                 <i class="fas fa-id-card"></i>
-                <div>
-                    <h2>تقديم طلب تفعيل الهوية</h2>
-                    <p>هيئة KR الرقمية</p>
-                </div>
+                <h1>تقديم طلب تفعيل الهوية</h1>
+                <p>نظام هيئة KR الرقمية</p>
             </div>
-            
-            <nav>
-                <a href="index.html">الرئيسية</a>
-                <a href="apply.html" class="active">تقديم طلب</a>
-                <a href="#" onclick="alert('صفحة الاستعلام ستتوفر قريباً')">الاستعلام عن الطلب</a>
-                <a href="#" onclick="alert('سيتم تفعيل لوحة الإدارة قريباً')">لوحة الإدارة</a>
-            </nav>
-        </header>
+        </div>
         
         <div class="content">
             <!-- تحذير ممنوع التقديم المتكرر -->
@@ -463,6 +479,9 @@
             
             <!-- تحذير عام -->
             <div class="alert" id="alertBox"></div>
+            
+            <!-- الطلبات المتبقية -->
+            <div id="requestsCounter"></div>
             
             <!-- نموذج التقديم -->
             <div id="applicationForm">
@@ -509,7 +528,7 @@
                         <div class="id-example">
                             <h4><i class="fas fa-image"></i> مثال على مكان رقم الهوية:</h4>
                             <div class="id-example-img">
-                                <img src="https://image2url.com/r2/default/images/1769725982434-43d9453a-c86b-4ed2-8e98-08f2b86eaa86.jpeg" 
+                                <img src="https://via.placeholder.com/400x200/3b82f6/ffffff?text=Game+ID+Example" 
                                      alt="مثال رقم الهوية في اللعبة">
                                 <div class="id-example-note">هذا هو مكان رقم الهوية</div>
                             </div>
@@ -943,31 +962,23 @@
             const remaining = BAN_CONFIG.MAX_REQUESTS - recentRequests.length;
             
             if (remaining >= 0) {
-                const counter = document.createElement('div');
-                counter.id = 'requestsCounter';
-                counter.innerHTML = `
-                    <div style="background: ${remaining > 1 ? '#dbeafe' : (remaining === 1 ? '#fef3c7' : '#fee2e2')}; 
-                                padding: 12px; 
-                                border-radius: 8px; 
-                                margin: 10px 0;
-                                text-align: center;
-                                border: 2px solid ${remaining > 1 ? '#3b82f6' : (remaining === 1 ? '#f59e0b' : '#dc2626')};
-                                animation: pulse 2s infinite;">
-                        <i class="fas fa-${remaining > 1 ? 'info-circle' : (remaining === 1 ? 'exclamation-triangle' : 'exclamation-circle')}"></i>
-                        <strong>الطلبات المتبقية:</strong> ${remaining} من ${BAN_CONFIG.MAX_REQUESTS}
-                        <br>
-                        <small style="color: #64748b; font-size: 13px;">
-                            (خلال 24 ساعة)
-                        </small>
-                    </div>
-                `;
-                
-                const form = document.getElementById('applicationForm');
-                if (form) {
-                    const firstStep = document.querySelector('.step');
-                    if (firstStep) {
-                        firstStep.insertBefore(counter, firstStep.firstChild);
-                    }
+                const counter = document.getElementById('requestsCounter');
+                if (counter) {
+                    counter.innerHTML = `
+                        <div style="background: ${remaining > 1 ? '#dbeafe' : (remaining === 1 ? '#fef3c7' : '#fee2e2')}; 
+                                    padding: 12px; 
+                                    border-radius: 8px; 
+                                    text-align: center;
+                                    border: 2px solid ${remaining > 1 ? '#3b82f6' : (remaining === 1 ? '#f59e0b' : '#dc2626')};
+                                    animation: pulse 2s infinite;">
+                            <i class="fas fa-${remaining > 1 ? 'info-circle' : (remaining === 1 ? 'exclamation-triangle' : 'exclamation-circle')}"></i>
+                            <strong>الطلبات المتبقية:</strong> ${remaining} من ${BAN_CONFIG.MAX_REQUESTS}
+                            <br>
+                            <small style="color: #64748b; font-size: 13px;">
+                                (خلال 24 ساعة)
+                            </small>
+                        </div>
+                    `;
                 }
             }
         }
@@ -1005,7 +1016,8 @@
 
         // ====== رسائل الحظر ======
         function showBanMessage(banUntil) {
-            document.getElementById('applicationForm').style.display = 'none';
+            const form = document.getElementById('applicationForm');
+            if (form) form.style.display = 'none';
             
             const banDiv = document.createElement('div');
             banDiv.id = 'banMessage';
