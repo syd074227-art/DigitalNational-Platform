@@ -287,6 +287,30 @@
             gap: 8px;
         }
 
+        /* ===== عداد الأحرف لرقم الهوية ===== */
+        .char-counter {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus + .char-counter {
+            color: var(--gold);
+        }
+
+        .char-counter.error {
+            color: var(--secondary);
+            animation: pulse 0.5s;
+        }
+
+        .char-counter.success {
+            color: var(--accent);
+        }
+
         /* ===== مثال رفع الهوية ===== */
         .upload-example {
             background: rgba(30, 58, 138, 0.2);
@@ -842,6 +866,11 @@
             50% { transform: scale(1.1); }
         }
 
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
         /* ===== تصميم متجاوب ===== */
         @media (max-width: 768px) {
             .container {
@@ -964,6 +993,20 @@
                         <input type="text" id="discordUsername" placeholder="مثال: Ahmed#1234">
                         <div class="input-hint">
                             <i class="fas fa-info-circle"></i> ضروري للتواصل معك في حالة وجود استفسار
+                        </div>
+                    </div>
+                    
+                    <!-- حقل رقم الهوية المعدل -->
+                    <div class="input-group">
+                        <label><i class="fas fa-id-card"></i> رقم الهوية في اللعبة:</label>
+                        <input type="text" id="gameId" placeholder="أدخل 10 أرقام فقط" 
+                               maxlength="10" 
+                               pattern="\d*"
+                               inputmode="numeric"
+                               oninput="validateGameId(this)">
+                        <div class="char-counter" id="gameIdCounter">0/10</div>
+                        <div class="input-hint">
+                            <i class="fas fa-info-circle"></i> يرجى كتابة 10 أرقام فقط (لا تقبل الحروف أو الرموز)
                         </div>
                     </div>
                     
@@ -1207,11 +1250,97 @@
             console.log('🚀 نظام تفعيل الهوية الحكومي - جاهز');
             checkPreviousRequest();
             setupAnimations();
+            setupGameIdField();
         });
+
+        // ====== إعداد حقل رقم الهوية مع التحكم بالأرقام فقط ======
+        function setupGameIdField() {
+            const gameIdInput = document.getElementById('gameId');
+            const counter = document.getElementById('gameIdCounter');
+            
+            // السماح بالأرقام فقط
+            gameIdInput.addEventListener('input', function() {
+                // إزالة أي حروف أو رموز
+                let value = this.value.replace(/\D/g, '');
+                
+                // تقييد بـ 10 أرقام فقط
+                value = value.slice(0, 10);
+                
+                // تحديث القيمة
+                this.value = value;
+                
+                // تحديث العداد
+                counter.textContent = `${value.length}/10`;
+                
+                // تغيير لون العداد حسب الطول
+                if (value.length === 10) {
+                    counter.className = 'char-counter success';
+                    counter.innerHTML = `<i class="fas fa-check"></i> ${value.length}/10`;
+                    this.style.borderColor = '#059669';
+                } else if (value.length > 0 && value.length < 10) {
+                    counter.className = 'char-counter';
+                    this.style.borderColor = '#f59e0b';
+                } else {
+                    counter.className = 'char-counter';
+                    this.style.borderColor = '';
+                }
+            });
+            
+            // منع اللصق غير الرقمي
+            gameIdInput.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const pastedData = e.clipboardData.getData('text');
+                const numbersOnly = pastedData.replace(/\D/g, '').slice(0, 10);
+                this.value = numbersOnly;
+                
+                // تحديث العداد
+                counter.textContent = `${numbersOnly.length}/10`;
+                if (numbersOnly.length === 10) {
+                    counter.className = 'char-counter success';
+                }
+            });
+            
+            // منع إدخال الحروف من الكيبورد
+            gameIdInput.addEventListener('keypress', function(e) {
+                // السماح فقط بالأرقام (0-9)
+                if (!/\d/.test(e.key)) {
+                    e.preventDefault();
+                    
+                    // تأثير اهتزاز للتحذير
+                    counter.className = 'char-counter error';
+                    counter.innerHTML = `<i class="fas fa-times"></i> أرقام فقط!`;
+                    
+                    setTimeout(() => {
+                        if (this.value.length === 10) {
+                            counter.className = 'char-counter success';
+                        } else {
+                            counter.className = 'char-counter';
+                        }
+                    }, 1000);
+                }
+            });
+        }
+
+        // ====== التحقق من صحة رقم الهوية ======
+        function validateGameId(input) {
+            const counter = document.getElementById('gameIdCounter');
+            const value = input.value;
+            
+            if (value.length === 10 && /^\d+$/.test(value)) {
+                counter.className = 'char-counter success';
+                counter.innerHTML = `<i class="fas fa-check"></i> ${value.length}/10`;
+                input.style.borderColor = '#059669';
+                return true;
+            } else if (value.length > 0) {
+                input.style.borderColor = '#f59e0b';
+                return false;
+            }
+            
+            return false;
+        }
 
         // ====== إعداد الأنيميشن ======
         function setupAnimations() {
-            // تأثيرات إضافية للعناصر
             const elements = document.querySelectorAll('.input-group input, .job-card, .rank-item');
             elements.forEach(el => {
                 el.addEventListener('mouseenter', () => {
@@ -1332,6 +1461,7 @@
             const age = document.getElementById('age').value;
             const gameUsername = document.getElementById('gameUsername').value.trim();
             const discordUsername = document.getElementById('discordUsername').value.trim();
+            const gameId = document.getElementById('gameId').value.trim();
             
             // إعادة تعيين الأخطاء
             document.querySelectorAll('input').forEach(input => {
@@ -1355,6 +1485,13 @@
             } else if (!discordUsername) {
                 showAlert('❌ يرجى إدخال اسم المستخدم في الديسكورد', false);
                 document.getElementById('discordUsername').classList.add('error');
+                isValid = false;
+            } else if (!gameId || gameId.length !== 10 || !/^\d+$/.test(gameId)) {
+                showAlert('❌ رقم الهوية يجب أن يكون 10 أرقام بالضبط', false);
+                document.getElementById('gameId').classList.add('error');
+                const counter = document.getElementById('gameIdCounter');
+                counter.className = 'char-counter error';
+                counter.innerHTML = `<i class="fas fa-times"></i> ${gameId.length}/10`;
                 isValid = false;
             } else if (!identityFile) {
                 showAlert('❌ يجب رفع صورة الهوية', false);
@@ -1493,6 +1630,10 @@
                     <span class="summary-value">${document.getElementById('discordUsername').value}</span>
                 </div>
                 <div class="summary-item">
+                    <span class="summary-label">رقم الهوية:</span>
+                    <span class="summary-value">${document.getElementById('gameId').value}</span>
+                </div>
+                <div class="summary-item">
                     <span class="summary-label">الوظيفة:</span>
                     <span class="summary-value">${getJobName(selectedJob)}</span>
                 </div>
@@ -1554,6 +1695,7 @@
                 age: document.getElementById('age').value,
                 gameUsername: document.getElementById('gameUsername').value.trim(),
                 discordUsername: document.getElementById('discordUsername').value.trim(),
+                gameId: document.getElementById('gameId').value.trim(),
                 job: selectedJob,
                 rank: selectedRank,
                 additionals: selectedAdditionals,
