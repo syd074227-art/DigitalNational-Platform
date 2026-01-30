@@ -3,284 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>النظام الإداري المتقدم - هيئة KR الرقمية</title>
+    <title>لوحة تحكم الإدارة - نظام تفعيل الهويات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #1e3a8a;
-            --secondary: #3b82f6;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --dark: #1f2937;
-            --light: #f8fafc;
-            --sidebar: #111827;
-        }
-        
+        /* ===== أساسيات التصميم ===== */
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            margin: 0; padding: 0; box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: var(--light);
-            color: var(--dark);
-            display: flex;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             min-height: 100vh;
+            color: #e2e8f0;
+            padding-bottom: 20px;
         }
-        
-        /* القائمة الجانبية */
-        .sidebar {
-            width: 280px;
-            background: var(--sidebar);
-            color: white;
-            height: 100vh;
-            position: fixed;
-            right: 0;
-            top: 0;
-            overflow-y: auto;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
-        }
-        
-        .sidebar-header {
-            padding: 25px 20px;
-            border-bottom: 1px solid #374151;
-            text-align: center;
-        }
-        
-        .sidebar-header i {
-            font-size: 40px;
-            color: #3b82f6;
-            margin-bottom: 10px;
-        }
-        
-        .sidebar-header h2 {
-            font-size: 20px;
-            color: white;
-        }
-        
-        .sidebar-menu {
-            padding: 20px 0;
-        }
-        
-        .menu-item {
-            padding: 15px 25px;
+
+        /* ===== شاشة تسجيل الدخول ===== */
+        .login-container {
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-right: 4px solid transparent;
-        }
-        
-        .menu-item:hover {
-            background: #1f2937;
-            border-right-color: #3b82f6;
-        }
-        
-        .menu-item.active {
-            background: #1f2937;
-            border-right-color: #3b82f6;
-            color: #3b82f6;
-        }
-        
-        .menu-item i {
-            width: 20px;
-            text-align: center;
-        }
-        
-        .menu-badge {
-            background: #3b82f6;
-            color: white;
-            font-size: 12px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            margin-right: auto;
-        }
-        
-        /* المحتوى الرئيسي */
-        .main-content {
-            flex: 1;
-            margin-right: 280px;
             min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
         }
-        
-        /* الهيدر */
-        .admin-header {
-            background: white;
-            padding: 15px 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .page-title {
-            font-size: 24px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .admin-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .admin-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .admin-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        .logout-btn {
-            background: var(--danger);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        /* المحتوى */
-        .content-wrapper {
-            padding: 30px;
-        }
-        
-        /* حاوية الصفحات */
-        .page-container {
-            display: none;
-        }
-        
-        .page-container.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* بطاقات الإحصائيات */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
+
+        .login-box {
+            background: rgba(30, 41, 59, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            border: 2px solid #475569;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
         }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            color: white;
-        }
-        
-        .stat-1 .stat-icon { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
-        .stat-2 .stat-icon { background: linear-gradient(135deg, var(--success), #059669); }
-        .stat-3 .stat-icon { background: linear-gradient(135deg, var(--warning), #d97706); }
-        .stat-4 .stat-icon { background: linear-gradient(135deg, #8b5cf6, var(--primary)); }
-        
-        .stat-number {
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-        
-        .stat-label {
-            color: #6b7280;
-            font-size: 14px;
-        }
-        
-        /* أدوات البحث والفلترة */
-        .search-section {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-        
-        .search-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+
+        .login-logo {
+            font-size: 60px;
+            color: #3b82f6;
             margin-bottom: 20px;
         }
-        
-        .search-title {
-            font-size: 20px;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .search-box {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        
-        .search-input {
-            padding: 12px 20px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            width: 300px;
+
+        .login-input {
+            width: 100%;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            background: #0f172a;
+            border: 2px solid #475569;
+            border-radius: 12px;
+            color: white;
             font-size: 16px;
             transition: all 0.3s;
         }
-        
-        .search-input:focus {
+
+        .login-input:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
         }
-        
-        .search-btn {
-            background: var(--primary);
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        /* ===== الهيدر الرئيسي ===== */
+        .admin-header {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #475569;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-avatar {
+            width: 50px;
+            height: 50px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .admin-info h2 {
+            color: #60a5fa;
+            margin-bottom: 5px;
+        }
+
+        .admin-info p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background: #dc2626;
             color: white;
             border: none;
             padding: 12px 25px;
@@ -290,1830 +135,1694 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            transition: all 0.3s;
         }
-        
-        .search-btn:hover {
-            background: var(--secondary);
+
+        .logout-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
         }
-        
-        /* أزرار الفلترة */
-        .filter-buttons {
+
+        /* ===== شريط البحث ===== */
+        .search-container {
+            padding: 25px 30px;
+            background: #0f172a;
+            border-bottom: 1px solid #334155;
+        }
+
+        .search-box {
             display: flex;
             gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-btn {
-            padding: 10px 20px;
-            border: 2px solid #e5e7eb;
-            background: white;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
             align-items: center;
-            gap: 8px;
         }
-        
-        .filter-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-        
-        .filter-btn.active {
-            background: var(--primary);
+
+        .search-input {
+            flex: 1;
+            padding: 16px 25px;
+            background: #1e293b;
+            border: 2px solid #475569;
+            border-radius: 12px;
             color: white;
-            border-color: var(--primary);
-        }
-        
-        /* جدول البيانات */
-        .data-table-container {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-        
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .data-table th {
-            background: var(--light);
-            padding: 18px 20px;
-            text-align: right;
-            color: var(--dark);
-            font-weight: 700;
-            border-bottom: 3px solid var(--primary);
-        }
-        
-        .data-table td {
-            padding: 18px 20px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        /* أزرار الإجراءات */
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .action-btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-        
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-        }
-        
-        .btn-view {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .btn-edit {
-            background: var(--warning);
-            color: white;
-        }
-        
-        .btn-delete {
-            background: var(--danger);
-            color: white;
-        }
-        
-        .btn-suspend {
-            background: #8b5cf6;
-            color: white;
-        }
-        
-        .btn-change {
-            background: var(--success);
-            color: white;
-        }
-        
-        /* نماذج */
-        .form-container {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--dark);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s;
         }
-        
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        /* ===== بطاقات الإحصائيات ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #475569;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #3b82f6;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card.total .stat-icon { color: #60a5fa; }
+        .stat-card.pending .stat-icon { color: #f59e0b; }
+        .stat-card.accepted .stat-icon { color: #10b981; }
+        .stat-card.active .stat-icon { color: #8b5cf6; }
+        .stat-card.banned .stat-icon { color: #ef4444; }
+
+        .stat-number {
+            font-size: 42px;
+            font-weight: bold;
+            margin: 15px 0;
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-title {
+            color: #94a3b8;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .stat-change.positive { color: #10b981; }
+        .stat-change.negative { color: #ef4444; }
+
+        /* ===== القوائم والأزرار الرئيسية ===== */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 0 30px 30px;
+        }
+
+        .action-card {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #475569;
+            transition: all 0.3s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            border-color: #3b82f6;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .action-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #475569;
+        }
+
+        .action-header i {
+            font-size: 28px;
+            color: #3b82f6;
+        }
+
+        .action-header h3 {
+            color: #e2e8f0;
+            font-size: 20px;
+        }
+
+        .action-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 14px 18px;
+            background: #0f172a;
+            border: 2px solid #475569;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
         .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
         }
-        
+
         .form-textarea {
             min-height: 120px;
             resize: vertical;
         }
-        
-        .form-actions {
+
+        .radio-group {
+            display: flex;
+            gap: 25px;
+            margin-top: 5px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .duration-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .duration-input input {
+            width: 120px;
+        }
+
+        .duration-input select {
+            flex: 1;
+        }
+
+        .file-upload {
+            border: 3px dashed #475569;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .file-upload i {
+            font-size: 40px;
+            color: #475569;
+            margin-bottom: 15px;
+        }
+
+        .action-buttons {
             display: flex;
             gap: 15px;
-            margin-top: 30px;
+            margin-top: 25px;
         }
-        
-        .btn-submit {
-            background: var(--success);
-            color: white;
+
+        .btn {
+            padding: 14px 30px;
             border: none;
-            padding: 15px 30px;
             border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
             flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 16px;
         }
-        
-        .btn-cancel {
-            background: #6b7280;
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            flex: 1;
         }
-        
-        /* رسائل فارغة */
-        .empty-state {
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* ===== جدول الطلبات ===== */
+        .requests-section {
+            padding: 0 30px 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #475569;
+        }
+
+        .section-header h2 {
+            color: #60a5fa;
+            font-size: 24px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            background: #1e293b;
+            border: 2px solid #475569;
+            border-radius: 10px;
+            color: white;
+            min-width: 150px;
+        }
+
+        .requests-table-container {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border-radius: 15px;
+            border: 2px solid #475569;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 80px 120px 1fr 150px 150px 120px 150px 120px;
+            background: #0f172a;
+            padding: 18px 25px;
+            font-weight: bold;
+            border-bottom: 2px solid #475569;
+            color: #94a3b8;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 80px 120px 1fr 150px 150px 120px 150px 120px;
+            padding: 18px 25px;
+            border-bottom: 1px solid #334155;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .table-row:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
             text-align: center;
-            padding: 60px 20px;
-            color: #6b7280;
+            display: inline-block;
         }
-        
-        .empty-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-            opacity: 0.5;
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
         }
-        
-        /* نافذة العرض */
+
+        .status-accepted {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-banned {
+            background: #fecaca;
+            color: #7f1d1d;
+        }
+
+        .action-buttons-small {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* ===== نافذة تفعيل الهوية ===== */
         .modal-overlay {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
             justify-content: center;
+            align-items: center;
+            z-index: 2000;
             padding: 20px;
         }
-        
+
         .modal-overlay.active {
             display: flex;
         }
-        
+
         .modal {
-            background: white;
+            background: linear-gradient(135deg, #1e293b, #334155);
             border-radius: 20px;
-            padding: 40px;
-            max-width: 600px;
+            border: 2px solid #475569;
             width: 100%;
-            max-height: 80vh;
+            max-width: 800px;
+            max-height: 90vh;
             overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
-        
+
         .modal-header {
+            padding: 25px 30px;
+            border-bottom: 2px solid #475569;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
         }
-        
-        .modal-title {
-            font-size: 24px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+
+        .modal-header h3 {
+            color: #60a5fa;
+            font-size: 22px;
         }
-        
-        .modal-close {
+
+        .close-modal {
             background: none;
             border: none;
+            color: #94a3b8;
             font-size: 24px;
             cursor: pointer;
-            color: #6b7280;
+            transition: all 0.3s;
         }
-        
-        /* تخصيص للصفحات */
-        #activationRequests .data-table th:nth-child(1) { width: 15%; }
-        #activationRequests .data-table th:nth-child(2) { width: 20%; }
-        #activationRequests .data-table th:nth-child(3) { width: 15%; }
-        #activationRequests .data-table th:nth-child(4) { width: 15%; }
-        #activationRequests .data-table th:nth-child(5) { width: 15%; }
-        #activationRequests .data-table th:nth-child(6) { width: 10%; }
-        #activationRequests .data-table th:nth-child(7) { width: 10%; }
-        
-        /* تذييل */
-        .admin-footer {
-            text-align: center;
-            padding: 20px;
-            color: #6b7280;
+
+        .close-modal:hover {
+            color: #ef4444;
+            transform: rotate(90deg);
+        }
+
+        .modal-content {
+            padding: 30px;
+        }
+
+        .user-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .detail-box {
+            background: #0f172a;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+
+        .detail-title {
+            color: #94a3b8;
             font-size: 14px;
-            border-top: 1px solid #e5e7eb;
-            margin-top: 50px;
+            margin-bottom: 10px;
         }
-        
-        /* استجابة للشاشات الصغيرة */
+
+        .detail-value {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .id-photo-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .id-photo-container img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            border: 3px solid #475569;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #475569;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        /* ===== التنبيهات ===== */
+        .alert {
+            margin: 20px 30px;
+            padding: 20px 25px;
+            border-radius: 12px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert.show {
+            display: flex;
+        }
+
+        .alert.success {
+            background: linear-gradient(135deg, #d1fae5, #bbf7d0);
+            border: 2px solid #10b981;
+            color: #065f46;
+        }
+
+        .alert.error {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid #ef4444;
+            color: #991b1b;
+        }
+
+        .alert.warning {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .alert.info {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+            color: #1e3a8a;
+        }
+
+        /* ===== تصميم متجاوب ===== */
         @media (max-width: 1200px) {
+            .table-header,
+            .table-row {
+                grid-template-columns: 60px 100px 1fr 120px 120px 100px 120px 100px;
+                font-size: 14px;
+            }
+            
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 70px;
+
+        @media (max-width: 992px) {
+            .table-header,
+            .table-row {
+                grid-template-columns: 50px 1fr 120px 100px 100px;
+                grid-template-areas:
+                    "no name status date actions"
+                    "id username job rank actions";
             }
             
-            .sidebar-header h2,
-            .menu-item span:not(.menu-badge) {
+            .table-row > div:nth-child(1) { grid-area: no; }
+            .table-row > div:nth-child(2) { grid-area: id; }
+            .table-row > div:nth-child(3) { grid-area: name; }
+            .table-row > div:nth-child(4) { grid-area: username; }
+            .table-row > div:nth-child(5) { grid-area: job; }
+            .table-row > div:nth-child(6) { grid-area: rank; }
+            .table-row > div:nth-child(7) { grid-area: status; }
+            .table-row > div:nth-child(8) { grid-area: date; }
+            .table-row > div:nth-child(9) { grid-area: actions; }
+            
+            .table-header > div:nth-child(2),
+            .table-header > div:nth-child(4),
+            .table-header > div:nth-child(5),
+            .table-header > div:nth-child(6) {
                 display: none;
             }
             
-            .main-content {
-                margin-right: 70px;
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .header-left {
+                flex-direction: column;
             }
             
             .search-box {
                 flex-direction: column;
             }
             
-            .search-input {
+            .section-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .filters {
+                flex-direction: column;
                 width: 100%;
             }
             
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .filter-select {
+                width: 100%;
             }
+            
+            .modal {
+                margin: 10px;
+                max-height: 95vh;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 30px 20px;
+            }
+            
+            .admin-header, .search-container, .stats-grid,
+            .actions-grid, .requests-section {
+                padding: 20px 15px;
+            }
+            
+            .stat-card, .action-card {
+                padding: 25px 20px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .table-row {
+                padding: 15px;
+                gap: 10px;
+            }
+        }
+
+        /* ===== تخصيص شريط التمرير ===== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
         }
     </style>
 </head>
 <body>
-    <!-- القائمة الجانبية -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <i class="fas fa-user-shield"></i>
-            <h2>النظام الإداري</h2>
-        </div>
-        
-        <div class="sidebar-menu">
-            <div class="menu-item active" onclick="showPage('dashboard')">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>لوحة التحكم</span>
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <div class="login-logo">
+                <i class="fas fa-user-shield"></i>
             </div>
-            
-            <div class="menu-item" onclick="showPage('activationRequests')">
-                <i class="fas fa-id-card"></i>
-                <span>طلبات التفعيل</span>
-                <span class="menu-badge" id="pendingBadge">0</span>
-            </div>
-            
-            <div class="menu-item" onclick="showPage('activeUsers')">
-                <i class="fas fa-users"></i>
-                <span>المستخدمين المفعلين</span>
-            </div>
-            
-            <div class="menu-item" onclick="showPage('suspendUser')">
-                <i class="fas fa-user-slash"></i>
-                <span>تعطيل حساب</span>
-            </div>
-            
-            <div class="menu-item" onclick="showPage('changeJob')">
-                <i class="fas fa-exchange-alt"></i>
-                <span>تغيير وظيفة</span>
-            </div>
-            
-            <div class="menu-item" onclick="showPage('viewLogs')">
-                <i class="fas fa-history"></i>
-                <span>سجلات النظام</span>
+            <h2>تسجيل دخول المسؤول</h2>
+            <input type="text" id="adminUsername" class="login-input" placeholder="اسم المستخدم">
+            <input type="password" id="adminPassword" class="login-input" placeholder="كلمة المرور">
+            <button class="login-btn" onclick="adminLogin()">
+                <i class="fas fa-sign-in-alt"></i> دخول لوحة التحكم
+            </button>
+            <div id="loginError" class="alert error" style="display: none; margin-top: 15px;">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>خطأ في اسم المستخدم أو كلمة المرور</span>
             </div>
         </div>
-    </aside>
-    
-    <!-- المحتوى الرئيسي -->
-    <main class="main-content">
+    </div>
+
+    <!-- لوحة التحكم الرئيسية -->
+    <div id="adminDashboard" style="display: none;">
         <!-- الهيدر -->
         <header class="admin-header">
-            <h1 class="page-title" id="pageTitle">
-                <i class="fas fa-tachometer-alt"></i>
-                لوحة التحكم
-            </h1>
-            
-            <div class="admin-actions">
-                <div class="admin-info">
-                    <div class="admin-avatar" id="adminAvatar">م</div>
-                    <div>
-                        <div style="font-weight: 600;" id="adminName">المسؤول</div>
-                        <div style="font-size: 12px; color: #6b7280;">النظام الإداري</div>
-                    </div>
+            <div class="header-left">
+                <div class="admin-avatar">
+                    <i class="fas fa-user-cog"></i>
                 </div>
-                <button class="logout-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    تسجيل خروج
+                <div class="admin-info">
+                    <h2>لوحة تحكم الإدارة</h2>
+                    <p id="adminWelcome">مرحباً، المسؤول العام</p>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="adminLogout()">
+                <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+            </button>
+        </header>
+
+        <!-- شريط البحث -->
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="globalSearch" class="search-input" 
+                       placeholder="ابحث عن هوية، اسم مستخدم، رقم طلب...">
+                <button class="search-btn" onclick="performSearch()">
+                    <i class="fas fa-search"></i> بحث
                 </button>
             </div>
-        </header>
-        
-        <!-- محتوى الصفحات -->
-        <div class="content-wrapper">
-            <!-- الصفحة 1: لوحة التحكم -->
-            <div class="page-container active" id="dashboard">
-                <div class="stats-grid">
-                    <div class="stat-card stat-1">
-                        <div class="stat-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <div class="stat-number" id="totalRequests">0</div>
-                        <div class="stat-label">إجمالي الطلبات</div>
-                    </div>
-                    
-                    <div class="stat-card stat-2">
-                        <div class="stat-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="stat-number" id="pendingRequests">0</div>
-                        <div class="stat-label">طلبات بانتظار المراجعة</div>
-                    </div>
-                    
-                    <div class="stat-card stat-3">
-                        <div class="stat-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="stat-number" id="approvedRequests">0</div>
-                        <div class="stat-label">طلبات مقبولة</div>
-                    </div>
-                    
-                    <div class="stat-card stat-4">
-                        <div class="stat-icon">
-                            <i class="fas fa-user-check"></i>
-                        </div>
-                        <div class="stat-number" id="activeUsersCount">0</div>
-                        <div class="stat-label">مستخدمين مفعلين</div>
-                    </div>
-                </div>
-                
-                <div class="search-section">
-                    <div class="search-header">
-                        <h3 class="search-title">
-                            <i class="fas fa-search"></i>
-                            البحث السريع
-                        </h3>
-                    </div>
-                    
-                    <div class="search-box">
-                        <input type="text" class="search-input" id="globalSearch" placeholder="ابحث عن مستخدم أو طلب...">
-                        <button class="search-btn" onclick="globalSearch()">
-                            <i class="fas fa-search"></i>
-                            بحث
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>رقم الهوية</th>
-                                <th>الاسم</th>
-                                <th>الوظيفة</th>
-                                <th>الحالة</th>
-                                <th>التاريخ</th>
-                                <th>آخر نشاط</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recentUsers">
-                            <!-- البيانات الأخيرة تظهر هنا -->
-                        </tbody>
-                    </table>
+        </div>
+
+        <!-- التنبيهات -->
+        <div id="alertContainer"></div>
+
+        <!-- بطاقات الإحصائيات -->
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <i class="fas fa-file-alt stat-icon"></i>
+                <div class="stat-number" id="totalRequests">0</div>
+                <div class="stat-title">إجمالي الطلبات</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> 12% هذا الشهر
                 </div>
             </div>
             
-            <!-- الصفحة 2: طلبات التفعيل -->
-            <div class="page-container" id="activationRequests">
-                <div class="search-section">
-                    <div class="search-header">
-                        <h3 class="search-title">
-                            <i class="fas fa-id-card"></i>
-                            طلبات تفعيل الهوية
-                        </h3>
-                        
-                        <div class="search-box">
-                            <input type="text" class="search-input" id="searchRequests" placeholder="ابحث برقم الهوية أو الاسم...">
-                            <button class="search-btn" onclick="searchActivationRequests()">
-                                <i class="fas fa-search"></i>
-                                بحث
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-buttons">
-                        <button class="filter-btn active" onclick="filterActivationRequests('all')">الكل</button>
-                        <button class="filter-btn" onclick="filterActivationRequests('pending')">قيد المراجعة</button>
-                        <button class="filter-btn" onclick="filterActivationRequests('approved')">مقبولة</button>
-                        <button class="filter-btn" onclick="filterActivationRequests('rejected')">مرفوضة</button>
-                        <button class="filter-btn" onclick="filterActivationRequests('today')">طلبات اليوم</button>
-                    </div>
-                </div>
-                
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>رقم الطلب</th>
-                                <th>الاسم</th>
-                                <th>رقم الهوية</th>
-                                <th>الوظيفة المطلوبة</th>
-                                <th>التاريخ</th>
-                                <th>الحالة</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="requestsTable">
-                            <!-- طلبات التفعيل تظهر هنا -->
-                        </tbody>
-                    </table>
+            <div class="stat-card pending">
+                <i class="fas fa-clock stat-icon"></i>
+                <div class="stat-number" id="pendingRequests">0</div>
+                <div class="stat-title">طلبات بانتظار المراجعة</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> 5 جديد
                 </div>
             </div>
             
-            <!-- الصفحة 3: المستخدمين المفعلين -->
-            <div class="page-container" id="activeUsers">
-                <div class="search-section">
-                    <div class="search-header">
-                        <h3 class="search-title">
-                            <i class="fas fa-users"></i>
-                            المستخدمين المفعلين
-                        </h3>
-                        
-                        <div class="search-box">
-                            <input type="text" class="search-input" id="searchUsers" placeholder="ابحث عن مستخدم...">
-                            <button class="search-btn" onclick="searchActiveUsers()">
-                                <i class="fas fa-search"></i>
-                                بحث
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-buttons">
-                        <button class="filter-btn active" onclick="filterUsers('all')">الكل</button>
-                        <button class="filter-btn" onclick="filterUsers('interior')">منسوبي الداخلية</button>
-                        <button class="filter-btn" onclick="filterUsers('health')">منسوبي الصحة</button>
-                        <button class="filter-btn" onclick="filterUsers('justice')">منسوبي العدل</button>
-                        <button class="filter-btn" onclick="filterUsers('citizen')">مواطنين</button>
-                    </div>
-                </div>
-                
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>رقم الهوية</th>
-                                <th>الاسم</th>
-                                <th>اسم اللعبة</th>
-                                <th>الوظيفة</th>
-                                <th>المنصب</th>
-                                <th>تاريخ التفعيل</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTable">
-                            <!-- المستخدمين المفعلين يظهرون هنا -->
-                        </tbody>
-                    </table>
+            <div class="stat-card accepted">
+                <i class="fas fa-check-circle stat-icon"></i>
+                <div class="stat-number" id="acceptedRequests">0</div>
+                <div class="stat-title">طلبات مقبولة</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> 8% زيادة
                 </div>
             </div>
             
-            <!-- الصفحة 4: تعطيل حساب -->
-            <div class="page-container" id="suspendUser">
-                <div class="form-container">
-                    <h2 class="page-title" style="margin-bottom: 30px;">
-                        <i class="fas fa-user-slash"></i>
-                        تعطيل حساب مستخدم
-                    </h2>
-                    
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-search"></i>
-                            البحث عن المستخدم
-                        </label>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="text" class="form-input" id="searchUserToSuspend" 
-                                   placeholder="أدخل رقم الهوية أو اسم المستخدم..." 
-                                   style="flex: 1;">
-                            <button class="search-btn" onclick="searchUserForSuspension()" 
-                                    style="padding: 10px 20px;">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group" id="userInfoSection" style="display: none;">
-                        <div style="background: #f8fafc; padding: 20px; border-radius: 10px;">
-                            <h4 style="margin-bottom: 15px; color: var(--primary);">معلومات المستخدم</h4>
-                            <div id="userInfoDetails"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-ban"></i>
-                            نوع التعطيل
-                        </label>
-                        <div style="display: flex; gap: 15px; margin-top: 10px;">
-                            <label style="flex: 1; cursor: pointer;">
-                                <input type="radio" name="suspensionType" value="temporary" checked>
-                                <span style="margin-right: 10px;">تعطيل مؤقت</span>
-                            </label>
-                            <label style="flex: 1; cursor: pointer;">
-                                <input type="radio" name="suspensionType" value="permanent">
-                                <span style="margin-right: 10px;">تعطيل دائم</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group" id="durationSection">
-                        <label class="form-label">
-                            <i class="fas fa-clock"></i>
-                            مدة التعطيل
-                        </label>
-                        <select class="form-select" id="suspensionDuration">
-                            <option value="1">24 ساعة</option>
-                            <option value="3">3 أيام</option>
-                            <option value="7">أسبوع</option>
-                            <option value="30">شهر</option>
-                            <option value="custom">مخصص</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group" id="customDurationSection" style="display: none;">
-                        <label class="form-label">
-                            <i class="fas fa-calendar-alt"></i>
-                            تحديد المدة
-                        </label>
-                        <input type="number" class="form-input" id="customDuration" 
-                               placeholder="عدد الأيام" min="1" max="365">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-comment-alt"></i>
-                            سبب التعطيل
-                        </label>
-                        <textarea class="form-textarea" id="suspensionReason" 
-                                  placeholder="أدخل سبب التعطيل..."></textarea>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button class="btn-submit" onclick="suspendUser()">
-                            <i class="fas fa-ban"></i>
-                            تعطيل الحساب
-                        </button>
-                        <button class="btn-cancel" onclick="showPage('dashboard')">
-                            إلغاء
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- الصفحة 5: تغيير وظيفة -->
-            <div class="page-container" id="changeJob">
-                <div class="form-container">
-                    <h2 class="page-title" style="margin-bottom: 30px;">
-                        <i class="fas fa-exchange-alt"></i>
-                        تغيير وظيفة مستخدم
-                    </h2>
-                    
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-search"></i>
-                            البحث عن المستخدم
-                        </label>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="text" class="form-input" id="searchUserForJobChange" 
-                                   placeholder="أدخل رقم الهوية أو اسم المستخدم..." 
-                                   style="flex: 1;">
-                            <button class="search-btn" onclick="searchUserForJobChange()" 
-                                    style="padding: 10px 20px;">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group" id="userJobInfoSection" style="display: none;">
-                        <div style="background: #f8fafc; padding: 20px; border-radius: 10px;">
-                            <h4 style="margin-bottom: 15px; color: var(--primary);">الوظيفة الحالية</h4>
-                            <div id="userJobInfo"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-briefcase"></i>
-                            الوظيفة الجديدة
-                        </label>
-                        <select class="form-select" id="newJob">
-                            <option value="">اختر الوظيفة الجديدة</option>
-                            <option value="citizen">مواطن</option>
-                            <option value="interior">منسوب وزارة الداخلية</option>
-                            <option value="health">منسوب وزارة الصحة</option>
-                            <option value="justice">منسوب وزارة العدل</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-file-alt"></i>
-                            سبب التغيير
-                        </label>
-                        <select class="form-select" id="changeReason">
-                            <option value="">اختر سبب التغيير</option>
-                            <option value="retirement">تقاعد</option>
-                            <option value="resignation">استقالة</option>
-                            <option value="transfer">نقل</option>
-                            <option value="promotion">ترقية</option>
-                            <option value="demotion">تنزيل رتبة</option>
-                            <option value="other">سبب آخر</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group" id="otherReasonSection" style="display: none;">
-                        <label class="form-label">
-                            <i class="fas fa-comment-alt"></i>
-                            اذكر السبب
-                        </label>
-                        <textarea class="form-textarea" id="otherReason" 
-                                  placeholder="أدخل سبب التغيير..."></textarea>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button class="btn-submit" onclick="changeUserJob()">
-                            <i class="fas fa-check"></i>
-                            تأكيد التغيير
-                        </button>
-                        <button class="btn-cancel" onclick="showPage('dashboard')">
-                            إلغاء
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- الصفحة 6: سجلات النظام -->
-            <div class="page-container" id="viewLogs">
-                <div class="search-section">
-                    <div class="search-header">
-                        <h3 class="search-title">
-                            <i class="fas fa-history"></i>
-                            سجلات النظام
-                        </h3>
-                        
-                        <div class="search-box">
-                            <input type="date" class="form-input" id="logDate" 
-                                   style="width: 200px;">
-                            <select class="form-select" id="logType" style="width: 150px;">
-                                <option value="">كل الأنواع</option>
-                                <option value="login">تسجيل دخول</option>
-                                <option value="suspension">تعطيل</option>
-                                <option value="job_change">تغيير وظيفة</option>
-                                <option value="approval">قبول طلب</option>
-                                <option value="rejection">رفض طلب</option>
-                            </select>
-                            <button class="search-btn" onclick="filterLogs()">
-                                <i class="fas fa-filter"></i>
-                                تصفية
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>النوع</th>
-                                <th>الوصف</th>
-                                <th>المستخدم</th>
-                                <th>المسؤول</th>
-                                <th>التاريخ والوقت</th>
-                            </tr>
-                        </thead>
-                        <tbody id="logsTable">
-                            <!-- سجلات النظام تظهر هنا -->
-                        </tbody>
-                    </table>
+            <div class="stat-card active">
+                <i class="fas fa-users stat-icon"></i>
+                <div class="stat-number" id="activeUsers">0</div>
+                <div class="stat-title">مستخدمين مفعلين</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> 15 جديد
                 </div>
             </div>
         </div>
-        
-        <!-- تذييل -->
-        <footer class="admin-footer">
-            <p>© 2024 هيئة KR الرقمية - النظام الإداري المتقدم | الإصدار 2.0</p>
-        </footer>
-    </main>
-    
-    <!-- نافذة عرض تفاصيل الطلب -->
-    <div class="modal-overlay" id="requestDetailsModal">
+
+        <!-- القوائم الرئيسية -->
+        <div class="actions-grid">
+            <!-- تعطيل حساب -->
+            <div class="action-card">
+                <div class="action-header">
+                    <i class="fas fa-user-slash"></i>
+                    <h3>تعطيل حساب</h3>
+                </div>
+                <form class="action-form" onsubmit="banAccount(event)">
+                    <div class="form-group">
+                        <label class="form-label">رقم الهوية أو اسم الحساب</label>
+                        <input type="text" id="banIdentity" class="form-input" 
+                               placeholder="أدخل رقم الهوية أو اسم المستخدم" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">سبب التعطيل</label>
+                        <textarea id="banReason" class="form-textarea" 
+                                  placeholder="اكتب سبب تعطيل الحساب..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">دليل (اختياري)</label>
+                        <div class="file-upload" onclick="document.getElementById('banEvidence').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>انقر لرفع صورة أو ملف دليل</p>
+                            <input type="file" id="banEvidence" style="display: none;" 
+                                   accept="image/*,.pdf,.doc,.docx">
+                        </div>
+                        <small id="banFileInfo" style="color: #94a3b8; display: none;"></small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">نوع التعطيل</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="banType" value="permanent" checked>
+                                <span>دائم</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="banType" value="temporary">
+                                <span>مؤقت</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="durationSection" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">مدة التعطيل</label>
+                            <div class="duration-input">
+                                <input type="number" id="banDuration" class="form-input" 
+                                       placeholder="المدة" min="1" value="7">
+                                <select id="banDurationUnit" class="form-select">
+                                    <option value="hours">ساعات</option>
+                                    <option value="days" selected>أيام</option>
+                                    <option value="weeks">أسابيع</option>
+                                    <option value="months">شهور</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-ban"></i> تعطيل الحساب
+                        </button>
+                        <button type="button" class="btn" onclick="clearBanForm()">
+                            <i class="fas fa-times"></i> إلغاء
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- تفعيل الهويات -->
+            <div class="action-card">
+                <div class="action-header">
+                    <i class="fas fa-id-card"></i>
+                    <h3>تفعيل الهويات</h3>
+                </div>
+                <form class="action-form" onsubmit="searchIdentity(event)">
+                    <div class="form-group">
+                        <label class="form-label">بحث عن هوية</label>
+                        <input type="text" id="searchIdentity" class="form-input" 
+                               placeholder="أدخل رقم الهوية للبحث" required>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> بحث عن الهوية
+                        </button>
+                    </div>
+                </form>
+                
+                <div id="identityResult" style="display: none; margin-top: 20px;">
+                    <div style="background: #0f172a; padding: 20px; border-radius: 10px; border: 1px solid #334155;">
+                        <h4 style="color: #60a5fa; margin-bottom: 15px;">نتيجة البحث</h4>
+                        <div id="identityDetails"></div>
+                        <div class="action-buttons" style="margin-top: 20px;">
+                            <button class="btn btn-success" onclick="activateIdentity()">
+                                <i class="fas fa-check"></i> تفعيل
+                            </button>
+                            <button class="btn btn-danger" onclick="rejectIdentity()">
+                                <i class="fas fa-times"></i> رفض
+                            </button>
+                            <button class="btn btn-warning" onclick="showFullRequest()">
+                                <i class="fas fa-eye"></i> عرض كامل
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- جدول الطلبات -->
+        <div class="requests-section">
+            <div class="section-header">
+                <h2><i class="fas fa-list-alt"></i> طلبات تفعيل الهوية</h2>
+                <div class="filters">
+                    <select id="statusFilter" class="filter-select" onchange="filterRequests()">
+                        <option value="all">جميع الطلبات</option>
+                        <option value="pending">قيد المراجعة</option>
+                        <option value="accepted">مقبولة</option>
+                        <option value="rejected">مرفوضة</option>
+                    </select>
+                    <select id="dateFilter" class="filter-select" onchange="filterRequests()">
+                        <option value="all">جميع الأوقات</option>
+                        <option value="today">اليوم</option>
+                        <option value="week">هذا الأسبوع</option>
+                        <option value="month">هذا الشهر</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="requests-table-container">
+                <div class="table-header">
+                    <div>#</div>
+                    <div>رقم الهوية</div>
+                    <div>الاسم</div>
+                    <div>اسم المستخدم</div>
+                    <div>الوظيفة</div>
+                    <div>المنصب</div>
+                    <div>الحالة</div>
+                    <div>التاريخ</div>
+                    <div>الإجراءات</div>
+                </div>
+                
+                <div id="requestsTable">
+                    <!-- سيتم ملؤه بالجافاسكريبت -->
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 25px; color: #94a3b8;">
+                <i class="fas fa-info-circle"></i>
+                <span>إجمالي الطلبات المعروضة: <span id="shownRequests">0</span> من <span id="totalShown">0</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تفعيل الهوية -->
+    <div id="activationModal" class="modal-overlay">
         <div class="modal">
             <div class="modal-header">
-                <h3 class="modal-title">
-                    <i class="fas fa-info-circle"></i>
-                    تفاصيل الطلب
-                </h3>
-                <button class="modal-close" onclick="closeModal()">
+                <h3><i class="fas fa-id-card"></i> تفعيل الهوية</h3>
+                <button class="close-modal" onclick="closeModal()">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div id="requestDetailsContent">
-                <!-- محتوى تفاصيل الطلب -->
+            
+            <div class="modal-content">
+                <div class="user-details-grid" id="modalDetails">
+                    <!-- سيتم ملؤه بالجافاسكريبت -->
+                </div>
+                
+                <div class="id-photo-container">
+                    <img id="modalIdPhoto" src="" alt="صورة الهوية">
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-success" onclick="approveRequest()">
+                        <i class="fas fa-check-circle"></i> تفعيل الهوية
+                    </button>
+                    <button class="btn btn-danger" onclick="showRejectModal()">
+                        <i class="fas fa-times-circle"></i> رفض الطلب
+                    </button>
+                    <button class="btn" onclick="closeModal()">
+                        <i class="fas fa-times"></i> إغلاق
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة رفض الطلب -->
+    <div id="rejectModal" class="modal-overlay">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-times-circle"></i> رفض طلب التفعيل</h3>
+                <button class="close-modal" onclick="closeRejectModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-content">
+                <div class="form-group">
+                    <label class="form-label">سبب الرفض</label>
+                    <textarea id="rejectReason" class="form-textarea" 
+                              placeholder="اكتب سبب رفض طلب التفعيل..." rows="4" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">ملاحظات إضافية (اختياري)</label>
+                    <textarea id="rejectNotes" class="form-textarea" 
+                              placeholder="أي ملاحظات إضافية..." rows="3"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-danger" onclick="confirmReject()">
+                        <i class="fas fa-ban"></i> تأكيد الرفض
+                    </button>
+                    <button class="btn" onclick="closeRejectModal()">
+                        <i class="fas fa-times"></i> إلغاء
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // بيانات التطبيق
-        let currentUser = null;
+        // ====== البيانات والمتغيرات ======
+        let currentAdmin = null;
         let allRequests = [];
-        let systemLogs = [];
-        let currentPage = 'dashboard';
-        
-        // عند تحميل الصفحة
+        let currentRequestId = null;
+        let selectedBanType = 'permanent';
+
+        // بيانات المسؤولين (يمكن تغييرها)
+        const ADMIN_CREDENTIALS = {
+            username: 'admin',
+            password: 'admin123',
+            name: 'المسؤول العام'
+        };
+
+        // ====== عند تحميل الصفحة ======
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('النظام الإداري المتقدم - جاهز');
+            console.log('لوحة تحكم الإدارة - جاهزة');
             
-            // التحقق من تسجيل الدخول
+            // التحقق من تسجيل الدخول السابق
             checkAdminLogin();
             
+            // إعداد تفاعل نوع التعطيل
+            setupBanTypeToggle();
+            
+            // إعداد رفع الملفات
+            setupFileUpload();
+            
             // تحميل البيانات
-            loadAllData();
-            
-            // إعداد الأحداث
-            setupEvents();
-            
-            // تحديث البادج
-            updatePendingBadge();
-            
-            // إعداد تغيير نوع التعطيل
-            setupSuspensionType();
-            
-            // إعداد سبب التغيير
-            setupChangeReason();
+            loadRequestsData();
         });
-        
-        // التحقق من تسجيل الدخول
+
+        // ====== نظام تسجيل الدخول ======
         function checkAdminLogin() {
-            try {
-                const session = JSON.parse(localStorage.getItem('admin_session'));
-                
-                if (!session) {
-                    redirectToLogin('يجب تسجيل الدخول أولاً');
-                    return false;
-                }
-                
-                // التحقق من انتهاء الجلسة
-                const currentTime = new Date().getTime();
-                const sessionAge = currentTime - session.loginTime;
-                const eightHours = 8 * 60 * 60 * 1000;
-                
-                if (sessionAge > eightHours) {
-                    localStorage.removeItem('admin_session');
-                    redirectToLogin('انتهت مدة الجلسة');
-                    return false;
-                }
-                
-                currentUser = session;
-                document.getElementById('adminName').textContent = session.username === 'owner' ? '👑 المالك' : '👨‍💼 المسؤول';
-                document.getElementById('adminAvatar').textContent = session.username.charAt(0).toUpperCase();
-                
-                return true;
-                
-            } catch (error) {
-                redirectToLogin('حدث خطأ في الجلسة');
-                return false;
+            const savedAdmin = localStorage.getItem('admin_logged_in');
+            if (savedAdmin) {
+                currentAdmin = JSON.parse(savedAdmin);
+                showDashboard();
             }
         }
-        
-        // توجيه لصفحة تسجيل الدخول
-        function redirectToLogin(message) {
-            alert('⛔ ' + message);
-            window.location.href = 'login.html';
-        }
-        
-        // تحميل جميع البيانات
-        function loadAllData() {
-            try {
-                // تحميل الطلبات
-                allRequests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-                
-                // تحميل سجلات النظام
-                systemLogs = JSON.parse(localStorage.getItem('system_logs') || '[]');
-                
-                // إذا لا توجد سجلات، أنشئ بعض السجلات التجريبية
-                if (systemLogs.length === 0) {
-                    createSampleLogs();
-                }
-                
-                // تحميل إحصائيات لوحة التحكم
-                loadDashboardStats();
-                
-                // تحميل المستخدمين الأخيرين
-                loadRecentUsers();
-                
-                // تحميل طلبات التفعيل
-                loadActivationRequests();
-                
-                // تحميل سجلات النظام
-                loadSystemLogs();
-                
-            } catch (error) {
-                console.error('خطأ في تحميل البيانات:', error);
-                showNotification('حدث خطأ في تحميل البيانات', 'error');
-            }
-        }
-        
-        // إنشاء سجلات تجريبية
-        function createSampleLogs() {
-            const sampleLogs = [
-                {
-                    id: 1,
-                    type: 'login',
-                    description: 'تسجيل دخول مسؤول',
-                    user: 'admin',
-                    admin: 'system',
-                    timestamp: new Date().toLocaleString('ar-SA')
-                },
-                {
-                    id: 2,
-                    type: 'approval',
-                    description: 'قبول طلب تفعيل هوية',
-                    user: 'أحمد محمد',
-                    admin: 'admin',
-                    timestamp: new Date(Date.now() - 3600000).toLocaleString('ar-SA')
-                },
-                {
-                    id: 3,
-                    type: 'rejection',
-                    description: 'رفض طلب تفعيل هوية',
-                    user: 'سارة علي',
-                    admin: 'admin',
-                    timestamp: new Date(Date.now() - 7200000).toLocaleString('ar-SA')
-                }
-            ];
-            
-            systemLogs = sampleLogs;
-            localStorage.setItem('system_logs', JSON.stringify(systemLogs));
-        }
-        
-        // تحميل إحصائيات لوحة التحكم
-        function loadDashboardStats() {
-            try {
-                const totalRequests = allRequests.length;
-                const pendingRequests = allRequests.filter(req => req.status === 'pending').length;
-                const approvedRequests = allRequests.filter(req => req.status === 'approved').length;
-                const activeUsers = allRequests.filter(req => req.status === 'approved').length;
-                
-                document.getElementById('totalRequests').textContent = totalRequests;
-                document.getElementById('pendingRequests').textContent = pendingRequests;
-                document.getElementById('approvedRequests').textContent = approvedRequests;
-                document.getElementById('activeUsersCount').textContent = activeUsers;
-                
-                // تحديث بادج الطلبات المعلقة
-                document.getElementById('pendingBadge').textContent = pendingRequests;
-                
-            } catch (error) {
-                console.error('خطأ في تحميل الإحصائيات:', error);
-            }
-        }
-        
-        // تحميل المستخدمين الأخيرين
-        function loadRecentUsers() {
-            try {
-                const tbody = document.getElementById('recentUsers');
-                tbody.innerHTML = '';
-                
-                // الحصول على آخر 10 طلبات مقبولة
-                const recentApproved = allRequests
-                    .filter(req => req.status === 'approved')
-                    .slice(-10)
-                    .reverse();
-                
-                if (recentApproved.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="7" class="empty-state">
-                                <div class="empty-icon">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <h3>لا توجد مستخدمين مفعلين</h3>
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-                
-                recentApproved.forEach(request => {
-                    const row = document.createElement('tr');
-                    
-                    // تحديد اسم الوظيفة
-                    const jobNames = {
-                        citizen: 'مواطن',
-                        interior: 'منسوب الداخلية',
-                        health: 'منسوب الصحة',
-                        justice: 'منسوب العدل'
-                    };
-                    
-                    const jobName = jobNames[request.job] || request.job || 'غير محدد';
-                    
-                    row.innerHTML = `
-                        <td><strong>${request.gameId || 'غير متوفر'}</strong></td>
-                        <td>${request.fullName || 'غير معروف'}</td>
-                        <td>${jobName}</td>
-                        <td><span style="color: #10b981; font-weight: 600;">مفعل</span></td>
-                        <td>${request.date || 'غير معروف'}</td>
-                        <td>${request.approvedDate || 'غير معروف'}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="action-btn btn-view" onclick="viewRequestDetails('${request.id}')">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn btn-suspend" onclick="prepareSuspension('${request.id}')">
-                                    <i class="fas fa-user-slash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    
-                    tbody.appendChild(row);
-                });
-                
-            } catch (error) {
-                console.error('خطأ في تحميل المستخدمين الأخيرين:', error);
-            }
-        }
-        
-        // تحميل طلبات التفعيل
-        function loadActivationRequests(filter = 'all') {
-            try {
-                const tbody = document.getElementById('requestsTable');
-                tbody.innerHTML = '';
-                
-                // تصفية الطلبات
-                let filteredRequests = allRequests;
-                if (filter !== 'all') {
-                    if (filter === 'today') {
-                        const today = new Date().toLocaleDateString('ar-SA').split(' ')[0];
-                        filteredRequests = allRequests.filter(req => 
-                            req.date && req.date.includes(today)
-                        );
-                    } else {
-                        filteredRequests = allRequests.filter(req => req.status === filter);
-                    }
-                }
-                
-                if (filteredRequests.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="7" class="empty-state">
-                                <div class="empty-icon">
-                                    <i class="fas fa-inbox"></i>
-                                </div>
-                                <h3>لا توجد طلبات</h3>
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-                
-                filteredRequests.forEach((request, index) => {
-                    const row = document.createElement('tr');
-                    
-                    // تحديد الحالة
-                    let statusText, statusColor;
-                    switch (request.status) {
-                        case 'approved':
-                            statusText = 'مقبولة';
-                            statusColor = '#10b981';
-                            break;
-                        case 'rejected':
-                            statusText = 'مرفوضة';
-                            statusColor = '#ef4444';
-                            break;
-                        default:
-                            statusText = 'قيد المراجعة';
-                            statusColor = '#f59e0b';
-                    }
-                    
-                    // تحديد اسم الوظيفة
-                    const jobNames = {
-                        citizen: 'مواطن',
-                        interior: 'منسوب الداخلية',
-                        health: 'منسوب الصحة',
-                        justice: 'منسوب العدل'
-                    };
-                    
-                    const jobName = jobNames[request.job] || request.job || 'غير محدد';
-                    
-                    // أزرار الإجراءات
-                    let actionButtons = '';
-                    if (request.status === 'pending') {
-                        actionButtons = `
-                            <button class="action-btn btn-view" onclick="viewRequestDetails('${request.id}')">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="action-btn btn-submit" style="background: #10b981;" onclick="approveRequest('${request.id}')">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="action-btn btn-delete" onclick="rejectRequest('${request.id}')">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
-                    } else {
-                        actionButtons = `
-                            <button class="action-btn btn-view" onclick="viewRequestDetails('${request.id}')">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="action-btn btn-edit" onclick="editRequest('${request.id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        `;
-                    }
-                    
-                    row.innerHTML = `
-                        <td><strong>${request.id || 'غير محدد'}</strong></td>
-                        <td>${request.fullName || 'غير معروف'}</td>
-                        <td><code>${request.gameId || 'غير متوفر'}</code></td>
-                        <td>${jobName}</td>
-                        <td>${request.date || 'غير معروف'}</td>
-                        <td><span style="color: ${statusColor}; font-weight: 600;">${statusText}</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                ${actionButtons}
-                            </div>
-                        </td>
-                    `;
-                    
-                    tbody.appendChild(row);
-                });
-                
-            } catch (error) {
-                console.error('خطأ في تحميل طلبات التفعيل:', error);
-            }
-        }
-        
-        // تحميل سجلات النظام
-        function loadSystemLogs() {
-            try {
-                const tbody = document.getElementById('logsTable');
-                tbody.innerHTML = '';
-                
-                if (systemLogs.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="6" class="empty-state">
-                                <div class="empty-icon">
-                                    <i class="fas fa-history"></i>
-                                </div>
-                                <h3>لا توجد سجلات</h3>
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-                
-                // عرض أحدث السجلات أولاً
-                systemLogs.slice().reverse().forEach(log => {
-                    const row = document.createElement('tr');
-                    
-                    // تحديد لون النوع
-                    let typeColor, typeIcon;
-                    switch (log.type) {
-                        case 'login':
-                            typeColor = '#3b82f6';
-                            typeIcon = 'fa-sign-in-alt';
-                            break;
-                        case 'approval':
-                            typeColor = '#10b981';
-                            typeIcon = 'fa-check';
-                            break;
-                        case 'rejection':
-                            typeColor = '#ef4444';
-                            typeIcon = 'fa-times';
-                            break;
-                        case 'suspension':
-                            typeColor = '#8b5cf6';
-                            typeIcon = 'fa-user-slash';
-                            break;
-                        case 'job_change':
-                            typeColor = '#f59e0b';
-                            typeIcon = 'fa-exchange-alt';
-                            break;
-                        default:
-                            typeColor = '#6b7280';
-                            typeIcon = 'fa-info-circle';
-                    }
-                    
-                    row.innerHTML = `
-                        <td>${log.id || ''}</td>
-                        <td>
-                            <span style="color: ${typeColor}; display: flex; align-items: center; gap: 8px;">
-                                <i class="fas ${typeIcon}"></i>
-                                ${getLogTypeText(log.type)}
-                            </span>
-                        </td>
-                        <td>${log.description || ''}</td>
-                        <td>${log.user || ''}</td>
-                        <td>${log.admin || ''}</td>
-                        <td>${log.timestamp || ''}</td>
-                    `;
-                    
-                    tbody.appendChild(row);
-                });
-                
-            } catch (error) {
-                console.error('خطأ في تحميل سجلات النظام:', error);
-            }
-        }
-        
-        // الحصول على نص نوع السجل
-        function getLogTypeText(type) {
-            const types = {
-                'login': 'تسجيل دخول',
-                'approval': 'قبول طلب',
-                'rejection': 'رفض طلب',
-                'suspension': 'تعطيل حساب',
-                'job_change': 'تغيير وظيفة'
-            };
-            return types[type] || type;
-        }
-        
-        // إضافة سجل جديد للنظام
-        function addSystemLog(type, description, user) {
-            try {
-                const newLog = {
-                    id: systemLogs.length + 1,
-                    type: type,
-                    description: description,
-                    user: user,
-                    admin: currentUser.username,
-                    timestamp: new Date().toLocaleString('ar-SA')
+
+        function adminLogin() {
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                currentAdmin = {
+                    username: username,
+                    name: ADMIN_CREDENTIALS.name,
+                    loginTime: new Date().toISOString()
                 };
                 
-                systemLogs.push(newLog);
-                localStorage.setItem('system_logs', JSON.stringify(systemLogs));
-                
-                // إذا كنا في صفحة السجلات، قم بتحديثها
-                if (currentPage === 'viewLogs') {
-                    loadSystemLogs();
-                }
-                
-            } catch (error) {
-                console.error('خطأ في إضافة سجل:', error);
-            }
-        }
-        
-        // البحث الشامل
-        function globalSearch() {
-            const searchTerm = document.getElementById('globalSearch').value.toLowerCase();
-            
-            if (!searchTerm.trim()) {
-                showNotification('أدخل كلمة للبحث', 'warning');
-                return;
-            }
-            
-            // البحث في الطلبات
-            const foundInRequests = allRequests.filter(req => 
-                (req.fullName && req.fullName.toLowerCase().includes(searchTerm)) ||
-                (req.gameId && req.gameId.includes(searchTerm)) ||
-                (req.id && req.id.toLowerCase().includes(searchTerm))
-            );
-            
-            if (foundInRequests.length > 0) {
-                // الانتقال لصفحة الطلبات وعرض النتائج
-                showPage('activationRequests');
-                // تصفية وعرض النتائج
-                // (يمكن إضافة تصفية خاصة هنا)
-                showNotification(`تم العثور على ${foundInRequests.length} نتيجة`, 'success');
+                localStorage.setItem('admin_logged_in', JSON.stringify(currentAdmin));
+                showDashboard();
+                showAlert('تم تسجيل الدخول بنجاح!', 'success');
             } else {
-                showNotification('لم يتم العثور على نتائج', 'info');
+                errorDiv.style.display = 'flex';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
             }
         }
-        
-        // البحث في طلبات التفعيل
-        function searchActivationRequests() {
-            const searchTerm = document.getElementById('searchRequests').value.toLowerCase();
-            // تنفيذ البحث
-            // (يمكن إضافة المنطق هنا)
+
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'block';
+            
+            if (currentAdmin) {
+                document.getElementById('adminWelcome').textContent = `مرحباً، ${currentAdmin.name}`;
+            }
+            
+            updateStatistics();
+            loadRequestsTable();
         }
-        
-        // فلترة طلبات التفعيل
-        function filterActivationRequests(filter) {
-            // تحديث الأزرار النشطة
-            document.querySelectorAll('#activationRequests .filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // تحميل الطلبات المفلترة
-            loadActivationRequests(filter);
+
+        function adminLogout() {
+            localStorage.removeItem('admin_logged_in');
+            currentAdmin = null;
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('adminUsername').value = '';
+            document.getElementById('adminPassword').value = '';
         }
-        
-        // البحث في المستخدمين
-        function searchActiveUsers() {
-            const searchTerm = document.getElementById('searchUsers').value.toLowerCase();
-            // تنفيذ البحث
-            // (يمكن إضافة المنطق هنا)
+
+        // ====== الإحصائيات ======
+        function updateStatistics() {
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            
+            const total = requests.length;
+            const pending = requests.filter(r => r.status === 'pending').length;
+            const accepted = requests.filter(r => r.status === 'accepted').length;
+            const activeUsers = requests.filter(r => r.status === 'accepted').length;
+            
+            document.getElementById('totalRequests').textContent = total;
+            document.getElementById('pendingRequests').textContent = pending;
+            document.getElementById('acceptedRequests').textContent = accepted;
+            document.getElementById('activeUsers').textContent = activeUsers;
         }
-        
-        // فلترة المستخدمين
-        function filterUsers(filter) {
-            // تحديث الأزرار النشطة
-            document.querySelectorAll('#activeUsers .filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
+
+        // ====== نظام البحث ======
+        function performSearch() {
+            const query = document.getElementById('globalSearch').value.trim().toLowerCase();
+            if (!query) return;
             
-            // تنفيذ الفلترة
-            // (يمكن إضافة المنطق هنا)
-        }
-        
-        // البحث عن مستخدم للتعطيل
-        function searchUserForSuspension() {
-            const searchTerm = document.getElementById('searchUserToSuspend').value.trim();
-            
-            if (!searchTerm) {
-                showNotification('أدخل رقم الهوية أو اسم المستخدم', 'warning');
-                return;
-            }
-            
-            // البحث عن المستخدم في الطلبات المقبولة
-            const user = allRequests.find(req => 
-                req.status === 'approved' && 
-                (req.gameId === searchTerm || 
-                 (req.fullName && req.fullName.includes(searchTerm)))
-            );
-            
-            if (user) {
-                // التحقق إذا كان حساب إداري
-                if (user.isAdmin) {
-                    showNotification('لا يمكن تعطيل حسابات المسؤولين', 'error');
-                    return;
-                }
-                
-                // عرض معلومات المستخدم
-                const jobNames = {
-                    citizen: 'مواطن',
-                    interior: 'منسوب الداخلية',
-                    health: 'منسوب الصحة',
-                    justice: 'منسوب العدل'
-                };
-                
-                document.getElementById('userInfoDetails').innerHTML = `
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div>
-                            <strong>الاسم:</strong>
-                            <div>${user.fullName}</div>
-                        </div>
-                        <div>
-                            <strong>رقم الهوية:</strong>
-                            <div>${user.gameId}</div>
-                        </div>
-                        <div>
-                            <strong>الوظيفة:</strong>
-                            <div>${jobNames[user.job] || user.job}</div>
-                        </div>
-                        <div>
-                            <strong>تاريخ التفعيل:</strong>
-                            <div>${user.approvedDate || user.date}</div>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('userInfoSection').style.display = 'block';
-                
-                // تخزين معرف المستخدم
-                document.getElementById('userInfoSection').dataset.userId = user.id;
-                
-            } else {
-                showNotification('لم يتم العثور على المستخدم', 'error');
-                document.getElementById('userInfoSection').style.display = 'none';
-            }
-        }
-        
-        // إعداد نوع التعطيل
-        function setupSuspensionType() {
-            const suspensionTypes = document.querySelectorAll('input[name="suspensionType"]');
-            const durationSection = document.getElementById('durationSection');
-            const customDurationSection = document.getElementById('customDurationSection');
-            
-            suspensionTypes.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    if (this.value === 'permanent') {
-                        durationSection.style.display = 'none';
-                        customDurationSection.style.display = 'none';
-                    } else {
-                        durationSection.style.display = 'block';
-                        const durationSelect = document.getElementById('suspensionDuration');
-                        if (durationSelect.value === 'custom') {
-                            customDurationSection.style.display = 'block';
-                        }
-                    }
-                });
-            });
-            
-            // مراقبة تغيير مدة التعطيل
-            document.getElementById('suspensionDuration').addEventListener('change', function() {
-                if (this.value === 'custom') {
-                    customDurationSection.style.display = 'block';
-                } else {
-                    customDurationSection.style.display = 'none';
-                }
-            });
-        }
-        
-        // تعطيل حساب مستخدم
-        function suspendUser() {
-            const userId = document.getElementById('userInfoSection').dataset.userId;
-            
-            if (!userId) {
-                showNotification('يرجى البحث عن مستخدم أولاً', 'warning');
-                return;
-            }
-            
-            const suspensionType = document.querySelector('input[name="suspensionType"]:checked').value;
-            const reason = document.getElementById('suspensionReason').value.trim();
-            
-            if (!reason) {
-                showNotification('يرجى إدخال سبب التعطيل', 'warning');
-                return;
-            }
-            
-            let duration = null;
-            if (suspensionType === 'temporary') {
-                const durationSelect = document.getElementById('suspensionDuration').value;
-                if (durationSelect === 'custom') {
-                    duration = parseInt(document.getElementById('customDuration').value);
-                    if (!duration || duration < 1) {
-                        showNotification('يرجى إدخال مدة صحيحة', 'warning');
-                        return;
-                    }
-                } else {
-                    duration = parseInt(durationSelect);
-                }
-            }
-            
-            if (confirm(`هل أنت متأكد من تعطيل هذا الحساب؟${duration ? `\nالمدة: ${duration} يوم` : ''}`)) {
-                // العثور على المستخدم وتحديث حالته
-                const userIndex = allRequests.findIndex(req => req.id === userId);
-                if (userIndex !== -1) {
-                    allRequests[userIndex].suspended = true;
-                    allRequests[userIndex].suspensionType = suspensionType;
-                    allRequests[userIndex].suspensionReason = reason;
-                    allRequests[userIndex].suspendedDate = new Date().toLocaleString('ar-SA');
-                    allRequests[userIndex].suspendedBy = currentUser.username;
-                    
-                    if (duration) {
-                        const suspensionEnd = new Date();
-                        suspensionEnd.setDate(suspensionEnd.getDate() + duration);
-                        allRequests[userIndex].suspensionEndDate = suspensionEnd.toLocaleString('ar-SA');
-                    }
-                    
-                    // حفظ التغييرات
-                    localStorage.setItem('identityRequests', JSON.stringify(allRequests));
-                    
-                    // إضافة سجل للنظام
-                    addSystemLog(
-                        'suspension',
-                        `تعطيل حساب ${allRequests[userIndex].fullName} - السبب: ${reason}`,
-                        allRequests[userIndex].fullName
-                    );
-                    
-                    // رسالة نجاح
-                    showNotification('تم تعطيل الحساب بنجاح', 'success');
-                    
-                    // إعادة تعيين النموذج
-                    resetSuspensionForm();
-                    
-                    // تحديث البيانات
-                    loadAllData();
-                }
-            }
-        }
-        
-        // إعادة تعيين نموذج التعطيل
-        function resetSuspensionForm() {
-            document.getElementById('searchUserToSuspend').value = '';
-            document.getElementById('userInfoSection').style.display = 'none';
-            document.getElementById('suspensionReason').value = '';
-            document.getElementById('suspensionDuration').value = '1';
-            document.getElementById('customDuration').value = '';
-            document.getElementById('customDurationSection').style.display = 'none';
-            document.querySelector('input[name="suspensionType"][value="temporary"]').checked = true;
-        }
-        
-        // البحث عن مستخدم لتغيير الوظيفة
-        function searchUserForJobChange() {
-            const searchTerm = document.getElementById('searchUserForJobChange').value.trim();
-            
-            if (!searchTerm) {
-                showNotification('أدخل رقم الهوية أو اسم المستخدم', 'warning');
-                return;
-            }
-            
-            // البحث عن المستخدم في الطلبات المقبولة
-            const user = allRequests.find(req => 
-                req.status === 'approved' && 
-                (req.gameId === searchTerm || 
-                 (req.fullName && req.fullName.includes(searchTerm)))
-            );
-            
-            if (user) {
-                // عرض معلومات الوظيفة الحالية
-                const jobNames = {
-                    citizen: 'مواطن',
-                    interior: 'منسوب وزارة الداخلية',
-                    health: 'منسوب وزارة الصحة',
-                    justice: 'منسوب وزارة العدل'
-                };
-                
-                document.getElementById('userJobInfo').innerHTML = `
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div>
-                            <strong>الاسم:</strong>
-                            <div>${user.fullName}</div>
-                        </div>
-                        <div>
-                            <strong>الوظيفة الحالية:</strong>
-                            <div>${jobNames[user.job] || user.job}</div>
-                        </div>
-                        <div>
-                            <strong>المنصب:</strong>
-                            <div>${user.rank || 'غير محدد'}</div>
-                        </div>
-                        <div>
-                            <strong>رقم الهوية:</strong>
-                            <div>${user.gameId}</div>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('userJobInfoSection').style.display = 'block';
-                
-                // تخزين معرف المستخدم
-                document.getElementById('userJobInfoSection').dataset.userId = user.id;
-                
-                // تحديد الوظيفة الحالية في القائمة
-                document.getElementById('newJob').value = user.job;
-                
-            } else {
-                showNotification('لم يتم العثور على المستخدم', 'error');
-                document.getElementById('userJobInfoSection').style.display = 'none';
-            }
-        }
-        
-        // إعداد سبب التغيير
-        function setupChangeReason() {
-            document.getElementById('changeReason').addEventListener('change', function() {
-                if (this.value === 'other') {
-                    document.getElementById('otherReasonSection').style.display = 'block';
-                } else {
-                    document.getElementById('otherReasonSection').style.display = 'none';
-                }
-            });
-        }
-        
-        // تغيير وظيفة مستخدم
-        function changeUserJob() {
-            const userId = document.getElementById('userJobInfoSection').dataset.userId;
-            
-            if (!userId) {
-                showNotification('يرجى البحث عن مستخدم أولاً', 'warning');
-                return;
-            }
-            
-            const newJob = document.getElementById('newJob').value;
-            const changeReason = document.getElementById('changeReason').value;
-            
-            if (!newJob) {
-                showNotification('يرجى اختيار الوظيفة الجديدة', 'warning');
-                return;
-            }
-            
-            if (!changeReason) {
-                showNotification('يرجى اختيار سبب التغيير', 'warning');
-                return;
-            }
-            
-            let reasonText = changeReason;
-            if (changeReason === 'other') {
-                reasonText = document.getElementById('otherReason').value.trim();
-                if (!reasonText) {
-                    showNotification('يرجى إدخال سبب التغيير', 'warning');
-                    return;
-                }
-            }
-            
-            // العثور على المستخدم وتحديث وظيفته
-            const userIndex = allRequests.findIndex(req => req.id === userId);
-            if (userIndex !== -1) {
-                const oldJob = allRequests[userIndex].job;
-                
-                // حفظ الوظيفة القديمة في التاريخ
-                if (!allRequests[userIndex].jobHistory) {
-                    allRequests[userIndex].jobHistory = [];
-                }
-                
-                allRequests[userIndex].jobHistory.push({
-                    from: oldJob,
-                    to: newJob,
-                    reason: reasonText,
-                    date: new Date().toLocaleString('ar-SA'),
-                    changedBy: currentUser.username
-                });
-                
-                // تحديث الوظيفة الحالية
-                allRequests[userIndex].job = newJob;
-                
-                // إذا تغيرت إلى مواطن، إعادة تعيين المنصب
-                if (newJob === 'citizen') {
-                    allRequests[userIndex].rank = 'مواطن';
-                }
-                
-                // حفظ التغييرات
-                localStorage.setItem('identityRequests', JSON.stringify(allRequests));
-                
-                // إضافة سجل للنظام
-                addSystemLog(
-                    'job_change',
-                    `تغيير وظيفة ${allRequests[userIndex].fullName} من ${oldJob} إلى ${newJob} - السبب: ${reasonText}`,
-                    allRequests[userIndex].fullName
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const results = requests.filter(request => {
+                return (
+                    request.id.toLowerCase().includes(query) ||
+                    request.fullName.toLowerCase().includes(query) ||
+                    request.gameUsername.toLowerCase().includes(query) ||
+                    request.gameId.includes(query) ||
+                    request.discordUsername.toLowerCase().includes(query)
                 );
+            });
+            
+            showSearchResults(results);
+        }
+
+        function showSearchResults(results) {
+            const table = document.getElementById('requestsTable');
+            table.innerHTML = '';
+            
+            if (results.length === 0) {
+                table.innerHTML = `
+                    <div class="table-row" style="text-align: center; padding: 40px; color: #94a3b8;">
+                        <i class="fas fa-search" style="font-size: 40px; margin-bottom: 15px;"></i>
+                        <div>لا توجد نتائج للبحث</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            results.forEach((request, index) => {
+                const row = createRequestRow(request, index + 1);
+                table.appendChild(row);
+            });
+            
+            document.getElementById('shownRequests').textContent = results.length;
+            document.getElementById('totalShown').textContent = results.length;
+        }
+
+        // ====== نظام التعطيل ======
+        function setupBanTypeToggle() {
+            const banRadios = document.querySelectorAll('input[name="banType"]');
+            const durationSection = document.getElementById('durationSection');
+            
+            banRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    selectedBanType = this.value;
+                    durationSection.style.display = this.value === 'temporary' ? 'block' : 'none';
+                });
+            });
+        }
+
+        function setupFileUpload() {
+            const fileInput = document.getElementById('banEvidence');
+            const fileInfo = document.getElementById('banFileInfo');
+            
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    const file = this.files[0];
+                    fileInfo.textContent = `تم اختيار: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+                    fileInfo.style.display = 'block';
+                }
+            });
+        }
+
+        function banAccount(event) {
+            event.preventDefault();
+            
+            const identity = document.getElementById('banIdentity').value.trim();
+            const reason = document.getElementById('banReason').value.trim();
+            const fileInput = document.getElementById('banEvidence');
+            
+            if (!identity || !reason) {
+                showAlert('يرجى ملء جميع الحقول المطلوبة', 'error');
+                return;
+            }
+            
+            // البحث عن الحساب
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const userRequests = requests.filter(r => 
+                r.gameId === identity || r.gameUsername.toLowerCase() === identity.toLowerCase()
+            );
+            
+            if (userRequests.length === 0) {
+                showAlert('لم يتم العثور على الحساب', 'error');
+                return;
+            }
+            
+            // إنشاء بيانات التعطيل
+            const banData = {
+                identity: identity,
+                reason: reason,
+                type: selectedBanType,
+                date: new Date().toLocaleString('ar-SA'),
+                admin: currentAdmin.name,
+                evidence: fileInput.files.length > 0 ? {
+                    name: fileInput.files[0].name,
+                    size: fileInput.files[0].size,
+                    type: fileInput.files[0].type
+                } : null
+            };
+            
+            if (selectedBanType === 'temporary') {
+                const duration = document.getElementById('banDuration').value;
+                const unit = document.getElementById('banDurationUnit').value;
+                banData.duration = { value: duration, unit: unit };
                 
-                // رسالة نجاح
-                showNotification('تم تغيير الوظيفة بنجاح', 'success');
+                const endDate = new Date();
+                switch(unit) {
+                    case 'hours': endDate.setHours(endDate.getHours() + parseInt(duration)); break;
+                    case 'days': endDate.setDate(endDate.getDate() + parseInt(duration)); break;
+                    case 'weeks': endDate.setDate(endDate.getDate() + (parseInt(duration) * 7)); break;
+                    case 'months': endDate.setMonth(endDate.getMonth() + parseInt(duration)); break;
+                }
+                banData.banUntil = endDate.toISOString();
+            }
+            
+            // حفظ بيانات التعطيل
+            const bans = JSON.parse(localStorage.getItem('user_bans') || '[]');
+            bans.push(banData);
+            localStorage.setItem('user_bans', JSON.stringify(bans));
+            
+            // تحديث حالة المستخدم
+            userRequests.forEach(request => {
+                request.status = 'banned';
+                request.banInfo = banData;
+            });
+            localStorage.setItem('identityRequests', JSON.stringify(requests));
+            
+            showAlert(`تم تعطيل الحساب ${identity} بنجاح`, 'success');
+            clearBanForm();
+            updateStatistics();
+            loadRequestsTable();
+        }
+
+        function clearBanForm() {
+            document.getElementById('banIdentity').value = '';
+            document.getElementById('banReason').value = '';
+            document.getElementById('banEvidence').value = '';
+            document.getElementById('banFileInfo').style.display = 'none';
+            document.querySelector('input[name="banType"][value="permanent"]').checked = true;
+            document.getElementById('durationSection').style.display = 'none';
+        }
+
+        // ====== تفعيل الهويات ======
+        function searchIdentity(event) {
+            event.preventDefault();
+            
+            const searchQuery = document.getElementById('searchIdentity').value.trim();
+            if (!searchQuery) {
+                showAlert('يرجى إدخال رقم الهوية للبحث', 'warning');
+                return;
+            }
+            
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const foundRequest = requests.find(r => r.gameId === searchQuery);
+            
+            const resultDiv = document.getElementById('identityResult');
+            const detailsDiv = document.getElementById('identityDetails');
+            
+            if (foundRequest) {
+                currentRequestId = foundRequest.id;
                 
-                // إعادة تعيين النموذج
-                resetJobChangeForm();
+                const statusText = {
+                    'pending': 'قيد المراجعة',
+                    'accepted': 'مقبولة',
+                    'rejected': 'مرفوضة',
+                    'banned': 'معطلة'
+                }[foundRequest.status] || foundRequest.status;
                 
-                // تحديث البيانات
-                loadAllData();
+                detailsDiv.innerHTML = `
+                    <div style="display: grid; gap: 10px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #94a3b8;">الاسم:</span>
+                            <span style="color: white; font-weight: 600;">${foundRequest.fullName}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #94a3b8;">رقم الهوية:</span>
+                            <span style="color: white; font-weight: 600;">${foundRequest.gameId}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #94a3b8;">اسم اللعبة:</span>
+                            <span style="color: white; font-weight: 600;">${foundRequest.gameUsername}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #94a3b8;">الحالة:</span>
+                            <span class="status-badge status-${foundRequest.status}">${statusText}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #94a3b8;">تاريخ التقديم:</span>
+                            <span style="color: white; font-weight: 600;">${foundRequest.date}</span>
+                        </div>
+                    </div>
+                `;
+                
+                resultDiv.style.display = 'block';
+            } else {
+                detailsDiv.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: #94a3b8;">
+                        <i class="fas fa-search" style="font-size: 30px; margin-bottom: 10px;"></i>
+                        <div>لم يتم العثور على هوية بهذا الرقم</div>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
             }
         }
-        
-        // إعادة تعيين نموذج تغيير الوظيفة
-        function resetJobChangeForm() {
-            document.getElementById('searchUserForJobChange').value = '';
-            document.getElementById('userJobInfoSection').style.display = 'none';
-            document.getElementById('newJob').value = '';
-            document.getElementById('changeReason').value = '';
-            document.getElementById('otherReason').value = '';
-            document.getElementById('otherReasonSection').style.display = 'none';
+
+        function activateIdentity() {
+            if (!currentRequestId) return;
+            
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const requestIndex = requests.findIndex(r => r.id === currentRequestId);
+            
+            if (requestIndex !== -1) {
+                requests[requestIndex].status = 'accepted';
+                requests[requestIndex].approvedBy = currentAdmin.name;
+                requests[requestIndex].approvalDate = new Date().toLocaleString('ar-SA');
+                
+                localStorage.setItem('identityRequests', JSON.stringify(requests));
+                
+                showAlert('تم تفعيل الهوية بنجاح', 'success');
+                document.getElementById('identityResult').style.display = 'none';
+                document.getElementById('searchIdentity').value = '';
+                updateStatistics();
+                loadRequestsTable();
+            }
         }
-        
-        // فلترة سجلات النظام
-        function filterLogs() {
-            const date = document.getElementById('logDate').value;
-            const type = document.getElementById('logType').value;
+
+        function rejectIdentity() {
+            if (!currentRequestId) return;
+            showRejectModal();
+        }
+
+        function showFullRequest() {
+            if (!currentRequestId) return;
             
-            let filteredLogs = systemLogs;
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const request = requests.find(r => r.id === currentRequestId);
             
-            if (date) {
-                filteredLogs = filteredLogs.filter(log => {
-                    const logDate = new Date(log.timestamp).toISOString().split('T')[0];
-                    return logDate === date;
+            if (request) {
+                showActivationModal(request);
+            }
+        }
+
+        // ====== جدول الطلبات ======
+        function loadRequestsData() {
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            allRequests = requests;
+        }
+
+        function loadRequestsTable() {
+            const table = document.getElementById('requestsTable');
+            const filterStatus = document.getElementById('statusFilter').value;
+            const filterDate = document.getElementById('dateFilter').value;
+            
+            let filteredRequests = [...allRequests];
+            
+            // تصفية حسب الحالة
+            if (filterStatus !== 'all') {
+                filteredRequests = filteredRequests.filter(r => r.status === filterStatus);
+            }
+            
+            // تصفية حسب التاريخ
+            if (filterDate !== 'all') {
+                const now = new Date();
+                filteredRequests = filteredRequests.filter(r => {
+                    const requestDate = new Date(r.submissionDate || r.date);
+                    
+                    switch(filterDate) {
+                        case 'today':
+                            return requestDate.toDateString() === now.toDateString();
+                        case 'week':
+                            const weekAgo = new Date(now.setDate(now.getDate() - 7));
+                            return requestDate >= weekAgo;
+                        case 'month':
+                            const monthAgo = new Date(now.setMonth(now.getMonth() - 1));
+                            return requestDate >= monthAgo;
+                        default:
+                            return true;
+                    }
                 });
             }
             
-            if (type) {
-                filteredLogs = filteredLogs.filter(log => log.type === type);
+            // ترتيب حسب التاريخ (الأحدث أولاً)
+            filteredRequests.sort((a, b) => {
+                const dateA = new Date(a.submissionDate || a.date);
+                const dateB = new Date(b.submissionDate || b.date);
+                return dateB - dateA;
+            });
+            
+            // عرض الطلبات
+            table.innerHTML = '';
+            
+            if (filteredRequests.length === 0) {
+                table.innerHTML = `
+                    <div class="table-row" style="text-align: center; padding: 40px; color: #94a3b8;">
+                        <i class="fas fa-inbox" style="font-size: 40px; margin-bottom: 15px;"></i>
+                        <div>لا توجد طلبات لعرضها</div>
+                    </div>
+                `;
+            } else {
+                filteredRequests.forEach((request, index) => {
+                    const row = createRequestRow(request, index + 1);
+                    table.appendChild(row);
+                });
             }
             
-            // عرض السجلات المفلترة
-            const tbody = document.getElementById('logsTable');
-            tbody.innerHTML = '';
-            
-            filteredLogs.slice().reverse().forEach(log => {
-                // ... (نفس كود عرض السجلات)
-            });
+            document.getElementById('shownRequests').textContent = filteredRequests.length;
+            document.getElementById('totalShown').textContent = filteredRequests.length;
         }
-        
-        // عرض تفاصيل الطلب
-        function viewRequestDetails(requestId) {
-            const request = allRequests.find(req => req.id === requestId);
-            if (!request) return;
-            
-            const jobNames = {
-                citizen: 'مواطن',
-                interior: 'منسوب وزارة الداخلية',
-                health: 'منسوب وزارة الصحة',
-                justice: 'منسوب وزارة العدل'
-            };
+
+        function createRequestRow(request, index) {
+            const row = document.createElement('div');
+            row.className = 'table-row';
             
             const statusText = {
                 'pending': 'قيد المراجعة',
-                'approved': 'مقبولة',
-                'rejected': 'مرفوضة'
+                'accepted': 'مقبولة',
+                'rejected': 'مرفوضة',
+                'banned': 'معطلة'
             }[request.status] || request.status;
             
-            document.getElementById('requestDetailsContent').innerHTML = `
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div>
-                        <strong>رقم الطلب:</strong>
-                        <div>${request.id}</div>
-                    </div>
-                    <div>
-                        <strong>الحالة:</strong>
-                        <div>${statusText}</div>
-                    </div>
-                    <div>
-                        <strong>الاسم الكامل:</strong>
-                        <div>${request.fullName}</div>
-                    </div>
-                    <div>
-                        <strong>العمر:</strong>
-                        <div>${request.age || 'غير محدد'} سنة</div>
-                    </div>
-                    <div>
-                        <strong>رقم الهوية:</strong>
-                        <div>${request.gameId}</div>
-                    </div>
-                    <div>
-                        <strong>اسم اللعبة:</strong>
-                        <div>${request.gameUsername || 'غير متوفر'}</div>
-                    </div>
-                    <div>
-                        <strong>الديسكورد:</strong>
-                        <div>${request.discordUsername || 'غير متوفر'}</div>
-                    </div>
-                    <div>
-                        <strong>الوظيفة:</strong>
-                        <div>${jobNames[request.job] || request.job}</div>
-                    </div>
-                    <div>
-                        <strong>المنصب:</strong>
-                        <div>${request.rank || 'غير محدد'}</div>
-                    </div>
-                    <div>
-                        <strong>تاريخ التقديم:</strong>
-                        <div>${request.date}</div>
-                    </div>
-                    ${request.approvedDate ? `
-                        <div>
-                            <strong>تاريخ القبول:</strong>
-                            <div>${request.approvedDate}</div>
-                        </div>
-                    ` : ''}
-                    ${request.rejectionReason ? `
-                        <div style="grid-column: 1 / -1;">
-                            <strong>سبب الرفض:</strong>
-                            <div>${request.rejectionReason}</div>
-                        </div>
-                    ` : ''}
-                    ${request.suspended ? `
-                        <div style="grid-column: 1 / -1; background: #fee2e2; padding: 15px; border-radius: 10px;">
-                            <strong style="color: #991b1b;">⚠️ الحساب معطل</strong>
-                            <div>السبب: ${request.suspensionReason}</div>
-                            <div>تاريخ التعطيل: ${request.suspendedDate}</div>
-                            ${request.suspensionEndDate ? `<div>ينتهي في: ${request.suspensionEndDate}</div>` : ''}
-                        </div>
-                    ` : ''}
-                </div>
-                
-                <div style="margin-top: 30px; display: flex; gap: 15px;">
-                    ${request.status === 'pending' ? `
-                        <button class="search-btn" onclick="approveRequest('${request.id}'); closeModal();" style="flex: 1;">
-                            <i class="fas fa-check"></i> قبول الطلب
-                        </button>
-                        <button class="logout-btn" onclick="rejectRequest('${request.id}'); closeModal();" style="flex: 1;">
-                            <i class="fas fa-times"></i> رفض الطلب
-                        </button>
-                    ` : ''}
-                    <button class="btn-cancel" onclick="closeModal()" style="flex: 1;">
-                        إغلاق
+            const jobNames = {
+                'citizen': 'مواطن',
+                'interior': 'داخلية',
+                'health': 'صحة',
+                'justice': 'عدل'
+            };
+            
+            row.innerHTML = `
+                <div>${index}</div>
+                <div>${request.gameId}</div>
+                <div>${request.fullName}</div>
+                <div>${request.gameUsername}</div>
+                <div>${jobNames[request.job] || request.job}</div>
+                <div>${request.rank || '-'}</div>
+                <div><span class="status-badge status-${request.status}">${statusText}</span></div>
+                <div>${request.date}</div>
+                <div class="action-buttons-small">
+                    <button class="btn-small btn-success" onclick="viewRequestDetails('${request.id}')" title="عرض">
+                        <i class="fas fa-eye"></i>
                     </button>
+                    ${request.status === 'pending' ? `
+                        <button class="btn-small btn-primary" onclick="approveRequestById('${request.id}')" title="قبول">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn-small btn-danger" onclick="rejectRequestById('${request.id}')" title="رفض">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    ` : ''}
+                    ${request.status === 'accepted' ? `
+                        <button class="btn-small btn-warning" onclick="banUserById('${request.id}')" title="تعطيل">
+                            <i class="fas fa-ban"></i>
+                        </button>
+                    ` : ''}
                 </div>
             `;
             
-            document.getElementById('requestDetailsModal').classList.add('active');
+            return row;
         }
-        
-        // قبول طلب
-        function approveRequest(requestId) {
-            const requestIndex = allRequests.findIndex(req => req.id === requestId);
-            if (requestIndex !== -1) {
-                allRequests[requestIndex].status = 'approved';
-                allRequests[requestIndex].approvedDate = new Date().toLocaleString('ar-SA');
-                allRequests[requestIndex].approvedBy = currentUser.username;
-                
-                localStorage.setItem('identityRequests', JSON.stringify(allRequests));
-                
-                // إضافة سجل
-                addSystemLog(
-                    'approval',
-                    `قبول طلب تفعيل هوية - ${allRequests[requestIndex].fullName}`,
-                    allRequests[requestIndex].fullName
-                );
-                
-                showNotification('تم قبول الطلب بنجاح', 'success');
-                loadAllData();
+
+        function filterRequests() {
+            loadRequestsTable();
+        }
+
+        // ====== عرض تفاصيل الطلب ======
+        function viewRequestDetails(requestId) {
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const request = requests.find(r => r.id === requestId);
+            
+            if (request) {
+                currentRequestId = requestId;
+                showActivationModal(request);
             }
         }
-        
-        // رفض طلب
-        function rejectRequest(requestId) {
-            const reason = prompt('أدخل سبب الرفض:');
-            if (reason && reason.trim()) {
-                const requestIndex = allRequests.findIndex(req => req.id === requestId);
-                if (requestIndex !== -1) {
-                    allRequests[requestIndex].status = 'rejected';
-                    allRequests[requestIndex].rejectionReason = reason.trim();
-                    allRequests[requestIndex].rejectedDate = new Date().toLocaleString('ar-SA');
-                    allRequests[requestIndex].rejectedBy = currentUser.username;
-                    
-                    localStorage.setItem('identityRequests', JSON.stringify(allRequests));
-                    
-                    // إضافة سجل
-                    addSystemLog(
-                        'rejection',
-                        `رفض طلب تفعيل هوية - ${allRequests[requestIndex].fullName} - السبب: ${reason}`,
-                        allRequests[requestIndex].fullName
-                    );
-                    
-                    showNotification('تم رفض الطلب', 'success');
-                    loadAllData();
-                }
+
+        function showActivationModal(request) {
+            const modal = document.getElementById('activationModal');
+            const detailsDiv = document.getElementById('modalDetails');
+            const photoImg = document.getElementById('modalIdPhoto');
+            
+            const jobNames = {
+                'citizen': 'مواطن',
+                'interior': 'منسوب الداخلية',
+                'health': 'منسوب الصحة',
+                'justice': 'منسوب العدل'
+            };
+            
+            detailsDiv.innerHTML = `
+                <div class="detail-box">
+                    <div class="detail-title">المعلومات الشخصية</div>
+                    <div class="detail-value">${request.fullName}</div>
+                    <div style="color: #94a3b8; margin-top: 5px;">العمر: ${request.age} سنة</div>
+                </div>
+                
+                <div class="detail-box">
+                    <div class="detail-title">معلومات اللعبة</div>
+                    <div class="detail-value">${request.gameUsername}</div>
+                    <div style="color: #94a3b8; margin-top: 5px;">رقم الهوية: ${request.gameId}</div>
+                </div>
+                
+                <div class="detail-box">
+                    <div class="detail-title">معلومات التواصل</div>
+                    <div class="detail-value">${request.discordUsername}</div>
+                    <div style="color: #94a3b8; margin-top: 5px;">التاريخ: ${request.date}</div>
+                </div>
+                
+                <div class="detail-box">
+                    <div class="detail-title">الوظيفة والمنصب</div>
+                    <div class="detail-value">${jobNames[request.job] || request.job}</div>
+                    <div style="color: #94a3b8; margin-top: 5px;">${request.rank || 'لا يوجد'}</div>
+                </div>
+            `;
+            
+            // عرض صورة الهوية إذا كانت موجودة
+            if (request.idPhoto && request.idPhoto.data) {
+                photoImg.src = request.idPhoto.data;
+                photoImg.style.display = 'block';
+            } else {
+                photoImg.style.display = 'none';
             }
+            
+            modal.classList.add('active');
         }
-        
-        // إغلاق النافذة
+
         function closeModal() {
-            document.getElementById('requestDetailsModal').classList.remove('active');
+            document.getElementById('activationModal').classList.remove('active');
+            currentRequestId = null;
         }
-        
-        // عرض صفحة معينة
-        function showPage(pageId) {
-            // إخفاء جميع الصفحات
-            document.querySelectorAll('.page-container').forEach(page => {
-                page.classList.remove('active');
-            });
+
+        // ====== إجراءات على الطلبات ======
+        function approveRequestById(requestId) {
+            currentRequestId = requestId;
+            approveRequest();
+        }
+
+        function approveRequest() {
+            if (!currentRequestId) return;
             
-            // إلغاء تفعيل جميع عناصر القائمة
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
-            });
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const requestIndex = requests.findIndex(r => r.id === currentRequestId);
             
-            // إظهار الصفحة المطلوبة
-            document.getElementById(pageId).classList.add('active');
+            if (requestIndex !== -1) {
+                requests[requestIndex].status = 'accepted';
+                requests[requestIndex].approvedBy = currentAdmin.name;
+                requests[requestIndex].approvalDate = new Date().toLocaleString('ar-SA');
+                
+                localStorage.setItem('identityRequests', JSON.stringify(requests));
+                
+                showAlert('تم قبول طلب التفعيل بنجاح', 'success');
+                closeModal();
+                updateStatistics();
+                loadRequestsTable();
+            }
+        }
+
+        function rejectRequestById(requestId) {
+            currentRequestId = requestId;
+            showRejectModal();
+        }
+
+        function showRejectModal() {
+            document.getElementById('rejectModal').classList.add('active');
+            document.getElementById('rejectReason').focus();
+        }
+
+        function closeRejectModal() {
+            document.getElementById('rejectModal').classList.remove('active');
+            document.getElementById('rejectReason').value = '';
+            document.getElementById('rejectNotes').value = '';
+        }
+
+        function confirmReject() {
+            const reason = document.getElementById('rejectReason').value.trim();
+            const notes = document.getElementById('rejectNotes').value.trim();
             
-            // تفعيل عنصر القائمة المناسب
-            document.querySelector(`.menu-item[onclick="showPage('${pageId}')"]`).classList.add('active');
+            if (!reason) {
+                showAlert('يرجى كتابة سبب الرفض', 'error');
+                return;
+            }
             
-            // تحديث عنوان الصفحة
-            const pageTitles = {
-                '
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const requestIndex = requests.findIndex(r => r.id === currentRequestId);
+            
+            if (requestIndex !== -1) {
+                requests[requestIndex].status = 'rejected';
+                requests[requestIndex].rejectedBy = currentAdmin.name;
+                requests[requestIndex].rejectionDate = new Date().toLocaleString('ar-SA');
+                requests[requestIndex].rejectionReason = reason;
+                requests[requestIndex].rejectionNotes = notes || null;
+                
+                localStorage.setItem('identityRequests', JSON.stringify(requests));
+                
+                showAlert('تم رفض طلب التفعيل', 'success');
+                closeRejectModal();
+                closeModal();
+                updateStatistics();
+                loadRequestsTable();
+            }
+        }
+
+        function banUserById(requestId) {
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const request = requests.find(r => r.id === requestId);
+            
+            if (request) {
+                document.getElementById('banIdentity').value = request.gameId;
+                document.getElementById('banReason').value = 'تعطيل حساب بناءً على طلب المسؤول';
+                
+                // تمرير لأسفل لنموذج التعطيل
+                document.querySelector('.actions-grid').scrollIntoView({ behavior: 'smooth' });
+                
+                showAlert('تم تعبئة بيانات الحساب تلقائياً', 'info');
+            }
+        }
+
+        // ====== التنبيهات ======
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertId = 'alert-' + Date.now();
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.id = alertId;
+            alertDiv.className = `alert ${type} show`;
+            
+            const icons = {
+                'success': 'fa-check-circle',
+                'error': 'fa-exclamation-circle',
+                'warning': 'fa-exclamation-triangle',
+                'info': 'fa-info-circle'
+            };
+            
+            alertDiv.innerHTML = `
+                <i class="fas ${icons[type] || 'fa-info-circle'}"></i>
+                <span>${message}</span>
+                <button onclick="document.getElementById('${alertId}').remove()" 
+                        style="margin-right: auto; background: none; border: none; color: inherit; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            alertContainer.appendChild(alertDiv);
+            
+            // إزالة التنبيه تلقائياً بعد 5 ثواني
+            setTimeout(() => {
+                const alertElement = document.getElementById(alertId);
+                if (alertElement) {
+                    alertElement.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
