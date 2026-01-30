@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم الإدارية - هيئة KR</title>
+    <title>لوحة التحكم الإدارية - هيئة KR الرقمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -11,21 +11,23 @@
             --secondary: #3b82f6;
             --success: #10b981;
             --warning: #f59e0b;
-            --danger: #dc2626;
+            --danger: #ef4444;
             --light: #f8fafc;
             --dark: #1f2937;
+            --gray: #6b7280;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
             background: var(--light);
             color: var(--dark);
+            min-height: 100vh;
         }
         
         /* الهيدر */
@@ -67,6 +69,7 @@
         
         .admin-name {
             font-weight: 600;
+            color: var(--primary);
         }
         
         .logout-btn {
@@ -76,6 +79,14 @@
             padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logout-btn:hover {
+            background: #dc2626;
         }
         
         /* المحتوى الرئيسي */
@@ -84,18 +95,37 @@
             padding: 20px;
         }
         
-        /* الإحصائيات */
+        /* زر الرجوع */
+        .back-btn {
+            background: var(--gray);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+        }
+        
+        .back-btn:hover {
+            background: #4b5563;
+        }
+        
+        /* قسم الإحصائيات */
         .stats-section {
             margin-bottom: 30px;
         }
         
         .stats-title {
-            font-size: 20px;
-            margin-bottom: 20px;
+            font-size: 24px;
+            margin-bottom: 25px;
             color: var(--dark);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
         
         .stats-grid {
@@ -104,71 +134,82 @@
             gap: 20px;
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
         
+        @media (max-width: 640px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
         .stat-card {
             background: white;
-            padding: 25px;
-            border-radius: 10px;
+            padding: 30px;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s;
         }
         
         .stat-card:hover {
             transform: translateY(-5px);
+            border-color: var(--primary);
         }
         
         .stat-icon {
-            font-size: 32px;
-            margin-bottom: 15px;
-            color: white;
-            width: 70px;
-            height: 70px;
+            font-size: 40px;
+            margin-bottom: 20px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
+            color: white;
         }
         
-        .stat-1 .stat-icon { background: var(--primary); }
-        .stat-2 .stat-icon { background: var(--success); }
-        .stat-3 .stat-icon { background: var(--warning); }
-        .stat-4 .stat-icon { background: #8b5cf6; }
+        .stat-1 .stat-icon { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+        .stat-2 .stat-icon { background: linear-gradient(135deg, var(--success), #059669); }
+        .stat-3 .stat-icon { background: linear-gradient(135deg, var(--warning), #d97706); }
+        .stat-4 .stat-icon { background: linear-gradient(135deg, #8b5cf6, var(--primary)); }
         
         .stat-number {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 5px;
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--dark);
         }
         
         .stat-label {
-            color: #6b7280;
-            font-size: 14px;
+            color: var(--gray);
+            font-size: 16px;
+            font-weight: 500;
         }
         
-        /* الطلبات */
-        .requests-section {
+        /* فلترة */
+        .filters-section {
             background: white;
-            border-radius: 10px;
+            border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
         
-        .section-header {
+        .filters-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
         
-        .section-title {
-            font-size: 18px;
+        .filters-title {
+            font-size: 20px;
             color: var(--dark);
             display: flex;
             align-items: center;
@@ -178,25 +219,87 @@
         .search-box {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
         
-        .search-box input {
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 250px;
+        .search-input {
+            padding: 12px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            width: 300px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
         }
         
         .search-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 12px 25px;
+            border-radius: 10px;
             cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        /* الجدول */
+        .search-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 12px 25px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* جدول الطلبات */
+        .requests-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .requests-title {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
         .requests-table {
             width: 100%;
             border-collapse: collapse;
@@ -204,24 +307,25 @@
         }
         
         .requests-table th {
-            background: #f9fafb;
-            padding: 15px;
+            background: var(--light);
+            padding: 18px 20px;
             text-align: right;
-            border-bottom: 2px solid #e5e7eb;
             color: var(--dark);
-            font-weight: 600;
+            font-weight: 700;
+            border-bottom: 3px solid var(--primary);
         }
         
         .requests-table td {
-            padding: 15px;
+            padding: 18px 20px;
             border-bottom: 1px solid #e5e7eb;
         }
         
         .status-badge {
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
+            display: inline-block;
         }
         
         .status-pending {
@@ -239,59 +343,73 @@
             color: #991b1b;
         }
         
+        .actions-cell {
+            min-width: 200px;
+        }
+        
         .action-buttons {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
         
         .action-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .btn-view { background: var(--primary); color: white; }
-        .btn-approve { background: var(--success); color: white; }
-        .btn-reject { background: var(--danger); color: white; }
-        
-        /* فلترة */
-        .filters {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        
-        .filter-btn {
             padding: 8px 15px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        
-        /* زر الرجوع */
-        .back-btn {
-            background: #6b7280;
-            color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .btn-view {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-approve {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-reject {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-edit {
+            background: var(--warning);
+            color: white;
+        }
+        
+        /* رسالة فارغة */
+        .empty-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .empty-subtitle {
+            font-size: 16px;
         }
     </style>
 </head>
@@ -313,8 +431,8 @@
     
     <!-- المحتوى الرئيسي -->
     <main class="admin-content">
-        <button class="back-btn" onclick="goToHome()">
-            <i class="fas fa-arrow-right"></i> العودة للرئيسية
+        <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-right"></i> العودة
         </button>
         
         <!-- الإحصائيات -->
@@ -338,7 +456,7 @@
                         <i class="fas fa-clock"></i>
                     </div>
                     <div class="stat-number" id="pendingRequests">0</div>
-                    <div class="stat-label">بانتظار المراجعة</div>
+                    <div class="stat-label">قيد المراجعة</div>
                 </div>
                 
                 <div class="stat-card stat-3">
@@ -353,275 +471,4 @@
                     <div class="stat-icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <div class="stat-number" id="totalUsers">0</div>
-                    <div class="stat-label">مستخدمين مفعلين</div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- فلترة -->
-        <div class="filters">
-            <button class="filter-btn active" onclick="filterRequests('all')">الكل</button>
-            <button class="filter-btn" onclick="filterRequests('pending')">قيد المراجعة</button>
-            <button class="filter-btn" onclick="filterRequests('approved')">مقبولة</button>
-            <button class="filter-btn" onclick="filterRequests('rejected')">مرفوضة</button>
-        </div>
-        
-        <!-- الطلبات -->
-        <section class="requests-section">
-            <div class="section-header">
-                <h3 class="section-title">
-                    <i class="fas fa-tasks"></i>
-                    طلبات التفعيل
-                </h3>
-                
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="ابحث بالاسم أو رقم الهوية...">
-                    <button class="search-btn" onclick="searchRequests()">
-                        <i class="fas fa-search"></i> بحث
-                    </button>
-                </div>
-            </div>
-            
-            <table class="requests-table">
-                <thead>
-                    <tr>
-                        <th>رقم الطلب</th>
-                        <th>الاسم</th>
-                        <th>رقم الهوية</th>
-                        <th>الوظيفة</th>
-                        <th>التاريخ</th>
-                        <th>الحالة</th>
-                        <th>الإجراءات</th>
-                    </tr>
-                </thead>
-                <tbody id="requestsTable">
-                    <!-- البيانات تظهر هنا -->
-                </tbody>
-            </table>
-        </section>
-    </main>
-
-    <script>
-        // التحقق من الجلسة
-        document.addEventListener('DOMContentLoaded', function() {
-            const isLoggedIn = sessionStorage.getItem('admin_logged_in');
-            const role = sessionStorage.getItem('admin_role');
-            
-            if (!isLoggedIn || role !== 'admin') {
-                alert('⛔ يجب تسجيل الدخول أولاً!');
-                window.location.href = 'login.html';
-                return;
-            }
-            
-            // تعيين اسم المسؤول
-            const username = sessionStorage.getItem('admin_username');
-            document.getElementById('adminName').textContent = `مرحباً، ${username}`;
-            
-            // تحميل البيانات
-            loadStatistics();
-            loadRequests();
-        });
-        
-        // تحميل الإحصائيات
-        function loadStatistics() {
-            try {
-                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-                
-                document.getElementById('totalRequests').textContent = requests.length;
-                
-                const pending = requests.filter(req => req.status === 'pending').length;
-                document.getElementById('pendingRequests').textContent = pending;
-                
-                const approved = requests.filter(req => req.status === 'approved').length;
-                document.getElementById('approvedRequests').textContent = approved;
-                
-                document.getElementById('totalUsers').textContent = approved;
-                
-            } catch (error) {
-                console.error('خطأ في تحميل الإحصائيات:', error);
-            }
-        }
-        
-        // تحميل الطلبات
-        function loadRequests(filter = 'all') {
-            try {
-                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-                const table = document.getElementById('requestsTable');
-                table.innerHTML = '';
-                
-                // التصفية
-                let filteredRequests = requests;
-                if (filter !== 'all') {
-                    filteredRequests = requests.filter(req => req.status === filter);
-                }
-                
-                // عرض الطلبات
-                filteredRequests.forEach((request, index) => {
-                    const row = document.createElement('tr');
-                    
-                    let statusText = 'قيد المراجعة';
-                    let statusClass = 'status-pending';
-                    
-                    if (request.status === 'approved') {
-                        statusText = 'مقبولة';
-                        statusClass = 'status-approved';
-                    } else if (request.status === 'rejected') {
-                        statusText = 'مرفوضة';
-                        statusClass = 'status-rejected';
-                    }
-                    
-                    row.innerHTML = `
-                        <td>${request.id || 'KR-' + (1000 + index)}</td>
-                        <td>${request.fullName || 'غير معروف'}</td>
-                        <td>${request.gameId || 'غير متوفر'}</td>
-                        <td>${getJobName(request.job)}</td>
-                        <td>${request.date || 'غير معروف'}</td>
-                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="action-btn btn-view" onclick="viewRequest(${index})">
-                                    <i class="fas fa-eye"></i> عرض
-                                </button>
-                                ${request.status === 'pending' ? `
-                                    <button class="action-btn btn-approve" onclick="approveRequest(${index})">
-                                        <i class="fas fa-check"></i> قبول
-                                    </button>
-                                    <button class="action-btn btn-reject" onclick="rejectRequest(${index})">
-                                        <i class="fas fa-times"></i> رفض
-                                    </button>
-                                ` : ''}
-                            </div>
-                        </td>
-                    `;
-                    
-                    table.appendChild(row);
-                });
-                
-                // إذا لا توجد طلبات
-                if (filteredRequests.length === 0) {
-                    table.innerHTML = `
-                        <tr>
-                            <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">
-                                <i class="fas fa-inbox" style="font-size: 40px; margin-bottom: 15px;"></i>
-                                <br>
-                                لا توجد طلبات ${filter !== 'all' ? 'بالحالة المحددة' : ''}
-                            </td>
-                        </tr>
-                    `;
-                }
-                
-            } catch (error) {
-                console.error('خطأ في تحميل الطلبات:', error);
-            }
-        }
-        
-        // تحويل اسم الوظيفة
-        function getJobName(jobType) {
-            const jobNames = {
-                citizen: 'مواطن',
-                interior: 'منسوب الداخلية',
-                health: 'منسوب الصحة',
-                justice: 'منسوب العدل'
-            };
-            return jobNames[jobType] || jobType;
-        }
-        
-        // فلترة الطلبات
-        function filterRequests(filter) {
-            // تحديث الأزرار
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // تحميل الطلبات المفلترة
-            loadRequests(filter);
-        }
-        
-        // البحث
-        function searchRequests() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const table = document.getElementById('requestsTable');
-            const rows = table.getElementsByTagName('tr');
-            
-            for (let i = 0; i < rows.length; i++) {
-                const row = rows[i];
-                const text = row.textContent.toLowerCase();
-                
-                if (text.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            }
-        }
-        
-        // عرض تفاصيل الطلب
-        function viewRequest(index) {
-            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-            const request = requests[index];
-            
-            if (!request) return;
-            
-            const details = `
-📋 تفاصيل الطلب:
-━━━━━━━━━━━━━━━━━━
-🆔 رقم الطلب: ${request.id || 'غير محدد'}
-👤 الاسم: ${request.fullName}
-🔢 رقم الهوية: ${request.gameId}
-🎮 اسم اللعبة: ${request.gameUsername || 'غير متوفر'}
-💬 الديسكورد: ${request.discordUsername || 'غير متوفر'}
-👔 الوظيفة: ${getJobName(request.job)}
-⭐ المنصب: ${request.rank || 'غير محدد'}
-📅 التاريخ: ${request.date || 'غير معروف'}
-📊 الحالة: ${request.status || 'قيد المراجعة'}
-━━━━━━━━━━━━━━━━━━
-            `;
-            
-            alert(details);
-        }
-        
-        // قبول الطلب
-        function approveRequest(index) {
-            if (confirm('هل تريد قبول هذا الطلب؟')) {
-                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-                requests[index].status = 'approved';
-                requests[index].approvedDate = new Date().toLocaleString('ar-SA');
-                localStorage.setItem('identityRequests', JSON.stringify(requests));
-                
-                alert('✅ تم قبول الطلب بنجاح');
-                loadStatistics();
-                loadRequests();
-            }
-        }
-        
-        // رفض الطلب
-        function rejectRequest(index) {
-            const reason = prompt('أدخل سبب الرفض:');
-            if (reason) {
-                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-                requests[index].status = 'rejected';
-                requests[index].rejectionReason = reason;
-                requests[index].rejectedDate = new Date().toLocaleString('ar-SA');
-                localStorage.setItem('identityRequests', JSON.stringify(requests));
-                
-                alert('❌ تم رفض الطلب');
-                loadStatistics();
-                loadRequests();
-            }
-        }
-        
-        // تسجيل الخروج
-        function logout() {
-            sessionStorage.clear();
-            window.location.href = '../index.html';
-        }
-        
-        // العودة للرئيسية
-        function goToHome() {
-            window.location.href = '../index.html';
-        }
-    </script>
-</body>
-</html>
+                    <div class="stat-number" id="activeUsers">0</
