@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هيئة KR الرقمية - النظام الوطني لتسجيل الهوية</title>
+    <title>هيئة KR الرقمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ====== الأساسيات ====== */
+        /* ============ الأساسيات =========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         :root {
             --primary: #2d68c4;
             --secondary: #0056b3;
@@ -24,852 +24,246 @@
             --admin: #1e3a8a;
             --owner: #7c3aed;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--light);
             min-height: 100vh;
             color: var(--dark);
-            padding-bottom: 70px; /* مساحة للشريط السفلي */
+            padding-bottom: 70px;
         }
-        
-        /* ====== الهيدر ====== */
+
+        /* ============ الهيدر =========== */
         .app-header {
             background: var(--primary);
             color: white;
             padding: 15px 5%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
         }
-        
+
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
         }
-        
+
         .app-logo {
             display: flex;
             align-items: center;
-            gap: 15px;
-            cursor: pointer;
+            gap: 10px;
         }
-        
+
         .app-logo i {
-            font-size: 32px;
+            font-size: 28px;
             background: white;
             color: var(--primary);
-            padding: 10px;
-            border-radius: 10px;
+            padding: 8px;
+            border-radius: 8px;
         }
-        
+
         .app-logo h1 {
+            font-size: 20px;
+        }
+
+        /* ============ المحتوى الرئيسي =========== */
+        .main-content {
+            margin-top: 70px;
+            padding: 15px;
+        }
+
+        /* ============ البانر الرئيسي =========== */
+        .main-banner {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .banner-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .banner-title {
             font-size: 22px;
-            font-weight: 600;
+            margin-bottom: 10px;
         }
-        
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 25px;
+
+        .banner-description {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 20px;
         }
-        
-        /* معلومات المستخدم */
-        .user-info {
-            display: none;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            padding: 8px 15px;
+
+        .activate-btn {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 12px 30px;
             border-radius: 25px;
-            background: rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-            position: relative;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        .user-info:hover {
-            background: rgba(255, 255, 255, 0.2);
+
+        /* ============ بطاقات الإحصائيات =========== */
+        .stats-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .stat-1 .stat-icon { color: #4CAF50; }
+        .stat-2 .stat-icon { color: #2196F3; }
+        .stat-3 .stat-icon { color: #FF9800; }
+        .stat-4 .stat-icon { color: #9C27B0; }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* ============ شريط الخدمات =========== */
+        .services-section {
+            margin-bottom: 25px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
             transform: translateY(-2px);
         }
-        
-        .user-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: 3px solid white;
-            object-fit: cover;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+
+        .service-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
         }
-        
-        .user-details {
-            text-align: right;
-        }
-        
-        .user-name {
+
+        .service-1 .service-icon { color: #2d68c4; }
+        .service-2 .service-icon { color: #00a86b; }
+        .service-3 .service-icon { color: #ff6b6b; }
+        .service-4 .service-icon { color: #9b59b6; }
+        .service-5 .service-icon { color: #1e3a8a; }
+        .service-6 .service-icon { color: #7c3aed; }
+
+        .service-title {
             font-size: 16px;
+            margin-bottom: 5px;
             font-weight: 600;
-            color: white;
-            margin-bottom: 3px;
         }
-        
-        .user-id {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.8);
-            direction: ltr;
-        }
-        
-        .user-status {
+
+        .service-description {
             font-size: 12px;
-            color: #4cd964;
-            font-weight: bold;
+            color: var(--gray);
         }
-        
-        .notification-icon {
-            position: relative;
-            font-size: 22px;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 50%;
-            transition: background 0.3s;
-        }
-        
-        .notification-icon:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .notification-badge {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--warning);
-            color: white;
-            font-size: 12px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        /* ====== الشريط السفلي ====== */
+
+        /* ============ الشريط السفلي =========== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             background: white;
-            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             z-index: 1000;
-            border-top: 1px solid #e0e0e0;
-            padding: 8px 0;
-            display: none; /* سيتم إظهاره عند التفعيل */
+            padding: 10px 0;
         }
-        
+
         .nav-container {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            max-width: 500px;
-            margin: 0 auto;
         }
-        
+
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-decoration: none;
-            color: #666;
+            color: var(--gray);
             flex: 1;
-            padding: 8px 5px;
-            transition: all 0.3s;
-            border-radius: 10px;
-            margin: 0 2px;
-            position: relative;
+            padding: 5px;
         }
-        
-        .nav-item:hover {
-            background: #f5f5f5;
-        }
-        
+
         .nav-item.active {
             color: var(--primary);
         }
-        
-        .nav-item.active .nav-icon {
-            background: rgba(45, 104, 196, 0.1);
-            color: var(--primary);
-        }
-        
+
         .nav-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-size: 20px;
             margin-bottom: 5px;
-            transition: all 0.3s;
         }
-        
-        .nav-item:nth-child(1) .nav-icon { color: #4CAF50; }
-        .nav-item:nth-child(2) .nav-icon { color: #2196F3; }
-        .nav-item:nth-child(3) .nav-icon { color: #FF9800; }
-        .nav-item:nth-child(4) .nav-icon { color: #9C27B0; }
-        .nav-item:nth-child(5) .nav-icon { color: #f44336; }
-        
+
         .nav-main {
             position: relative;
         }
-        
+
         .nav-main .nav-icon {
             background: var(--primary);
-            color: white !important;
-            width: 55px;
-            height: 55px;
-            border-radius: 15px;
-            margin-top: -20px;
-            box-shadow: 0 5px 15px rgba(45, 104, 196, 0.3);
-        }
-        
-        .nav-main .nav-label {
-            margin-top: 8px;
-        }
-        
-        .nav-label {
-            font-size: 12px;
-            font-weight: 500;
-            text-align: center;
-        }
-        
-        .nav-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: var(--warning);
             color: white;
-            font-size: 10px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        /* ====== المساحة الرئيسية ====== */
-        .main-content {
-            padding-top: 100px;
-            padding-bottom: 20px;
-            min-height: calc(100vh - 120px);
-        }
-        
-        /* ====== البانر الرئيسي ====== */
-        .main-banner {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 50px 5%;
-            margin: 15px 5% 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(45, 104, 196, 0.3);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .main-banner:before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1%, transparent 20%);
-        }
-        
-        .banner-content {
-            position: relative;
-            z-index: 2;
-        }
-        
-        .banner-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-            color: white;
-        }
-        
-        .banner-title {
-            font-size: 28px;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-        
-        .banner-description {
-            font-size: 16px;
-            opacity: 0.9;
-            margin-bottom: 25px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
-        }
-        
-        .activate-btn {
-            background: white;
-            color: var(--primary);
-            border: none;
-            padding: 16px 40px;
-            border-radius: 15px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-        
-        .activate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-        
-        /* ====== بطاقات الإحصائيات ====== */
-        .stats-section {
-            padding: 0 5% 30px;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid #f0f0f0;
-        }
-        
-        .stat-icon {
             width: 50px;
             height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            margin: 0 auto 15px;
-            color: white;
-        }
-        
-        .stat-1 .stat-icon { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
-        .stat-2 .stat-icon { background: linear-gradient(135deg, #2196F3, #1565C0); }
-        .stat-3 .stat-icon { background: linear-gradient(135deg, #FF9800, #EF6C00); }
-        .stat-4 .stat-icon { background: linear-gradient(135deg, #9C27B0, #6A1B9A); }
-        
-        .stat-number {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            font-size: 14px;
-            color: var(--gray);
-        }
-        
-        /* ====== شريط الخدمات ====== */
-        .services-section {
-            padding: 0 5% 30px;
-        }
-        
-        .section-title {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: var(--dark);
-            font-weight: 600;
-            padding-right: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .service-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid #f0f0f0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .service-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-        
-        .service-icon {
-            width: 60px;
-            height: 60px;
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 26px;
-            color: white;
+            margin-top: -20px;
         }
-        
-        /* ألوان الخدمات */
-        .service-1 .service-icon {
-            background: linear-gradient(135deg, #2d68c4, #4a90e2);
-        }
-        
-        .service-2 .service-icon {
-            background: linear-gradient(135deg, #00a86b, #00c853);
-        }
-        
-        .service-3 .service-icon {
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-        }
-        
-        .service-4 .service-icon {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-        }
-        
-        /* الخدمات الإدارية */
-        .service-5 .service-icon {
-            background: linear-gradient(135deg, var(--admin), #3b82f6);
-        }
-        
-        .service-6 .service-icon {
-            background: linear-gradient(135deg, var(--owner), #a78bfa);
-        }
-        
-        .service-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--dark);
-        }
-        
-        .service-description {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.5;
-        }
-        
-        .service-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--accent);
-            color: white;
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-        
-        .service-5 .service-badge {
-            background: var(--admin);
-        }
-        
-        .service-6 .service-badge {
-            background: var(--owner);
-        }
-        
-        /* ====== محتوى الخدمات ====== */
-        .content-page {
-            display: none;
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .page-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .page-header i {
-            font-size: 28px;
-            color: var(--primary);
-        }
-        
-        .page-header h2 {
-            font-size: 24px;
-            color: var(--dark);
-        }
-        
-        /* صفحة الخدمات */
-        .services-page .services-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        /* صفحة الرسائل */
-        .messages-container {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        
-        .message-item {
-            padding: 20px;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .message-item:hover {
-            background: #f9f9f9;
-        }
-        
-        .message-item:last-child {
-            border-bottom: none;
-        }
-        
-        .message-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: white;
-            flex-shrink: 0;
-        }
-        
-        .message-content {
-            flex: 1;
-        }
-        
-        .message-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--dark);
-        }
-        
-        .message-text {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 5px;
-            line-height: 1.4;
-        }
-        
-        .message-time {
+
+        .nav-label {
             font-size: 12px;
-            color: var(--gray);
-        }
-        
-        /* صفحة معلوماتي */
-        .profile-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            margin-bottom: 25px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 4px solid white;
-            object-fit: cover;
-            margin: 0 auto 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-        
-        .profile-name {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .profile-id {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        
-        .profile-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .profile-stat {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        
-        .profile-stat-number {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-        
-        .profile-stat-label {
-            font-size: 12px;
-            color: var(--gray);
-        }
-        
-        /* ====== تحذير الوصول ====== */
-        .warning-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 9998;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .warning-content {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 500px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        
-        .warning-icon {
-            font-size: 70px;
-            color: #ffdd59;
-            margin-bottom: 20px;
-            animation: bounce 1s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        /* ====== تحذير الوصول الإداري ====== */
-        .admin-warning {
-            background: linear-gradient(135deg, var(--admin), #3b82f6);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 15px 5%;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .admin-warning-content {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .admin-warning-btn {
-            background: white;
-            color: var(--admin);
-            border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-        
-        .admin-warning-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
-        }
-        
-        /* ====== زر الرجوع ====== */
-        .back-button {
-            background: #f5f5f5;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 14px;
-            color: var(--dark);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            transition: all 0.3s;
-        }
-        
-        .back-button:hover {
-            background: #e0e0e0;
-        }
-        
-        /* ====== القائمة الجانبية ====== */
-        .user-sidebar {
-            position: fixed;
-            top: 0;
-            right: -350px;
-            width: 350px;
-            height: 100vh;
-            background: white;
-            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
-            z-index: 9999;
-            transition: right 0.3s ease;
-            overflow-y: auto;
-            padding: 30px;
-        }
-        
-        .sidebar-open {
-            right: 0;
-        }
-        
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .close-sidebar {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--gray);
-            transition: color 0.3s;
-        }
-        
-        .close-sidebar:hover {
-            color: var(--primary);
-        }
-        
-        /* ====== الفوتر ====== */
-        footer {
-            background: var(--dark);
-            color: white;
-            text-align: center;
-            padding: 25px 5%;
-            margin-top: 30px;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-        
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 14px;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-        }
-        
-        .copyright {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 13px;
-            margin-top: 15px;
-            line-height: 1.5;
-        }
-        
-        /* ====== استجابة للأجهزة الصغيرة ====== */
-        @media (max-width: 768px) {
-            .main-banner {
-                padding: 40px 5%;
-                margin: 10px 5% 20px;
-            }
-            
-            .banner-title {
-                font-size: 24px;
-            }
-            
-            .banner-description {
-                font-size: 15px;
-            }
-            
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-container {
-                padding: 0 5px;
-            }
-            
-            .nav-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-            
-            .nav-main .nav-icon {
-                width: 50px;
-                height: 50px;
-            }
-            
-            .nav-label {
-                font-size: 11px;
-            }
         }
     </style>
 </head>
@@ -877,255 +271,127 @@
     <!-- ====== الهيدر ====== -->
     <header class="app-header">
         <div class="header-content">
-            <!-- اللوجو -->
-            <div class="app-logo" onclick="goToHome()">
+            <div class="app-logo">
                 <i class="fas fa-id-card"></i>
                 <h1>هيئة KR الرقمية</h1>
             </div>
             
-            <!-- قائمة المستخدم -->
-            <div class="user-menu">
-                <!-- معلومات المستخدم -->
-                <div class="user-info" id="userInfo" onclick="toggleSidebar()">
-                    <img src="" alt="صورة الهوية" class="user-avatar" id="userAvatar">
-                    <div class="user-details">
-                        <div class="user-name" id="userNameDisplay"></div>
-                        <div class="user-id" id="userIdDisplay"></div>
-                        <div class="user-status">🟢 مفعل</div>
-                    </div>
-                </div>
-                
-                <!-- الإشعارات -->
-                <div class="notification-icon" onclick="toggleNotifications()">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge" id="notificationCount">0</span>
-                </div>
+            <div class="notification-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">0</span>
             </div>
         </div>
     </header>
     
-    <!-- ====== الصفحات ====== -->
+    <!-- ====== المحتوى الرئيسي ====== -->
     <main class="main-content">
-        <!-- الصفحة الرئيسية -->
-        <div id="homePage" class="content-page active-page">
-            <!-- تحذير الوصول الإداري -->
-            <div class="admin-warning" id="adminWarning">
-                <div class="admin-warning-content">
-                    <i class="fas fa-lock"></i>
-                    <div>
-                        <h3 style="margin: 0 0 5px 0; font-size: 16px;">الوصول إلى الخدمات الإدارية</h3>
-                        <p style="margin: 0; font-size: 14px; opacity: 0.9;">هذه الخدمات مخصصة للمسؤولين المعتمدين فقط</p>
-                    </div>
-                </div>
-                <button class="admin-warning-btn" onclick="goToAdminLogin()">
-                    <i class="fas fa-sign-in-alt"></i>
-                    تسجيل دخول
-                </button>
+        <!-- البانر الرئيسي -->
+        <section class="main-banner">
+            <div class="banner-icon">
+                <i class="fas fa-id-card-alt"></i>
             </div>
-            
-            <!-- البانر الرئيسي -->
-            <section class="main-banner">
-                <div class="banner-content">
-                    <div class="banner-icon">
-                        <i class="fas fa-id-card-alt"></i>
-                    </div>
-                    <h2 class="banner-title">طلب تفعيل الهوية</h2>
-                    <p class="banner-description">
-                        نظام تفعيل الهوية الرسمي لهيئة KR الرقمية
-                    </p>
-                    <button class="activate-btn" onclick="goToApply()">
-                        <i class="fas fa-rocket"></i>
-                        تقديم طلب التفعيل
-                    </button>
-                </div>
-            </section>
-            
-            <!-- إحصائيات النظام -->
-            <section class="stats-section">
-                <h3 class="section-title">
-                    <i class="fas fa-chart-line"></i>
-                    إحصائيات النظام
-                </h3>
-                <div class="stats-grid">
-                    <div class="stat-card stat-1">
-                        <div class="stat-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <div class="stat-number" id="totalRequests">0</div>
-                        <div class="stat-label">إجمالي الطلبات</div>
-                    </div>
-                    <div class="stat-card stat-2">
-                        <div class="stat-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="stat-number" id="pendingRequests">0</div>
-                        <div class="stat-label">قيد المراجعة</div>
-                    </div>
-                    <div class="stat-card stat-3">
-                        <div class="stat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="stat-number" id="activatedUsers">0</div>
-                        <div class="stat-label">مستخدمين مفعلين</div>
-                    </div>
-                    <div class="stat-card stat-4">
-                        <div class="stat-icon">
-                            <i class="fas fa-calendar-day"></i>
-                        </div>
-                        <div class="stat-number" id="todayRequests">0</div>
-                        <div class="stat-label">طلبات اليوم</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- الخدمات الرئيسية -->
-            <section class="services-section">
-                <h3 class="section-title">
-                    <i class="fas fa-th-large"></i>
-                    الخدمات الرقمية
-                </h3>
-                <div class="services-grid">
-                    <div class="service-card service-1" onclick="openService('kr')">
-                        <div class="service-badge">الأولى</div>
-                        <div class="service-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3 class="service-title">KR</h3>
-                        <p class="service-description">
-                            النظام الرئيسي لإدارة الهويات الرقمية
-                        </p>
-                    </div>
-                    
-                    <div class="service-card service-2" onclick="openService('tracking')">
-                        <div class="service-badge">جديد</div>
-                        <div class="service-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <h3 class="service-title">واكب</h3>
-                        <p class="service-description">
-                            متابعة الطلبات وتتبع حالة التفعيل
-                        </p>
-                    </div>
-                    
-                    <div class="service-card service-3" onclick="openService('services')">
-                        <div class="service-icon">
-                            <i class="fas fa-cogs"></i>
-                        </div>
-                        <h3 class="service-title">الخدمات</h3>
-                        <p class="service-description">
-                            جميع الخدمات الإلكترونية المتاحة
-                        </p>
-                    </div>
-                    
-                    <div class="service-card service-4" onclick="openService('profile')">
-                        <div class="service-icon">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                        <h3 class="service-title">معلوماتي</h3>
-                        <p class="service-description">
-                            عرض وتعديل المعلومات الشخصية
-                        </p>
-                    </div>
-                    
-                    <!-- الخدمات الإدارية -->
-                    <div class="service-card service-5" onclick="openAdminService('admin')">
-                        <div class="service-badge">إداري</div>
-                        <div class="service-icon">
-                            <i class="fas fa-user-shield"></i>
-                        </div>
-                        <h3 class="service-title">الخدمة الإدارية</h3>
-                        <p class="service-description">
-                            نظام إدارة الطلبات للمسؤولين
-                        </p>
-                    </div>
-                    
-                    <div class="service-card service-6" onclick="openAdminService('owner')">
-                        <div class="service-badge">أونر</div>
-                        <div class="service-icon">
-                            <i class="fas fa-crown"></i>
-                        </div>
-                        <h3 class="service-title">خدمة المسؤولين</h3>
-                        <p class="service-description">
-                            لوحة التحكم الكاملة للمالك
-                        </p>
-                    </div>
-                </div>
-            </section>
-        </div>
-        
-        <!-- صفحة الخدمات -->
-        <div id="servicesPage" class="content-page">
-            <button class="back-button" onclick="showPage('home')">
-                <i class="fas fa-arrow-right"></i>
-                العودة
+            <h2 class="banner-title">طلب تفعيل الهوية</h2>
+            <p class="banner-description">نظام تفعيل الهوية الرسمي لهيئة KR الرقمية</p>
+            <button class="activate-btn" onclick="goToApply()">
+                <i class="fas fa-rocket"></i>
+                تقديم طلب التفعيل
             </button>
-            
-            <div class="page-header">
-                <i class="fas fa-th-large"></i>
-                <h2>الخدمات الرقمية</h2>
+        </section>
+        
+        <!-- إحصائيات النظام -->
+        <section class="stats-section">
+            <h3 class="section-title">إحصائيات النظام</h3>
+            <div class="stats-grid">
+                <div class="stat-card stat-1">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-number" id="totalRequests">0</div>
+                    <div class="stat-label">إجمالي الطلبات</div>
+                </div>
+                <div class="stat-card stat-2">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number" id="pendingRequests">0</div>
+                    <div class="stat-label">قيد المراجعة</div>
+                </div>
+                <div class="stat-card stat-3">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" id="activatedUsers">0</div>
+                    <div class="stat-label">مستخدمين مفعلين</div>
+                </div>
+                <div class="stat-card stat-4">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="stat-number" id="todayRequests">0</div>
+                    <div class="stat-label">طلبات اليوم</div>
+                </div>
             </div>
-            
+        </section>
+        
+        <!-- الخدمات الرئيسية -->
+        <section class="services-section">
+            <h3 class="section-title">الخدمات الرقمية</h3>
             <div class="services-grid">
-                <!-- سيتم ملؤه بالخدمات -->
+                <div class="service-card service-1" onclick="openService('kr')">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="service-title">KR</h3>
+                    <p class="service-description">النظام الرئيسي لإدارة الهويات</p>
+                </div>
+                
+                <div class="service-card service-2" onclick="openService('tracking')">
+                    <div class="service-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="service-title">واكب</h3>
+                    <p class="service-description">متابعة الطلبات والتتبع</p>
+                </div>
+                
+                <div class="service-card service-3" onclick="openService('services')">
+                    <div class="service-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="service-title">الخدمات</h3>
+                    <p class="service-description">جميع الخدمات الإلكترونية</p>
+                </div>
+                
+                <div class="service-card service-4" onclick="openService('profile')">
+                    <div class="service-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3 class="service-title">معلوماتي</h3>
+                    <p class="service-description">المعلومات الشخصية</p>
+                </div>
+                
+                <!-- الخدمات الإدارية -->
+                <div class="service-card service-5" onclick="openAdminService('admin')">
+                    <div class="service-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3 class="service-title">الخدمة الإدارية</h3>
+                    <p class="service-description">للمسؤولين</p>
+                </div>
+                
+                <div class="service-card service-6" onclick="openAdminService('owner')">
+                    <div class="service-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="service-title">خدمة المسؤولين</h3>
+                    <p class="service-description">للمالك</p>
+                </div>
             </div>
-        </div>
-        
-        <!-- صفحة واكب -->
-        <div id="trackingPage" class="content-page">
-            <button class="back-button" onclick="showPage('home')">
-                <i class="fas fa-arrow-right"></i>
-                العودة
-            </button>
-            
-            <div class="page-header">
-                <i class="fas fa-map-marker-alt"></i>
-                <h2>متابعة الطلبات</h2>
-            </div>
-            
-            <div id="trackingContent">
-                <!-- سيتم ملؤه بمعلومات المتابعة -->
-            </div>
-        </div>
-        
-        <!-- صفحة الرسائل -->
-        <div id="messagesPage" class="content-page">
-            <button class="back-button" onclick="showPage('home')">
-                <i class="fas fa-arrow-right"></i>
-                العودة
-            </button>
-            
-            <div class="page-header">
-                <i class="fas fa-envelope"></i>
-                <h2>الرسائل</h2>
-            </div>
-            
-            <div class="messages-container" id="messagesContainer">
-                <!-- سيتم ملؤه بالرسائل -->
-            </div>
-        </div>
-        
-        <!-- صفحة معلوماتي -->
-        <div id="profilePage" class="content-page">
-            <button class="back-button" onclick="showPage('home')">
-                <i class="fas fa-arrow-right"></i>
-                العودة
-            </button>
-            
-            <div class="page-header">
-                <i class="fas fa-user-circle"></i>
-                <h2>معلوماتي</h2>
-            </div>
-            
-            <div id="profileContent">
-                <!-- سيتم ملؤه بمعلومات المستخدم -->
-            </div>
-        </div>
+        </section>
     </main>
     
     <!-- ====== الشريط السفلي ====== -->
-    <nav class="bottom-nav" id="bottomNav">
+    <nav class="bottom-nav">
         <div class="nav-container">
-            <!-- الخدمات -->
             <a href="javascript:void(0)" class="nav-item" onclick="showPage('services')">
                 <div class="nav-icon">
                     <i class="fas fa-th-large"></i>
@@ -1133,7 +399,6 @@
                 <span class="nav-label">الخدمات</span>
             </a>
             
-            <!-- واكب -->
             <a href="javascript:void(0)" class="nav-item" onclick="showPage('tracking')">
                 <div class="nav-icon">
                     <i class="fas fa-map-marker-alt"></i>
@@ -1141,5 +406,117 @@
                 <span class="nav-label">واكب</span>
             </a>
             
-            <!-- الرئيسية -->
-            <a href="javascript:void(0)" class="nav-item nav-main" onclick="showPage('
+            <a href="javascript:void(0)" class="nav-item nav-main active" onclick="showPage('home')">
+                <div class="nav-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <span class="nav-label">الرئيسية</span>
+            </a>
+            
+            <a href="javascript:void(0)" class="nav-item" onclick="showPage('messages')">
+                <div class="nav-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <span class="nav-label">الرسائل</span>
+            </a>
+            
+            <a href="javascript:void(0)" class="nav-item" onclick="showPage('profile')">
+                <div class="nav-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span class="nav-label">معلوماتي</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('تطبيق هيئة KR الرقمية - جاهز');
+            updateStatistics();
+        });
+        
+        // تحديث الإحصائيات
+        function updateStatistics() {
+            try {
+                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+                
+                document.getElementById('totalRequests').textContent = requests.length;
+                
+                const pendingRequests = requests.filter(req => req.status === 'pending').length;
+                document.getElementById('pendingRequests').textContent = pendingRequests;
+                
+                const activatedUsers = requests.filter(req => req.status === 'activated' || !req.status).length;
+                document.getElementById('activatedUsers').textContent = activatedUsers;
+                
+                // طلبات اليوم (مثال)
+                document.getElementById('todayRequests').textContent = Math.floor(Math.random() * 5);
+                
+            } catch (error) {
+                console.error('خطأ في تحديث الإحصائيات:', error);
+            }
+        }
+        
+        // الانتقال إلى صفحة التقديم
+        function goToApply() {
+            window.location.href = 'apply.html';
+        }
+        
+        // فتح الخدمات
+        function openService(service) {
+            switch(service) {
+                case 'kr':
+                    alert('خدمة KR - قريباً');
+                    break;
+                case 'tracking':
+                    alert('خدمة المتابعة - قريباً');
+                    break;
+                case 'services':
+                    alert('صفحة الخدمات - قريباً');
+                    break;
+                case 'profile':
+                    alert('صفحة المعلومات الشخصية - قريباً');
+                    break;
+            }
+        }
+        
+        // فتح الخدمات الإدارية
+        function openAdminService(type) {
+            if (type === 'admin') {
+                const username = prompt('اسم المستخدم الإداري:');
+                const password = prompt('كلمة المرور:');
+                
+                if (username === 'admin' && password === 'admin123') {
+                    alert('مرحباً بك في النظام الإداري');
+                    // توجيه للوحة التحكم
+                } else {
+                    alert('بيانات الدخول غير صحيحة!');
+                }
+            } else if (type === 'owner') {
+                const username = prompt('اسم مستخدم المالك:');
+                const password = prompt('كلمة المرور:');
+                
+                if (username === 'owner' && password === 'owner123') {
+                    alert('مرحباً بك في لوحة تحكم المالك');
+                    // توجيه للوحة التحكم الخاصة
+                } else {
+                    alert('بيانات الدخول غير صحيحة!');
+                }
+            }
+        }
+        
+        // عرض الصفحات (وظيفة أساسية)
+        function showPage(page) {
+            alert(`سيتم عرض صفحة ${page} قريباً`);
+        }
+        
+        // تحديث الشريط السفلي
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
