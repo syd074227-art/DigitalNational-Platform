@@ -882,18 +882,46 @@
             
             // تحميل بيانات الطلبات
             loadRequestsData();
+            
+            // تعريف الدالة هنا للتأكد من وجودها
+            window.showDashboard = function(adminData) {
+                // إخفاء شاشة الدخول
+                document.getElementById('loginScreen').style.display = 'none';
+                
+                // إظهار لوحة التحكم
+                document.getElementById('dashboardScreen').style.display = 'block';
+                
+                // تحديث معلومات المسؤول
+                updateAdminInfo(adminData);
+                
+                // تحميل البيانات
+                loadDashboardData();
+                
+                // عرض رسالة ترحيب
+                showAlert(`مرحباً بك ${adminData.name} في لوحة التحكم`, 'success');
+            };
         });
 
-        // ====== التحقق من تسجيل الدخول ======
+        // ====== فحص وضع الدخول عند تحميل الصفحة ======
         function checkAdminLogin() {
             const savedAdmin = localStorage.getItem('admin_logged_in');
             
             if (savedAdmin) {
                 try {
                     const adminData = JSON.parse(savedAdmin);
-                    showDashboard(adminData);
+                    // التحقق من صحة الجلسة
+                    if (adminData && adminData.username && adminData.name) {
+                        // الانتقال المباشر للوحة التحكم
+                        document.getElementById('loginScreen').style.display = 'none';
+                        document.getElementById('dashboardScreen').style.display = 'block';
+                        updateAdminInfo(adminData);
+                        loadDashboardData();
+                        console.log('✅ تم استعادة الجلسة بنجاح');
+                    } else {
+                        showLoginScreen();
+                    }
                 } catch (e) {
-                    // إذا كان هناك خطأ في البيانات، اعرض شاشة الدخول
+                    console.error('❌ خطأ في بيانات الجلسة:', e);
                     showLoginScreen();
                 }
             } else {
@@ -906,46 +934,76 @@
             const username = document.getElementById('adminUsername').value.trim();
             const password = document.getElementById('adminPassword').value;
             const errorDiv = document.getElementById('loginError');
-            const loginBtn = document.getElementById('loginBtnText');
+            const loginBtn = document.querySelector('.login-btn');
             
             // إخفاء أي خطأ سابق
             errorDiv.classList.remove('show');
             
-            // التحقق من بيانات الدخول
-            const admin = ADMIN_CREDENTIALS.find(
-                cred => cred.username === username && cred.password === password
-            );
-            
-            if (admin) {
-                // حفظ بيانات الدخول
-                const adminData = {
-                    ...admin,
-                    loginTime: new Date().toISOString(),
-                    sessionId: 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
-                };
-                
-                localStorage.setItem('admin_logged_in', JSON.stringify(adminData));
-                
-                // عرض رسالة نجاح
-                showAlert('تم تسجيل الدخول بنجاح!', 'success');
-                
-                // الانتقال للوحة التحكم
-                setTimeout(() => {
-                    showDashboard(adminData);
-                }, 1000);
-                
-            } else {
-                // عرض رسالة الخطأ
+            // التحقق من الحقول الفارغة
+            if (!username || !password) {
+                errorDiv.querySelector('span').textContent = 'يرجى ملء جميع الحقول';
                 errorDiv.classList.add('show');
-                
-                // تأثير اهتزاز على الحقول
-                document.querySelectorAll('.login-input').forEach(input => {
-                    input.style.animation = 'shake 0.5s';
-                    setTimeout(() => {
-                        input.style.animation = '';
-                    }, 500);
-                });
+                return;
             }
+            
+            // تأثير التحميل على الزر
+            const originalText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
+            loginBtn.disabled = true;
+            
+            // محاكاة تأخير للتحقق
+            setTimeout(() => {
+                // التحقق من بيانات الدخول
+                const admin = ADMIN_CREDENTIALS.find(
+                    cred => cred.username === username && cred.password === password
+                );
+                
+                if (admin) {
+                    // حفظ بيانات الدخول
+                    const adminData = {
+                        ...admin,
+                        loginTime: new Date().toISOString(),
+                        sessionId: 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
+                    };
+                    
+                    localStorage.setItem('admin_logged_in', JSON.stringify(adminData));
+                    
+                    // عرض رسالة نجاح
+                    showAlert('تم تسجيل الدخول بنجاح!', 'success');
+                    
+                    // الانتقال للوحة التحكم بعد تأخير قصير
+                    setTimeout(() => {
+                        if (typeof showDashboard === 'function') {
+                            showDashboard(adminData);
+                        } else {
+                            // بديل في حالة لم يتم تعريف showDashboard
+                            document.getElementById('loginScreen').style.display = 'none';
+                            document.getElementById('dashboardScreen').style.display = 'block';
+                            updateAdminInfo(adminData);
+                            loadDashboardData();
+                        }
+                        loginBtn.innerHTML = originalText;
+                        loginBtn.disabled = false;
+                    }, 800);
+                    
+                } else {
+                    // عرض رسالة الخطأ
+                    errorDiv.querySelector('span').textContent = 'خطأ في اسم المستخدم أو كلمة المرور';
+                    errorDiv.classList.add('show');
+                    
+                    // تأثير اهتزاز على الحقول
+                    document.querySelectorAll('.login-input').forEach(input => {
+                        input.style.animation = 'shake 0.5s';
+                        setTimeout(() => {
+                            input.style.animation = '';
+                        }, 500);
+                    });
+                    
+                    // إعادة الزر لحالته الأصلية
+                    loginBtn.innerHTML = originalText;
+                    loginBtn.disabled = false;
+                }
+            }, 800); // تأخير 800 مللي ثانية لمحاكاة عملية التحقق
         }
 
         // ====== عرض شاشة تسجيل الدخول ======
@@ -961,24 +1019,6 @@
             });
         }
 
-        // ====== عرض لوحة التحكم ======
-        function showDashboard(adminData) {
-            // إخفاء شاشة الدخول
-            document.getElementById('loginScreen').style.display = 'none';
-            
-            // إظهار لوحة التحكم
-            document.getElementById('dashboardScreen').style.display = 'block';
-            
-            // تحديث معلومات المسؤول
-            updateAdminInfo(adminData);
-            
-            // تحميل البيانات
-            loadDashboardData();
-            
-            // عرض رسالة ترحيب
-            showAlert(`مرحباً بك ${adminData.name} في لوحة التحكم`, 'success');
-        }
-
         // ====== تحديث معلومات المسؤول ======
         function updateAdminInfo(adminData) {
             document.getElementById('adminWelcome').textContent = `مرحباً، ${adminData.name}`;
@@ -986,6 +1026,25 @@
             document.getElementById('userAvatar').textContent = adminData.avatar;
             document.getElementById('dropdownName').textContent = adminData.name;
             document.getElementById('dropdownRole').textContent = adminData.role;
+        }
+
+        // ====== إعداد أحداث الإدخال ======
+        function setupInputEvents() {
+            // السماح بالدخول بالضغط على Enter
+            const usernameInput = document.getElementById('adminUsername');
+            const passwordInput = document.getElementById('adminPassword');
+            
+            usernameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    passwordInput.focus();
+                }
+            });
+            
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    adminLogin();
+                }
+            });
         }
 
         // ====== قائمة المستخدم ======
@@ -1043,65 +1102,4 @@
         function updateStatistics(requests) {
             const total = requests.length;
             const pending = requests.filter(r => r.status === 'pending').length;
-            const accepted = requests.filter(r => r.status === 'accepted').length;
-            const activeUsers = requests.filter(r => r.status === 'accepted').length;
-            
-            document.getElementById('totalRequests').textContent = total;
-            document.getElementById('pendingRequests').textContent = pending;
-            document.getElementById('acceptedRequests').textContent = accepted;
-            document.getElementById('activeUsers').textContent = activeUsers;
-        }
-
-        function loadRequestsData() {
-            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-            return requests;
-        }
-
-        function loadRequestsTable(requests) {
-            const container = document.getElementById('requestsContainer');
-            const statusFilter = document.getElementById('statusFilter').value;
-            
-            let filteredRequests = [...requests];
-            
-            // تصفية حسب الحالة
-            if (statusFilter !== 'all') {
-                filteredRequests = filteredRequests.filter(r => r.status === statusFilter);
-            }
-            
-            // ترتيب حسب التاريخ (الأحدث أولاً)
-            filteredRequests.sort((a, b) => {
-                const dateA = new Date(a.submissionDate || a.date);
-                const dateB = new Date(b.submissionDate || b.date);
-                return dateB - dateA;
-            });
-            
-            // عرض الطلبات
-            if (filteredRequests.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.7);">
-                        <i class="fas fa-inbox" style="font-size: 40px; margin-bottom: 15px;"></i>
-                        <div>لا توجد طلبات لعرضها</div>
-                    </div>
-                `;
-                return;
-            }
-            
-            let html = '<div style="display: grid; gap: 15px;">';
-            
-            filteredRequests.forEach((request, index) => {
-                const jobNames = {
-                    'citizen': 'مواطن',
-                    'interior': 'داخلية',
-                    'health': 'صحة',
-                    'justice': 'عدل'
-                };
-                
-                const statusText = {
-                    'pending': 'قيد المراجعة',
-                    'accepted': 'مقبولة',
-                    'rejected': 'مرفوضة',
-                    'banned': 'معطلة'
-                }[request.status] || request.status;
-                
-                const statusColor = {
-                    'pending': '#f8961e',
+            const accepted = requests.filter(r
