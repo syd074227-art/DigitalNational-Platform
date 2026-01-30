@@ -1133,4 +1133,608 @@
             const accepted = allRequests.filter(r => r.status === 'accepted').length;
             const activeUsers = allRequests.filter(r => r.status === 'accepted').length;
             
-            document.getElementById('totalRequests').text
+            document.getElementById('totalRequests').textContent = total;
+            document.getElementById('pendingRequests').textContent = pending;
+            document.getElementById('acceptedRequests').textContent = accepted;
+            document.getElementById('activeUsers').textContent = activeUsers;
+        }
+
+        // ====== تعطيل الحساب ======
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            if (errorElement) {
+                errorElement.querySelector('span').textContent = message;
+                errorElement.classList.add('show');
+            }
+        }
+
+        function hideError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            if (errorElement) {
+                errorElement.classList.remove('show');
+            }
+        }
+
+        function banAccount() {
+            const identity = document.getElementById('banIdentity').value.trim();
+            const reason = document.getElementById('banReason').value.trim();
+            const banType = document.querySelector('input[name="banType"]:checked').value;
+            
+            // التحقق من الحقول
+            let isValid = true;
+            
+            if (!identity) {
+                showError('banIdentityError', 'يرجى إدخال رقم الهوية أو اسم الحساب');
+                isValid = false;
+            } else {
+                hideError('banIdentityError');
+            }
+            
+            if (!reason) {
+                showError('banReasonError', 'يرجى كتابة سبب التعطيل');
+                isValid = false;
+            } else {
+                hideError('banReasonError');
+            }
+            
+            if (!isValid) return;
+            
+            // البحث عن الحساب
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const userRequests = requests.filter(r => 
+                r.gameId === identity || r.gameUsername.toLowerCase() === identity.toLowerCase()
+            );
+            
+            if (userRequests.length === 0) {
+                showError('banIdentityError', 'لم يتم العثور على الحساب');
+                return;
+            }
+            
+            // إنشاء بيانات التعطيل
+            const banData = {
+                identity: identity,
+                reason: reason,
+                type: banType,
+                date: new Date().toLocaleString('ar-SA'),
+                admin: currentAdmin.name
+            };
+            
+            if (banType === 'temporary') {
+                const duration = document.getElementById('banDuration').value;
+                const unit = document.getElementById('banDurationUnit').value;
+                banData.duration = { value: duration, unit: unit };
+                
+                const endDate = new Date();
+                switch(unit) {
+                    case 'hours': endDate.setHours(endDate.getHours() + parseInt(duration)); break;
+                    case 'days': endDate.setDate(endDate.getDate() + parseInt(duration)); break;
+                    case 'weeks': endDate.setDate(endDate.getDate() + (parseInt(duration) * 7)); break;
+                    case 'months': endDate.setMonth(endDate.getMonth() + parseInt(duration)); break;
+                }
+                banData.banUntil = endDate.toISOString();
+            }
+            
+            // حفظ بيانات التعطيل
+            const bans = JSON.parse(localStorage.getItem('user_bans') || '[]');
+            bans.push(banData);
+            localStorage.setItem('user_bans', JSON.stringify(bans));
+            
+            // تحديث حالة المستخدم
+            userRequests.forEach(request => {
+                request.status = 'banned';
+                request.banInfo = banData;
+            });
+            localStorage.setItem('identityRequests', JSON.stringify(requests));
+            
+            // إعادة تحميل البيانات
+            loadDashboardData();
+            
+            // إظهار رسالة نجاح
+            alertSuccess(`تم تعطيل الحساب ${identity} بنجاح`);
+            
+            // إعادة تعيين النموذج
+            clearBanForm();
+        }
+
+        function clearBanForm() {
+            document.getElementById('banIdentity').value = '';
+            document.getElementById('banReason').value = '';
+            document.querySelector('input[name="banType"][value="permanent"]').checked = true;
+            document.getElementById('durationSection').style.display = 'none';
+            document.getElementById('banDuration').value = '7';
+            
+            // إخفاء جميع أخطاء النموذج
+            hideError('banIdentityError');
+            hideError('banReasonError');
+        }
+
+        // ====== بحث الهوية ======
+        function searchIdentity() {
+            const searchQuery = document.getElementById('searchIdentity').value.trim();
+            
+            if (!searchQuery) {
+                showError('searchError', 'يرجى إدخال رقم الهوية للبحث');
+                return;
+            }
+            
+            hideError('searchError');
+            
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const foundRequest = requests.find(r => r.gameId === searchQuery);
+            
+            const resultDiv = document.getElementById('identityResult');
+            const detailsDiv = document.getElementById('identityDetails');
+            
+            if (foundRequest) {
+                currentRequestId = foundRequest.id;
+                
+                const jobNames = {
+                    'citizen': 'مواطن',
+                    'interior': 'منسوب الداخلية',
+                    'health': 'منسوب الصحة',
+                    'justice': 'منسوب العدل'
+                };
+                
+                const statusText = {
+                    'pending': 'قيد المراجعة',
+                    'accepted': 'مقبولة',
+                    'rejected': 'مرفوضة',
+                    'banned': 'معطلة'
+                }[foundRequest.status] || foundRequest.status;
+                
+                detailsDiv.innerHTML = `
+                    <div style="display: grid; gap: 15px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: rgba(255, 255, 255, 0.7);">الاسم الكامل:</span>
+                            <span style="color: white; font-weight: 600;">${foundRequest.fullName}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: rgba(255, 255, 255, 0.7);">رقم الهوية:</span>
+                            <span style="color: white; font-weight: 600;">${foundRequest.gameId}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: rgba(255, 255, 255, 0.7);">اسم اللعبة:</span>
+                            <span style="color: white; font-weight: 600;">${foundRequest.gameUsername}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: rgba(255, 255, 255, 0.7);">الديسكورد:</span>
+                            <span style="color: white; font-weight: 600;">${foundRequest.discordUsername}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: rgba(255, 255, 255, 0.7);">الوظيفة:</span>
+                            <span style="color: white; font-weight: 600;">${jobNames[foundRequest.job] || foundRequest.job}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: rgba(255, 255, 255, 0.7);">المنصب:</span>
+                            <span style="color: white; font-weight: 600;">${foundRequest.rank || 'لا يوجد'}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: rgba(255, 255, 255, 0.7);">الحالة:</span>
+                            <span class="request-status status-${foundRequest.status}">${statusText}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: rgba(255, 255, 255, 0.7);">تاريخ التقديم:</span>
+                            <span style="color: white; font-weight: 600;">${foundRequest.date}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons" style="margin-top: 25px;">
+                        <button class="btn btn-success" onclick="activateSearchedIdentity()">
+                            <i class="fas fa-check"></i> تفعيل
+                        </button>
+                        <button class="btn btn-danger" onclick="rejectSearchedIdentity()">
+                            <i class="fas fa-times"></i> رفض
+                        </button>
+                        <button class="btn btn-warning" onclick="viewFullRequest('${foundRequest.id}')">
+                            <i class="fas fa-eye"></i> عرض كامل
+                        </button>
+                    </div>
+                `;
+                
+                resultDiv.style.display = 'block';
+            } else {
+                detailsDiv.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: rgba(255, 255, 255, 0.7);">
+                        <i class="fas fa-search" style="font-size: 30px; margin-bottom: 10px;"></i>
+                        <div>لم يتم العثور على هوية بهذا الرقم</div>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+            }
+        }
+
+        function activateSearchedIdentity() {
+            if (!currentRequestId) return;
+            
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const requestIndex = requests.findIndex(r => r.id === currentRequestId);
+            
+            if (requestIndex !== -1) {
+                requests[requestIndex].status = 'accepted';
+                requests[requestIndex].approvedBy = currentAdmin.name;
+                requests[requestIndex].approvalDate = new Date().toLocaleString('ar-SA');
+                
+                localStorage.setItem('identityRequests', JSON.stringify(requests));
+                
+                alertSuccess('تم تفعيل الهوية بنجاح');
+                document.getElementById('identityResult').style.display = 'none';
+                document.getElementById('searchIdentity').value = '';
+                loadDashboardData();
+            }
+        }
+
+        function rejectSearchedIdentity() {
+            if (!currentRequestId) return;
+            
+            const reason = prompt('يرجى كتابة سبب الرفض:');
+            if (!reason) return;
+            
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const requestIndex = requests.findIndex(r => r.id === currentRequestId);
+            
+            if (requestIndex !== -1) {
+                requests[requestIndex].status = 'rejected';
+                requests[requestIndex].rejectedBy = currentAdmin.name;
+                requests[requestIndex].rejectionDate = new Date().toLocaleString('ar-SA');
+                requests[requestIndex].rejectionReason = reason;
+                
+                localStorage.setItem('identityRequests', JSON.stringify(requests));
+                
+                alertSuccess('تم رفض طلب التفعيل');
+                document.getElementById('identityResult').style.display = 'none';
+                document.getElementById('searchIdentity').value = '';
+                loadDashboardData();
+            }
+        }
+
+        // ====== طلبات تفعيل الهوية ======
+        function loadRequests() {
+            const container = document.getElementById('requestsContainer');
+            const statusFilter = document.getElementById('statusFilter').value;
+            const sortFilter = document.getElementById('sortFilter').value;
+            
+            let filteredRequests = [...allRequests];
+            
+            // تصفية حسب الحالة
+            if (statusFilter !== 'all') {
+                filteredRequests = filteredRequests.filter(r => r.status === statusFilter);
+            }
+            
+            // ترتيب حسب التاريخ
+            filteredRequests.sort((a, b) => {
+                const dateA = new Date(a.submissionDate || a.date);
+                const dateB = new Date(b.submissionDate || b.date);
+                return sortFilter === 'newest' ? dateB - dateA : dateA - dateB;
+            });
+            
+            // عرض الطلبات
+            container.innerHTML = '';
+            
+            if (filteredRequests.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.7);">
+                        <i class="fas fa-inbox" style="font-size: 40px; margin-bottom: 15px;"></i>
+                        <div>لا توجد طلبات لعرضها</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredRequests.forEach((request, index) => {
+                const requestElement = createRequestElement(request, index + 1);
+                container.appendChild(requestElement);
+            });
+        }
+
+        function createRequestElement(request, index) {
+            const jobNames = {
+                'citizen': 'مواطن',
+                'interior': 'منسوب الداخلية',
+                'health': 'منسوب الصحة',
+                'justice': 'منسوب العدل'
+            };
+            
+            const statusText = {
+                'pending': 'قيد المراجعة',
+                'accepted': 'مقبولة',
+                'rejected': 'مرفوضة',
+                'banned': 'معطلة'
+            }[request.status] || request.status;
+            
+            const requestDiv = document.createElement('div');
+            requestDiv.className = 'request-item';
+            requestDiv.id = `request-${request.id}`;
+            
+            requestDiv.innerHTML = `
+                <div class="request-header" onclick="toggleRequestDetails('${request.id}')">
+                    <div class="request-info">
+                        <div class="request-id">طلب #${index}</div>
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div style="color: white; font-weight: 600; margin-bottom: 5px;">
+                                ${request.fullName}
+                            </div>
+                            <div style="color: rgba(255, 255, 255, 0.7); font-size: 14px;">
+                                ${request.gameUsername} | ${jobNames[request.job] || request.job}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="request-status status-${request.status}">
+                        ${statusText}
+                    </div>
+                </div>
+                
+                <div class="request-details">
+                    <div class="details-grid">
+                        <div class="detail-group">
+                            <div class="detail-title">
+                                <i class="fas fa-user"></i> المعلومات الشخصية
+                            </div>
+                            <div class="detail-value">${request.fullName}</div>
+                            <div class="detail-sub">العمر: ${request.age} سنة</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-title">
+                                <i class="fas fa-gamepad"></i> معلومات اللعبة
+                            </div>
+                            <div class="detail-value">${request.gameUsername}</div>
+                            <div class="detail-sub">رقم الهوية: ${request.gameId}</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-title">
+                                <i class="fab fa-discord"></i> معلومات التواصل
+                            </div>
+                            <div class="detail-value">${request.discordUsername}</div>
+                            <div class="detail-sub">التاريخ: ${request.date}</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-title">
+                                <i class="fas fa-briefcase"></i> الوظيفة والمنصب
+                            </div>
+                            <div class="detail-value">${jobNames[request.job] || request.job}</div>
+                            <div class="detail-sub">${request.rank || 'لا يوجد منصب إضافي'}</div>
+                        </div>
+                    </div>
+                    
+                    ${request.idPhoto && request.idPhoto.data ? `
+                        <div class="id-photo-preview">
+                            <div class="detail-title" style="margin-bottom: 15px;">
+                                <i class="fas fa-camera"></i> صورة الهوية المرفوعة
+                            </div>
+                            <img src="${request.idPhoto.data}" alt="صورة الهوية">
+                        </div>
+                    ` : ''}
+                    
+                    <div class="request-actions">
+                        ${request.status === 'pending' ? `
+                            <button class="btn btn-success" onclick="approveRequest('${request.id}')">
+                                <i class="fas fa-check"></i> قبول الطلب
+                            </button>
+                            <button class="btn btn-danger" onclick="rejectRequest('${request.id}')">
+                                <i class="fas fa-times"></i> رفض الطلب
+                            </button>
+                        ` : ''}
+                        
+                        ${request.status === 'accepted' ? `
+                            <button class="btn btn-warning" onclick="banUser('${request.id}')">
+                                <i class="fas fa-ban"></i> تعطيل الحساب
+                            </button>
+                        ` : ''}
+                        
+                        <button class="btn" onclick="copyRequestInfo('${request.id}')" style="background: #6c757d; color: white;">
+                            <i class="fas fa-copy"></i> نسخ المعلومات
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return requestDiv;
+        }
+
+        function toggleRequestDetails(requestId) {
+            const requestElement = document.getElementById(`request-${requestId}`);
+            if (requestElement) {
+                requestElement.classList.toggle('expanded');
+                
+                // إغلاق العناصر الأخرى المفتوحة
+                document.querySelectorAll('.request-item').forEach(item => {
+                    if (item.id !== `request-${requestId}` && item.classList.contains('expanded')) {
+                        item.classList.remove('expanded');
+                    }
+                });
+            }
+        }
+
+        function viewFullRequest(requestId) {
+            toggleRequestDetails(requestId);
+            
+            // التمرير للعنصر
+            const element = document.getElementById(`request-${requestId}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // ====== إجراءات على الطلبات ======
+        function approveRequest(requestId) {
+            const reason = prompt('يرجى كتابة ملاحظة القبول (اختياري):') || 'تمت الموافقة على طلب التفعيل';
+            
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const requestIndex = requests.findIndex(r => r.id === requestId);
+            
+            if (requestIndex !== -1) {
+                requests[requestIndex].status = 'accepted';
+                requests[requestIndex].approvedBy = currentAdmin.name;
+                requests[requestIndex].approvalDate = new Date().toLocaleString('ar-SA');
+                requests[requestIndex].approvalNotes = reason;
+                
+                localStorage.setItem('identityRequests', JSON.stringify(requests));
+                
+                alertSuccess('تم قبول طلب التفعيل بنجاح');
+                loadDashboardData();
+            }
+        }
+
+        function rejectRequest(requestId) {
+            const reason = prompt('يرجى كتابة سبب الرفض:');
+            if (!reason) return;
+            
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const requestIndex = requests.findIndex(r => r.id === requestId);
+            
+            if (requestIndex !== -1) {
+                requests[requestIndex].status = 'rejected';
+                requests[requestIndex].rejectedBy = currentAdmin.name;
+                requests[requestIndex].rejectionDate = new Date().toLocaleString('ar-SA');
+                requests[requestIndex].rejectionReason = reason;
+                
+                localStorage.setItem('identityRequests', JSON.stringify(requests));
+                
+                alertSuccess('تم رفض طلب التفعيل');
+                loadDashboardData();
+            }
+        }
+
+        function banUser(requestId) {
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const request = requests.find(r => r.id === requestId);
+            
+            if (request) {
+                document.getElementById('banIdentity').value = request.gameId;
+                document.getElementById('banReason').value = 'تعطيل حساب بناءً على طلب المسؤول';
+                
+                // التمرير لنموذج التعطيل
+                document.querySelector('.management-grid').scrollIntoView({ behavior: 'smooth' });
+                
+                alertInfo('تم تعبئة بيانات الحساب تلقائياً');
+            }
+        }
+
+        function copyRequestInfo(requestId) {
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const request = requests.find(r => r.id === requestId);
+            
+            if (request) {
+                const jobNames = {
+                    'citizen': 'مواطن',
+                    'interior': 'منسوب الداخلية',
+                    'health': 'منسوب الصحة',
+                    'justice': 'منسوب العدل'
+                };
+                
+                const info = `
+الاسم: ${request.fullName}
+العمر: ${request.age}
+رقم الهوية: ${request.gameId}
+اسم اللعبة: ${request.gameUsername}
+الديسكورد: ${request.discordUsername}
+الوظيفة: ${jobNames[request.job] || request.job}
+المنصب: ${request.rank || 'لا يوجد'}
+الحالة: ${request.status === 'pending' ? 'قيد المراجعة' : request.status === 'accepted' ? 'مقبولة' : 'مرفوضة'}
+تاريخ التقديم: ${request.date}
+                `.trim();
+                
+                navigator.clipboard.writeText(info).then(() => {
+                    alertSuccess('تم نسخ المعلومات إلى الحافظة');
+                });
+            }
+        }
+
+        function filterRequests() {
+            loadRequests();
+        }
+
+        // ====== التنبيهات ======
+        function alertSuccess(message) {
+            showAlert(message, 'success');
+        }
+
+        function alertError(message) {
+            showAlert(message, 'error');
+        }
+
+        function alertInfo(message) {
+            showAlert(message, 'info');
+        }
+
+        function showAlert(message, type = 'info') {
+            // إنشاء عنصر التنبيه
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert-${type}`;
+            alertDiv.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 30px;
+                padding: 20px 25px;
+                background: ${type === 'success' ? 'linear-gradient(135deg, #4cc9f0, #3bb4d9)' : 
+                          type === 'error' ? 'linear-gradient(135deg, #f72585, #e11575)' :
+                          'linear-gradient(135deg, #4361ee, #3a56d4)'};
+                color: white;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 9999;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                animation: slideInRight 0.3s ease;
+                max-width: 400px;
+            `;
+            
+            const icons = {
+                'success': 'fa-check-circle',
+                'error': 'fa-exclamation-circle',
+                'info': 'fa-info-circle'
+            };
+            
+            alertDiv.innerHTML = `
+                <i class="fas ${icons[type]}" style="font-size: 24px;"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            // إزالة التنبيه بعد 3 ثواني
+            setTimeout(() => {
+                alertDiv.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (alertDiv.parentNode) {
+                        alertDiv.parentNode.removeChild(alertDiv);
+                    }
+                }, 300);
+            }, 3000);
+            
+            // إضافة الأنيميشن
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from {
+                        opacity: 0;
+                        transform: translateX(100%);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+                
+                @keyframes slideOutRight {
+                    from {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                    to {
+                        opacity: 0;
+                        transform: translateX(100%);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+</html>
