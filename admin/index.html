@@ -6,12 +6,6 @@
     <title>لوحة تحكم الإدارة - نظام تفعيل الهويات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ===== أساسيات التصميم ===== */
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         :root {
             --primary: #4361ee;
             --primary-dark: #3a56d4;
@@ -22,8 +16,13 @@
             --dark: #1a1a2e;
             --darker: #16213e;
             --light: #f8f9fa;
-            --gray: #6c757d;
-            --gray-dark: #495057;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
@@ -32,8 +31,140 @@
             color: var(--light);
         }
 
-        /* ===== الهيدر المحسّن ===== */
-        .admin-header {
+        /* ===== شاشة تسجيل الدخول ===== */
+        .login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .login-card {
+            background: rgba(30, 41, 59, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            text-align: center;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-logo {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .login-card h2 {
+            color: var(--light);
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-error {
+            background: rgba(247, 37, 133, 0.2);
+            border: 2px solid var(--danger);
+            color: #fecaca;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .login-error.show {
+            display: flex;
+        }
+
+        /* ===== لوحة التحكم (يتم إظهارها بعد تسجيل الدخول) ===== */
+        .dashboard-screen {
+            display: none;
+            min-height: 100vh;
+        }
+
+        /* ===== الهيدر ===== */
+        .dashboard-header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             padding: 0 20px;
             height: 70px;
@@ -62,7 +193,6 @@
             justify-content: center;
             font-size: 22px;
             color: white;
-            backdrop-filter: blur(10px);
         }
 
         .logo-text h1 {
@@ -78,55 +208,56 @@
             color: rgba(255, 255, 255, 0.9);
         }
 
-        /* ===== قائمة المستخدم (الثلاث نقاط) ===== */
-        .user-menu-container {
+        /* ===== قائمة المستخدم ===== */
+        .user-menu {
             position: relative;
         }
 
-        .user-menu-btn {
-            width: 50px;
-            height: 50px;
+        .user-btn {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
             border: none;
-            backdrop-filter: blur(10px);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
         }
 
-        .user-menu-btn:hover {
+        .user-btn:hover {
             background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
         }
 
-        .menu-dot {
-            width: 4px;
-            height: 4px;
+        .user-avatar {
+            width: 35px;
+            height: 35px;
             background: white;
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
         }
 
         .user-dropdown {
             position: absolute;
-            top: 60px;
+            top: 50px;
             left: 0;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             min-width: 200px;
             display: none;
             overflow: hidden;
             z-index: 1001;
-            animation: slideDown 0.3s ease;
         }
 
-        .user-dropdown.active {
+        .user-dropdown.show {
             display: block;
+            animation: slideDown 0.3s ease;
         }
 
         @keyframes slideDown {
@@ -141,19 +272,9 @@
         }
 
         .user-info {
-            padding: 20px;
+            padding: 15px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-        }
-
-        .user-info h4 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .user-info p {
-            font-size: 12px;
-            opacity: 0.9;
         }
 
         .dropdown-menu {
@@ -165,71 +286,35 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            color: var(--gray-dark);
+            color: #333;
             text-decoration: none;
             transition: all 0.3s;
             cursor: pointer;
-            border-left: 3px solid transparent;
         }
 
         .dropdown-item:hover {
-            background: #f8f9fa;
-            border-left: 3px solid var(--primary);
+            background: #f5f5f5;
             color: var(--primary);
         }
 
         .dropdown-item.logout {
             color: var(--danger);
             border-top: 1px solid #eee;
-            margin-top: 5px;
         }
 
-        .dropdown-item.logout:hover {
-            background: #fff5f7;
-            border-left: 3px solid var(--danger);
-        }
-
-        /* ===== محتوى لوحة التحكم ===== */
+        /* ===== المحتوى الرئيسي ===== */
         .dashboard-content {
             padding: 30px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* ===== بطاقات الإحصائيات المحسنة ===== */
-        .stats-section {
-            margin-bottom: 40px;
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-
-        .section-title i {
-            font-size: 24px;
-            color: var(--success);
-            background: rgba(76, 201, 240, 0.1);
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .section-title h2 {
-            font-size: 24px;
-            font-weight: 700;
-            color: white;
-        }
-
+        /* ===== بطاقات الإحصائيات ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 25px;
+            margin-bottom: 40px;
         }
 
         .stat-card {
@@ -249,24 +334,9 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
 
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.05) 0%, 
-                rgba(255, 255, 255, 0) 100%);
-            pointer-events: none;
-        }
-
         .stat-icon {
             font-size: 40px;
             margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
         }
 
         .stat-number {
@@ -276,16 +346,12 @@
             background: linear-gradient(135deg, white, #e2e8f0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            position: relative;
-            z-index: 1;
         }
 
         .stat-title {
             color: rgba(255, 255, 255, 0.8);
             font-size: 16px;
             font-weight: 500;
-            position: relative;
-            z-index: 1;
         }
 
         .stat-trend {
@@ -294,16 +360,10 @@
             gap: 8px;
             margin-top: 15px;
             font-size: 14px;
-            position: relative;
-            z-index: 1;
         }
 
         .stat-trend.positive {
             color: var(--success);
-        }
-
-        .stat-trend.negative {
-            color: var(--danger);
         }
 
         /* ===== أقسام الإدارة ===== */
@@ -341,23 +401,11 @@
             color: white;
         }
 
-        .card-header i {
-            font-size: 24px;
-            color: var(--success);
-            background: rgba(76, 201, 240, 0.1);
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         .card-body {
             padding: 25px;
         }
 
-        /* ===== نماذج الإدخال المحسنة ===== */
+        /* ===== نماذج الإدخال ===== */
         .form-group {
             margin-bottom: 25px;
         }
@@ -370,7 +418,7 @@
             font-size: 14px;
         }
 
-        .form-input, .form-select, .form-textarea {
+        .form-input, .form-textarea {
             width: 100%;
             padding: 16px 20px;
             background: rgba(0, 0, 0, 0.3);
@@ -381,7 +429,7 @@
             transition: all 0.3s;
         }
 
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
+        .form-input:focus, .form-textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
@@ -411,26 +459,6 @@
             accent-color: var(--primary);
         }
 
-        .radio-option span {
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .duration-group {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-top: 15px;
-        }
-
-        .duration-group input {
-            width: 100px;
-        }
-
-        .duration-group select {
-            flex: 1;
-        }
-
-        /* ===== أزرار الإجراءات ===== */
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -472,12 +500,7 @@
             color: white;
         }
 
-        .btn-warning {
-            background: linear-gradient(135deg, var(--warning), #e68a19);
-            color: white;
-        }
-
-        /* ===== جدول الطلبات المحسن ===== */
+        /* ===== طلبات تفعيل الهوية ===== */
         .requests-section {
             background: linear-gradient(135deg, #2d3748, #4a5568);
             border-radius: 20px;
@@ -516,193 +539,13 @@
             min-width: 150px;
         }
 
-        /* ===== تصميم الجدول الجديد ===== */
-        .requests-container {
-            padding: 0 30px 30px;
-        }
-
-        .request-item {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 15px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .request-item:hover {
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-5px);
-        }
-
-        .request-header {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .request-info {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .request-id {
-            background: var(--primary);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: white;
-        }
-
-        .request-details {
-            padding: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.4s ease;
-        }
-
-        .request-item.expanded .request-details {
-            padding: 30px;
-            max-height: 1000px;
-        }
-
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-        }
-
-        .detail-group {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .detail-title {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .detail-value {
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .detail-sub {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-        }
-
-        .id-photo-preview {
-            text-align: center;
-            margin-top: 25px;
-        }
-
-        .id-photo-preview img {
-            max-width: 300px;
-            border-radius: 12px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .request-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .request-status {
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .status-pending {
-            background: rgba(248, 150, 30, 0.2);
-            color: var(--warning);
-        }
-
-        .status-accepted {
-            background: rgba(76, 201, 240, 0.2);
-            color: var(--success);
-        }
-
-        .status-rejected {
-            background: rgba(247, 37, 133, 0.2);
-            color: var(--danger);
-        }
-
-        /* ===== تنبيهات الأخطاء المحسنة ===== */
-        .error-message {
-            background: rgba(247, 37, 133, 0.2);
-            border: 2px solid var(--danger);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            animation: slideIn 0.3s ease;
-            display: none;
-        }
-
-        .error-message.show {
-            display: flex;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         /* ===== تصميم متجاوب ===== */
-        @media (max-width: 1200px) {
-            .management-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
         @media (max-width: 768px) {
             .dashboard-content {
                 padding: 20px;
             }
             
-            .admin-header {
+            .dashboard-header {
                 padding: 0 15px;
                 height: 60px;
             }
@@ -712,6 +555,10 @@
             }
             
             .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .management-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -732,110 +579,145 @@
             .action-buttons {
                 flex-direction: column;
             }
-            
-            .details-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .radio-group {
-                flex-direction: column;
-                gap: 15px;
-            }
         }
 
         @media (max-width: 480px) {
-            .user-dropdown {
-                left: -150px;
+            .login-card {
+                padding: 30px 20px;
             }
             
             .card-header, .card-body {
                 padding: 20px;
             }
-            
-            .request-header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            
-            .request-info {
-                flex-direction: column;
-            }
         }
 
-        /* ===== تخصيص شريط التمرير ===== */
-        ::-webkit-scrollbar {
-            width: 10px;
+        /* ===== التنبيهات ===== */
+        .alert {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 20px 25px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 400px;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideInRight 0.5s ease,
+                     slideOutRight 0.5s ease 4.5s forwards;
+            transform: translateX(150%);
         }
 
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
+        .alert.show {
+            transform: translateX(0);
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
+        @keyframes slideInRight {
+            from { transform: translateX(150%); }
+            to { transform: translateX(0); }
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
+        @keyframes slideOutRight {
+            from { transform: translateX(0); }
+            to { transform: translateX(150%); }
+        }
+
+        .alert.success {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #a7f3d0;
+        }
+
+        .alert.error {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #fecaca;
+        }
+
+        .alert i {
+            font-size: 22px;
+        }
+
+        .alert.success i {
+            color: #34d399;
+        }
+
+        .alert.error i {
+            color: #f87171;
         }
     </style>
 </head>
 <body>
-    <!-- الهيدر المحسّن -->
-    <header class="admin-header">
-        <div class="logo-container">
-            <div class="logo">
+    <!-- شاشة تسجيل الدخول (تظهر أولاً) -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <div class="login-logo">
                 <i class="fas fa-user-shield"></i>
             </div>
-            <div class="logo-text">
-                <h1>لوحة تحكم الإدارة</h1>
-                <p>نظام تفعيل الهويات الرقمية</p>
-            </div>
-        </div>
-
-        <!-- قائمة المستخدم (الثلاث نقاط) -->
-        <div class="user-menu-container">
-            <button class="user-menu-btn" onclick="toggleUserMenu()">
-                <div class="menu-dot"></div>
-                <div class="menu-dot"></div>
-                <div class="menu-dot"></div>
+            <h2>تسجيل دخول المسؤول</h2>
+            <input type="text" id="adminUsername" class="login-input" placeholder="اسم المستخدم" autocomplete="username">
+            <input type="password" id="adminPassword" class="login-input" placeholder="كلمة المرور" autocomplete="current-password">
+            <button class="login-btn" onclick="adminLogin()">
+                <span id="loginBtnText">دخول لوحة التحكم</span>
+                <i class="fas fa-sign-in-alt"></i>
             </button>
-            
-            <div class="user-dropdown" id="userDropdown">
-                <div class="user-info">
-                    <h4 id="adminName">المسؤول العام</h4>
-                    <p id="adminEmail">admin@kr-system.com</p>
-                </div>
-                <div class="dropdown-menu">
-                    <div class="dropdown-item">
-                        <i class="fas fa-user-cog"></i>
-                        <span>الملف الشخصي</span>
-                    </div>
-                    <div class="dropdown-item">
-                        <i class="fas fa-cog"></i>
-                        <span>الإعدادات</span>
-                    </div>
-                    <div class="dropdown-item logout" onclick="adminLogout()">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>تسجيل الخروج</span>
-                    </div>
-                </div>
+            <div id="loginError" class="login-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>خطأ في اسم المستخدم أو كلمة المرور</span>
             </div>
         </div>
-    </header>
+    </div>
 
-    <!-- المحتوى الرئيسي -->
-    <main class="dashboard-content">
-        <!-- إحصائيات سريعة -->
-        <section class="stats-section">
-            <div class="section-title">
-                <i class="fas fa-chart-line"></i>
-                <h2>الإحصائيات</h2>
+    <!-- لوحة التحكم (تظهر بعد تسجيل الدخول) -->
+    <div id="dashboardScreen" class="dashboard-screen">
+        <!-- الهيدر -->
+        <header class="dashboard-header">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-user-cog"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>لوحة تحكم الإدارة</h1>
+                    <p id="adminWelcome">مرحباً، المسؤول</p>
+                </div>
             </div>
-            
+
+            <!-- قائمة المستخدم -->
+            <div class="user-menu">
+                <button class="user-btn" onclick="toggleUserMenu()">
+                    <div class="user-avatar" id="userAvatar">م</div>
+                    <span id="userName">المسؤول</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                
+                <div class="user-dropdown" id="userDropdown">
+                    <div class="user-info">
+                        <h4 id="dropdownName">المسؤول العام</h4>
+                        <p id="dropdownRole">مسؤول النظام</p>
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item" onclick="showProfile()">
+                            <i class="fas fa-user"></i>
+                            <span>الملف الشخصي</span>
+                        </div>
+                        <div class="dropdown-item" onclick="showSettings()">
+                            <i class="fas fa-cog"></i>
+                            <span>الإعدادات</span>
+                        </div>
+                        <div class="dropdown-item logout" onclick="adminLogout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>تسجيل الخروج</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- المحتوى الرئيسي -->
+        <main class="dashboard-content">
+            <!-- إحصائيات سريعة -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <i class="fas fa-file-alt stat-icon" style="color: #4cc9f0;"></i>
@@ -873,242 +755,353 @@
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- قسم الإدارة -->
-        <div class="management-grid">
-            <!-- تعطيل حساب -->
-            <div class="management-card">
-                <div class="card-header">
-                    <h3>
-                        <i class="fas fa-user-slash"></i>
-                        <span>تعطيل حساب</span>
-                    </h3>
-                </div>
-                
-                <div class="card-body">
-                    <form id="banForm" onsubmit="return false;">
+            <!-- أقسام الإدارة -->
+            <div class="management-grid">
+                <!-- تعطيل حساب -->
+                <div class="management-card">
+                    <div class="card-header">
+                        <h3>
+                            <i class="fas fa-user-slash"></i>
+                            <span>تعطيل حساب</span>
+                        </h3>
+                    </div>
+                    
+                    <div class="card-body">
                         <div class="form-group">
                             <label class="form-label">رقم الهوية أو اسم الحساب</label>
                             <input type="text" id="banIdentity" class="form-input" 
-                                   placeholder="أدخل رقم الهوية أو اسم المستخدم" required>
-                            <div class="error-message" id="banIdentityError">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <span>يرجى إدخال رقم الهوية أو اسم الحساب</span>
-                            </div>
+                                   placeholder="أدخل رقم الهوية أو اسم المستخدم">
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">سبب التعطيل</label>
                             <textarea id="banReason" class="form-textarea" 
-                                      placeholder="اكتب سبب تعطيل الحساب..." rows="3" required></textarea>
-                            <div class="error-message" id="banReasonError">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <span>يرجى كتابة سبب التعطيل</span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">نوع التعطيل</label>
-                            <div class="radio-group">
-                                <label class="radio-option">
-                                    <input type="radio" name="banType" value="permanent" checked>
-                                    <span>دائم</span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="banType" value="temporary">
-                                    <span>مؤقت</span>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div id="durationSection" style="display: none;">
-                            <div class="form-group">
-                                <label class="form-label">مدة التعطيل</label>
-                                <div class="duration-group">
-                                    <input type="number" id="banDuration" class="form-input" 
-                                           placeholder="المدة" min="1" value="7">
-                                    <select id="banDurationUnit" class="form-select">
-                                        <option value="hours">ساعات</option>
-                                        <option value="days" selected>أيام</option>
-                                        <option value="weeks">أسابيع</option>
-                                        <option value="months">شهور</option>
-                                    </select>
-                                </div>
-                            </div>
+                                      placeholder="اكتب سبب تعطيل الحساب..." rows="3"></textarea>
                         </div>
                         
                         <div class="action-buttons">
-                            <button type="button" class="btn btn-danger" onclick="banAccount()">
+                            <button class="btn btn-danger" onclick="banAccount()">
                                 <i class="fas fa-ban"></i> تعطيل الحساب
                             </button>
-                            <button type="button" class="btn" onclick="clearBanForm()" style="background: #6c757d; color: white;">
-                                <i class="fas fa-times"></i> إلغاء
-                            </button>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
 
-            <!-- تفعيل الهويات -->
-            <div class="management-card">
-                <div class="card-header">
-                    <h3>
-                        <i class="fas fa-id-card"></i>
-                        <span>تفعيل الهويات</span>
-                    </h3>
-                </div>
-                
-                <div class="card-body">
-                    <form id="searchForm" onsubmit="return false;">
+                <!-- تفعيل الهويات -->
+                <div class="management-card">
+                    <div class="card-header">
+                        <h3>
+                            <i class="fas fa-id-card"></i>
+                            <span>تفعيل الهويات</span>
+                        </h3>
+                    </div>
+                    
+                    <div class="card-body">
                         <div class="form-group">
                             <label class="form-label">بحث عن هوية</label>
                             <input type="text" id="searchIdentity" class="form-input" 
-                                   placeholder="أدخل رقم الهوية للبحث" required>
-                            <div class="error-message" id="searchError">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <span>يرجى إدخال رقم الهوية</span>
-                            </div>
+                                   placeholder="أدخل رقم الهوية للبحث">
                         </div>
                         
                         <div class="action-buttons">
-                            <button type="button" class="btn btn-primary" onclick="searchIdentity()">
+                            <button class="btn btn-primary" onclick="searchIdentity()">
                                 <i class="fas fa-search"></i> بحث عن الهوية
                             </button>
-                        </div>
-                    </form>
-                    
-                    <div id="identityResult" style="display: none; margin-top: 25px;">
-                        <div style="background: rgba(0, 0, 0, 0.3); padding: 25px; border-radius: 15px; border: 2px solid rgba(255, 255, 255, 0.1);">
-                            <h4 style="color: white; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                                <i class="fas fa-user-check"></i> نتيجة البحث
-                            </h4>
-                            <div id="identityDetails"></div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- طلبات تفعيل الهوية -->
-        <section class="requests-section">
-            <div class="requests-header">
-                <h3>
-                    <i class="fas fa-list-alt"></i>
-                    <span>طلبات تفعيل الهوية</span>
-                </h3>
-                
-                <div class="filters">
-                    <select id="statusFilter" class="filter-select" onchange="filterRequests()">
-                        <option value="all">جميع الطلبات</option>
-                        <option value="pending">قيد المراجعة</option>
-                        <option value="accepted">مقبولة</option>
-                        <option value="rejected">مرفوضة</option>
-                    </select>
+            <!-- طلبات تفعيل الهوية -->
+            <section class="requests-section">
+                <div class="requests-header">
+                    <h3>
+                        <i class="fas fa-list-alt"></i>
+                        <span>طلبات تفعيل الهوية</span>
+                    </h3>
                     
-                    <select id="sortFilter" class="filter-select" onchange="filterRequests()">
-                        <option value="newest">الأحدث أولاً</option>
-                        <option value="oldest">الأقدم أولاً</option>
-                    </select>
+                    <div class="filters">
+                        <select id="statusFilter" class="filter-select" onchange="filterRequests()">
+                            <option value="all">جميع الطلبات</option>
+                            <option value="pending">قيد المراجعة</option>
+                            <option value="accepted">مقبولة</option>
+                            <option value="rejected">مرفوضة</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="requests-container" id="requestsContainer">
-                <!-- سيتم ملؤه بالجافاسكريبت -->
-            </div>
-        </section>
-    </main>
+                
+                <div class="requests-container" id="requestsContainer" style="padding: 30px;">
+                    <div style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.7);">
+                        <i class="fas fa-inbox" style="font-size: 40px; margin-bottom: 15px;"></i>
+                        <div>لا توجد طلبات لعرضها</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- حاوية التنبيهات -->
+    <div id="alertContainer"></div>
 
     <script>
-        // ====== البيانات والمتغيرات ======
-        let currentAdmin = null;
-        let allRequests = [];
-        let currentRequestId = null;
+        // ====== بيانات المسؤولين ======
+        const ADMIN_CREDENTIALS = [
+            {
+                username: 'admin',
+                password: 'admin123',
+                name: 'المسؤول العام',
+                role: 'مدير النظام',
+                avatar: 'م'
+            },
+            {
+                username: 'moderator',
+                password: 'mod123',
+                name: 'المشرف الرئيسي',
+                role: 'مشرف محتوى',
+                avatar: 'ش'
+            },
+            {
+                username: 'support',
+                password: 'support123',
+                name: 'فريق الدعم',
+                role: 'دعم فني',
+                avatar: 'د'
+            }
+        ];
 
         // ====== عند تحميل الصفحة ======
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('لوحة تحكم الإدارة - جاهزة');
+            console.log('🚀 نظام لوحة التحكم جاهز');
             
-            // تسجيل الدخول التلقائي بدون تحقق
-            currentAdmin = {
-                username: 'admin',
-                name: 'المسؤول العام',
-                email: 'admin@kr-system.com'
-            };
+            // التحقق من تسجيل الدخول السابق
+            checkAdminLogin();
             
-            // تحديث اسم المسؤول
-            document.getElementById('adminName').textContent = currentAdmin.name;
-            document.getElementById('adminEmail').textContent = currentAdmin.email;
+            // إعداد تفاعل إدخال البيانات
+            setupInputEvents();
             
-            // إعداد المستمعين للأحداث
-            setupEventListeners();
+            // تحميل بيانات الطلبات
+            loadRequestsData();
+        });
+
+        // ====== التحقق من تسجيل الدخول ======
+        function checkAdminLogin() {
+            const savedAdmin = localStorage.getItem('admin_logged_in');
+            
+            if (savedAdmin) {
+                try {
+                    const adminData = JSON.parse(savedAdmin);
+                    showDashboard(adminData);
+                } catch (e) {
+                    // إذا كان هناك خطأ في البيانات، اعرض شاشة الدخول
+                    showLoginScreen();
+                }
+            } else {
+                showLoginScreen();
+            }
+        }
+
+        // ====== تسجيل الدخول ======
+        function adminLogin() {
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            const loginBtn = document.getElementById('loginBtnText');
+            
+            // إخفاء أي خطأ سابق
+            errorDiv.classList.remove('show');
+            
+            // التحقق من بيانات الدخول
+            const admin = ADMIN_CREDENTIALS.find(
+                cred => cred.username === username && cred.password === password
+            );
+            
+            if (admin) {
+                // حفظ بيانات الدخول
+                const adminData = {
+                    ...admin,
+                    loginTime: new Date().toISOString(),
+                    sessionId: 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
+                };
+                
+                localStorage.setItem('admin_logged_in', JSON.stringify(adminData));
+                
+                // عرض رسالة نجاح
+                showAlert('تم تسجيل الدخول بنجاح!', 'success');
+                
+                // الانتقال للوحة التحكم
+                setTimeout(() => {
+                    showDashboard(adminData);
+                }, 1000);
+                
+            } else {
+                // عرض رسالة الخطأ
+                errorDiv.classList.add('show');
+                
+                // تأثير اهتزاز على الحقول
+                document.querySelectorAll('.login-input').forEach(input => {
+                    input.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        input.style.animation = '';
+                    }, 500);
+                });
+            }
+        }
+
+        // ====== عرض شاشة تسجيل الدخول ======
+        function showLoginScreen() {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboardScreen').style.display = 'none';
+            
+            // تفعيل إدخال Enter
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    adminLogin();
+                }
+            });
+        }
+
+        // ====== عرض لوحة التحكم ======
+        function showDashboard(adminData) {
+            // إخفاء شاشة الدخول
+            document.getElementById('loginScreen').style.display = 'none';
+            
+            // إظهار لوحة التحكم
+            document.getElementById('dashboardScreen').style.display = 'block';
+            
+            // تحديث معلومات المسؤول
+            updateAdminInfo(adminData);
             
             // تحميل البيانات
             loadDashboardData();
             
-            // إعداد تبادل نوع التعطيل
-            setupBanTypeToggle();
-        });
+            // عرض رسالة ترحيب
+            showAlert(`مرحباً بك ${adminData.name} في لوحة التحكم`, 'success');
+        }
+
+        // ====== تحديث معلومات المسؤول ======
+        function updateAdminInfo(adminData) {
+            document.getElementById('adminWelcome').textContent = `مرحباً، ${adminData.name}`;
+            document.getElementById('userName').textContent = adminData.name;
+            document.getElementById('userAvatar').textContent = adminData.avatar;
+            document.getElementById('dropdownName').textContent = adminData.name;
+            document.getElementById('dropdownRole').textContent = adminData.role;
+        }
 
         // ====== قائمة المستخدم ======
         function toggleUserMenu() {
             const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.toggle('active');
+            dropdown.classList.toggle('show');
         }
 
         // إغلاق القائمة عند النقر خارجها
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('userDropdown');
-            const menuBtn = document.querySelector('.user-menu-btn');
+            const userBtn = document.querySelector('.user-btn');
             
-            if (!menuBtn.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.classList.remove('active');
+            if (!userBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
             }
         });
 
         // ====== تسجيل الخروج ======
         function adminLogout() {
-            // مجرد إعادة تحميل الصفحة
-            location.reload();
+            // تأكيد الخروج
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                // حذف بيانات الجلسة
+                localStorage.removeItem('admin_logged_in');
+                
+                // عرض رسالة
+                showAlert('تم تسجيل الخروج بنجاح', 'success');
+                
+                // الانتقال لشاشة الدخول بعد ثانية
+                setTimeout(() => {
+                    showLoginScreen();
+                    
+                    // إعادة تعيين حقول الدخول
+                    document.getElementById('adminUsername').value = '';
+                    document.getElementById('adminPassword').value = '';
+                    
+                    // إخفاء أي أخطاء
+                    document.getElementById('loginError').classList.remove('show');
+                }, 1000);
+            }
         }
 
-        // ====== إعداد المستمعين للأحداث ======
-        function setupEventListeners() {
-            // البحث عند الضغط على Enter
-            document.getElementById('searchIdentity').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    searchIdentity();
-                }
+        // ====== تحميل بيانات لوحة التحكم ======
+        function loadDashboardData() {
+            // تحميل الطلبات من localStorage
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            
+            // تحديث الإحصائيات
+            updateStatistics(requests);
+            
+            // تحميل الطلبات في الجدول
+            loadRequestsTable(requests);
+        }
+
+        function updateStatistics(requests) {
+            const total = requests.length;
+            const pending = requests.filter(r => r.status === 'pending').length;
+            const accepted = requests.filter(r => r.status === 'accepted').length;
+            const activeUsers = requests.filter(r => r.status === 'accepted').length;
+            
+            document.getElementById('totalRequests').textContent = total;
+            document.getElementById('pendingRequests').textContent = pending;
+            document.getElementById('acceptedRequests').textContent = accepted;
+            document.getElementById('activeUsers').textContent = activeUsers;
+        }
+
+        function loadRequestsData() {
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            return requests;
+        }
+
+        function loadRequestsTable(requests) {
+            const container = document.getElementById('requestsContainer');
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            let filteredRequests = [...requests];
+            
+            // تصفية حسب الحالة
+            if (statusFilter !== 'all') {
+                filteredRequests = filteredRequests.filter(r => r.status === statusFilter);
+            }
+            
+            // ترتيب حسب التاريخ (الأحدث أولاً)
+            filteredRequests.sort((a, b) => {
+                const dateA = new Date(a.submissionDate || a.date);
+                const dateB = new Date(b.submissionDate || b.date);
+                return dateB - dateA;
             });
             
-            // تفعيل/تعطيل مدة التعطيل
-            document.querySelectorAll('input[name="banType"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    const durationSection = document.getElementById('durationSection');
-                    durationSection.style.display = this.value === 'temporary' ? 'block' : 'none';
-                });
-            });
+            // عرض الطلبات
+            if (filteredRequests.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.7);">
+                        <i class="fas fa-inbox" style="font-size: 40px; margin-bottom: 15px;"></i>
+                        <div>لا توجد طلبات لعرضها</div>
+                    </div>
+                `;
+                return;
+            }
             
-            // إغلاق رسائل الخطأ عند الكتابة
-            document.querySelectorAll('.form-input, .form-textarea').forEach(input => {
-                input.addEventListener('input', function() {
-                    const errorId = this.id + 'Error';
-                    const errorElement = document.getElementById(errorId);
-                    if (errorElement) {
-                        errorElement.classList.remove('show');
-                    }
-                });
-            });
-        }
-
-        function setupBanTypeToggle() {
-            const banRadios = document.querySelectorAll('input[name="banType"]');
-            banRadios.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    document.getElementById('durationSection').style.display = 
-                        this.value === 'temporary' ? 'block' : 'none';
-                });
-            });
-        }
-
-        // ====== تحميل
+            let html = '<div style="display: grid; gap: 15px;">';
+            
+            filteredRequests.forEach((request, index) => {
+                const jobNames = {
+                    'citizen': 'مواطن',
+                    'interior': 'داخلية',
+                    'health': 'صحة',
+                    'justice': 'عدل'
+                };
+                
+                const statusText = {
+                    'pending': 'قيد المراجعة',
+                    'accepted': 'مقبولة',
+                    'rejected': 'مرفوضة',
+                    'banned': 'معطلة'
+                }[request.status] || request.status;
+                
+                const statusColor = {
+                    'pending': '#f8961e',
