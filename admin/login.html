@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل دخول المسؤولين</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #1e3a8a, #3b82f6); height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .login-box { background: white; padding: 40px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        h2 { color: #1e3a8a; margin-bottom: 30px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+        button { background: #1e3a8a; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 20px; }
+        button:hover { background: #3b82f6; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>🔐 تسجيل دخول المسؤولين</h2>
+        <input type="text" id="username" placeholder="اسم المستخدم">
+        <input type="password" id="password" placeholder="كلمة المرور">
+        <button onclick="login()">تسجيل الدخول</button>
+        <p style="margin-top: 20px; color: #666;">
+            <a href="../index.html" style="color: #1e3a8a;">← العودة للرئيسية</a>
+        </p>
+    </div>
+    
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if ((username === 'admin' && password === 'admin123') || 
+                (username === 'owner' && password === 'owner123')) {
+                alert('✅ تم تسجيل الدخول بنجاح!');
+                window.location.href = 'index.html';
+            } else {
+                alert('❌ بيانات الدخول غير صحيحة!');
+            }
+        }
+    </script>
+</body>
+</html>
