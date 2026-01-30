@@ -3,628 +3,1069 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تقديم طلب تفعيل الهوية - نظام KR الرقمية</title>
+    <title>طلب تفعيل الهوية - هيئة KR الرقمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ===== RESET & BASE STYLES ===== */
+        /* ===== متغيرات التصميم الحكومي الفاخر ===== */
+        :root {
+            --primary: #1e3a8a;
+            --primary-dark: #0f2a6d;
+            --primary-light: #3b82f6;
+            --secondary: #dc2626;
+            --accent: #059669;
+            --gold: #d4af37;
+            --silver: #c0c0c0;
+            --dark: #0f172a;
+            --darker: #1e293b;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, #1e3a8a 0%, #2d68c4 50%, #0f172a 100%);
+            --gradient-gold: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+            --shadow: 0 15px 50px rgba(0,0,0,0.25);
+            --glow: 0 0 40px rgba(30, 58, 138, 0.3);
+        }
+
+        /* ===== إعادة التعيين والإعدادات العامة ===== */
         * { 
             margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
         }
-        
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
         }
-        
-        /* ===== MAIN CONTAINER ===== */
+
+        /* ===== خلفية أنيقة ===== */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(30, 58, 138, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 20%);
+            z-index: 1;
+            animation: patternMove 20s linear infinite;
+        }
+
+        /* ===== الحاوية الرئيسية ===== */
         .container {
             width: 100%;
-            max-width: 900px;
-            background: white;
-            border-radius: 20px;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow), var(--glow);
+            animation: containerAppear 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        /* ===== HEADER ===== */
+
+        /* ===== الهيدر الحكومي الفاخر ===== */
         .header {
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            background: var(--gradient);
             color: white;
-            padding: 25px 30px;
+            padding: 40px 30px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 70%
+            );
+            animation: shine 3s infinite;
+        }
+
         .logo {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--gold), var(--primary-light));
+            border-radius: 20px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            position: relative;
+            animation: logoFloat 6s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        
-        .logo i {
-            font-size: 48px;
-        }
-        
-        .logo h1 {
-            font-size: 24px;
-            margin: 0;
-        }
-        
-        .logo p {
-            opacity: 0.9;
-            font-size: 16px;
-            margin: 5px 0 0 0;
-        }
-        
-        /* ===== STATUS MESSAGES ===== */
-        .status-message {
-            background: linear-gradient(135deg, #059669, #10b981);
+
+        .logo-icon i {
+            font-size: 36px;
             color: white;
-            padding: 25px;
-            text-align: center;
-            margin: 20px;
-            border-radius: 15px;
-            display: none;
+            animation: iconSpin 20s linear infinite;
         }
-        
+
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 900;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, white, var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .logo p {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ===== المحتوى الرئيسي ===== */
+        .content {
+            padding: 40px;
+        }
+
+        /* ===== الرسائل والتنبيهات ===== */
+        .status-message {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(30, 58, 138, 0.2));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            display: none;
+            animation: messageAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         .status-message.show {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
-        
-        .status-message.rejected {
-            background: linear-gradient(135deg, #dc2626, #ef4444);
-        }
-        
-        .status-message.pending {
-            background: linear-gradient(135deg, #d97706, #f59e0b);
-        }
-        
-        /* ===== ALERTS ===== */
+
         .alert {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 16px;
-            border-radius: 12px;
-            margin: 20px;
+            background: rgba(220, 38, 38, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #fecaca;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
             text-align: center;
-            border: 2px solid #f87171;
             display: none;
+            animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .alert.show {
             display: block;
-            animation: fadeIn 0.3s ease;
         }
-        
+
         .alert.success {
-            background: #d1fae5;
-            color: #065f46;
-            border-color: #10b981;
+            background: rgba(5, 150, 105, 0.1);
+            border-color: rgba(5, 150, 105, 0.3);
+            color: #a7f3d0;
         }
-        
-        .alert.warning {
-            background: #fef3c7;
-            color: #92400e;
-            border-color: #f59e0b;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* ===== CONTENT AREA ===== */
-        .content {
-            padding: 30px;
-        }
-        
-        /* ===== STEPS ===== */
+
+        /* ===== خطوات النموذج ===== */
         .step {
-            background: #f8fafc;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 2px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            animation: stepAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
         }
-        
+
+        .step:nth-child(1) { animation-delay: 0.1s; }
+        .step:nth-child(2) { animation-delay: 0.2s; }
+
         .step-title {
-            color: #1e3a8a;
-            margin-bottom: 20px;
+            color: var(--gold);
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 20px;
+            gap: 15px;
+            font-size: 24px;
+            font-weight: 700;
         }
-        
-        .step-title .number {
-            background: #3b82f6;
-            color: white;
-            width: 32px;
-            height: 32px;
+
+        .step-number {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 900;
+            font-size: 18px;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: numberPulse 3s infinite;
         }
-        
-        /* ===== INPUT GROUPS ===== */
+
+        /* ===== حقول الإدخال ===== */
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
         }
-        
+
         .input-group label {
             display: block;
-            margin-bottom: 8px;
-            color: #334155;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group label i {
+            color: var(--gold);
+            font-size: 18px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 18px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--gold);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .input-group input.error {
+            border-color: var(--secondary);
+            animation: shake 0.5s;
+        }
+
+        .input-hint {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 8px;
+            padding-right: 5px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        
-        .input-group input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
+
+        /* ===== مثال رفع الهوية ===== */
+        .upload-example {
+            background: rgba(30, 58, 138, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 25px 0;
+            border: 2px dashed rgba(212, 175, 55, 0.3);
+            text-align: center;
         }
-        
-        .input-group input:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        
-        .input-group input.error {
-            border-color: #ef4444;
-        }
-        
-        .input-hint {
-            font-size: 14px;
-            color: #64748b;
-            margin-top: 5px;
-            padding-right: 5px;
-        }
-        
-        /* ===== ID EXAMPLE ===== */
-        .id-example {
-            background: #f0f9ff;
-            border-radius: 15px;
-            padding: 25px;
-            border: 2px solid #e0f2fe;
-            margin: 20px 0;
-        }
-        
-        .id-example h4 {
-            color: #1e3a8a;
-            margin-bottom: 15px;
+
+        .example-header {
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-size: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 12px;
         }
-        
-        .id-example-img {
-            max-width: 400px;
-            margin: 15px auto;
-            border: 3px solid #3b82f6;
-            border-radius: 10px;
+
+        .example-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .example-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .example-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #1e3a8a, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
             position: relative;
         }
-        
-        .id-example-img img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        .id-example-note {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(30, 58, 138, 0.9);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
+
+        .example-text {
+            padding: 15px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 14px;
-            font-weight: bold;
         }
-        
-        .id-example-steps {
-            margin-top: 20px;
+
+        .example-text .highlight {
+            color: var(--gold);
+            font-weight: 600;
         }
-        
-        .id-example-steps ol {
-            padding-right: 20px;
-            margin: 15px 0;
-        }
-        
-        .id-example-steps li {
-            margin-bottom: 10px;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        /* ===== JOBS GRID ===== */
-        .jobs-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+
+        /* ===== رفع الملفات ===== */
+        .file-upload {
             margin: 25px 0;
         }
-        
-        .job-card {
-            background: white;
-            border: 3px solid #e2e8f0;
+
+        .upload-area {
+            border: 3px dashed rgba(212, 175, 55, 0.5);
             border-radius: 15px;
-            padding: 30px 20px;
+            padding: 40px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
+            background: rgba(212, 175, 55, 0.05);
         }
-        
-        .job-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+
+        .upload-area:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
         }
-        
-        .job-card.selected {
-            border-color: #3b82f6;
-            background: #eff6ff;
-        }
-        
-        .job-card i {
-            font-size: 35px;
+
+        .upload-area i {
+            font-size: 60px;
+            color: var(--gold);
             margin-bottom: 15px;
+            animation: bounce 2s infinite;
         }
-        
-        .job-card.citizen i { color: #7c3aed; }
-        .job-card.interior i { color: #1e3a8a; }
-        .job-card.health i { color: #dc2626; }
-        .job-card.justice i { color: #059669; }
-        
-        /* ===== RANKS CONTAINER ===== */
-        .ranks-container {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            border: 2px solid #e2e8f0;
+
+        .upload-area p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .upload-area small {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+
+        #filePreview {
             margin-top: 20px;
+            display: none;
+        }
+
+        .preview-image {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid var(--gold);
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* ===== شبكة الوظائف ===== */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .job-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .job-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1), transparent);
+            transform: translateY(100%);
+            transition: transform 0.6s;
+        }
+
+        .job-card:hover::before {
+            transform: translateY(0);
+        }
+
+        .job-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--gold);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .job-card.selected {
+            background: rgba(30, 58, 138, 0.2);
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .job-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: var(--gradient);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: iconFloat 4s ease-in-out infinite;
+        }
+
+        .job-card:hover .job-icon {
+            animation: none;
+            transform: scale(1.1);
+        }
+
+        .job-icon i {
+            font-size: 32px;
+            color: white;
+        }
+
+        .job-card h4 {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .job-card small {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ===== المناصب ===== */
+        .ranks-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             max-height: 400px;
             overflow-y: auto;
         }
-        
+
         .rank-item {
-            padding: 15px;
-            border-bottom: 1px solid #e2e8f0;
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
             transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
         }
-        
+
         .rank-item:hover {
-            background: #f8fafc;
+            background: rgba(30, 58, 138, 0.2);
+            padding-right: 30px;
         }
-        
+
         .rank-item.selected {
-            background: #3b82f6;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            border-radius: 8px;
+            border-radius: 10px;
+            border: 1px solid var(--gold);
+            padding-right: 30px;
         }
-        
-        /* ===== ADDITIONAL POSTS ===== */
+
+        /* ===== المناصب الإضافية ===== */
         .additional-posts {
-            background: #fefce8;
-            border-radius: 15px;
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 20px;
             padding: 25px;
-            border: 2px solid #fde047;
-            margin-top: 20px;
+            margin-top: 25px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
             max-height: 300px;
             overflow-y: auto;
         }
-        
+
         .additional-item {
             display: flex;
             align-items: center;
-            padding: 12px 15px;
-            background: white;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             margin-bottom: 10px;
-            border: 2px solid #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
         }
-        
+
+        .additional-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--gold);
+        }
+
         .additional-item input {
-            margin-left: 10px;
-            width: 20px;
-            height: 20px;
-        }
-        
-        /* ===== BUTTONS ===== */
-        .btn {
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-            color: white;
-            border: none;
-            padding: 18px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
+            margin-left: 15px;
+            width: 22px;
+            height: 22px;
+            accent-color: var(--gold);
             cursor: pointer;
-            width: 100%;
-            margin-top: 25px;
+        }
+
+        .additional-item label {
+            flex: 1;
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        /* ===== ملخص الطلب ===== */
+        .request-summary {
+            background: rgba(30, 58, 138, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 25px 0;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+
+        .summary-value {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* ===== شروط الموافقة ===== */
+        .terms-box {
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .terms-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .terms-item input {
+            margin-top: 5px;
+            width: 22px;
+            height: 22px;
+            accent-color: var(--gold);
+        }
+
+        .terms-item label {
+            color: rgba(255, 255, 255, 0.9);
+            flex: 1;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* ===== الأزرار ===== */
+        .btn {
+            background: linear-gradient(135deg, var(--gold), #fbbf24);
+            color: var(--dark);
+            border: none;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            width: 100%;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            animation: btnGlow 2s infinite;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
         }
-        
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            transition: left 0.7s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
         .btn:hover {
-            background: linear-gradient(135deg, #1d4ed8, #2563eb);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
+            animation: none;
         }
-        
+
+        .btn:disabled {
+            background: #64748b;
+            cursor: not-allowed;
+            transform: none;
+            animation: none;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: none;
+            animation: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--gold);
+        }
+
         .btn-group {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             margin-top: 30px;
         }
-        
+
         .btn-group .btn {
             flex: 1;
             margin-top: 0;
         }
-        
-        .btn-secondary {
-            background: #64748b;
-        }
-        
-        .btn-secondary:hover {
-            background: #475569;
-        }
-        
-        .btn:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        /* ===== SUCCESS MESSAGE ===== */
+
+        /* ===== رسالة النجاح ===== */
         .success-message {
+            background: rgba(5, 150, 105, 0.1);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(5, 150, 105, 0.3);
+            border-radius: 25px;
+            padding: 50px 40px;
             text-align: center;
-            padding: 40px 30px;
-            background: linear-gradient(135deg, #d1fae5, #bbf7d0);
-            border-radius: 15px;
-            border: 3px solid #10b981;
-            margin-top: 30px;
             display: none;
+            animation: successAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
-        
+
         .success-message.show {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
-        
-        .success-message i {
-            font-size: 60px;
-            color: #10b981;
-            margin-bottom: 20px;
+
+        .success-icon {
+            font-size: 80px;
+            color: var(--accent);
+            margin-bottom: 25px;
+            animation: successPulse 2s infinite;
         }
-        
-        /* ===== REQUEST STATUS ===== */
-        .request-status {
-            text-align: center;
-            padding: 30px;
-            margin: 20px 0;
-            border-radius: 15px;
-            animation: fadeIn 0.5s ease;
+
+        .success-message h3 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 15px;
         }
-        
-        .request-status.pending {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border: 3px solid #f59e0b;
+
+        .success-message p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+            font-size: 16px;
         }
-        
-        .request-status.accepted {
-            background: linear-gradient(135deg, #d1fae5, #bbf7d0);
-            border: 3px solid #10b981;
+
+        /* ===== الأنيميشن ===== */
+        @keyframes patternMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
         }
-        
-        .request-status.rejected {
-            background: linear-gradient(135deg, #fee2e2, #fecaca);
-            border: 3px solid #ef4444;
+
+        @keyframes containerAppear {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
-        
-        /* ===== STATUS ITEMS ===== */
-        .status-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #e2e8f0;
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
-        
-        .status-item:last-child {
-            border-bottom: none;
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
         }
-        
-        .status-label {
-            color: #64748b;
-            font-weight: 500;
+
+        @keyframes iconSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
-        
-        .status-value {
-            color: #1e3a8a;
-            font-weight: 600;
+
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        /* ===== EXAMPLE BOX ===== */
-        .example-box {
-            background: #f0f9ff;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 10px;
-            border: 2px solid #e0f2fe;
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        .example-box p {
-            color: #0369a1;
-            margin: 0;
-            font-size: 14px;
+
+        @keyframes stepAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        /* ===== REQUEST INFO ===== */
-        .request-info {
-            background: #f8fafc;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 2px solid #e2e8f0;
+
+        @keyframes numberPulse {
+            0%, 100% { box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+            50% { box-shadow: 0 5px 25px rgba(30, 58, 138, 0.4); }
         }
-        
-        /* ===== RESPONSIVE ===== */
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes btnGlow {
+            0%, 100% { box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3); }
+            50% { box-shadow: 0 10px 40px rgba(212, 175, 55, 0.5); }
+        }
+
+        @keyframes successAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* ===== تصميم متجاوب ===== */
         @media (max-width: 768px) {
-            .jobs-grid { grid-template-columns: 1fr; }
-            .container { margin: 10px; border-radius: 15px; }
-            .content { padding: 20px; }
-            .btn-group { flex-direction: column; }
-            body { padding: 10px; }
+            .container {
+                border-radius: 20px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .example-images {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .logo h1 {
+                font-size: 26px;
+            }
+            
+            .step {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .logo h1 {
+                font-size: 22px;
+            }
+            
+            .step-title {
+                font-size: 20px;
+            }
+            
+            .btn {
+                padding: 18px;
+                font-size: 16px;
+            }
+            
+            .example-card {
+                height: 180px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- خلفية أنيقة -->
+    <div class="bg-pattern"></div>
+    
+    <!-- الحاوية الرئيسية -->
     <div class="container">
-        <!-- ترويسة النموذج فقط -->
+        <!-- الهيدر الفاخر -->
         <div class="header">
             <div class="logo">
-                <i class="fas fa-id-card"></i>
+                <div class="logo-icon">
+                    <i class="fas fa-id-card-alt"></i>
+                </div>
                 <h1>تقديم طلب تفعيل الهوية</h1>
                 <p>نظام هيئة KR الرقمية</p>
             </div>
         </div>
         
+        <!-- المحتوى الرئيسي -->
         <div class="content">
             <!-- رسالة حالة الطلب السابق -->
             <div id="previousRequestMessage" class="status-message"></div>
             
-            <!-- تحذير عام -->
+            <!-- تنبيهات النظام -->
             <div class="alert" id="alertBox"></div>
             
-            <!-- حالة الطلب السابق -->
-            <div id="existingRequestStatus" style="display: none;"></div>
-            
-            <!-- النموذج -->
+            <!-- النموذج الرئيسي -->
             <div id="applicationForm">
                 <!-- الخطوة 1: البيانات الأساسية -->
                 <div class="step" id="step1">
                     <div class="step-title">
-                        <span class="number">1</span>
+                        <div class="step-number">1</div>
                         <span>البيانات الأساسية</span>
                     </div>
                     
                     <div class="input-group">
                         <label><i class="fas fa-user"></i> الاسم الكامل:</label>
-                        <input type="text" id="fullName" placeholder="أدخل اسمك الكامل ثلاثي">
-                        <div class="input-hint"><i class="fas fa-info-circle"></i> الاسم كما في الهوية الرسمية</div>
+                        <input type="text" id="fullName" placeholder="الاسم كما في الوثيقة الرسمية">
+                        <div class="input-hint">
+                            <i class="fas fa-info-circle"></i> يرجى كتابة الاسم ثلاثي كما في الوثيقة الرسمية
+                        </div>
                     </div>
                     
                     <div class="input-group">
                         <label><i class="fas fa-birthday-cake"></i> العمر:</label>
-                        <input type="number" id="age" placeholder="أدخل عمرك" min="18">
-                        <div class="input-hint"><i class="fas fa-info-circle"></i> يجب أن يكون 18 سنة أو أكثر</div>
+                        <input type="number" id="age" placeholder="أدخل عمرك" min="18" max="99">
+                        <div class="input-hint">
+                            <i class="fas fa-info-circle"></i> يجب أن يكون العمر 18 سنة أو أكثر
+                        </div>
                     </div>
                     
                     <div class="input-group">
                         <label><i class="fas fa-gamepad"></i> اسم المستخدم في اللعبة:</label>
-                        <input type="text" id="gameUsername" placeholder="أدخل اسمك في اللعبة">
-                        <div class="example-box">
-                            <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> Ahmed_KR, KR_Sniper, ProGamer_SA</p>
+                        <input type="text" id="gameUsername" placeholder="مثال: Ahmed_KR">
+                        <div class="input-hint">
+                            <i class="fas fa-info-circle"></i> اسم المستخدم المستخدم في الخوادم الرسمية
                         </div>
                     </div>
                     
                     <div class="input-group">
                         <label><i class="fab fa-discord"></i> اسم المستخدم في الديسكورد:</label>
-                        <input type="text" id="discordUsername" placeholder="أدخل اسمك في الديسكورد">
-                        <div class="example-box">
-                            <p><i class="fas fa-lightbulb"></i> <strong>أمثلة:</strong> Ahmed#1234, KR_Player#5678, SaudiGamer#9999</p>
+                        <input type="text" id="discordUsername" placeholder="مثال: Ahmed#1234">
+                        <div class="input-hint">
+                            <i class="fas fa-info-circle"></i> ضروري للتواصل معك في حالة وجود استفسار
                         </div>
                     </div>
                     
-                    <div class="input-group">
-                        <label><i class="fas fa-id-card"></i> رقم الهوية في اللعبة:</label>
-                        <input type="text" id="gameId" placeholder="أدخل 10 أرقام فقط" maxlength="10">
+                    <!-- مثال رفع الهوية -->
+                    <div class="upload-example">
+                        <div class="example-header">
+                            <i class="fas fa-camera"></i>
+                            <span>رفع صورة الهوية</span>
+                        </div>
                         
-                        <div class="id-example">
-                            <h4><i class="fas fa-image"></i> مكان رقم الهوية:</h4>
-                            <div style="text-align: center; padding: 20px; background: #1e3a8a; color: white; border-radius: 10px; margin: 15px 0;">
-                                <i class="fas fa-gamepad" style="font-size: 40px; margin-bottom: 10px;"></i>
-                                <p>افتح اللعبة → إعدادات → معلومات → ابحث عن ID</p>
+                        <div class="example-images">
+                            <div class="example-card">
+                                <div class="example-image">
+                                    <i class="fas fa-id-card"></i>
+                                </div>
+                                <div class="example-text">
+                                    <span class="highlight">رقم الهوية:</span> يجب أن يظهر الرقم بوضوح
+                                </div>
+                            </div>
+                            
+                            <div class="example-card">
+                                <div class="example-image">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="example-text">
+                                    <span class="highlight">الوجه:</span> يجب أن يكون الوجه واضحاً بالكاميرا
+                                </div>
                             </div>
                         </div>
+                        
+                        <p style="color: var(--gold); margin-top: 20px;">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <strong>مهم:</strong> يجب أن تظهر الوجه بوضوح مع رقم الهوية
+                        </p>
                     </div>
                     
-                    <button class="btn" onclick="validateStep1()">التالي <i class="fas fa-arrow-left"></i></button>
+                    <!-- رفع ملف الهوية -->
+                    <div class="file-upload">
+                        <div class="upload-area" onclick="document.getElementById('identityFile').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>انقر لرفع صورة الهوية</p>
+                            <small>يجب أن تكون الصورة واضحة وتظهر الوجه ورقم الهوية</small>
+                        </div>
+                        <input type="file" id="identityFile" accept="image/*" style="display: none;" onchange="previewIdentityFile(this)">
+                        <div id="filePreview"></div>
+                    </div>
+                    
+                    <button class="btn" onclick="validateStep1()">
+                        <span>التالي</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
                 </div>
                 
                 <!-- الخطوة 2: اختيار الوظيفة -->
                 <div class="step" id="step2" style="display: none;">
                     <div class="step-title">
-                        <span class="number">2</span>
+                        <div class="step-number">2</div>
                         <span>اختيار الوظيفة الأساسية</span>
                     </div>
                     
                     <div class="jobs-grid">
                         <div class="job-card citizen" onclick="selectJob(this, 'citizen')">
-                            <i class="fas fa-user"></i>
-                            <div>
-                                <h4>مواطن</h4>
-                                <small>الوظيفة الأساسية</small>
+                            <div class="job-icon">
+                                <i class="fas fa-user"></i>
                             </div>
+                            <h4>مواطن</h4>
+                            <small>الوظيفة الأساسية</small>
                         </div>
                         
                         <div class="job-card interior" onclick="selectJob(this, 'interior')">
-                            <i class="fas fa-shield-alt"></i>
-                            <div>
-                                <h4>منسوب الداخلية</h4>
-                                <small>القطاع الأمني</small>
+                            <div class="job-icon">
+                                <i class="fas fa-shield-alt"></i>
                             </div>
+                            <h4>منسوب الداخلية</h4>
+                            <small>القطاع الأمني</small>
                         </div>
                         
                         <div class="job-card health" onclick="selectJob(this, 'health')">
-                            <i class="fas fa-heartbeat"></i>
-                            <div>
-                                <h4>منسوب الصحة</h4>
-                                <small>القطاع الطبي</small>
+                            <div class="job-icon">
+                                <i class="fas fa-heartbeat"></i>
                             </div>
+                            <h4>منسوب الصحة</h4>
+                            <small>القطاع الطبي</small>
                         </div>
                         
                         <div class="job-card justice" onclick="selectJob(this, 'justice')">
-                            <i class="fas fa-balance-scale"></i>
-                            <div>
-                                <h4>منسوب العدل</h4>
-                                <small>القطاع القضائي</small>
+                            <div class="job-icon">
+                                <i class="fas fa-balance-scale"></i>
                             </div>
+                            <h4>منسوب العدل</h4>
+                            <small>القطاع القضائي</small>
                         </div>
                     </div>
                     
                     <div class="btn-group">
                         <button class="btn btn-secondary" onclick="goBackToStep1()">
-                            <i class="fas fa-arrow-right"></i> السابق
+                            <i class="fas fa-arrow-right"></i>
+                            <span>السابق</span>
                         </button>
                         <button class="btn" onclick="showStep3()">
-                            التالي <i class="fas fa-arrow-left"></i>
+                            <span>التالي</span>
+                            <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                 </div>
@@ -632,7 +1073,7 @@
                 <!-- الخطوة 3: اختيار المنصب -->
                 <div class="step" id="step3" style="display: none;">
                     <div class="step-title">
-                        <span class="number">3</span>
+                        <div class="step-number">3</div>
                         <span>اختيار المنصب</span>
                     </div>
                     
@@ -640,10 +1081,12 @@
                     
                     <div class="btn-group">
                         <button class="btn btn-secondary" onclick="goBackToStep2()">
-                            <i class="fas fa-arrow-right"></i> السابق
+                            <i class="fas fa-arrow-right"></i>
+                            <span>السابق</span>
                         </button>
                         <button class="btn" onclick="showStep4()">
-                            التالي <i class="fas fa-arrow-left"></i>
+                            <span>التالي</span>
+                            <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                 </div>
@@ -651,18 +1094,20 @@
                 <!-- الخطوة 4: المناصب الإضافية -->
                 <div class="step" id="step4" style="display: none;">
                     <div class="step-title">
-                        <span class="number">4</span>
-                        <span>المناصب الإضافية (اختياري)</span>
+                        <div class="step-number">4</div>
+                        <span>المناصب الإضافية</span>
                     </div>
                     
                     <div id="additionalContainer"></div>
                     
                     <div class="btn-group">
                         <button class="btn btn-secondary" onclick="goBackToStep3()">
-                            <i class="fas fa-arrow-right"></i> السابق
+                            <i class="fas fa-arrow-right"></i>
+                            <span>السابق</span>
                         </button>
                         <button class="btn" onclick="showStep5()">
-                            التالي <i class="fas fa-arrow-left"></i>
+                            <span>التالي</span>
+                            <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                 </div>
@@ -670,51 +1115,67 @@
                 <!-- الخطوة 5: تأكيد وإرسال -->
                 <div class="step" id="step5" style="display: none;">
                     <div class="step-title">
-                        <span class="number">5</span>
+                        <div class="step-number">5</div>
                         <span>تأكيد وإرسال الطلب</span>
                     </div>
                     
-                    <div style="background: #f0f9ff; padding: 25px; border-radius: 15px; margin: 20px 0;">
-                        <h4 style="color: #1e3a8a; margin-bottom: 15px;">
-                            <i class="fas fa-check-circle"></i> ملخص طلبك
+                    <!-- ملخص الطلب -->
+                    <div class="request-summary">
+                        <h4 style="color: var(--gold); margin-bottom: 20px; text-align: center;">
+                            <i class="fas fa-file-alt"></i>
+                            ملخص طلبك
                         </h4>
-                        
-                        <div id="requestSummary" style="background: white; padding: 20px; border-radius: 10px;"></div>
+                        <div id="requestSummary"></div>
                     </div>
                     
-                    <div style="background: #fefce8; padding: 20px; border-radius: 10px; margin: 20px 0;">
-                        <div style="display: flex; align-items: flex-start; gap: 10px;">
-                            <input type="checkbox" id="agreeTerms" style="width: 20px; height: 20px; margin-top: 3px;">
-                            <label for="agreeTerms" style="color: #92400e;">
-                                أوافق على شروط واستخدام نظام الهوية الرقمية
+                    <!-- شروط الموافقة -->
+                    <div class="terms-box">
+                        <div class="terms-item">
+                            <input type="checkbox" id="agreeTerms1">
+                            <label>
+                                أوافق على أن جميع المعلومات المقدمة صحيحة ودقيقة
+                            </label>
+                        </div>
+                        <div class="terms-item">
+                            <input type="checkbox" id="agreeTerms2">
+                            <label>
+                                أوافق على الالتزام بأنظمة وقوانين هيئة KR الرقمية
+                            </label>
+                        </div>
+                        <div class="terms-item">
+                            <input type="checkbox" id="agreeTerms3">
+                            <label>
+                                أوافق على أن أي معلومات خاطئة تؤدي إلى رفض الطلب نهائياً
                             </label>
                         </div>
                     </div>
                     
                     <div class="btn-group">
                         <button class="btn btn-secondary" onclick="goBackToStep4()">
-                            <i class="fas fa-arrow-right"></i> السابق
+                            <i class="fas fa-arrow-right"></i>
+                            <span>السابق</span>
                         </button>
                         <button class="btn" onclick="submitRequest()">
-                            <i class="fas fa-paper-plane"></i> إرسال الطلب
+                            <i class="fas fa-paper-plane"></i>
+                            <span>إرسال الطلب</span>
                         </button>
                     </div>
                 </div>
             </div>
             
-            <!-- رسالة نجاح الطلب -->
+            <!-- رسالة النجاح -->
             <div class="success-message" id="successMessage">
-                <i class="fas fa-check-circle"></i>
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
                 <h3>تم إرسال طلبك بنجاح! 🎉</h3>
+                <p>سيتم مراجعة طلبك خلال 24-48 ساعة عمل</p>
                 
-                <div id="successDetails" style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;"></div>
+                <div class="request-summary" id="successDetails"></div>
                 
-                <p style="color: #065f46; margin-bottom: 20px;">
-                    <i class="fas fa-clock"></i> سيتم مراجعة طلبك خلال 24-48 ساعة
-                </p>
-                
-                <button class="btn" onclick="checkRequestStatus()">
-                    <i class="fas fa-sync-alt"></i> تحديث حالة الطلب
+                <button class="btn" onclick="checkRequestStatus()" style="margin-top: 30px;">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>تحديث حالة الطلب</span>
                 </button>
             </div>
         </div>
@@ -725,6 +1186,7 @@
         let selectedJob = null;
         let selectedRank = null;
         let selectedAdditionals = [];
+        let identityFile = null;
 
         const RANKS = {
             citizen: ['مواطن عادي', 'مواطن متميز', 'مواطن فخري'],
@@ -742,16 +1204,52 @@
 
         // ====== عند تحميل الصفحة ======
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔥 نظام تفعيل الهوية - جاهز');
-            
-            // التحقق من وجود طلب سابق
+            console.log('🚀 نظام تفعيل الهوية الحكومي - جاهز');
             checkPreviousRequest();
-            
-            // إعداد حقل رقم الهوية
-            setupGameIdField();
+            setupAnimations();
         });
 
-        // ====== نظام التحقق من الطلبات السابقة ======
+        // ====== إعداد الأنيميشن ======
+        function setupAnimations() {
+            // تأثيرات إضافية للعناصر
+            const elements = document.querySelectorAll('.input-group input, .job-card, .rank-item');
+            elements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    el.style.transform = 'translateY(-2px)';
+                });
+                el.addEventListener('mouseleave', () => {
+                    el.style.transform = 'translateY(0)';
+                });
+            });
+        }
+
+        // ====== معاينة ملف الهوية ======
+        function previewIdentityFile(input) {
+            const preview = document.getElementById('filePreview');
+            
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <div style="text-align: center;">
+                            <img src="${e.target.result}" class="preview-image" alt="معاينة صورة الهوية">
+                            <p style="color: var(--gold); margin-top: 10px;">
+                                <i class="fas fa-check-circle"></i>
+                                تم رفع صورة الهوية بنجاح
+                            </p>
+                        </div>
+                    `;
+                    preview.style.display = 'block';
+                    identityFile = file;
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // ====== التحقق من الطلبات السابقة ======
         function getDeviceId() {
             let deviceId = localStorage.getItem('device_id');
             if (!deviceId) {
@@ -764,20 +1262,15 @@
         function checkPreviousRequest() {
             const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
             const deviceId = getDeviceId();
-            
-            // البحث عن أحدث طلب لهذا الجهاز
             const userRequests = requests.filter(req => req.deviceId === deviceId);
             
             if (userRequests.length > 0) {
-                // ترتيب الطلبات من الأحدث إلى الأقدم
                 const latestRequest = userRequests.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
                 
                 if (latestRequest.status === 'pending' || latestRequest.status === 'accepted') {
-                    // إذا كان هناك طلب قيد المراجعة أو مقبول
                     showExistingRequest(latestRequest);
                     return true;
                 } else if (latestRequest.status === 'rejected') {
-                    // إذا كان الطلب مرفوض، يسمح بالتقديم مجدداً
                     showRejectedMessage(latestRequest);
                     return false;
                 }
@@ -789,144 +1282,48 @@
         function showExistingRequest(request) {
             const messageDiv = document.getElementById('previousRequestMessage');
             const formDiv = document.getElementById('applicationForm');
-            const successDiv = document.getElementById('successMessage');
-            
-            const statusMessages = {
-                'pending': { 
-                    icon: '⏳', 
-                    title: 'لديك طلب قيد المراجعة', 
-                    message: 'لا يمكن تقديم طلب جديد حتى يتم الرد على طلبك السابق',
-                    color: 'pending'
-                },
-                'accepted': { 
-                    icon: '✅', 
-                    title: 'تم تفعيل هويتك مسبقاً', 
-                    message: 'لا يمكن تقديم طلب جديد لأن هويتك مفعلة بالفعل',
-                    color: 'accepted'
-                }
-            };
-            
-            const status = statusMessages[request.status];
             
             messageDiv.innerHTML = `
-                <i class="fas fa-${request.status === 'accepted' ? 'check-circle' : 'clock'}" style="font-size: 40px; margin-bottom: 15px;"></i>
-                <h2>${status.icon} ${status.title}</h2>
-                <p style="margin: 10px 0;">${status.message}</p>
+                <i class="fas fa-${request.status === 'accepted' ? 'check-circle' : 'clock'}" 
+                   style="font-size: 50px; margin-bottom: 20px; color: ${request.status === 'accepted' ? '#10b981' : '#f59e0b'}"></i>
+                <h2 style="margin-bottom: 15px;">${request.status === 'accepted' ? '✅ هويتك مفعلة' : '⏳ طلبك قيد المراجعة'}</h2>
                 
-                <div class="request-info">
-                    <div class="status-item">
-                        <span class="status-label">رقم الطلب:</span>
-                        <span class="status-value">${request.id}</span>
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 20px 0;">
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span style="color: rgba(255,255,255,0.7);">رقم الطلب:</span>
+                        <span style="color: white; font-weight: 600;">${request.id}</span>
                     </div>
-                    <div class="status-item">
-                        <span class="status-label">التاريخ:</span>
-                        <span class="status-value">${request.date}</span>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span style="color: rgba(255,255,255,0.7);">التاريخ:</span>
+                        <span style="color: white;">${request.date}</span>
                     </div>
-                    <div class="status-item">
-                        <span class="status-label">الاسم:</span>
-                        <span class="status-value">${request.fullName}</span>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span style="color: rgba(255,255,255,0.7);">الحالة:</span>
+                        <span style="color: ${request.status === 'accepted' ? '#10b981' : '#f59e0b'};">
+                            ${request.status === 'accepted' ? 'مقبول' : 'قيد المراجعة'}
+                        </span>
                     </div>
-                    <div class="status-item">
-                        <span class="status-label">الوظيفة:</span>
-                        <span class="status-value">${getJobName(request.job)}</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">المنصب:</span>
-                        <span class="status-value">${request.rank}</span>
-                    </div>
-                    ${request.status === 'pending' ? 
-                        '<p style="color: #f59e0b; margin-top: 15px;"><i class="fas fa-info-circle"></i> يمكنك محاولة التقديم مرة أخرى فقط إذا تم رفض هذا الطلب</p>' : 
-                        '<p style="color: #10b981; margin-top: 15px;"><i class="fas fa-check-circle"></i> هويتك مفعلة ولا تحتاج لتقديم طلب جديد</p>'
-                    }
                 </div>
-                
-                ${request.status === 'pending' ? 
-                    `<button class="btn" onclick="checkRequestStatus()" style="margin-top: 20px;">
-                        <i class="fas fa-sync-alt"></i> تحديث حالة الطلب
-                    </button>` : ''
-                }
             `;
             
-            messageDiv.className = `status-message show ${status.color}`;
+            messageDiv.classList.add('show');
             formDiv.style.display = 'none';
-            successDiv.style.display = 'none';
         }
 
         function showRejectedMessage(request) {
             const messageDiv = document.getElementById('previousRequestMessage');
             
             messageDiv.innerHTML = `
-                <i class="fas fa-exclamation-triangle" style="font-size: 40px; margin-bottom: 15px;"></i>
-                <h2>❌ تم رفض طلبك السابق</h2>
-                <p style="margin: 10px 0;">يمكنك تقديم طلب جديد بعد إصلاح الأخطاء</p>
-                
-                <div class="request-info">
-                    <div class="status-item">
-                        <span class="status-label">رقم الطلب المرفوض:</span>
-                        <span class="status-value">${request.id}</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">تاريخ الرفض:</span>
-                        <span class="status-value">${request.date}</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">سبب الرفض:</span>
-                        <span class="status-value">${request.rejectionReason || 'غير محدد'}</span>
-                    </div>
-                </div>
-                
-                <p style="color: #10b981; margin-top: 15px;">
-                    <i class="fas fa-info-circle"></i> يمكنك الآن تقديم طلب جديد بعد تصحيح المعلومات
-                </p>
+                <i class="fas fa-exclamation-triangle" style="font-size: 50px; margin-bottom: 20px; color: #ef4444;"></i>
+                <h2 style="margin-bottom: 15px;">❌ تم رفض طلبك السابق</h2>
+                <p style="margin-bottom: 20px;">يمكنك تقديم طلب جديد بعد تصحيح المعلومات</p>
             `;
             
-            messageDiv.className = 'status-message show rejected';
+            messageDiv.classList.add('show');
             
-            // إظهار النموذج بعد 3 ثواني
             setTimeout(() => {
                 messageDiv.style.display = 'none';
-                document.getElementById('applicationForm').style.display = 'block';
             }, 3000);
-        }
-
-        function checkRequestStatus() {
-            // هذه الدالة يمكن ربطها بنظام الإدارة
-            showAlert('🔍 جاري التحقق من حالة طلبك...', false);
-            
-            // محاكاة التحقق من الخادم
-            setTimeout(() => {
-                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-                const deviceId = getDeviceId();
-                const userRequests = requests.filter(req => req.deviceId === deviceId);
-                
-                if (userRequests.length > 0) {
-                    const latestRequest = userRequests.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-                    
-                    if (latestRequest.status === 'rejected') {
-                        showAlert('✅ يمكنك الآن تقديم طلب جديد!', true);
-                        location.reload();
-                    } else {
-                        showAlert(`طلبك لا يزال ${latestRequest.status === 'pending' ? 'قيد المراجعة' : 'مقبول'}`, false);
-                    }
-                }
-            }, 1500);
-        }
-
-        // ====== التحكم في رقم الهوية ======
-        function setupGameIdField() {
-            const gameIdInput = document.getElementById('gameId');
-            
-            gameIdInput.addEventListener('input', function() {
-                let value = this.value.replace(/\D/g, '');
-                this.value = value.slice(0, 10);
-                
-                if (this.value.length === 10) {
-                    this.classList.remove('error');
-                    this.style.borderColor = '#10b981';
-                } else {
-                    this.style.borderColor = '#e2e8f0';
-                }
-            });
         }
 
         // ====== التحقق من الخطوات ======
@@ -935,67 +1332,50 @@
             const age = document.getElementById('age').value;
             const gameUsername = document.getElementById('gameUsername').value.trim();
             const discordUsername = document.getElementById('discordUsername').value.trim();
-            const gameId = document.getElementById('gameId').value.trim();
-
-            let isValid = true;
-            let errorMessage = '';
-
+            
             // إعادة تعيين الأخطاء
             document.querySelectorAll('input').forEach(input => {
                 input.classList.remove('error');
             });
 
-            // التحقق من الاسم
+            let isValid = true;
+            
             if (!name || name.split(' ').length < 2) {
-                errorMessage = '❌ يرجى إدخال الاسم الكامل ثلاثي';
+                showAlert('❌ يرجى إدخال الاسم الكامل ثلاثي', false);
                 document.getElementById('fullName').classList.add('error');
                 isValid = false;
-            }
-            
-            // التحقق من العمر
-            else if (!age || age < 18) {
-                errorMessage = '❌ العمر يجب أن يكون 18 سنة أو أكثر';
+            } else if (!age || age < 18) {
+                showAlert('❌ العمر يجب أن يكون 18 سنة أو أكثر', false);
                 document.getElementById('age').classList.add('error');
                 isValid = false;
-            }
-            
-            // التحقق من اسم اللعبة
-            else if (!gameUsername) {
-                errorMessage = '❌ يرجى إدخال اسم المستخدم في اللعبة';
+            } else if (!gameUsername) {
+                showAlert('❌ يرجى إدخال اسم المستخدم في اللعبة', false);
                 document.getElementById('gameUsername').classList.add('error');
                 isValid = false;
-            }
-            
-            // التحقق من اسم الديسكورد
-            else if (!discordUsername) {
-                errorMessage = '❌ يرجى إدخال اسم المستخدم في الديسكورد';
+            } else if (!discordUsername) {
+                showAlert('❌ يرجى إدخال اسم المستخدم في الديسكورد', false);
                 document.getElementById('discordUsername').classList.add('error');
                 isValid = false;
-            }
-            
-            // التحقق من رقم الهوية
-            else if (!gameId || gameId.length !== 10 || !/^\d+$/.test(gameId)) {
-                errorMessage = '❌ رقم الهوية يجب أن يكون 10 أرقام بالضبط';
-                document.getElementById('gameId').classList.add('error');
+            } else if (!identityFile) {
+                showAlert('❌ يجب رفع صورة الهوية', false);
                 isValid = false;
             }
 
-            if (!isValid) {
-                showAlert(errorMessage);
-                return;
+            if (isValid) {
+                showStep2();
             }
-
-            showStep2();
         }
 
         function showStep2() {
             document.getElementById('step1').style.display = 'none';
             document.getElementById('step2').style.display = 'block';
+            animateStep('step2');
         }
 
         function goBackToStep1() {
             document.getElementById('step2').style.display = 'none';
             document.getElementById('step1').style.display = 'block';
+            animateStep('step1');
         }
 
         function selectJob(element, jobType) {
@@ -1008,14 +1388,17 @@
 
         function showStep3() {
             if (!selectedJob) {
-                showAlert('❌ يرجى اختيار الوظيفة');
+                showAlert('❌ يرجى اختيار الوظيفة', false);
                 return;
             }
 
             const container = document.getElementById('ranksContainer');
             container.innerHTML = `
                 <div class="ranks-container">
-                    <h4 style="color: #1e3a8a; margin-bottom: 15px;">اختر منصبك:</h4>
+                    <h4 style="color: var(--gold); margin-bottom: 15px; text-align: center;">
+                        <i class="fas fa-arrow-up"></i>
+                        اختر منصبك من القائمة:
+                    </h4>
                     ${RANKS[selectedJob].map(rank => `
                         <div class="rank-item" onclick="selectRank(this, '${rank}')">
                             ${rank}
@@ -1026,6 +1409,7 @@
 
             document.getElementById('step2').style.display = 'none';
             document.getElementById('step3').style.display = 'block';
+            animateStep('step3');
         }
 
         function selectRank(element, rank) {
@@ -1039,11 +1423,12 @@
         function goBackToStep2() {
             document.getElementById('step3').style.display = 'none';
             document.getElementById('step2').style.display = 'block';
+            animateStep('step2');
         }
 
         function showStep4() {
             if (!selectedRank) {
-                showAlert('❌ يرجى اختيار المنصب');
+                showAlert('❌ يرجى اختيار المنصب', false);
                 return;
             }
 
@@ -1056,11 +1441,14 @@
             const container = document.getElementById('additionalContainer');
             container.innerHTML = `
                 <div class="additional-posts">
-                    <h4 style="color: #92400e; margin-bottom: 15px;">اختر مناصب إضافية (اختياري):</h4>
+                    <h4 style="color: var(--gold); margin-bottom: 15px; text-align: center;">
+                        <i class="fas fa-plus-circle"></i>
+                        اختر مناصب إضافية (اختياري):
+                    </h4>
                     ${posts.map(post => `
                         <div class="additional-item">
                             <input type="checkbox" id="add_${post}" value="${post}" onchange="toggleAdditionalPost(this, '${post}')">
-                            <label for="add_${post}" style="flex: 1; cursor: pointer;">${post}</label>
+                            <label for="add_${post}">${post}</label>
                         </div>
                     `).join('')}
                 </div>
@@ -1068,6 +1456,7 @@
 
             document.getElementById('step3').style.display = 'none';
             document.getElementById('step4').style.display = 'block';
+            animateStep('step4');
         }
 
         function toggleAdditionalPost(checkbox, post) {
@@ -1081,49 +1470,53 @@
         function goBackToStep3() {
             document.getElementById('step4').style.display = 'none';
             document.getElementById('step3').style.display = 'block';
+            animateStep('step3');
         }
 
         function showStep5() {
             const summary = document.getElementById('requestSummary');
             summary.innerHTML = `
-                <div class="status-item">
-                    <span class="status-label">الاسم الكامل:</span>
-                    <span class="status-value">${document.getElementById('fullName').value}</span>
+                <div class="summary-item">
+                    <span class="summary-label">الاسم الكامل:</span>
+                    <span class="summary-value">${document.getElementById('fullName').value}</span>
                 </div>
-                <div class="status-item">
-                    <span class="status-label">العمر:</span>
-                    <span class="status-value">${document.getElementById('age').value} سنة</span>
+                <div class="summary-item">
+                    <span class="summary-label">العمر:</span>
+                    <span class="summary-value">${document.getElementById('age').value} سنة</span>
                 </div>
-                <div class="status-item">
-                    <span class="status-label">اسم اللعبة:</span>
-                    <span class="status-value">${document.getElementById('gameUsername').value}</span>
+                <div class="summary-item">
+                    <span class="summary-label">اسم اللعبة:</span>
+                    <span class="summary-value">${document.getElementById('gameUsername').value}</span>
                 </div>
-                <div class="status-item">
-                    <span class="status-label">الديسكورد:</span>
-                    <span class="status-value">${document.getElementById('discordUsername').value}</span>
+                <div class="summary-item">
+                    <span class="summary-label">الديسكورد:</span>
+                    <span class="summary-value">${document.getElementById('discordUsername').value}</span>
                 </div>
-                <div class="status-item">
-                    <span class="status-label">رقم الهوية:</span>
-                    <span class="status-value">${document.getElementById('gameId').value}</span>
+                <div class="summary-item">
+                    <span class="summary-label">الوظيفة:</span>
+                    <span class="summary-value">${getJobName(selectedJob)}</span>
                 </div>
-                <div class="status-item">
-                    <span class="status-label">الوظيفة:</span>
-                    <span class="status-value">${getJobName(selectedJob)}</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">المنصب:</span>
-                    <span class="status-value">${selectedRank}</span>
+                <div class="summary-item">
+                    <span class="summary-label">المنصب:</span>
+                    <span class="summary-value">${selectedRank}</span>
                 </div>
                 ${selectedAdditionals.length > 0 ? `
-                    <div class="status-item">
-                        <span class="status-label">المناصب الإضافية:</span>
-                        <span class="status-value">${selectedAdditionals.join(', ')}</span>
+                    <div class="summary-item">
+                        <span class="summary-label">المناصب الإضافية:</span>
+                        <span class="summary-value">${selectedAdditionals.join(', ')}</span>
                     </div>
                 ` : ''}
+                <div class="summary-item">
+                    <span class="summary-label">رفع الهوية:</span>
+                    <span class="summary-value" style="color: var(--gold);">
+                        <i class="fas fa-check-circle"></i> تم الرفع
+                    </span>
+                </div>
             `;
 
             document.getElementById('step4').style.display = 'none';
             document.getElementById('step5').style.display = 'block';
+            animateStep('step5');
         }
 
         function getJobName(jobType) {
@@ -1139,38 +1532,42 @@
         function goBackToStep4() {
             document.getElementById('step5').style.display = 'none';
             document.getElementById('step4').style.display = 'block';
+            animateStep('step4');
         }
 
         // ====== إرسال الطلب ======
         function submitRequest() {
-            // التحقق من الموافقة على الشروط
-            const agreeTerms = document.getElementById('agreeTerms');
-            if (!agreeTerms || !agreeTerms.checked) {
-                showAlert('❌ يجب الموافقة على الشروط والأحكام أولاً');
-                return;
-            }
+            // التحقق من الشروط
+            const terms1 = document.getElementById('agreeTerms1');
+            const terms2 = document.getElementById('agreeTerms2');
+            const terms3 = document.getElementById('agreeTerms3');
             
-            // التحقق من وجود طلب سابق
-            if (checkPreviousRequest()) {
-                showAlert('⚠️ لديك طلب سابق قيد المراجعة أو مقبول');
+            if (!terms1.checked || !terms2.checked || !terms3.checked) {
+                showAlert('❌ يجب الموافقة على جميع الشروط والأحكام', false);
                 return;
             }
             
             // جمع البيانات
             const requestData = {
-                id: 'KR-' + Date.now().toString().slice(-8),
+                id: 'KR-' + Date.now().toString().slice(-6),
                 fullName: document.getElementById('fullName').value.trim(),
                 age: document.getElementById('age').value,
                 gameUsername: document.getElementById('gameUsername').value.trim(),
                 discordUsername: document.getElementById('discordUsername').value.trim(),
-                gameId: document.getElementById('gameId').value.trim(),
                 job: selectedJob,
                 rank: selectedRank,
                 additionals: selectedAdditionals,
-                date: new Date().toLocaleString('ar-SA'),
+                date: new Date().toLocaleString('ar-SA', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }),
                 status: 'pending',
                 deviceId: getDeviceId(),
-                submissionDate: new Date().toISOString()
+                submissionDate: new Date().toISOString(),
+                hasIdentityImage: !!identityFile
             };
             
             // حفظ الطلب
@@ -1187,41 +1584,28 @@
         }
 
         function showSuccessMessage(requestData) {
+            const form = document.getElementById('applicationForm');
             const successMessage = document.getElementById('successMessage');
             const successDetails = document.getElementById('successDetails');
-            const form = document.getElementById('applicationForm');
             
             successDetails.innerHTML = `
-                <div class="status-item">
-                    <span class="status-label">رقم الطلب:</span>
-                    <span class="status-value">${requestData.id}</span>
+                <div class="summary-item">
+                    <span class="summary-label">رقم الطلب:</span>
+                    <span class="summary-value">${requestData.id}</span>
                 </div>
-                <div class="status-item">
-                    <span class="status-label">الاسم:</span>
-                    <span class="status-value">${requestData.fullName}</span>
+                <div class="summary-item">
+                    <span class="summary-label">التاريخ:</span>
+                    <span class="summary-value">${requestData.date}</span>
                 </div>
-                <div class="status-item">
-                    <span class="status-label">الوظيفة:</span>
-                    <span class="status-value">${getJobName(requestData.job)}</span>
+                <div class="summary-item">
+                    <span class="summary-label">الوظيفة:</span>
+                    <span class="summary-value">${getJobName(requestData.job)}</span>
                 </div>
-                <div class="status-item">
-                    <span class="status-label">المنصب:</span>
-                    <span class="status-value">${requestData.rank}</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">حالة الطلب:</span>
-                    <span class="status-value" style="color: #f59e0b;">⏳ قيد المراجعة</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">تاريخ التقديم:</span>
-                    <span class="status-value">${requestData.date}</span>
-                </div>
-                
-                <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                    <p style="color: #92400e; margin: 0;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <strong>ملاحظة هامة:</strong> لن تتمكن من تقديم طلب جديد حتى يتم الرد على هذا الطلب
-                    </p>
+                <div class="summary-item">
+                    <span class="summary-label">الحالة:</span>
+                    <span class="summary-value" style="color: #f59e0b;">
+                        <i class="fas fa-clock"></i> قيد المراجعة
+                    </span>
                 </div>
             `;
             
@@ -1229,6 +1613,7 @@
             successMessage.classList.add('show');
         }
 
+        // ====== دوال مساعدة ======
         function showAlert(message, isSuccess = false) {
             const alertBox = document.getElementById('alertBox');
             alertBox.textContent = message;
@@ -1243,6 +1628,21 @@
             setTimeout(() => {
                 alertBox.classList.remove('show');
             }, 4000);
+        }
+
+        function animateStep(stepId) {
+            const step = document.getElementById(stepId);
+            step.style.animation = 'none';
+            setTimeout(() => {
+                step.style.animation = 'stepAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+            }, 10);
+        }
+
+        function checkRequestStatus() {
+            showAlert('🔍 جاري التحقق من حالة طلبك...', true);
+            setTimeout(() => {
+                showAlert('يمكنك التحقق من حالة طلبك في قسم "متابعة الطلبات"', true);
+            }, 1500);
         }
     </script>
 </body>
