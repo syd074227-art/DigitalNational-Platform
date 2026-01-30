@@ -1850,7 +1850,7 @@
             animateStep('step4');
         }
 
-        // ====== إرسال الطلب ======
+        // ====== إرسال الطلب مع الربط للوحة التحكم ======
         function submitRequest() {
             // التحقق من وجود طلب سابق
             if (hasExistingRequest) {
@@ -1892,8 +1892,16 @@
                 hasIdentityImage: !!identityFile
             };
             
-            // حفظ الطلب
+            // حفظ الطلب للمستخدم
             saveRequest(requestData);
+            
+            // 🔗 ربط الطلب مع لوحة التحكم
+            const linkSuccess = linkToAdminPanel(requestData);
+            
+            if (!linkSuccess) {
+                showAlert('حدث خطأ في إرسال الطلب للمراجعة', false);
+                return;
+            }
             
             // تحديث حالة النظام
             hasExistingRequest = true;
@@ -1907,6 +1915,109 @@
             const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
             requests.push(requestData);
             localStorage.setItem('identityRequests', JSON.stringify(requests));
+        }
+
+        // ====== 🔗 ربط الطلب مع لوحة التحكم ======
+        function linkToAdminPanel(requestData) {
+            try {
+                // 1. إضافة الطلب إلى لوحة تحكم الإدارة
+                let adminRequests = JSON.parse(localStorage.getItem('admin_requests') || '[]');
+                
+                // إنشاء بيانات الطلب للمسؤول
+                const adminRequestData = {
+                    id: requestData.id,
+                    name: requestData.fullName,
+                    age: requestData.age,
+                    gameUsername: requestData.gameUsername,
+                    discordUsername: requestData.discordUsername,
+                    idNumber: requestData.gameId,
+                    job: requestData.job,
+                    jobName: getJobName(requestData.job),
+                    rank: requestData.rank,
+                    additionals: requestData.additionals,
+                    date: requestData.date,
+                    submissionDate: new Date().toISOString(),
+                    status: 'pending',
+                    hasIdentityImage: requestData.hasIdentityImage,
+                    source: 'apply.html',
+                    deviceId: requestData.deviceId,
+                    reviewedBy: null,
+                    reviewDate: null,
+                    notes: ''
+                };
+                
+                // إضافة الطلب للقائمة
+                adminRequests.push(adminRequestData);
+                
+                // حفظ في لوحة التحكم
+                localStorage.setItem('admin_requests', JSON.stringify(adminRequests));
+                
+                // 2. تحديث عدد الطلبات المعلقة
+                updateAdminStats();
+                
+                // 3. إرسال إشعار للمسؤول
+                sendAdminNotification(adminRequestData);
+                
+                console.log('✅ تم ربط الطلب مع لوحة التحكم بنجاح:', requestData.id);
+                console.log('📊 عدد الطلبات المعلقة:', adminRequests.length);
+                
+                return true;
+                
+            } catch (error) {
+                console.error('❌ خطأ في ربط الطلب مع لوحة التحكم:', error);
+                return false;
+            }
+        }
+
+        // ====== تحديث إحصائيات لوحة التحكم ======
+        function updateAdminStats() {
+            try {
+                const requests = JSON.parse(localStorage.getItem('admin_requests') || '[]');
+                const pendingCount = requests.filter(r => r.status === 'pending').length;
+                const totalCount = requests.length;
+                
+                // حفظ الإحصائيات
+                localStorage.setItem('admin_stats', JSON.stringify({
+                    total: totalCount,
+                    pending: pendingCount,
+                    accepted: requests.filter(r => r.status === 'accepted').length,
+                    rejected: requests.filter(r => r.status === 'rejected').length,
+                    lastUpdate: new Date().toISOString()
+                }));
+                
+                console.log('📊 تم تحديث إحصائيات لوحة التحكم');
+                console.log('📈 إجمالي الطلبات:', totalCount);
+                console.log('⏳ الطلبات المعلقة:', pendingCount);
+                
+            } catch (error) {
+                console.error('خطأ في تحديث الإحصائيات:', error);
+            }
+        }
+
+        // ====== إرسال إشعار للمسؤول ======
+        function sendAdminNotification(requestData) {
+            try {
+                const notifications = JSON.parse(localStorage.getItem('admin_notifications') || '[]');
+                
+                const notification = {
+                    id: 'notif_' + Date.now(),
+                    type: 'new_request',
+                    title: 'طلب جديد للتفعيل',
+                    message: `طلب جديد من ${requestData.name} للوظيفة: ${requestData.jobName}`,
+                    requestId: requestData.id,
+                    timestamp: new Date().toISOString(),
+                    read: false,
+                    priority: 'high'
+                };
+                
+                notifications.unshift(notification); // إضافة في البداية
+                localStorage.setItem('admin_notifications', JSON.stringify(notifications));
+                
+                console.log('📨 تم إرسال إشعار للمسؤول');
+                
+            } catch (error) {
+                console.error('خطأ في إرسال الإشعار:', error);
+            }
         }
 
         function showSuccessMessage(requestData) {
@@ -1934,9 +2045,15 @@
                     </span>
                 </div>
                 <div class="summary-item">
-                    <span class="summary-label">ملاحظة:</span>
+                    <span class="summary-label">معلومات:</span>
                     <span class="summary-value" style="color: var(--gold);">
-                        <i class="fas fa-exclamation-circle"></i> لا يمكن تعديل الطلب بعد الإرسال
+                        <i class="fas fa-check"></i> تم إرسال الطلب للإدارة
+                    </span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">ملاحظة:</span>
+                    <span class="summary-value" style="color: #3b82f6; font-size: 14px;">
+                        <i class="fas fa-info-circle"></i> تم إرسال طلبك إلى لوحة تحكم الإدارة للمراجعة
                     </span>
                 </div>
             `;
@@ -1966,12 +2083,46 @@
                     if (currentRequest.status !== existingRequestData.status) {
                         existingRequestData = currentRequest;
                         showAlert('تم تحديث حالة الطلب', true);
+                        
+                        // إذا كان القبول، عرض رسالة القبول
+                        if (currentRequest.status === 'accepted') {
+                            showAcceptanceMessage(currentRequest);
+                        }
+                        // إذا كان الرفض، عرض رسالة الرفض
+                        else if (currentRequest.status === 'rejected') {
+                            showRejectionMessage(currentRequest);
+                        }
+                        
                         location.reload(); // إعادة تحميل الصفحة لعرض الحالة الجديدة
                     } else {
                         showAlert('حالة الطلب لم تتغير', false);
                     }
                 }
             }, 1500);
+        }
+
+        // ====== رسالة القبول ======
+        function showAcceptanceMessage(request) {
+            const message = `
+                <div class="alert success show">
+                    <i class="fas fa-check-circle"></i>
+                    <strong>مبروك! تم قبول طلبك</strong><br>
+                    هويتك الوطنية مفعلة الآن. يمكنك الدخول للموقع الرسمي.
+                </div>
+            `;
+            document.getElementById('alertBox').innerHTML = message;
+        }
+
+        // ====== رسالة الرفض ======
+        function showRejectionMessage(request) {
+            const message = `
+                <div class="alert warning show">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>نعتذر لعدم قبول طلبك</strong><br>
+                    حاول مرة أخرى بعد تصحيح المعلومات.
+                </div>
+            `;
+            document.getElementById('alertBox').innerHTML = message;
         }
 
         // ====== العودة للصفحة الرئيسية ======
