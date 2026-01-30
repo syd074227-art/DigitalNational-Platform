@@ -30,6 +30,7 @@
             background: var(--light);
             min-height: 100vh;
             color: var(--dark);
+            padding-bottom: 70px; /* مساحة للشريط السفلي */
         }
         
         /* ====== الهيدر ====== */
@@ -129,22 +130,6 @@
             font-weight: bold;
         }
         
-        .login-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .login-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
         .notification-icon {
             position: relative;
             font-size: 22px;
@@ -174,19 +159,126 @@
             font-weight: bold;
         }
         
+        /* ====== الشريط السفلي ====== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            border-top: 1px solid #e0e0e0;
+            padding: 8px 0;
+            display: none; /* سيتم إظهاره عند التفعيل */
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            flex: 1;
+            padding: 8px 5px;
+            transition: all 0.3s;
+            border-radius: 10px;
+            margin: 0 2px;
+            position: relative;
+        }
+        
+        .nav-item:hover {
+            background: #f5f5f5;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+        }
+        
+        .nav-item.active .nav-icon {
+            background: rgba(45, 104, 196, 0.1);
+            color: var(--primary);
+        }
+        
+        .nav-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+        }
+        
+        .nav-item:nth-child(1) .nav-icon { color: #4CAF50; }
+        .nav-item:nth-child(2) .nav-icon { color: #2196F3; }
+        .nav-item:nth-child(3) .nav-icon { color: #FF9800; }
+        .nav-item:nth-child(4) .nav-icon { color: #9C27B0; }
+        .nav-item:nth-child(5) .nav-icon { color: #f44336; }
+        
+        .nav-main {
+            position: relative;
+        }
+        
+        .nav-main .nav-icon {
+            background: var(--primary);
+            color: white !important;
+            width: 55px;
+            height: 55px;
+            border-radius: 15px;
+            margin-top: -20px;
+            box-shadow: 0 5px 15px rgba(45, 104, 196, 0.3);
+        }
+        
+        .nav-main .nav-label {
+            margin-top: 8px;
+        }
+        
+        .nav-label {
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .nav-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--warning);
+            color: white;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
         /* ====== المساحة الرئيسية ====== */
         .main-content {
             padding-top: 100px;
-            padding-bottom: 50px;
-            min-height: calc(100vh - 100px);
+            padding-bottom: 20px;
+            min-height: calc(100vh - 120px);
         }
         
         /* ====== البانر الرئيسي ====== */
         .main-banner {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 60px 5%;
-            margin: 20px 5%;
+            padding: 50px 5%;
+            margin: 15px 5% 25px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(45, 104, 196, 0.3);
             text-align: center;
@@ -210,22 +302,22 @@
         }
         
         .banner-icon {
-            font-size: 70px;
+            font-size: 60px;
             margin-bottom: 20px;
             color: white;
         }
         
         .banner-title {
-            font-size: 36px;
+            font-size: 28px;
             margin-bottom: 15px;
             font-weight: 700;
         }
         
         .banner-description {
-            font-size: 18px;
+            font-size: 16px;
             opacity: 0.9;
-            margin-bottom: 30px;
-            max-width: 600px;
+            margin-bottom: 25px;
+            max-width: 500px;
             margin-left: auto;
             margin-right: auto;
             line-height: 1.6;
@@ -235,9 +327,9 @@
             background: white;
             color: var(--primary);
             border: none;
-            padding: 18px 50px;
+            padding: 16px 40px;
             border-radius: 15px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
@@ -252,70 +344,105 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
         
-        /* ====== شريط الخدمات ====== */
-        .services-section {
-            padding: 40px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
+        /* ====== بطاقات الإحصائيات ====== */
+        .stats-section {
+            padding: 0 5% 30px;
         }
         
-        .services-title {
-            font-size: 24px;
-            margin-bottom: 30px;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #f0f0f0;
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin: 0 auto 15px;
+            color: white;
+        }
+        
+        .stat-1 .stat-icon { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
+        .stat-2 .stat-icon { background: linear-gradient(135deg, #2196F3, #1565C0); }
+        .stat-3 .stat-icon { background: linear-gradient(135deg, #FF9800, #EF6C00); }
+        .stat-4 .stat-icon { background: linear-gradient(135deg, #9C27B0, #6A1B9A); }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        /* ====== شريط الخدمات ====== */
+        .services-section {
+            padding: 0 5% 30px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 20px;
             color: var(--dark);
             font-weight: 600;
             padding-right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-        
-        @media (max-width: 992px) {
-            .services-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
         
         .service-card {
             background: white;
             border-radius: 15px;
-            padding: 30px 20px;
+            padding: 25px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-            border: 2px solid #f0f0f0;
+            border: 1px solid #f0f0f0;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             position: relative;
             overflow: hidden;
-            height: 250px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
         }
         
         .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
         
         .service-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 30px;
+            margin: 0 auto 15px;
+            font-size: 26px;
             color: white;
         }
         
@@ -346,18 +473,16 @@
         }
         
         .service-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--dark);
         }
         
         .service-description {
-            font-size: 14px;
+            font-size: 13px;
             color: #666;
-            margin-bottom: 15px;
             line-height: 1.5;
-            flex-grow: 1;
         }
         
         .service-badge {
@@ -366,9 +491,9 @@
             right: 15px;
             background: var(--accent);
             color: white;
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 10px;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 8px;
             font-weight: 600;
         }
         
@@ -380,61 +505,251 @@
             background: var(--owner);
         }
         
-        .service-arrow {
-            color: var(--primary);
-            font-size: 18px;
-            margin-top: 10px;
+        /* ====== محتوى الخدمات ====== */
+        .content-page {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
         }
         
-        /* ====== شريط حالة الخدمات ====== */
-        .services-status {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 30px 5%;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            border: 2px solid #f0f0f0;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
-        .status-title {
-            font-size: 20px;
-            color: var(--primary);
-            margin-bottom: 20px;
+        .page-header {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
         
-        .status-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+        .page-header i {
+            font-size: 28px;
+            color: var(--primary);
         }
         
-        @media (max-width: 768px) {
-            .status-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .page-header h2 {
+            font-size: 24px;
+            color: var(--dark);
         }
         
-        .status-item {
-            background: #f8f9fa;
+        /* صفحة الخدمات */
+        .services-page .services-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        /* صفحة الرسائل */
+        .messages-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .message-item {
             padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            border: 2px solid #e9ecef;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            cursor: pointer;
+            transition: background 0.3s;
         }
         
-        .status-number {
-            font-size: 32px;
+        .message-item:hover {
+            background: #f9f9f9;
+        }
+        
+        .message-item:last-child {
+            border-bottom: none;
+        }
+        
+        .message-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .message-content {
+            flex: 1;
+        }
+        
+        .message-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .message-text {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        /* صفحة معلوماتي */
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid white;
+            object-fit: cover;
+            margin: 0 auto 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .profile-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .profile-id {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .profile-stat {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .profile-stat-number {
+            font-size: 24px;
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 5px;
         }
         
-        .status-label {
-            font-size: 14px;
+        .profile-stat-label {
+            font-size: 12px;
             color: var(--gray);
+        }
+        
+        /* ====== تحذير الوصول ====== */
+        .warning-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .warning-content {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        .warning-icon {
+            font-size: 70px;
+            color: #ffdd59;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* ====== تحذير الوصول الإداري ====== */
+        .admin-warning {
+            background: linear-gradient(135deg, var(--admin), #3b82f6);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 5%;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .admin-warning-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .admin-warning-btn {
+            background: white;
+            color: var(--admin);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .admin-warning-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+        }
+        
+        /* ====== زر الرجوع ====== */
+        .back-button {
+            background: #f5f5f5;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            background: #e0e0e0;
         }
         
         /* ====== القائمة الجانبية ====== */
@@ -478,172 +793,13 @@
             color: var(--primary);
         }
         
-        .sidebar-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 5px solid var(--primary);
-            object-fit: cover;
-            margin: 0 auto 20px;
-            display: block;
-        }
-        
-        .sidebar-name {
-            text-align: center;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-        
-        .sidebar-details {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 25px 0;
-        }
-        
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        .detail-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        
-        .detail-label {
-            color: var(--gray);
-            font-weight: 500;
-        }
-        
-        .detail-value {
-            color: var(--dark);
-            font-weight: 600;
-            direction: ltr;
-        }
-        
-        .sidebar-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .sidebar-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s;
-        }
-        
-        .sidebar-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-        }
-        
-        .logout-btn {
-            background: var(--light);
-            color: var(--warning);
-            border: 2px solid var(--warning);
-        }
-        
-        .logout-btn:hover {
-            background: var(--warning);
-            color: white;
-        }
-        
-        /* ====== تحذير التفعيل ====== */
-        .warning-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 9998;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .warning-content {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 500px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        
-        .warning-icon {
-            font-size: 70px;
-            color: #ffdd59;
-            margin-bottom: 20px;
-            animation: bounce 1s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        /* ====== تحذير الوصول الإداري ====== */
-        .admin-warning {
-            background: linear-gradient(135deg, var(--admin), #3b82f6);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin: 20px 5%;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .admin-warning-content {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .admin-warning-btn {
-            background: white;
-            color: var(--admin);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .admin-warning-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
-        }
-        
         /* ====== الفوتر ====== */
         footer {
             background: var(--dark);
             color: white;
             text-align: center;
-            padding: 30px 5%;
-            margin-top: 50px;
+            padding: 25px 5%;
+            margin-top: 30px;
         }
         
         .footer-content {
@@ -654,8 +810,8 @@
         .footer-links {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin: 20px 0;
+            gap: 25px;
+            margin: 15px 0;
             flex-wrap: wrap;
         }
         
@@ -663,6 +819,7 @@
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: color 0.3s;
+            font-size: 14px;
         }
         
         .footer-links a:hover {
@@ -671,8 +828,48 @@
         
         .copyright {
             color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            margin-top: 20px;
+            font-size: 13px;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+        
+        /* ====== استجابة للأجهزة الصغيرة ====== */
+        @media (max-width: 768px) {
+            .main-banner {
+                padding: 40px 5%;
+                margin: 10px 5% 20px;
+            }
+            
+            .banner-title {
+                font-size: 24px;
+            }
+            
+            .banner-description {
+                font-size: 15px;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-container {
+                padding: 0 5px;
+            }
+            
+            .nav-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            
+            .nav-main .nav-icon {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .nav-label {
+                font-size: 11px;
+            }
         }
     </style>
 </head>
@@ -688,7 +885,7 @@
             
             <!-- قائمة المستخدم -->
             <div class="user-menu">
-                <!-- معلومات المستخدم (تظهر بعد التفعيل) -->
+                <!-- معلومات المستخدم -->
                 <div class="user-info" id="userInfo" onclick="toggleSidebar()">
                     <img src="" alt="صورة الهوية" class="user-avatar" id="userAvatar">
                     <div class="user-details">
@@ -698,14 +895,8 @@
                     </div>
                 </div>
                 
-                <!-- زر تسجيل الدخول (يظهر قبل التفعيل) -->
-                <div class="login-btn" id="loginBtn" onclick="goToLogin()">
-                    <i class="fas fa-user"></i>
-                    <span>تسجيل الدخول</span>
-                </div>
-                
                 <!-- الإشعارات -->
-                <div class="notification-icon">
+                <div class="notification-icon" onclick="toggleNotifications()">
                     <i class="fas fa-bell"></i>
                     <span class="notification-badge" id="notificationCount">0</span>
                 </div>
@@ -713,693 +904,242 @@
         </div>
     </header>
     
-    <!-- ====== القائمة الجانبية للمستخدم ====== -->
-    <div class="user-sidebar" id="userSidebar">
-        <div class="sidebar-header">
-            <h2>معلومات الحساب</h2>
-            <button class="close-sidebar" onclick="toggleSidebar()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <img src="" alt="صورة الهوية" class="sidebar-avatar" id="sidebarAvatar">
-        
-        <h3 class="sidebar-name" id="sidebarName"></h3>
-        
-        <div class="sidebar-details">
-            <div class="detail-item">
-                <span class="detail-label">الاسم الكامل:</span>
-                <span class="detail-value" id="sidebarFullName"></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">رقم الهوية:</span>
-                <span class="detail-value" id="sidebarGameId"></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">اسم اللعبة:</span>
-                <span class="detail-value" id="sidebarGameUsername"></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">الديسكورد:</span>
-                <span class="detail-value" id="sidebarDiscord"></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">الوظيفة:</span>
-                <span class="detail-value" id="sidebarJob"></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">المنصب:</span>
-                <span class="detail-value" id="sidebarRank"></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">تاريخ التفعيل:</span>
-                <span class="detail-value" id="sidebarDate"></span>
-            </div>
-        </div>
-        
-        <div class="sidebar-actions">
-            <button class="sidebar-btn" onclick="goToApply()">
-                <i class="fas fa-edit"></i>
-                تعديل المعلومات
-            </button>
-            <button class="sidebar-btn" onclick="viewRequests()">
-                <i class="fas fa-history"></i>
-                سجل الطلبات
-            </button>
-            <button class="sidebar-btn logout-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i>
-                تسجيل الخروج
-            </button>
-        </div>
-    </div>
-    
-    <!-- ====== المحتوى الرئيسي ====== -->
+    <!-- ====== الصفحات ====== -->
     <main class="main-content">
-        <!-- تحذير الوصول الإداري -->
-        <div class="admin-warning" id="adminWarning">
-            <div class="admin-warning-content">
-                <i class="fas fa-lock"></i>
-                <div>
-                    <h3>الوصول إلى الخدمات الإدارية</h3>
-                    <p>هذه الخدمات مخصصة للمسؤولين المعتمدين فقط</p>
+        <!-- الصفحة الرئيسية -->
+        <div id="homePage" class="content-page active-page">
+            <!-- تحذير الوصول الإداري -->
+            <div class="admin-warning" id="adminWarning">
+                <div class="admin-warning-content">
+                    <i class="fas fa-lock"></i>
+                    <div>
+                        <h3 style="margin: 0 0 5px 0; font-size: 16px;">الوصول إلى الخدمات الإدارية</h3>
+                        <p style="margin: 0; font-size: 14px; opacity: 0.9;">هذه الخدمات مخصصة للمسؤولين المعتمدين فقط</p>
+                    </div>
                 </div>
-            </div>
-            <button class="admin-warning-btn" onclick="goToAdminLogin()">
-                <i class="fas fa-sign-in-alt"></i>
-                تسجيل دخول المسؤول
-            </button>
-        </div>
-        
-        <!-- البانر الرئيسي -->
-        <section class="main-banner">
-            <div class="banner-content">
-                <div class="banner-icon">
-                    <i class="fas fa-id-card-alt"></i>
-                </div>
-                <h2 class="banner-title">طلب تفعيل الهوية</h2>
-                <p class="banner-description">
-                    نظام تفعيل الهوية الرسمي لهيئة KR الرقمية. 
-                    قدم طلبك الآن وتمتع بجميع الخدمات المميزة.
-                </p>
-                <button class="activate-btn" onclick="goToApply()">
-                    <i class="fas fa-rocket"></i>
-                    تقديم طلب التفعيل
+                <button class="admin-warning-btn" onclick="goToAdminLogin()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    تسجيل دخول
                 </button>
             </div>
-        </section>
-        
-        <!-- شريط الإحصائيات -->
-        <div class="services-status">
-            <h3 class="status-title">
-                <i class="fas fa-chart-line"></i>
-                إحصائيات النظام
-            </h3>
-            <div class="status-grid">
-                <div class="status-item">
-                    <div class="status-number" id="totalRequests">0</div>
-                    <div class="status-label">إجمالي الطلبات</div>
+            
+            <!-- البانر الرئيسي -->
+            <section class="main-banner">
+                <div class="banner-content">
+                    <div class="banner-icon">
+                        <i class="fas fa-id-card-alt"></i>
+                    </div>
+                    <h2 class="banner-title">طلب تفعيل الهوية</h2>
+                    <p class="banner-description">
+                        نظام تفعيل الهوية الرسمي لهيئة KR الرقمية
+                    </p>
+                    <button class="activate-btn" onclick="goToApply()">
+                        <i class="fas fa-rocket"></i>
+                        تقديم طلب التفعيل
+                    </button>
                 </div>
-                <div class="status-item">
-                    <div class="status-number" id="pendingRequests">0</div>
-                    <div class="status-label">طلبات قيد المراجعة</div>
+            </section>
+            
+            <!-- إحصائيات النظام -->
+            <section class="stats-section">
+                <h3 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    إحصائيات النظام
+                </h3>
+                <div class="stats-grid">
+                    <div class="stat-card stat-1">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-number" id="totalRequests">0</div>
+                        <div class="stat-label">إجمالي الطلبات</div>
+                    </div>
+                    <div class="stat-card stat-2">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-number" id="pendingRequests">0</div>
+                        <div class="stat-label">قيد المراجعة</div>
+                    </div>
+                    <div class="stat-card stat-3">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-number" id="activatedUsers">0</div>
+                        <div class="stat-label">مستخدمين مفعلين</div>
+                    </div>
+                    <div class="stat-card stat-4">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="stat-number" id="todayRequests">0</div>
+                        <div class="stat-label">طلبات اليوم</div>
+                    </div>
                 </div>
-                <div class="status-item">
-                    <div class="status-number" id="activatedUsers">0</div>
-                    <div class="status-label">مستخدمين مفعلين</div>
+            </section>
+            
+            <!-- الخدمات الرئيسية -->
+            <section class="services-section">
+                <h3 class="section-title">
+                    <i class="fas fa-th-large"></i>
+                    الخدمات الرقمية
+                </h3>
+                <div class="services-grid">
+                    <div class="service-card service-1" onclick="openService('kr')">
+                        <div class="service-badge">الأولى</div>
+                        <div class="service-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="service-title">KR</h3>
+                        <p class="service-description">
+                            النظام الرئيسي لإدارة الهويات الرقمية
+                        </p>
+                    </div>
+                    
+                    <div class="service-card service-2" onclick="openService('tracking')">
+                        <div class="service-badge">جديد</div>
+                        <div class="service-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3 class="service-title">واكب</h3>
+                        <p class="service-description">
+                            متابعة الطلبات وتتبع حالة التفعيل
+                        </p>
+                    </div>
+                    
+                    <div class="service-card service-3" onclick="openService('services')">
+                        <div class="service-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3 class="service-title">الخدمات</h3>
+                        <p class="service-description">
+                            جميع الخدمات الإلكترونية المتاحة
+                        </p>
+                    </div>
+                    
+                    <div class="service-card service-4" onclick="openService('profile')">
+                        <div class="service-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <h3 class="service-title">معلوماتي</h3>
+                        <p class="service-description">
+                            عرض وتعديل المعلومات الشخصية
+                        </p>
+                    </div>
+                    
+                    <!-- الخدمات الإدارية -->
+                    <div class="service-card service-5" onclick="openAdminService('admin')">
+                        <div class="service-badge">إداري</div>
+                        <div class="service-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 class="service-title">الخدمة الإدارية</h3>
+                        <p class="service-description">
+                            نظام إدارة الطلبات للمسؤولين
+                        </p>
+                    </div>
+                    
+                    <div class="service-card service-6" onclick="openAdminService('owner')">
+                        <div class="service-badge">أونر</div>
+                        <div class="service-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h3 class="service-title">خدمة المسؤولين</h3>
+                        <p class="service-description">
+                            لوحة التحكم الكاملة للمالك
+                        </p>
+                    </div>
                 </div>
-                <div class="status-item">
-                    <div class="status-number" id="todayRequests">0</div>
-                    <div class="status-label">طلبات اليوم</div>
-                </div>
-            </div>
+            </section>
         </div>
         
-        <!-- شريط الخدمات -->
-        <section class="services-section">
-            <h2 class="services-title">الخدمات الرقمية</h2>
+        <!-- صفحة الخدمات -->
+        <div id="servicesPage" class="content-page">
+            <button class="back-button" onclick="showPage('home')">
+                <i class="fas fa-arrow-right"></i>
+                العودة
+            </button>
+            
+            <div class="page-header">
+                <i class="fas fa-th-large"></i>
+                <h2>الخدمات الرقمية</h2>
+            </div>
             
             <div class="services-grid">
-                <!-- الخدمة 1: KR -->
-                <div class="service-card service-1" onclick="openService('kr')">
-                    <div class="service-badge">الأولى</div>
-                    <div class="service-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="service-title">KR</h3>
-                    <p class="service-description">
-                        النظام الرئيسي لإدارة وتفعيل الهويات الرقمية للوزارات
-                    </p>
-                    <div class="service-arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
-                
-                <!-- الخدمة 2: واكبنا KR -->
-                <div class="service-card service-2" onclick="openService('tracking')">
-                    <div class="service-badge">جديد</div>
-                    <div class="service-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h3 class="service-title">واكبنا KR</h3>
-                    <p class="service-description">
-                        نظام متابعة الطلبات وتتبع حالة التفعيل لحظة بلحظة
-                    </p>
-                    <div class="service-arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
-                
-                <!-- الخدمة 3: الخدمات -->
-                <div class="service-card service-3" onclick="openService('services')">
-                    <div class="service-icon">
-                        <i class="fas fa-cogs"></i>
-                    </div>
-                    <h3 class="service-title">الخدمات</h3>
-                    <p class="service-description">
-                        جميع الخدمات الإلكترونية المتاحة لمستخدمي النظام
-                    </p>
-                    <div class="service-arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
-                
-                <!-- الخدمة 4: معلوماتي -->
-                <div class="service-card service-4" onclick="openService('profile')">
-                    <div class="service-icon">
-                        <i class="fas fa-user-circle"></i>
-                    </div>
-                    <h3 class="service-title">معلوماتي</h3>
-                    <p class="service-description">
-                        عرض وتعديل المعلومات الشخصية وتاريخ الطلبات
-                    </p>
-                    <div class="service-arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
-                
-                <!-- الخدمة 5: الخدمة الإدارية -->
-                <div class="service-card service-5" onclick="openAdminService('admin')" id="adminService">
-                    <div class="service-badge">إداري</div>
-                    <div class="service-icon">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <h3 class="service-title">الخدمة الإدارية</h3>
-                    <p class="service-description">
-                        نظام إدارة الطلبات وتفعيل الهويات للمسؤولين
-                    </p>
-                    <div class="service-arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
-                
-                <!-- الخدمة 6: خدمة المسؤولين -->
-                <div class="service-card service-6" onclick="openAdminService('owner')" id="ownerService">
-                    <div class="service-badge">أونر</div>
-                    <div class="service-icon">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <h3 class="service-title">خدمة المسؤولين</h3>
-                    <p class="service-description">
-                        لوحة التحكم الكاملة لإدارة النظام والمراقبة
-                    </p>
-                    <div class="service-arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
+                <!-- سيتم ملؤه بالخدمات -->
             </div>
-        </section>
+        </div>
         
-        <!-- قسم المعلومات الإدارية -->
-        <div class="services-status" id="adminInfo" style="display: none;">
-            <h3 class="status-title">
-                <i class="fas fa-user-tie"></i>
-                معلومات الوصول الإداري
-            </h3>
-            <div style="text-align: center; padding: 20px;">
-                <p style="color: var(--admin); margin-bottom: 15px;">
-                    <i class="fas fa-info-circle"></i>
-                    أنت مسجل كمسؤول في النظام
-                </p>
-                <button class="admin-warning-btn" onclick="goToAdminPanel()" style="background: var(--admin); color: white;">
-                    <i class="fas fa-tachometer-alt"></i>
-                    الانتقال إلى لوحة التحكم
-                </button>
+        <!-- صفحة واكب -->
+        <div id="trackingPage" class="content-page">
+            <button class="back-button" onclick="showPage('home')">
+                <i class="fas fa-arrow-right"></i>
+                العودة
+            </button>
+            
+            <div class="page-header">
+                <i class="fas fa-map-marker-alt"></i>
+                <h2>متابعة الطلبات</h2>
+            </div>
+            
+            <div id="trackingContent">
+                <!-- سيتم ملؤه بمعلومات المتابعة -->
+            </div>
+        </div>
+        
+        <!-- صفحة الرسائل -->
+        <div id="messagesPage" class="content-page">
+            <button class="back-button" onclick="showPage('home')">
+                <i class="fas fa-arrow-right"></i>
+                العودة
+            </button>
+            
+            <div class="page-header">
+                <i class="fas fa-envelope"></i>
+                <h2>الرسائل</h2>
+            </div>
+            
+            <div class="messages-container" id="messagesContainer">
+                <!-- سيتم ملؤه بالرسائل -->
+            </div>
+        </div>
+        
+        <!-- صفحة معلوماتي -->
+        <div id="profilePage" class="content-page">
+            <button class="back-button" onclick="showPage('home')">
+                <i class="fas fa-arrow-right"></i>
+                العودة
+            </button>
+            
+            <div class="page-header">
+                <i class="fas fa-user-circle"></i>
+                <h2>معلوماتي</h2>
+            </div>
+            
+            <div id="profileContent">
+                <!-- سيتم ملؤه بمعلومات المستخدم -->
             </div>
         </div>
     </main>
     
-    <!-- ====== تحذير التفعيل ====== -->
-    <div class="warning-overlay" id="warningOverlay">
-        <div class="warning-content">
-            <div class="warning-icon">
-                <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <h2 style="margin-bottom: 20px;">⚠️ يجب تفعيل حسابك أولاً!</h2>
-            <p style="margin-bottom: 25px; font-size: 18px; line-height: 1.6;">
-                لا يمكنك الوصول إلى الخدمات حتى تقوم بتقديم طلب تفعيل الهوية
-            </p>
-            <button class="activate-btn" onclick="goToApply()" 
-                    style="background: white; color: #2d68c4; padding: 15px 40px;">
-                <i class="fas fa-id-card"></i>
-                تقديم طلب التفعيل
-            </button>
-            <button onclick="closeWarning()" 
-                    style="background: transparent; border: 2px solid white; color: white; 
-                           padding: 12px 30px; border-radius: 10px; margin-top: 15px; 
-                           cursor: pointer; transition: all 0.3s;">
-                إلغاء
-            </button>
-        </div>
-    </div>
-    
-    <!-- ====== الفوتر ====== -->
-    <footer>
-        <div class="footer-content">
-            <div class="app-logo" style="justify-content: center; margin-bottom: 20px;">
-                <i class="fas fa-id-card"></i>
-                <h1>هيئة KR الرقمية</h1>
-            </div>
+    <!-- ====== الشريط السفلي ====== -->
+    <nav class="bottom-nav" id="bottomNav">
+        <div class="nav-container">
+            <!-- الخدمات -->
+            <a href="javascript:void(0)" class="nav-item" onclick="showPage('services')">
+                <div class="nav-icon">
+                    <i class="fas fa-th-large"></i>
+                </div>
+                <span class="nav-label">الخدمات</span>
+            </a>
             
-            <div class="footer-links">
-                <a href="apply.html">تقديم طلب جديد</a>
-                <a href="#" onclick="viewRequests()">الاستعلام عن الطلب</a>
-                <a href="#" onclick="openService('services')">جميع الخدمات</a>
-                <a href="#" onclick="openAdminService('admin')">لوحة المسؤولين</a>
-                <a href="#">الشروط والأحكام</a>
-                <a href="#">سياسة الخصوصية</a>
-            </div>
+            <!-- واكب -->
+            <a href="javascript:void(0)" class="nav-item" onclick="showPage('tracking')">
+                <div class="nav-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <span class="nav-label">واكب</span>
+            </a>
             
-            <div class="copyright">
-                © 2024 هيئة KR الرقمية. جميع الحقوق محفوظة.<br>
-                النظام الوطني لتسجيل الهوية الرقمية - الإصدار 4.0
-            </div>
-        </div>
-    </footer>
-
-    <!-- ====== الجافاسكريبت ====== -->
-    <script>
-        // البيانات
-        let currentUser = null;
-        let isActivated = false;
-        let isAdmin = false;
-        let isOwner = false;
-        
-        // بيانات المسؤولين (يمكن نقلها لملف منفصل لاحقاً)
-        const ADMIN_USERS = [
-            { username: "admin", password: "admin123", role: "admin" },
-            { username: "owner", password: "owner123", role: "owner" }
-        ];
-        
-        // عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 نظام تفعيل الهوية - جاهز');
-            
-            // تحميل بيانات المستخدم
-            loadUserData();
-            
-            // التحقق من حالة المسؤول
-            checkAdminStatus();
-            
-            // تحديث الإشعارات
-            updateNotifications();
-            
-            // تحديث الإحصائيات
-            updateStatistics();
-            
-            // إضافة تأثيرات للخدمات
-            setupServiceCards();
-            
-            // التحقق من وجود جلسة مسؤول
-            checkAdminSession();
-        });
-        
-        // تحميل بيانات المستخدم من localStorage
-        function loadUserData() {
-            try {
-                // جلب آخر طلب مقدم
-                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-                if (requests.length > 0) {
-                    // أخذ آخر طلب (الأحدث)
-                    const lastRequest = requests[requests.length - 1];
-                    
-                    // جلب بيانات المستخدم
-                    currentUser = {
-                        fullName: lastRequest.fullName || 'مستخدم',
-                        gameId: lastRequest.gameId || 'غير متوفر',
-                        gameUsername: lastRequest.gameUsername || 'غير معروف',
-                        discordUsername: lastRequest.discordUsername || 'غير متوفر',
-                        job: lastRequest.job || 'غير محدد',
-                        rank: lastRequest.rank || 'غير محدد',
-                        date: lastRequest.date || new Date().toLocaleDateString('ar-SA'),
-                        status: 'مفعل',
-                        avatar: localStorage.getItem('user_avatar') || ''
-                    };
-                    
-                    // التحقق من التفعيل (إذا كان الطلب مقبول)
-                    checkActivationStatus(lastRequest);
-                    
-                    // عرض معلومات المستخدم
-                    displayUserInfo();
-                }
-            } catch (error) {
-                console.error('خطأ في تحميل البيانات:', error);
-            }
-        }
-        
-        // التحقق من حالة التفعيل
-        function checkActivationStatus(request) {
-            isActivated = true;
-            const hasPhoto = localStorage.getItem('user_avatar');
-            if (hasPhoto) {
-                isActivated = true;
-            }
-        }
-        
-        // التحقق من حالة المسؤول
-        function checkAdminStatus() {
-            const adminSession = localStorage.getItem('admin_session');
-            if (adminSession) {
-                const session = JSON.parse(adminSession);
-                const now = new Date().getTime();
-                
-                if (session.expires > now) {
-                    isAdmin = true;
-                    if (session.role === 'owner') {
-                        isOwner = true;
-                    }
-                    showAdminInfo();
-                } else {
-                    // انتهت الجلسة
-                    localStorage.removeItem('admin_session');
-                }
-            }
-        }
-        
-        // التحقق من جلسة المسؤول
-        function checkAdminSession() {
-            if (isAdmin || isOwner) {
-                document.getElementById('adminWarning').style.display = 'none';
-                document.getElementById('adminInfo').style.display = 'block';
-            }
-        }
-        
-        // عرض معلومات المستخدم في الهيدر
-        function displayUserInfo() {
-            if (currentUser && isActivated) {
-                // إخفاء زر تسجيل الدخول
-                document.getElementById('loginBtn').style.display = 'none';
-                
-                // إظهار معلومات المستخدم
-                const userInfo = document.getElementById('userInfo');
-                userInfo.style.display = 'flex';
-                
-                // تعبئة البيانات
-                document.getElementById('userNameDisplay').textContent = currentUser.fullName;
-                document.getElementById('userIdDisplay').textContent = `ID: ${currentUser.gameId}`;
-                
-                // تحميل الصورة
-                if (currentUser.avatar) {
-                    document.getElementById('userAvatar').src = currentUser.avatar;
-                } else {
-                    document.getElementById('userAvatar').src = 'https://via.placeholder.com/150/2d68c4/ffffff?text=' + 
-                        currentUser.fullName.charAt(0);
-                }
-                
-                // تعبئة البيانات في القائمة الجانبية
-                fillSidebarData();
-            }
-        }
-        
-        // تعبئة البيانات في القائمة الجانبية
-        function fillSidebarData() {
-            if (!currentUser) return;
-            
-            document.getElementById('sidebarName').textContent = currentUser.fullName;
-            document.getElementById('sidebarFullName').textContent = currentUser.fullName;
-            document.getElementById('sidebarGameId').textContent = currentUser.gameId;
-            document.getElementById('sidebarGameUsername').textContent = currentUser.gameUsername;
-            document.getElementById('sidebarDiscord').textContent = currentUser.discordUsername;
-            document.getElementById('sidebarJob').textContent = getJobName(currentUser.job);
-            document.getElementById('sidebarRank').textContent = currentUser.rank;
-            document.getElementById('sidebarDate').textContent = currentUser.date;
-            
-            if (currentUser.avatar) {
-                document.getElementById('sidebarAvatar').src = currentUser.avatar;
-            }
-        }
-        
-        // تحويل اسم الوظيفة
-        function getJobName(jobType) {
-            const jobNames = {
-                citizen: 'مواطن',
-                interior: 'منسوب الداخلية',
-                health: 'منسوب الصحة',
-                justice: 'منسوب العدل'
-            };
-            return jobNames[jobType] || jobType;
-        }
-        
-        // فتح/إغلاق القائمة الجانبية
-        function toggleSidebar() {
-            const sidebar = document.getElementById('userSidebar');
-            if (currentUser && isActivated) {
-                sidebar.classList.toggle('sidebar-open');
-            } else {
-                goToApply();
-            }
-        }
-        
-        // فتح الخدمات العادية
-        function openService(serviceName) {
-            if (!currentUser || !isActivated) {
-                showWarning();
-                return;
-            }
-            
-            switch(serviceName) {
-                case 'kr':
-                    alert('سيتم توجيهك إلى خدمة KR قريباً');
-                    break;
-                case 'tracking':
-                    alert('سيتم توجيهك إلى خدمة المتابعة قريباً');
-                    break;
-                case 'services':
-                    alert('سيتم توجيهك إلى قائمة الخدمات قريباً');
-                    break;
-                case 'profile':
-                    toggleSidebar();
-                    break;
-            }
-        }
-        
-        // فتح الخدمات الإدارية
-        function openAdminService(serviceType) {
-            if (!isAdmin && !isOwner) {
-                document.getElementById('adminWarning').style.display = 'flex';
-                return;
-            }
-            
-            if (serviceType === 'owner' && !isOwner) {
-                alert('⛔ هذا القسم مخصص للمالك فقط!');
-                return;
-            }
-            
-            if (serviceType === 'admin') {
-                openAdminPanel();
-            } else if (serviceType === 'owner') {
-                openOwnerPanel();
-            }
-        }
-        
-        // فتح لوحة المسؤول
-        function openAdminPanel() {
-            alert('سيتم فتح لوحة التحكم الإدارية قريباً...');
-            // window.location.href = 'admin/index.html';
-        }
-        
-        // فتح لوحة المالك
-        function openOwnerPanel() {
-            alert('سيتم فتح لوحة تحكم المالك قريباً...');
-            // window.location.href = 'admin/owner.html';
-        }
-        
-        // الانتقال إلى صفحة تسجيل دخول المسؤول
-        function goToAdminLogin() {
-            // في الحقيقة، سنقوم بفتح نافذة تسجيل دخول
-            const username = prompt('اسم المستخدم الإداري:');
-            if (!username) return;
-            
-            const password = prompt('كلمة المرور:');
-            if (!password) return;
-            
-            // التحقق من بيانات المسؤول
-            const admin = ADMIN_USERS.find(a => a.username === username && a.password === password);
-            
-            if (admin) {
-                // إنشاء جلسة
-                const session = {
-                    username: admin.username,
-                    role: admin.role,
-                    expires: new Date().getTime() + (8 * 60 * 60 * 1000) // 8 ساعات
-                };
-                
-                localStorage.setItem('admin_session', JSON.stringify(session));
-                
-                isAdmin = true;
-                if (admin.role === 'owner') {
-                    isOwner = true;
-                }
-                
-                document.getElementById('adminWarning').style.display = 'none';
-                document.getElementById('adminInfo').style.display = 'block';
-                
-                alert(`✅ تم تسجيل دخولك كـ ${admin.role === 'owner' ? 'مالك النظام' : 'مسؤول'}`);
-            } else {
-                alert('❌ بيانات الدخول غير صحيحة!');
-            }
-        }
-        
-        // الانتقال إلى لوحة التحكم
-        function goToAdminPanel() {
-            if (isOwner) {
-                openOwnerPanel();
-            } else if (isAdmin) {
-                openAdminPanel();
-            }
-        }
-        
-        // عرض معلومات المسؤول
-        function showAdminInfo() {
-            const adminSession = JSON.parse(localStorage.getItem('admin_session') || '{}');
-            if (adminSession.username) {
-                document.getElementById('adminInfo').style.display = 'block';
-            }
-        }
-        
-        // عرض تحذير التفعيل
-        function showWarning() {
-            document.getElementById('warningOverlay').style.display = 'flex';
-        }
-        
-        function closeWarning() {
-            document.getElementById('warningOverlay').style.display = 'none';
-        }
-        
-        // توجيه لصفحة التقديم
-        function goToApply() {
-            window.location.href = 'apply.html';
-        }
-        
-        function goToLogin() {
-            if (currentUser) {
-                toggleSidebar();
-            } else {
-                goToApply();
-            }
-        }
-        
-        function goToHome() {
-            window.location.href = 'index.html';
-        }
-        
-        // تحديث عدد الإشعارات
-        function updateNotifications() {
-            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-            const pendingCount = requests.filter(req => req.status === 'pending').length;
-            
-            if (pendingCount > 0) {
-                document.getElementById('notificationCount').textContent = pendingCount;
-            }
-        }
-        
-        // تحديث الإحصائيات
-        function updateStatistics() {
-            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-            const today = new Date().toLocaleDateString('ar-SA');
-            
-            const totalRequests = requests.length;
-            const pendingRequests = requests.filter(req => req.status === 'pending').length;
-            const activatedUsers = requests.filter(req => req.status === 'activated').length;
-            const todayRequests = requests.filter(req => req.date && req.date.includes(today)).length;
-            
-            document.getElementById('totalRequests').textContent = totalRequests;
-            document.getElementById('pendingRequests').textContent = pendingRequests;
-            document.getElementById('activatedUsers').textContent = activatedUsers;
-            document.getElementById('todayRequests').textContent = todayRequests;
-        }
-        
-        // إعداد تأثيرات البطاقات
-        function setupServiceCards() {
-            const cards = document.querySelectorAll('.service-card');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.1}s`;
-                card.style.animation = 'fadeInUp 0.5s ease forwards';
-                card.style.opacity = '0';
-            });
-        }
-        
-        // عرض سجل الطلبات
-        function viewRequests() {
-            if (!currentUser || !isActivated) {
-                showWarning();
-                return;
-            }
-            
-            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-            if (requests.length === 0) {
-                alert('لا توجد طلبات مرفوعة بعد');
-                return;
-            }
-            
-            let message = '📋 سجل الطلبات:\n\n';
-            requests.forEach((req, index) => {
-                message += `${index + 1}. ${req.fullName} - ${req.gameId}\n`;
-                message += `   الحالة: ${req.status || 'قيد المراجعة'}\n`;
-                message += `   التاريخ: ${req.date}\n\n`;
-            });
-            
-            alert(message);
-        }
-        
-        // تسجيل الخروج
-        function logout() {
-            if (confirm('هل تريد تسجيل الخروج؟')) {
-                // إخفاء معلومات المستخدم
-                document.getElementById('userInfo').style.display = 'none';
-                document.getElementById('loginBtn').style.display = 'flex';
-                
-                // إغلاق القائمة الجانبية
-                document.getElementById('userSidebar').classList.remove('sidebar-open');
-                
-                // إعادة تعيين البيانات
-                currentUser = null;
-                isActivated = false;
-                
-                // تسجيل خروج المسؤول إذا كان مسجلاً
-                if (isAdmin || isOwner) {
-                    localStorage.removeItem('admin_session');
-                    isAdmin = false;
-                    isOwner = false;
-                    document.getElementById('adminInfo').style.display = 'none';
-                }
-            }
-        }
-        
-        // إضافة أنيميشن
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
-</body>
-</html>
+            <!-- الرئيسية -->
+            <a href="javascript:void(0)" class="nav-item nav-main" onclick="showPage('
