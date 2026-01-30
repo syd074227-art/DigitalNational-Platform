@@ -3,41 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل دخول المسؤولين</title>
+    <title>تسجيل دخول المسؤولين - هيئة KR الرقمية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: linear-gradient(135deg, #1e3a8a, #3b82f6); height: 100vh; display: flex; justify-content: center; align-items: center; }
-        .login-box { background: white; padding: 40px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        h2 { color: #1e3a8a; margin-bottom: 30px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
-        button { background: #1e3a8a; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 20px; }
-        button:hover { background: #3b82f6; }
+        :root {
+            --gold: #D4AF37;
+            --dark-blue: #0f172a;
+            --light-blue: #1e293b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark-blue), var(--light-blue));
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--gold);
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--dark-blue), var(--light-blue));
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .login-header i {
+            font-size: 60px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+        
+        .login-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .login-form {
+            padding: 40px 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        
+        .input-group input:focus {
+            border-color: var(--gold);
+            outline: none;
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, var(--dark-blue), var(--light-blue));
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .login-footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        
+        .login-footer a {
+            color: var(--dark-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
-    <div class="login-box">
-        <h2>🔐 تسجيل دخول المسؤولين</h2>
-        <input type="text" id="username" placeholder="اسم المستخدم">
-        <input type="password" id="password" placeholder="كلمة المرور">
-        <button onclick="login()">تسجيل الدخول</button>
-        <p style="margin-top: 20px; color: #666;">
-            <a href="../index.html" style="color: #1e3a8a;">← العودة للرئيسية</a>
-        </p>
+    <div class="login-container">
+        <div class="login-header">
+            <i class="fas fa-user-shield"></i>
+            <h1>النظام الإداري</h1>
+            <p>هيئة KR الرقمية</p>
+        </div>
+        
+        <div class="login-form">
+            <div class="input-group">
+                <label><i class="fas fa-user"></i> اسم المستخدم</label>
+                <input type="text" id="username" placeholder="أدخل اسم المستخدم">
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> كلمة المرور</label>
+                <input type="password" id="password" placeholder="أدخل كلمة المرور">
+            </div>
+            
+            <button class="login-btn" onclick="login()">
+                <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+            </button>
+        </div>
+        
+        <div class="login-footer">
+            <a href="../index.html">
+                <i class="fas fa-arrow-right"></i> العودة للرئيسية
+            </a>
+        </div>
     </div>
-    
+
     <script>
         function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            if ((username === 'admin' && password === 'admin123') || 
-                (username === 'owner' && password === 'owner123')) {
+            if (username === 'admin' && password === 'admin123') {
+                // حفظ جلسة المسؤول
+                sessionStorage.setItem('admin_logged_in', 'true');
+                sessionStorage.setItem('admin_username', username);
+                sessionStorage.setItem('admin_role', 'admin');
+                
                 alert('✅ تم تسجيل الدخول بنجاح!');
                 window.location.href = 'index.html';
+                
+            } else if (username === 'owner' && password === 'owner123') {
+                // حفظ جلسة المالك
+                sessionStorage.setItem('admin_logged_in', 'true');
+                sessionStorage.setItem('admin_username', username);
+                sessionStorage.setItem('admin_role', 'owner');
+                
+                alert('👑 مرحباً بك يا مالك النظام!');
+                window.location.href = 'owner.html';
+                
             } else {
                 alert('❌ بيانات الدخول غير صحيحة!');
+                document.getElementById('password').value = '';
             }
         }
+        
+        // السماح بالدخول بالإنتر
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
     </script>
 </body>
 </html>
