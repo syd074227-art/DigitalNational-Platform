@@ -129,12 +129,12 @@
         <div class="login-form">
             <div class="input-group">
                 <label><i class="fas fa-user"></i> اسم المستخدم</label>
-                <input type="text" id="username" placeholder="أدخل اسم المستخدم">
+                <input type="text" id="username" placeholder="أدخل اسم المستخدم" value="admin">
             </div>
             
             <div class="input-group">
                 <label><i class="fas fa-lock"></i> كلمة المرور</label>
-                <input type="password" id="password" placeholder="أدخل كلمة المرور">
+                <input type="password" id="password" placeholder="أدخل كلمة المرور" value="admin123">
             </div>
             
             <button class="login-btn" onclick="login()">
@@ -154,27 +154,32 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            if (username === 'admin' && password === 'admin123') {
-                // حفظ جلسة المسؤول
+            // بيانات الدخول
+            const users = {
+                'admin': 'admin123',
+                'owner': 'owner123'
+            };
+            
+            if (users[username] && users[username] === password) {
+                // حفظ بيانات الجلسة
                 sessionStorage.setItem('admin_logged_in', 'true');
                 sessionStorage.setItem('admin_username', username);
-                sessionStorage.setItem('admin_role', 'admin');
+                sessionStorage.setItem('admin_role', username === 'owner' ? 'owner' : 'admin');
+                sessionStorage.setItem('login_time', new Date().getTime());
                 
-                alert('✅ تم تسجيل الدخول بنجاح!');
-                window.location.href = 'index.html';
-                
-            } else if (username === 'owner' && password === 'owner123') {
-                // حفظ جلسة المالك
-                sessionStorage.setItem('admin_logged_in', 'true');
-                sessionStorage.setItem('admin_username', username);
-                sessionStorage.setItem('admin_role', 'owner');
-                
-                alert('👑 مرحباً بك يا مالك النظام!');
-                window.location.href = 'owner.html';
+                // توجيه للوحة المناسبة
+                if (username === 'owner') {
+                    alert('👑 مرحباً بك يا مالك النظام!');
+                    window.location.href = 'owner.html';
+                } else {
+                    alert('✅ تم تسجيل الدخول بنجاح!');
+                    window.location.href = 'index.html';
+                }
                 
             } else {
                 alert('❌ بيانات الدخول غير صحيحة!');
                 document.getElementById('password').value = '';
+                document.getElementById('password').focus();
             }
         }
         
@@ -184,6 +189,9 @@
                 login();
             }
         });
+        
+        // وضع التركيز على حقل كلمة المرور
+        document.getElementById('password').focus();
     </script>
 </body>
 </html>
