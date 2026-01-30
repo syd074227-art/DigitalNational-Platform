@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اللوحة الإدارية - هيئة KR الرقمية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --admin-primary: #1e3a8a;
+            --admin-secondary: #3b82f6;
+            --admin-success: #10b981;
+            --admin-warning: #f59e0b;
+            --admin-danger: #dc2626;
+            --admin-light: #f8fafc;
+            --admin-dark: #1f2937;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: var(--admin-light);
+            color: var(--admin-dark);
+            min-height: 100vh;
+        }
+        
+        /* الهيدر الإداري */
+        .admin-header {
+            background: white;
+            padding: 15px 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .admin-logo i {
+            font-size: 28px;
+            color: var(--admin-primary);
+        }
+        
+        .admin-logo h1 {
+            font-size: 20px;
+            color: var(--admin-primary);
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logout-btn {
+            background: var(--admin-danger);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        /* المحتوى الرئيسي */
+        .admin-content {
+            margin-top: 70px;
+            padding: 20px;
+        }
+        
+        /* قسم الإحصائيات */
+        .stats-section {
+            margin-bottom: 30px;
+        }
+        
+        .stats-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--admin-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .stat-icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+        }
+        
+        .stat-1 .stat-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .stat-2 .stat-icon { background: linear-gradient(135deg, #10b981, #059669); }
+        .stat-3 .stat-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .stat-4 .stat-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--admin-dark);
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        /* قسم الطلبات */
+        .requests-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .requests-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            color: var(--admin-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            padding: 8px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            width: 250px;
+        }
+        
+        .search-btn {
+            background: var(--admin-primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        /* جدول الطلبات */
+        .requests-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .requests-table th {
+            background: #f9fafb;
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 2px solid #e5e7eb;
+            color: #374151;
+            font-weight: 600;
+        }
+        
+        .requests-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .request-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .btn-view {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-approve {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-reject {
+            background: #ef4444;
+            color: white;
+        }
+        
+        /* زر الرجوع */
+        .back-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* فلترة */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 15px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .filter-btn.active {
+            background: var(--admin-primary);
+            color: white;
+            border-color: var(--admin-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- هيدر اللوحة الإدارية -->
+    <header class="admin-header">
+        <div class="admin-logo">
+            <i class="fas fa-user-shield"></i>
+            <h1>اللوحة الإدارية</h1>
+        </div>
+        
+        <div class="admin-user">
+            <span>مرحباً، المسؤول</span>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> تسجيل خروج
+            </button>
+        </div>
+    </header>
+    
+    <!-- المحتوى الرئيسي -->
+    <main class="admin-content">
+        <button class="back-btn" onclick="goToHome()">
+            <i class="fas fa-arrow-right"></i> العودة للرئيسية
+        </button>
+        
+        <!-- قسم الإحصائيات -->
+        <section class="stats-section">
+            <h2 class="stats-title">
+                <i class="fas fa-chart-bar"></i>
+                إحصائيات النظام
+            </h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card stat-1">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-number" id="totalRequests">0</div>
+                    <div class="stat-label">إجمالي الطلبات</div>
+                </div>
+                
+                <div class="stat-card stat-2">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number" id="pendingRequests">0</div>
+                    <div class="stat-label">طلبات بانتظار المراجعة</div>
+                </div>
+                
+                <div class="stat-card stat-3">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-number" id="approvedRequests">0</div>
+                    <div class="stat-label">طلبات مقبولة</div>
+                </div>
+                
+                <div class="stat-card stat-4">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-number" id="totalUsers">0</div>
+                    <div class="stat-label">مستخدمين مفعلين</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- فلترة الطلبات -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterRequests('all')">الكل</button>
+            <button class="filter-btn" onclick="filterRequests('pending')">قيد المراجعة</button>
+            <button class="filter-btn" onclick="filterRequests('approved')">مقبولة</button>
+            <button class="filter-btn" onclick="filterRequests('rejected')">مرفوضة</button>
+        </div>
+        
+        <!-- قسم الطلبات -->
+        <section class="requests-section">
+            <div class="requests-header">
+                <h3 class="section-title">
+                    <i class="fas fa-tasks"></i>
+                    طلبات التفعيل
+                </h3>
+                
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="بحث بالاسم أو رقم الهوية...">
+                    <button class="search-btn" onclick="searchRequests()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <table class="requests-table">
+                <thead>
+                    <tr>
+                        <th>رقم الطلب</th>
+                        <th>الاسم</th>
+                        <th>رقم الهوية</th>
+                        <th>الوظيفة</th>
+                        <th>التاريخ</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="requestsTable">
+                    <!-- البيانات تظهر هنا -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        // التحقق من جلسة المسؤول
+        document.addEventListener('DOMContentLoaded', function() {
+            const adminSession = sessionStorage.getItem('admin_session');
+            
+            if (!adminSession) {
+                alert('⛔ يجب تسجيل الدخول أولاً!');
+                window.location.href = '../index.html';
+                return;
+            }
+            
+            // تحميل البيانات
+            loadStatistics();
+            loadRequests();
+        });
+        
+        // تحميل الإحصائيات
+        function loadStatistics() {
+            try {
+                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+                
+                // إجمالي الطلبات
+                document.getElementById('totalRequests').textContent = requests.length;
+                
+                // الطلبات قيد المراجعة
+                const pending = requests.filter(req => req.status === 'pending').length;
+                document.getElementById('pendingRequests').textContent = pending;
+                
+                // الطلبات المقبولة
+                const approved = requests.filter(req => req.status === 'approved').length;
+                document.getElementById('approvedRequests').textContent = approved;
+                
+                // إجمالي المستخدمين (الطلبات المقبولة)
+                document.getElementById('totalUsers').textContent = approved;
+                
+            } catch (error) {
+                console.error('خطأ في تحميل الإحصائيات:', error);
+            }
+        }
+        
+        // تحميل الطلبات
+        function loadRequests(filter = 'all') {
+            try {
+                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+                const table = document.getElementById('requestsTable');
+                table.innerHTML = '';
+                
+                // تصفية الطلبات
+                let filteredRequests = requests;
+                if (filter !== 'all') {
+                    filteredRequests = requests.filter(req => req.status === filter);
+                }
+                
+                // عرض الطلبات
+                filteredRequests.forEach((request, index) => {
+                    const row = document.createElement('tr');
+                    
+                    // تحديد حالة الطلب
+                    let statusText = 'قيد المراجعة';
+                    let statusClass = 'status-pending';
+                    
+                    if (request.status === 'approved') {
+                        statusText = 'مقبولة';
+                        statusClass = 'status-approved';
+                    } else if (request.status === 'rejected') {
+                        statusText = 'مرفوضة';
+                        statusClass = 'status-rejected';
+                    }
+                    
+                    row.innerHTML = `
+                        <td>${request.id || 'KR-' + (1000 + index)}</td>
+                        <td>${request.fullName || 'غير معروف'}</td>
+                        <td>${request.gameId || 'غير متوفر'}</td>
+                        <td>${getJobName(request.job)}</td>
+                        <td>${request.date || new Date().toLocaleDateString('ar-SA')}</td>
+                        <td><span class="request-status ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-view" onclick="viewRequest(${index})">
+                                    <i class="fas fa-eye"></i> عرض
+                                </button>
+                                ${request.status === 'pending' ? `
+                                    <button class="btn btn-approve" onclick="approveRequest(${index})">
+                                        <i class="fas fa-check"></i> قبول
+                                    </button>
+                                    <button class="btn btn-reject" onclick="rejectRequest(${index})">
+                                        <i class="fas fa-times"></i> رفض
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </td>
+                    `;
+                    
+                    table.appendChild(row);
+                });
+                
+                // إذا لم توجد طلبات
+                if (filteredRequests.length === 0) {
+                    table.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">
+                                <i class="fas fa-inbox" style="font-size: 40px; margin-bottom: 15px;"></i>
+                                <br>
+                                لا توجد طلبات ${filter !== 'all' ? 'بالحالة المحددة' : ''}
+                            </td>
+                        </tr>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('خطأ في تحميل الطلبات:', error);
+            }
+        }
+        
+        // تحويل اسم الوظيفة
+        function getJobName(jobType) {
+            const jobNames = {
+                citizen: 'مواطن',
+                interior: 'منسوب الداخلية',
+                health: 'منسوب الصحة',
+                justice: 'منسوب العدل'
+            };
+            return jobNames[jobType] || jobType;
+        }
+        
+        // فلترة الطلبات
+        function filterRequests(filter) {
+            // تحديث أزرار الفلترة
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // تحميل الطلبات المفلترة
+            loadRequests(filter);
+        }
+        
+        // بحث في الطلبات
+        function searchRequests() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const table = document.getElementById('requestsTable');
+            const rows = table.getElementsByTagName('tr');
+            
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const text = row.textContent.toLowerCase();
+                
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+        
+        // عرض تفاصيل الطلب
+        function viewRequest(index) {
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const request = requests[index];
+            
+            if (!request) return;
+            
+            let details = `
+                📋 تفاصيل الطلب:
+                -----------------
+                🆔 رقم الطلب: ${request.id || 'غير محدد'}
+                👤 الاسم: ${request.fullName}
+                🔢 رقم الهوية: ${request.gameId}
+                🎮 اسم اللعبة: ${request.gameUsername}
+                💬 الديسكورد: ${request.discordUsername}
+                👔 الوظيفة: ${getJobName(request.job)}
+                ⭐ المنصب: ${request.rank}
+                📅 التاريخ: ${request.date}
+                📊 الحالة: ${request.status || 'قيد المراجعة'}
+            `;
+            
+            alert(details);
+        }
+        
+        // قبول الطلب
+        function approveRequest(index) {
+            if (confirm('هل تريد قبول هذا الطلب؟')) {
+                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+                requests[index].status = 'approved';
+                localStorage.setItem('identityRequests', JSON.stringify(requests));
+                
+                alert('✅ تم قبول الطلب بنجاح');
+                loadStatistics();
+                loadRequests();
+            }
+        }
+        
+        // رفض الطلب
+        function rejectRequest(index) {
+            const reason = prompt('أدخل سبب الرفض:');
+            if (reason) {
+                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+                requests[index].status = 'rejected';
+                requests[index].rejectionReason = reason;
+                localStorage.setItem('identityRequests', JSON.stringify(requests));
+                
+                alert('❌ تم رفض الطلب');
+                loadStatistics();
+                loadRequests();
+            }
+        }
+        
+        // تسجيل الخروج
+        function logout() {
+            sessionStorage.removeItem('admin_session');
+            window.location.href = '../index.html';
+        }
+        
+        // العودة للرئيسية
+        function goToHome() {
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>
