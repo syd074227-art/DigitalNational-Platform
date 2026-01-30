@@ -6,7 +6,6 @@
     <title>نظام تفعيل الهوية الرقمي - KR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ===== متغيرات التصميم الاحترافي ===== */
         :root {
             --primary: #1a237e;
             --primary-dark: #0d1557;
@@ -14,6 +13,10 @@
             --accent: #ff6f00;
             --accent-dark: #e65100;
             --accent-light: #ff9800;
+            --health: #2196f3;
+            --interior: #f44336;
+            --justice: #4caf50;
+            --citizen: #9c27b0;
             --success: #00c853;
             --warning: #ffd600;
             --danger: #d50000;
@@ -24,8 +27,10 @@
             --border: rgba(255, 255, 255, 0.1);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             --gradient: linear-gradient(135deg, #1a237e 0%, #283593 50%, #0d1117 100%);
-            --gradient-accent: linear-gradient(135deg, #ff6f00 0%, #ff9800 100%);
-            --gradient-success: linear-gradient(135deg, #00c853 0%, #64dd17 100%);
+            --gradient-health: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+            --gradient-interior: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            --gradient-justice: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+            --gradient-citizen: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
             --glass: rgba(255, 255, 255, 0.05);
             --glass-dark: rgba(0, 0, 0, 0.3);
         }
@@ -57,16 +62,16 @@
             right: 0;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(26, 35, 126, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 111, 0, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(33, 150, 243, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(244, 67, 54, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(76, 175, 80, 0.1) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
         }
 
-        /* ===== الحاوية الرئيسية ===== */
         .container {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             background: var(--glass-dark);
             backdrop-filter: blur(20px);
             border-radius: 24px;
@@ -79,17 +84,10 @@
         }
 
         @keyframes containerAppear {
-            from {
-                opacity: 0;
-                transform: translateY(50px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(50px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* ===== الهيدر الاحترافي ===== */
         .header {
             background: linear-gradient(135deg, rgba(26, 35, 126, 0.9) 0%, rgba(40, 53, 147, 0.9) 100%);
             color: white;
@@ -107,8 +105,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
-                linear-gradient(45deg, transparent 30%, rgba(255, 111, 0, 0.1) 50%, transparent 70%);
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 111, 0, 0.1) 50%, transparent 70%);
             animation: shine 8s infinite linear;
         }
 
@@ -117,51 +114,23 @@
             100% { transform: translateX(100%); }
         }
 
-        .logo {
-            position: relative;
-            z-index: 2;
-        }
-
         .logo-icon {
             width: 100px;
             height: 100px;
             margin: 0 auto 25px;
-            background: var(--gradient-accent);
+            background: var(--gradient);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             animation: logoFloat 6s ease-in-out infinite;
-            box-shadow: 
-                0 10px 30px rgba(255, 111, 0, 0.3),
-                inset 0 4px 10px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(255, 111, 0, 0.3);
         }
 
         @keyframes logoFloat {
-            0%, 100% { 
-                transform: translateY(0) rotate(0deg);
-                box-shadow: 
-                    0 10px 30px rgba(255, 111, 0, 0.3),
-                    inset 0 4px 10px rgba(255, 255, 255, 0.2);
-            }
-            50% { 
-                transform: translateY(-20px) rotate(5deg);
-                box-shadow: 
-                    0 20px 40px rgba(255, 111, 0, 0.4),
-                    inset 0 4px 10px rgba(255, 255, 255, 0.3);
-            }
-        }
-
-        .logo-icon i {
-            font-size: 48px;
-            color: white;
-            animation: iconPulse 3s infinite;
-        }
-
-        @keyframes iconPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
 
         .logo h1 {
@@ -171,136 +140,30 @@
             background: linear-gradient(135deg, #fff 0%, var(--accent-light) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            letter-spacing: 1px;
-        }
-
-        .logo p {
-            font-size: 18px;
-            opacity: 0.9;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.8);
         }
 
         .kr-badge {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: var(--gradient-accent);
+            background: var(--gradient);
             color: white;
             padding: 8px 20px;
             border-radius: 50px;
             font-weight: 700;
             font-size: 14px;
-            letter-spacing: 1px;
             animation: badgePulse 3s infinite;
-            box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3);
         }
 
         @keyframes badgePulse {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3);
-            }
-            50% { 
-                transform: scale(1.05);
-                box-shadow: 0 6px 20px rgba(255, 111, 0, 0.4);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
-        /* ===== المحتوى ===== */
         .content {
             padding: 40px;
         }
 
-        /* ===== الرسائل ===== */
-        .status-message {
-            background: linear-gradient(135deg, rgba(255, 111, 0, 0.1), rgba(26, 35, 126, 0.1));
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 111, 0, 0.3);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            margin-bottom: 30px;
-            display: none;
-            animation: messageAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .status-message::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 111, 0, 0.05));
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .status-message.show {
-            display: block;
-        }
-
-        @keyframes messageAppear {
-            from {
-                opacity: 0;
-                transform: translateY(-30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* ===== تنبيهات ===== */
-        .alert {
-            background: linear-gradient(135deg, rgba(213, 0, 0, 0.1), rgba(26, 35, 126, 0.1));
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(213, 0, 0, 0.3);
-            color: #ffa8a8;
-            padding: 25px;
-            border-radius: 16px;
-            margin: 25px 0;
-            text-align: center;
-            display: none;
-            animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .alert.show {
-            display: block;
-        }
-
-        .alert.success {
-            background: linear-gradient(135deg, rgba(0, 200, 83, 0.1), rgba(26, 35, 126, 0.1));
-            border-color: rgba(0, 200, 83, 0.3);
-            color: #80ffa0;
-        }
-
-        .alert.warning {
-            background: linear-gradient(135deg, rgba(255, 214, 0, 0.1), rgba(26, 35, 126, 0.1));
-            border-color: rgba(255, 214, 0, 0.3);
-            color: #ffec80;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ===== خطوات النموذج ===== */
         .step {
             background: var(--glass);
             backdrop-filter: blur(10px);
@@ -311,30 +174,14 @@
             animation: stepAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
             opacity: 0;
             transform: translateY(30px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .step::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 6px;
-            height: 100%;
-            background: var(--gradient-accent);
         }
 
         .step:nth-child(1) { animation-delay: 0.1s; }
         .step:nth-child(2) { animation-delay: 0.2s; }
         .step:nth-child(3) { animation-delay: 0.3s; }
-        .step:nth-child(4) { animation-delay: 0.4s; }
 
         @keyframes stepAppear {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .step-title {
@@ -345,14 +192,12 @@
             gap: 20px;
             font-size: 28px;
             font-weight: 700;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(255, 111, 0, 0.2);
         }
 
         .step-number {
             width: 60px;
             height: 60px;
-            background: var(--gradient-accent);
+            background: var(--gradient);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -361,23 +206,13 @@
             font-size: 24px;
             color: white;
             animation: numberGlow 3s infinite;
-            box-shadow: 0 8px 20px rgba(255, 111, 0, 0.3);
         }
 
         @keyframes numberGlow {
-            0%, 100% {
-                box-shadow: 
-                    0 8px 20px rgba(255, 111, 0, 0.3),
-                    inset 0 4px 8px rgba(255, 255, 255, 0.2);
-            }
-            50% {
-                box-shadow: 
-                    0 12px 30px rgba(255, 111, 0, 0.4),
-                    inset 0 4px 8px rgba(255, 255, 255, 0.3);
-            }
+            0%, 100% { box-shadow: 0 8px 20px rgba(255, 111, 0, 0.3); }
+            50% { box-shadow: 0 12px 30px rgba(255, 111, 0, 0.4); }
         }
 
-        /* ===== حقول الإدخال ===== */
         .input-group {
             margin-bottom: 30px;
             position: relative;
@@ -392,19 +227,11 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            transition: all 0.3s;
-        }
-
-        .input-group label:hover {
-            color: var(--accent-light);
-            transform: translateX(5px);
         }
 
         .input-group label i {
             color: var(--accent);
             font-size: 20px;
-            width: 24px;
-            text-align: center;
         }
 
         .input-group input {
@@ -417,44 +244,13 @@
             font-size: 17px;
             transition: all 0.3s;
             outline: none;
-            font-family: 'Cairo', sans-serif;
         }
 
         .input-group input:focus {
             border-color: var(--accent);
-            background: rgba(0, 0, 0, 0.4);
-            box-shadow: 
-                0 0 0 4px rgba(255, 111, 0, 0.1),
-                inset 0 0 20px rgba(255, 111, 0, 0.05);
-            transform: translateY(-2px);
+            box-shadow: 0 0 0 4px rgba(255, 111, 0, 0.1);
         }
 
-        .input-group input.error {
-            border-color: var(--danger);
-            animation: shake 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-
-        .input-group input.success {
-            border-color: var(--success);
-        }
-
-        .input-hint {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            margin-top: 8px;
-            padding-right: 5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* ===== عداد الأحرف ===== */
         .char-counter {
             position: absolute;
             left: 15px;
@@ -462,14 +258,11 @@
             transform: translateY(-50%);
             font-size: 14px;
             color: rgba(255, 255, 255, 0.5);
-            transition: all 0.3s;
             background: rgba(0, 0, 0, 0.3);
             padding: 5px 10px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* ===== اختيار الجهات ===== */
         .departments-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -484,155 +277,100 @@
             padding: 35px 25px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s;
             position: relative;
             overflow: hidden;
         }
 
-        .department-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-accent);
-            transform: scaleX(0);
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .department-card.health { background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(21, 101, 192, 0.1)); }
+        .department-card.interior { background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(183, 28, 28, 0.1)); }
+        .department-card.justice { background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(56, 142, 60, 0.1)); }
+        .department-card.citizen { background: linear-gradient(135deg, rgba(156, 39, 176, 0.1), rgba(123, 31, 162, 0.1)); }
 
         .department-card:hover {
             transform: translateY(-10px);
             border-color: var(--accent);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                0 0 30px rgba(255, 111, 0, 0.2);
-        }
-
-        .department-card:hover::before {
-            transform: scaleX(1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
         .department-card.selected {
-            background: linear-gradient(135deg, rgba(255, 111, 0, 0.1), rgba(26, 35, 126, 0.2));
             border-color: var(--accent);
             transform: translateY(-5px);
-        }
-
-        .department-card.selected::before {
-            transform: scaleX(1);
         }
 
         .department-icon {
             width: 80px;
             height: 80px;
             margin: 0 auto 20px;
-            background: var(--gradient-accent);
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
             animation: iconFloat 4s ease-in-out infinite;
         }
+
+        .health .department-icon { background: var(--gradient-health); }
+        .interior .department-icon { background: var(--gradient-interior); }
+        .justice .department-icon { background: var(--gradient-justice); }
+        .citizen .department-icon { background: var(--gradient-citizen); }
 
         @keyframes iconFloat {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
 
-        .department-icon i {
-            font-size: 36px;
-            color: white;
-        }
-
-        .department-card h4 {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: white;
-        }
-
-        .department-card small {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-        }
-
-        /* ===== الرتب ===== */
-        .ranks-container {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 30px;
+        .ranks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
             margin-top: 30px;
-            border: 1px solid var(--border);
-            max-height: 400px;
+            max-height: 500px;
             overflow-y: auto;
+            padding: 10px;
         }
 
-        .ranks-container::-webkit-scrollbar {
+        .ranks-grid::-webkit-scrollbar {
             width: 8px;
         }
 
-        .ranks-container::-webkit-scrollbar-track {
+        .ranks-grid::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.2);
             border-radius: 4px;
         }
 
-        .ranks-container::-webkit-scrollbar-thumb {
-            background: var(--gradient-accent);
+        .ranks-grid::-webkit-scrollbar-thumb {
+            background: var(--accent);
             border-radius: 4px;
         }
 
         .rank-item {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 15px;
+            text-align: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 17px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .rank-item::before {
-            content: '';
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 0.3s;
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
         }
 
         .rank-item:hover {
-            background: rgba(255, 111, 0, 0.1);
-            padding-right: 30px;
-            transform: translateX(-5px);
-        }
-
-        .rank-item:hover::before {
-            opacity: 1;
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 111, 0, 0.2);
         }
 
         .rank-item.selected {
             background: linear-gradient(135deg, rgba(255, 111, 0, 0.2), rgba(26, 35, 126, 0.3));
+            border-color: var(--accent);
             color: white;
-            border-radius: 12px;
-            border: 1px solid var(--accent);
-            padding-right: 30px;
             font-weight: 600;
         }
 
-        .rank-item.selected::before {
-            opacity: 1;
-            background: white;
-        }
-
-        /* ===== المناصب الإضافية ===== */
         .additionals-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
             margin: 30px 0;
         }
@@ -642,17 +380,13 @@
             border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 25px 20px;
-            text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
         }
 
         .additional-item:hover {
             border-color: var(--accent);
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(255, 111, 0, 0.2);
         }
 
         .additional-item.selected {
@@ -660,73 +394,21 @@
             border-color: var(--accent);
         }
 
-        .additional-item input {
-            display: none;
-        }
-
         .additional-item label {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
             cursor: pointer;
             color: rgba(255, 255, 255, 0.9);
             font-weight: 500;
         }
 
-        .additional-item label i {
-            color: var(--accent);
-            font-size: 20px;
-            transition: transform 0.3s;
+        .additional-item input {
+            display: none;
         }
 
-        .additional-item.selected label i {
-            transform: scale(1.2);
-            color: white;
-        }
-
-        /* ===== شروط الموافقة ===== */
-        .terms-box {
-            background: linear-gradient(135deg, rgba(255, 111, 0, 0.05), rgba(26, 35, 126, 0.1));
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-            border: 2px solid rgba(255, 111, 0, 0.2);
-        }
-
-        .terms-item {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
-        }
-
-        .terms-item:hover {
-            background: rgba(255, 111, 0, 0.1);
-            transform: translateX(5px);
-        }
-
-        .terms-item input {
-            width: 24px;
-            height: 24px;
-            accent-color: var(--accent);
-            cursor: pointer;
-        }
-
-        .terms-item label {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 16px;
-            cursor: pointer;
-            flex: 1;
-        }
-
-        /* ===== الأزرار ===== */
         .btn {
-            background: var(--gradient-accent);
+            background: var(--gradient);
             color: white;
             border: none;
             padding: 22px 45px;
@@ -734,52 +416,24 @@
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
             width: 100%;
             margin-top: 35px;
-            position: relative;
-            overflow: hidden;
             animation: btnGlow 3s infinite;
-            letter-spacing: 1px;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s;
+        @keyframes btnGlow {
+            0%, 100% { box-shadow: 0 10px 30px rgba(255, 111, 0, 0.3); }
+            50% { box-shadow: 0 15px 40px rgba(255, 111, 0, 0.4); }
         }
 
         .btn:hover {
             transform: translateY(-5px);
-            box-shadow: 
-                0 20px 40px rgba(255, 111, 0, 0.4),
-                0 0 30px rgba(255, 111, 0, 0.3);
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        @keyframes btnGlow {
-            0%, 100% {
-                box-shadow: 
-                    0 10px 30px rgba(255, 111, 0, 0.3),
-                    0 0 20px rgba(255, 111, 0, 0.2);
-            }
-            50% {
-                box-shadow: 
-                    0 15px 40px rgba(255, 111, 0, 0.4),
-                    0 0 30px rgba(255, 111, 0, 0.3);
-            }
+            box-shadow: 0 20px 40px rgba(255, 111, 0, 0.4);
         }
 
         .btn-secondary {
@@ -787,11 +441,6 @@
             color: white;
             border: 2px solid rgba(255, 255, 255, 0.2);
             animation: none;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: var(--accent);
         }
 
         .btn-group {
@@ -805,42 +454,11 @@
             margin-top: 0;
         }
 
-        /* ===== ملخص الطلب ===== */
-        .summary-card {
-            background: linear-gradient(135deg, rgba(26, 35, 126, 0.1), rgba(40, 53, 147, 0.2));
-            border-radius: 24px;
-            padding: 40px;
-            margin: 30px 0;
-            border: 2px solid rgba(255, 111, 0, 0.3);
-            animation: summaryAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes summaryAppear {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .summary-card h4 {
-            color: var(--accent-light);
-            margin-bottom: 30px;
-            font-size: 26px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
+            margin: 30px 0;
         }
 
         .summary-item {
@@ -862,144 +480,47 @@
             font-weight: 600;
         }
 
-        /* ===== رسالة النجاح ===== */
-        .success-message {
-            background: linear-gradient(135deg, rgba(0, 200, 83, 0.1), rgba(26, 35, 126, 0.2));
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(0, 200, 83, 0.3);
-            border-radius: 28px;
-            padding: 60px 40px;
-            text-align: center;
+        .status-message, .alert, .success-message {
             display: none;
-            animation: successAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            text-align: center;
+            animation: messageAppear 0.5s ease;
         }
 
-        .success-message.show {
+        .status-message.show, .alert.show, .success-message.show {
             display: block;
         }
 
-        .success-message::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 200, 83, 0.1) 0%, transparent 70%);
-            animation: successGlow 3s infinite;
+        @keyframes messageAppear {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes successGlow {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 0.8; }
-        }
-
-        .success-icon {
-            font-size: 100px;
-            color: var(--success);
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
-            animation: successFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes successFloat {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-20px) scale(1.1); }
-        }
-
-        /* ===== تصميم متجاوب ===== */
-        @media (max-width: 992px) {
+        @media (max-width: 768px) {
             .container {
                 max-width: 95%;
             }
             
-            .departments-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
             .content {
                 padding: 30px 20px;
             }
             
-            .departments-grid {
+            .departments-grid,
+            .ranks-grid,
+            .additionals-grid {
                 grid-template-columns: 1fr;
             }
             
             .btn-group {
                 flex-direction: column;
             }
-            
-            .step {
-                padding: 30px 20px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .header {
-                padding: 30px 20px;
-            }
-            
-            .logo h1 {
-                font-size: 28px;
-            }
-            
-            .step-title {
-                font-size: 24px;
-            }
-            
-            .summary-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ===== أنيميشن النجمة ===== */
-        .floating-stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: starFloat 20s infinite linear;
-        }
-
-        @keyframes starFloat {
-            from {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            to {
-                transform: translateY(-100px) translateX(100px);
-                opacity: 0;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- نجوم عائمة -->
-    <div class="floating-stars" id="stars"></div>
-    
-    <!-- الحاوية الرئيسية -->
     <div class="container">
-        <!-- الهيدر -->
         <div class="header">
             <div class="kr-badge">KR OFFICIAL</div>
             <div class="logo">
@@ -1011,15 +532,10 @@
             </div>
         </div>
         
-        <!-- المحتوى -->
         <div class="content">
-            <!-- رسالة حالة الطلب -->
             <div id="previousRequestMessage" class="status-message"></div>
-            
-            <!-- تنبيهات -->
             <div class="alert" id="alertBox"></div>
             
-            <!-- النموذج -->
             <div id="applicationForm" style="display: none;">
                 <!-- الخطوة 1: البيانات الأساسية -->
                 <div class="step" id="step1">
@@ -1031,17 +547,11 @@
                     <div class="input-group">
                         <label><i class="fas fa-user"></i> الاسم الكامل ثلاثي</label>
                         <input type="text" id="fullName" placeholder="مثال: محمد بن فهد الحربي">
-                        <div class="input-hint">
-                            <i class="fas fa-info-circle"></i> الاسم ثلاثي باللغة العربية فقط
-                        </div>
                     </div>
                     
                     <div class="input-group">
                         <label><i class="fas fa-birthday-cake"></i> العمر</label>
                         <input type="number" id="age" placeholder="أدخل عمرك" min="18" max="99">
-                        <div class="input-hint">
-                            <i class="fas fa-info-circle"></i> يجب أن يكون 18 سنة أو أكثر
-                        </div>
                     </div>
                     
                     <div class="input-group">
@@ -1067,43 +577,35 @@
                     </button>
                 </div>
                 
-                <!-- الخطوة 2: اختيار الجهة -->
+                <!-- الخطوة 2: اختيار الوزارة -->
                 <div class="step" id="step2" style="display: none;">
                     <div class="step-title">
                         <div class="step-number">2</div>
-                        <span>اختيار الجهة</span>
+                        <span>اختيار الوزارة</span>
                     </div>
                     
                     <div class="departments-grid">
-                        <div class="department-card" onclick="selectDepartment(this, 'citizen')">
-                            <div class="department-icon">
-                                <i class="fas fa-user-tie"></i>
-                            </div>
-                            <h4>المواطنون</h4>
-                            <small>الجهة المدنية الأساسية</small>
-                        </div>
-                        
-                        <div class="department-card" onclick="selectDepartment(this, 'interior')">
-                            <div class="department-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h4>جهة الداخلية</h4>
-                            <small>القطاع الأمني والحماية</small>
-                        </div>
-                        
-                        <div class="department-card" onclick="selectDepartment(this, 'health')">
+                        <div class="department-card health" onclick="selectDepartment(this, 'health')">
                             <div class="department-icon">
                                 <i class="fas fa-heartbeat"></i>
                             </div>
-                            <h4>جهة الصحة</h4>
+                            <h4>وزارة الصحة</h4>
                             <small>القطاع الطبي والإسعافي</small>
                         </div>
                         
-                        <div class="department-card" onclick="selectDepartment(this, 'justice')">
+                        <div class="department-card interior" onclick="selectDepartment(this, 'interior')">
+                            <div class="department-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>وزارة الداخلية</h4>
+                            <small>القطاع الأمني والحماية</small>
+                        </div>
+                        
+                        <div class="department-card justice" onclick="selectDepartment(this, 'justice')">
                             <div class="department-icon">
                                 <i class="fas fa-balance-scale"></i>
                             </div>
-                            <h4>جهة العدل</h4>
+                            <h4>وزارة العدل</h4>
                             <small>القطاع القضائي والقانوني</small>
                         </div>
                     </div>
@@ -1141,11 +643,11 @@
                     </div>
                 </div>
                 
-                <!-- الخطوة 4: المناصب الإضافية -->
+                <!-- الخطوة 4: المناصب الإدارية -->
                 <div class="step" id="step4" style="display: none;">
                     <div class="step-title">
                         <div class="step-number">4</div>
-                        <span>المناصب الإضافية</span>
+                        <span>المناصب الإدارية</span>
                     </div>
                     
                     <div id="additionalContainer"></div>
@@ -1169,25 +671,33 @@
                         <span>تأكيد وإرسال الطلب</span>
                     </div>
                     
-                    <div class="summary-card">
-                        <h4><i class="fas fa-file-alt"></i> ملخص طلبك</h4>
-                        <div class="summary-grid" id="requestSummary">
-                            <!-- سيتم تعبئته ديناميكيًا -->
-                        </div>
-                    </div>
+                    <div class="summary-grid" id="requestSummary"></div>
                     
-                    <div class="terms-box">
-                        <div class="terms-item">
-                            <input type="checkbox" id="agreeTerms1">
-                            <label>أوافق على صحة المعلومات المدخلة وأتحمل كامل المسؤولية في حال وجود أي خطأ</label>
+                    <div style="background: rgba(255,111,0,0.05); border-radius: 16px; padding: 25px; margin: 30px 0;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                            <i class="fas fa-exclamation-circle" style="color: var(--accent); font-size: 24px;"></i>
+                            <h4 style="color: var(--accent-light);">شروط الموافقة</h4>
                         </div>
-                        <div class="terms-item">
-                            <input type="checkbox" id="agreeTerms2">
-                            <label>أوافق على الالتزام الكامل بأنظمة وقوانين الجهة الرقمية KR</label>
+                        
+                        <div style="display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                            <input type="checkbox" id="agreeTerms1" style="margin-top: 5px;">
+                            <label for="agreeTerms1" style="color: rgba(255,255,255,0.9); cursor: pointer;">
+                                أوافق على صحة المعلومات المدخلة وأتحمل المسؤولية الكاملة
+                            </label>
                         </div>
-                        <div class="terms-item">
-                            <input type="checkbox" id="agreeTerms3">
-                            <label>أقر بأن أي مخالفة للأنظمة ستؤدي إلى رفض الطلب أو إلغاء التفعيل</label>
+                        
+                        <div style="display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                            <input type="checkbox" id="agreeTerms2" style="margin-top: 5px;">
+                            <label for="agreeTerms2" style="color: rgba(255,255,255,0.9); cursor: pointer;">
+                                أوافق على الالتزام بأنظمة وقوانين الجهة الرقمية KR
+                            </label>
+                        </div>
+                        
+                        <div style="display: flex; align-items: flex-start; gap: 15px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                            <input type="checkbox" id="agreeTerms3" style="margin-top: 5px;">
+                            <label for="agreeTerms3" style="color: rgba(255,255,255,0.9); cursor: pointer;">
+                                أقر بأن أي مخالفة ستؤدي إلى رفض الطلب أو إلغاء التفعيل
+                            </label>
                         </div>
                     </div>
                     
@@ -1204,15 +714,10 @@
                 </div>
             </div>
             
-            <!-- رسالة النجاح -->
             <div class="success-message" id="successMessage" style="display: none;">
-                <div class="success-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h3 style="font-size: 32px; margin-bottom: 20px; color: white;">تم إرسال طلبك بنجاح</h3>
-                <p style="font-size: 18px; color: rgba(255,255,255,0.8); margin-bottom: 30px;">
-                    سيتم مراجعة طلبك خلال 24-48 ساعة عمل
-                </p>
+                <i class="fas fa-check-circle" style="font-size: 80px; color: var(--success); margin-bottom: 30px;"></i>
+                <h3 style="font-size: 32px; margin-bottom: 20px;">تم إرسال طلبك بنجاح</h3>
+                <p style="font-size: 18px; margin-bottom: 30px;">سيتم مراجعة طلبك خلال 24-48 ساعة عمل</p>
                 <div id="successDetails"></div>
                 <div class="btn-group" style="max-width: 600px; margin: 40px auto 0;">
                     <button class="btn" onclick="checkRequestStatus()">
@@ -1229,74 +734,73 @@
     </div>
 
     <script>
-        // ====== البيانات ======
+        // ====== البيانات الكاملة ======
+        const DEPARTMENTS = {
+            health: {
+                name: 'وزارة الصحة',
+                color: '#2196f3',
+                ranks: [
+                    'مسعف', 'مسعف أول', 'ممرض', 'ممرض أول', 'فني صحي', 
+                    'فني صحي أول', 'أخصائي', 'مساعد جراح', 'دكتور عام', 
+                    'دكتور', 'استشاري', 'جراح', 'رئيس استشاري', 'مدير طبي',
+                    'مستشار وزير الصحة', 'نائب وزير الصحة', 'وزير الصحة'
+                ],
+                additionals: [
+                    'إدارة القبول والتسجيل',
+                    'إدارة الشؤون الصحية',
+                    'مسؤول الشؤون الصحية',
+                    'إدارة متطوعين الهلال الأحمر',
+                    'إدارة الشكاوي بوزارة الصحة',
+                    'إدارة الكلية الصحية'
+                ]
+            },
+            interior: {
+                name: 'وزارة الداخلية',
+                color: '#f44336',
+                ranks: [
+                    'جندي', 'جندي أول', 'عريف', 'وكيل رقيب', 'رقيب', 
+                    'رقيب أول', 'رئيس رقباء', 'ملازم', 'ملازم أول', 
+                    'نقيب', 'رائد', 'مقدم', 'عقيد', 'عميد', 'لواء',
+                    'فريق', 'فريق أول', 'نائب مدير الأمن العام',
+                    'مدير الأمن العام', 'نائب وزير الداخلية', 'وزير الداخلية'
+                ],
+                additionals: [
+                    'إدارة القبول والتجنيد',
+                    'إدارة شؤون الداخلية',
+                    'إدارة شؤون الأفراد سلك الضباط',
+                    'الادارة العامة لوزارة الداخلية',
+                    'ادارة الشكاوي بوزارة الداخلية'
+                ]
+            },
+            justice: {
+                name: 'وزارة العدل',
+                color: '#4caf50',
+                ranks: [
+                    'محامي', 'محامي خبير', 'محامي متمرس', 'قاضي', 
+                    'قاضي متمرس', 'قاضي خبير', 'قاضي محكمة عليا',
+                    'مستشار القضايا', 'مستشار وزير العدل', 
+                    'نائب وزير العدل', 'وزير العدل'
+                ],
+                additionals: [
+                    'الاداره العامه للشؤون العدلية',
+                    'ادارة القبول والتسجيل',
+                    'ادارة الشكاوي بوزارة العدل'
+                ]
+            }
+        };
+
         let selectedDepartment = null;
         let selectedRank = null;
         let selectedAdditionals = [];
         let hasExistingRequest = false;
         let existingRequestData = null;
 
-        const DEPARTMENTS = {
-            citizen: {
-                name: 'المواطنون',
-                ranks: ['مواطن عادي', 'مواطن نشط', 'مواطن متميز', 'مواطن مسؤول'],
-                additionals: ['عضو مجلس الحي', 'مندوب مجتمع', 'مشارك في الفعاليات']
-            },
-            interior: {
-                name: 'جهة الداخلية',
-                ranks: ['جندي', 'رقيب', 'ملازم', 'نقيب', 'رائد', 'مقدم', 'عقيد', 'عميد', 'لواء'],
-                additionals: ['دائرة التحقيقات', 'دائرة المرور', 'دائرة الأمن', 'دائرة العمليات']
-            },
-            health: {
-                name: 'جهة الصحة',
-                ranks: ['مساعد طبي', 'مسعف', 'طبيب مقيم', 'طبيب استشاري', 'دكتور', 'بروفسور', 'مدير مستشفى'],
-                additionals: ['إدارة الطوارئ', 'إدارة العيادات', 'إدارة المستشفيات', 'إدارة الصحة العامة']
-            },
-            justice: {
-                name: 'جهة العدل',
-                ranks: ['مساعد قانوني', 'محامي', 'قاضي', 'مستشار', 'رئيس محكمة', 'نائب وزير', 'وزير'],
-                additionals: ['المحكمة العليا', 'محكمة الاستئناف', 'دائرة التوثيق', 'دائرة التنفيذ']
-            }
-        };
-
-        // ====== إنشاء النجوم العائمة ======
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const starCount = 50;
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                // أحجام عشوائية
-                const size = Math.random() * 3 + 1;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                // مواقع عشوائية
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                
-                // شفافية عشوائية
-                star.style.opacity = Math.random() * 0.5 + 0.2;
-                
-                // تأخير أنيميشن عشوائي
-                star.style.animationDelay = `${Math.random() * 20}s`;
-                star.style.animationDuration = `${Math.random() * 10 + 15}s`;
-                
-                starsContainer.appendChild(star);
-            }
-        }
-
-        // ====== عند التحميل ======
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 نظام تفعيل الهوية الرقمي جاهز');
-            createStars();
             checkExistingRequest();
             setupGameIdField();
         });
 
-        // ====== التحقق من الطلب الحالي ======
         function checkExistingRequest() {
             const requests = JSON.parse(localStorage.getItem('user_requests') || '[]');
             const deviceId = getDeviceId();
@@ -1315,23 +819,8 @@
             }
             
             document.getElementById('applicationForm').style.display = 'block';
-            loadUserData();
         }
 
-        // ====== تحميل بيانات المستخدم ======
-        function loadUserData() {
-            const activeUsers = JSON.parse(localStorage.getItem('active_users') || '[]');
-            const deviceId = getDeviceId();
-            
-            const user = activeUsers.find(u => u.deviceId === deviceId);
-            
-            if (user && user.status === 'active') {
-                showAlreadyActivated(user);
-                return;
-            }
-        }
-
-        // ====== عرض رسالة التفعيل السابق ======
         function showExistingRequest(request) {
             const messageDiv = document.getElementById('previousRequestMessage');
             const formDiv = document.getElementById('applicationForm');
@@ -1340,54 +829,31 @@
             
             if (request.status === 'pending') {
                 statusText = 'طلبك قيد المراجعة';
-                statusClass = 'pending';
+                statusClass = 'warning';
                 statusIcon = 'clock';
             } else if (request.status === 'accepted') {
                 statusText = 'تم تفعيل هويتك بنجاح';
-                statusClass = 'accepted';
+                statusClass = 'success';
                 statusIcon = 'check-circle';
             } else {
                 statusText = 'تم رفض طلبك';
-                statusClass = 'rejected';
+                statusClass = 'danger';
                 statusIcon = 'times-circle';
             }
             
             messageDiv.innerHTML = `
-                <i class="fas fa-${statusIcon}" 
-                   style="font-size: 60px; margin-bottom: 25px; color: ${request.status === 'accepted' ? '#00c853' : 
-                                                              request.status === 'pending' ? '#ffd600' : '#d50000'}"></i>
-                <h2 style="font-size: 32px; margin-bottom: 20px;">${statusText}</h2>
-                
-                <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; margin: 25px 0; backdrop-filter: blur(10px);">
-                    <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <span>رقم الطلب:</span>
-                        <span><strong style="color: var(--accent-light);">${request.id}</strong></span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <span>التاريخ:</span>
-                        <span>${request.date}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 15px 0;">
-                        <span>الحالة:</span>
-                        <span style="font-weight: 700; color: ${request.status === 'accepted' ? '#00c853' : 
-                                                              request.status === 'pending' ? '#ffd600' : '#d50000'}">
-                            ${request.status === 'accepted' ? 'مقبول' : 
-                             request.status === 'pending' ? 'قيد المراجعة' : 'مرفوض'}
-                        </span>
-                    </div>
+                <i class="fas fa-${statusIcon}" style="font-size: 60px; margin-bottom: 25px;"></i>
+                <h2>${statusText}</h2>
+                <div style="margin: 25px 0;">
+                    <div>رقم الطلب: <strong>${request.id}</strong></div>
+                    <div>التاريخ: ${request.date}</div>
+                    <div>الحالة: ${request.status === 'accepted' ? 'مقبول' : 
+                                 request.status === 'pending' ? 'قيد المراجعة' : 'مرفوض'}</div>
                 </div>
-                
                 ${request.status === 'rejected' ? `
-                    <button class="btn" onclick="startNewRequest()" style="margin-top: 20px; max-width: 300px; margin-left: auto; margin-right: auto;">
+                    <button class="btn" onclick="startNewRequest()">
                         <i class="fas fa-redo"></i>
                         <span>تقديم طلب جديد</span>
-                    </button>
-                ` : ''}
-                
-                ${request.status === 'accepted' ? `
-                    <button class="btn" onclick="goToDashboard()" style="margin-top: 20px; max-width: 300px; margin-left: auto; margin-right: auto;">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>الذهاب للوحة التحكم</span>
                     </button>
                 ` : ''}
             `;
@@ -1396,7 +862,6 @@
             formDiv.style.display = 'none';
         }
 
-        // ====== بدء طلب جديد ======
         function startNewRequest() {
             document.getElementById('previousRequestMessage').style.display = 'none';
             document.getElementById('applicationForm').style.display = 'block';
@@ -1422,7 +887,6 @@
             resetDepartmentSelection();
         }
 
-        // ====== إعداد حقل رقم الهوية ======
         function setupGameIdField() {
             const gameIdInput = document.getElementById('gameId');
             const counter = document.getElementById('gameIdCounter');
@@ -1435,16 +899,12 @@
                 
                 if (value.length === 10) {
                     counter.style.color = '#00c853';
-                    this.classList.remove('error');
-                    this.classList.add('success');
                 } else {
                     counter.style.color = 'rgba(255,255,255,0.5)';
-                    this.classList.remove('error', 'success');
                 }
             });
         }
 
-        // ====== الحصول على معرف الجهاز ======
         function getDeviceId() {
             let deviceId = localStorage.getItem('device_id');
             if (!deviceId) {
@@ -1454,7 +914,6 @@
             return deviceId;
         }
 
-        // ====== التحقق من الخطوة 1 ======
         function validateStep1() {
             const name = document.getElementById('fullName').value.trim();
             const age = document.getElementById('age').value;
@@ -1470,23 +929,15 @@
             
             if (!name || words.length < 3) {
                 errorMessage = 'يجب أن يكون الاسم ثلاثي بالكامل';
-                document.getElementById('fullName').classList.add('error');
                 isValid = false;
             } else if (!arabicRegex.test(name)) {
                 errorMessage = 'يجب أن يكون الاسم باللغة العربية فقط';
-                document.getElementById('fullName').classList.add('error');
                 isValid = false;
             } else if (!age || age < 18) {
                 errorMessage = 'العمر يجب أن يكون 18 سنة أو أكثر';
-                document.getElementById('age').classList.add('error');
-                isValid = false;
-            } else if (!gameUsername || !/^[A-Za-z0-9_]+$/.test(gameUsername)) {
-                errorMessage = 'اسم اللعبة يجب أن يكون بالإنجليزية فقط';
-                document.getElementById('gameUsername').classList.add('error');
                 isValid = false;
             } else if (!gameId || gameId.length !== 10 || !/^\d+$/.test(gameId)) {
                 errorMessage = 'رقم الهوية يجب أن يكون 10 أرقام بالضبط';
-                document.getElementById('gameId').classList.add('error');
                 isValid = false;
             }
 
@@ -1508,7 +959,6 @@
             document.getElementById('step1').style.display = 'block';
         }
 
-        // ====== اختيار الجهة ======
         function selectDepartment(element, departmentId) {
             document.querySelectorAll('.department-card').forEach(card => {
                 card.classList.remove('selected');
@@ -1526,7 +976,7 @@
 
         function showStep3() {
             if (!selectedDepartment) {
-                showAlert('يرجى اختيار الجهة', false);
+                showAlert('يرجى اختيار الوزارة', false);
                 return;
             }
 
@@ -1534,11 +984,11 @@
             const department = DEPARTMENTS[selectedDepartment];
             
             container.innerHTML = `
-                <div class="ranks-container">
-                    <h4 style="color: var(--accent-light); margin-bottom: 25px; text-align: center; font-size: 22px;">
-                        <i class="fas fa-arrow-up"></i>
-                        اختر رتبتك في ${department.name}:
-                    </h4>
+                <h4 style="color: ${department.color}; margin-bottom: 25px; text-align: center; font-size: 22px;">
+                    <i class="fas fa-arrow-up"></i>
+                    اختر رتبتك في ${department.name}:
+                </h4>
+                <div class="ranks-grid">
                     ${department.ranks.map(rank => `
                         <div class="rank-item" onclick="selectRank(this, '${rank}')">
                             ${rank}
@@ -1551,7 +1001,6 @@
             document.getElementById('step3').style.display = 'block';
         }
 
-        // ====== اختيار الرتبة ======
         function selectRank(element, rank) {
             document.querySelectorAll('.rank-item').forEach(item => {
                 item.classList.remove('selected');
@@ -1565,7 +1014,6 @@
             document.getElementById('step2').style.display = 'block';
         }
 
-        // ====== المناصب الإضافية ======
         function showStep4() {
             if (!selectedRank) {
                 showAlert('يرجى اختيار الرتبة', false);
@@ -1576,22 +1024,20 @@
             const department = DEPARTMENTS[selectedDepartment];
             
             container.innerHTML = `
-                <div style="margin-top: 20px;">
-                    <h4 style="color: var(--accent-light); margin-bottom: 25px; text-align: center; font-size: 22px;">
-                        <i class="fas fa-layer-group"></i>
-                        المناصب الإضافية (اختياري)
-                    </h4>
-                    <div class="additionals-grid">
-                        ${department.additionals.map(additional => `
-                            <div class="additional-item" onclick="toggleAdditionalPost(this, '${additional}')">
-                                <input type="checkbox" id="add_${additional}">
-                                <label for="add_${additional}">
-                                    <i class="fas fa-plus-circle"></i>
-                                    ${additional}
-                                </label>
-                            </div>
-                        `).join('')}
-                    </div>
+                <h4 style="color: ${department.color}; margin-bottom: 25px; text-align: center; font-size: 22px;">
+                    <i class="fas fa-layer-group"></i>
+                    المناصب الإدارية (اختياري)
+                </h4>
+                <div class="additionals-grid">
+                    ${department.additionals.map(additional => `
+                        <div class="additional-item" onclick="toggleAdditionalPost(this, '${additional}')">
+                            <input type="checkbox" id="add_${additional}">
+                            <label for="add_${additional}">
+                                <i class="fas fa-plus-circle"></i>
+                                ${additional}
+                            </label>
+                        </div>
+                    `).join('')}
                 </div>
             `;
 
@@ -1614,7 +1060,6 @@
             document.getElementById('step3').style.display = 'block';
         }
 
-        // ====== عرض ملخص الطلب ======
         function showStep5() {
             const summaryContainer = document.getElementById('requestSummary');
             const department = DEPARTMENTS[selectedDepartment];
@@ -1629,7 +1074,7 @@
                     <div class="value">${document.getElementById('gameId').value}</div>
                 </div>
                 <div class="summary-item">
-                    <div class="label">الجهة</div>
+                    <div class="label">الوزارة</div>
                     <div class="value">${department.name}</div>
                 </div>
                 <div class="summary-item">
@@ -1637,19 +1082,11 @@
                     <div class="value">${selectedRank}</div>
                 </div>
                 ${selectedAdditionals.length > 0 ? `
-                    <div class="summary-item">
-                        <div class="label">المناصب الإضافية</div>
+                    <div class="summary-item" style="grid-column: 1 / -1;">
+                        <div class="label">المناصب الإدارية</div>
                         <div class="value">${selectedAdditionals.join('<br>')}</div>
                     </div>
                 ` : ''}
-                <div class="summary-item">
-                    <div class="label">اسم اللعبة</div>
-                    <div class="value">${document.getElementById('gameUsername').value}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="label">الديسكورد</div>
-                    <div class="value">${document.getElementById('discordUsername').value}</div>
-                </div>
             `;
 
             document.getElementById('step4').style.display = 'none';
@@ -1661,7 +1098,6 @@
             document.getElementById('step4').style.display = 'block';
         }
 
-        // ====== إرسال الطلب ======
         async function submitRequest() {
             const terms1 = document.getElementById('agreeTerms1');
             const terms2 = document.getElementById('agreeTerms2');
@@ -1697,7 +1133,6 @@
             showSuccessMessage(requestData);
         }
 
-        // ====== حفظ طلب المستخدم ======
         function saveUserRequest(requestData) {
             let userRequests = JSON.parse(localStorage.getItem('user_requests') || '[]');
             userRequests.push(requestData);
@@ -1705,7 +1140,6 @@
             console.log('✅ تم حفظ طلب المستخدم');
         }
 
-        // ====== إرسال للإدارة ======
         function sendToAdminSystem(requestData) {
             try {
                 let adminRequests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
@@ -1732,7 +1166,6 @@
             }
         }
 
-        // ====== تحديث إحصائيات الإدارة ======
         function updateAdminStatistics(requests) {
             const stats = {
                 total: requests.length,
@@ -1742,7 +1175,6 @@
             localStorage.setItem('admin_stats', JSON.stringify(stats));
         }
 
-        // ====== إنشاء إشعار للإدارة ======
         function createAdminNotification(request) {
             let notifications = JSON.parse(localStorage.getItem('admin_notifications') || '[]');
             
@@ -1750,48 +1182,43 @@
                 id: 'notif_' + Date.now(),
                 type: 'new_request',
                 title: '📥 طلب تفعيل جديد',
-                message: `طلب جديد من ${request.fullName} للجهة: ${request.departmentName}`,
+                message: `طلب جديد من ${request.fullName} للوزارة: ${request.departmentName}`,
                 requestId: request.id,
                 timestamp: new Date().toISOString(),
-                read: false,
-                priority: 'high'
+                read: false
             };
             
             notifications.unshift(notification);
             localStorage.setItem('admin_notifications', JSON.stringify(notifications));
         }
 
-        // ====== عرض رسالة النجاح ======
         function showSuccessMessage(requestData) {
             const form = document.getElementById('applicationForm');
             const successMessage = document.getElementById('successMessage');
             const successDetails = document.getElementById('successDetails');
             
             successDetails.innerHTML = `
-                <div style="background: rgba(0,0,0,0.3); border-radius: 20px; padding: 30px; margin: 30px 0; backdrop-filter: blur(10px);">
-                    <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <span style="color: rgba(255,255,255,0.8);">رقم الطلب:</span>
-                        <span style="color: var(--accent-light); font-weight: 700; font-size: 20px;">${requestData.id}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <span style="color: rgba(255,255,255,0.8);">التاريخ:</span>
-                        <span style="color: white;">${requestData.date}</span>
+                <div style="background: rgba(0,0,0,0.3); border-radius: 20px; padding: 30px; margin: 30px 0;">
+                    <div style="display: flex; justify-content: space-between; padding: 15px 0;">
+                        <span>رقم الطلب:</span>
+                        <span><strong>${requestData.id}</strong></span>
                     </div>
                     <div style="display: flex; justify-content: space-between; padding: 15px 0;">
-                        <span style="color: rgba(255,255,255,0.8);">الحالة:</span>
-                        <span style="color: #ffd600; font-weight: 700;"><i class="fas fa-clock"></i> قيد المراجعة</span>
+                        <span>التاريخ:</span>
+                        <span>${requestData.date}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 15px 0;">
+                        <span>الحالة:</span>
+                        <span style="color: #ffd600;"><i class="fas fa-clock"></i> قيد المراجعة</span>
                     </div>
                 </div>
             `;
             
             form.style.display = 'none';
             successMessage.style.display = 'block';
-            setTimeout(() => {
-                successMessage.classList.add('show');
-            }, 10);
+            successMessage.classList.add('show');
         }
 
-        // ====== التحقق من حالة الطلب ======
         function checkRequestStatus() {
             if (!existingRequestData) {
                 showAlert('لا يوجد طلب', false);
@@ -1833,7 +1260,6 @@
             }, 1500);
         }
 
-        // ====== تفعيل المستخدم ======
         function activateUser(requestData) {
             try {
                 const userData = {
@@ -1849,19 +1275,12 @@
                     activationDate: new Date().toISOString(),
                     status: 'active',
                     deviceId: requestData.deviceId,
-                    requestId: requestData.id,
-                    permissions: getPermissionsForRank(requestData.rank)
+                    requestId: requestData.id
                 };
                 
                 let activeUsers = JSON.parse(localStorage.getItem('active_users') || '[]');
                 activeUsers.push(userData);
-                localStorage.setItem('active_users', JSON.stringify(activeUsers));
-                
-                let adminRequests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
-                adminRequests = adminRequests.filter(r => r.id !== requestData.id);
-                localStorage.setItem('admin_pending_requests', JSON.stringify(adminRequests));
-                
-                createSystemLog('user_activated', userData);
+                localStorage.setItem('active_users', JSON.stringify(userData));
                 
                 console.log('✅ تم تفعيل المستخدم:', userData.id);
                 
@@ -1870,39 +1289,6 @@
             }
         }
 
-        // ====== إنشاء سجل النظام ======
-        function createSystemLog(type, data) {
-            let logs = JSON.parse(localStorage.getItem('system_logs') || '[]');
-            
-            const log = {
-                type: type,
-                data: data,
-                timestamp: new Date().toISOString(),
-                deviceId: getDeviceId()
-            };
-            
-            logs.unshift(log);
-            localStorage.setItem('system_logs', JSON.stringify(logs));
-        }
-
-        // ====== الحصول على صلاحيات الرتبة ======
-        function getPermissionsForRank(rank) {
-            const permissions = {
-                basic: ['view_profile', 'edit_profile'],
-                citizen: ['access_community', 'join_events'],
-                officer: ['manage_users', 'view_reports'],
-                admin: ['full_access', 'system_settings']
-            };
-            
-            if (rank.includes('مواطن')) return permissions.citizen;
-            if (rank.includes('جندي') || rank.includes('رقيب') || rank.includes('ملازم')) return permissions.basic;
-            if (rank.includes('نقيب') || rank.includes('رائد') || rank.includes('مقدم')) return permissions.officer;
-            if (rank.includes('عقيد') || rank.includes('عميد') || rank.includes('لواء') || rank.includes('مدير') || rank.includes('وزير')) return permissions.admin;
-            
-            return permissions.basic;
-        }
-
-        // ====== دوال مساعدة ======
         function showAlert(message, isSuccess) {
             const alertBox = document.getElementById('alertBox');
             alertBox.textContent = message;
@@ -1921,50 +1307,12 @@
             }, 4000);
         }
 
-        function goToDashboard() {
-            window.location.href = 'dashboard.html';
-        }
-
         function goToHomePage() {
             window.location.href = 'index.html';
         }
 
-        // ====== عرض رسالة التفعيل السابق ======
-        function showAlreadyActivated(user) {
-            const messageDiv = document.getElementById('previousRequestMessage');
-            const formDiv = document.getElementById('applicationForm');
-            
-            messageDiv.innerHTML = `
-                <i class="fas fa-check-circle" style="font-size: 60px; color: #00c853; margin-bottom: 25px;"></i>
-                <h2 style="font-size: 32px; margin-bottom: 20px;">حسابك مفعل بالفعل</h2>
-                
-                <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; margin: 25px 0; backdrop-filter: blur(10px);">
-                    <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <span>الاسم:</span>
-                        <span><strong style="color: var(--accent-light);">${user.fullName}</strong></span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <span>رقم الهوية:</span>
-                        <span>${user.gameId}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <span>الجهة:</span>
-                        <span>${user.departmentName}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 15px 0;">
-                        <span>تاريخ التفعيل:</span>
-                        <span>${new Date(user.activationDate).toLocaleDateString('ar-SA')}</span>
-                    </div>
-                </div>
-                
-                <button class="btn" onclick="goToDashboard()" style="margin-top: 20px; max-width: 300px; margin-left: auto; margin-right: auto;">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>الذهاب للوحة التحكم</span>
-                </button>
-            `;
-            
-            messageDiv.className = 'status-message show accepted';
-            formDiv.style.display = 'none';
+        function goToDashboard() {
+            window.location.href = 'dashboard.html';
         }
     </script>
 </body>
