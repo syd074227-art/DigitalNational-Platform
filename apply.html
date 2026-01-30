@@ -802,6 +802,114 @@
         line-height: 1.6;
     }
 
+    /* ====== رفع الملفات والصور ====== */
+    .file-upload-container {
+        margin-top: 12px;
+    }
+
+    .file-upload-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 30px;
+        background: rgba(0, 0, 0, 0.2);
+        border: 2px dashed rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .file-upload-label:hover {
+        background: rgba(0, 0, 0, 0.3);
+        border-color: var(--accent);
+        transform: translateY(-3px);
+    }
+
+    .file-upload-label i {
+        font-size: 48px;
+        color: var(--accent);
+        margin-bottom: 15px;
+    }
+
+    .file-upload-label span {
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--light);
+        margin-bottom: 8px;
+    }
+
+    .file-upload-label small {
+        font-size: 13px;
+        color: var(--gray-light);
+    }
+
+    .image-preview {
+        display: none;
+        margin-top: 20px;
+        position: relative;
+    }
+
+    .image-preview.show {
+        display: block;
+    }
+
+    .image-preview img {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 16px;
+        border: 3px solid var(--accent);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .image-preview .remove-image {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: var(--danger);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 18px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(213, 0, 0, 0.4);
+    }
+
+    .image-preview .remove-image:hover {
+        background: #b71c1c;
+        transform: scale(1.1);
+    }
+
+    .image-preview .image-info {
+        margin-top: 12px;
+        padding: 12px;
+        background: rgba(0, 200, 83, 0.1);
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .image-preview .image-info i {
+        color: var(--success);
+        margin-left: 8px;
+    }
+
+    .image-preview .image-info span {
+        color: var(--success);
+        font-weight: 600;
+    }
+
+    /* ====== تأثيرات للصور المثالية ====== */
+    .input-group a img:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
     /* ====== التجاوب مع الشاشات ====== */
     @media (max-width: 768px) {
         .container {
@@ -904,6 +1012,18 @@
         .department-card h4 {
             font-size: 17px;
         }
+        
+        .file-upload-label {
+            padding: 30px 20px;
+        }
+        
+        .file-upload-label i {
+            font-size: 40px;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+        }
     }
 </style>
 ```
@@ -985,6 +1105,99 @@
                     <input type="text" id="gameId" placeholder="أدخل 10 أرقام فقط" 
                            maxlength="10" dir="ltr" oninput="validateGameId(this)">
                     <div class="char-counter" id="gameIdCounter">0/10</div>
+                    
+                    <div style="margin-top: 15px; padding: 15px; background: rgba(33, 150, 243, 0.1); border-radius: 12px; border: 1px solid rgba(33, 150, 243, 0.2);">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-info-circle" style="color: #2196f3;"></i>
+                            <strong style="color: #2196f3;">مثال على رقم الهوية المطلوب:</strong>
+                        </div>
+                        <a href="https://image2url.com/r2/default/images/1769805384049-10717217-5fab-4b62-a7c3-63bf1ced898c.jpeg" 
+                           target="_blank" 
+                           style="display: block; margin-top: 10px;">
+                            <img src="https://image2url.com/r2/default/images/1769805384049-10717217-5fab-4b62-a7c3-63bf1ced898c.jpeg" 
+                                 alt="مثال رقم الهوية" 
+                                 style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid rgba(33, 150, 243, 0.3); cursor: pointer; transition: all 0.3s;">
+                        </a>
+                        <small style="display: block; margin-top: 8px; color: var(--gray-light);">
+                            <i class="fas fa-mouse-pointer"></i> اضغط على الصورة لعرضها بحجم أكبر
+                        </small>
+                    </div>
+                </div>
+                
+                <!-- رفع صورة الهوية الوطنية -->
+                <div class="input-group">
+                    <label>
+                        <i class="fas fa-id-card"></i>
+                        <span>قم بإرفاق هويتك الوطنية داخل اللعبة</span>
+                    </label>
+                    <div class="file-upload-container">
+                        <input type="file" id="nationalIdImage" accept="image/*" onchange="handleImageUpload(this, 'nationalIdPreview')" style="display: none;">
+                        <label for="nationalIdImage" class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>اضغط لاختيار الصورة</span>
+                            <small>PNG, JPG, JPEG (الحد الأقصى: 5MB)</small>
+                        </label>
+                        <div id="nationalIdPreview" class="image-preview"></div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 15px; background: rgba(76, 175, 80, 0.1); border-radius: 12px; border: 1px solid rgba(76, 175, 80, 0.2);">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-info-circle" style="color: #4caf50;"></i>
+                            <strong style="color: #4caf50;">مثال على الصورة المطلوبة:</strong>
+                        </div>
+                        <a href="https://image2url.com/r2/default/images/1769805658220-13fbc5c4-b22b-4b75-81cf-9d53e13bb9e1.jpeg" 
+                           target="_blank" 
+                           style="display: block; margin-top: 10px;">
+                            <img src="https://image2url.com/r2/default/images/1769805658220-13fbc5c4-b22b-4b75-81cf-9d53e13bb9e1.jpeg" 
+                                 alt="مثال الهوية الوطنية" 
+                                 style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid rgba(76, 175, 80, 0.3); cursor: pointer; transition: all 0.3s;">
+                        </a>
+                        <small style="display: block; margin-top: 8px; color: var(--gray-light);">
+                            <i class="fas fa-mouse-pointer"></i> اضغط على الصورة لعرضها بحجم أكبر
+                        </small>
+                    </div>
+                </div>
+                
+                <!-- رفع صورة الشخصية -->
+                <div class="input-group">
+                    <label>
+                        <i class="fas fa-camera"></i>
+                        <span>قم بتصوير شخصيتك داخل اللعبة</span>
+                    </label>
+                    <div class="file-upload-container">
+                        <input type="file" id="characterImage" accept="image/*" onchange="handleImageUpload(this, 'characterPreview')" style="display: none;">
+                        <label for="characterImage" class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>اضغط لاختيار الصورة</span>
+                            <small>PNG, JPG, JPEG (الحد الأقصى: 5MB)</small>
+                        </label>
+                        <div id="characterPreview" class="image-preview"></div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 15px; background: rgba(255, 152, 0, 0.1); border-radius: 12px; border: 1px solid rgba(255, 152, 0, 0.2);">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-exclamation-triangle" style="color: #ff9800;"></i>
+                            <strong style="color: #ff9800;">تنبيه مهم:</strong>
+                        </div>
+                        <p style="color: var(--gray-light); margin-bottom: 12px; font-size: 14px;">
+                            <i class="fas fa-ban" style="color: #f44336;"></i>
+                            يُمنع استخدام الإكسسوارات أو القبعات في الصورة
+                        </p>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-info-circle" style="color: #ff9800;"></i>
+                            <strong style="color: #ff9800;">مثال على الصورة المطلوبة:</strong>
+                        </div>
+                        <a href="https://image2url.com/r2/default/images/1769805924361-f7311e74-b60a-4726-b2e8-8e8678948984.jpeg" 
+                           target="_blank" 
+                           style="display: block; margin-top: 10px;">
+                            <img src="https://image2url.com/r2/default/images/1769805924361-f7311e74-b60a-4726-b2e8-8e8678948984.jpeg" 
+                                 alt="مثال صورة الشخصية" 
+                                 style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid rgba(255, 152, 0, 0.3); cursor: pointer; transition: all 0.3s;">
+                        </a>
+                        <small style="display: block; margin-top: 8px; color: var(--gray-light);">
+                            <i class="fas fa-mouse-pointer"></i> اضغط على الصورة لعرضها بحجم أكبر
+                        </small>
+                    </div>
                 </div>
                 
                 <button class="btn" onclick="validateStep1()">
@@ -1241,6 +1454,8 @@
     let selectedAdditionals = [];
     let hasExistingRequest = false;
     let existingRequestData = null;
+    let uploadedNationalId = null;
+    let uploadedCharacterImage = null;
 
     // ====== التهيئة عند تحميل الصفحة ======
     document.addEventListener('DOMContentLoaded', function() {
@@ -1429,6 +1644,16 @@
         
         if (!gameId || gameId.length !== 10 || !/^\d+$/.test(gameId)) {
             showAlert('رقم الهوية يجب أن يكون 10 أرقام بالضبط', false);
+            return;
+        }
+        
+        if (!uploadedNationalId) {
+            showAlert('يرجى إرفاق صورة الهوية الوطنية داخل اللعبة', false);
+            return;
+        }
+        
+        if (!uploadedCharacterImage) {
+            showAlert('يرجى إرفاق صورة شخصيتك داخل اللعبة', false);
             return;
         }
 
@@ -1668,6 +1893,8 @@
             departmentName: DEPARTMENTS[selectedDepartment].name,
             rank: selectedRank,
             additionals: selectedAdditionals,
+            nationalIdImage: uploadedNationalId,
+            characterImage: uploadedCharacterImage,
             date: new Date().toLocaleString('ar-SA', { 
                 year: 'numeric', 
                 month: 'long', 
@@ -1891,9 +2118,115 @@
         window.location.href = 'dashboard.html';
     }
 
-    // ====== التحقق من رقم الهوية ======
+    // ====== التحقق من رقم الهوية (أرقام عربية وإنجليزية) ======
     function validateGameId(input) {
-        input.value = input.value.replace(/\D/g, '');
+        // تحويل الأرقام العربية الهندية إلى أرقام إنجليزية
+        const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+        const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        
+        let value = input.value;
+        
+        // تحويل الأرقام العربية إلى إنجليزية
+        arabicNumbers.forEach((arabicNum, index) => {
+            value = value.split(arabicNum).join(englishNumbers[index]);
+        });
+        
+        // إزالة أي شيء ليس رقماً
+        value = value.replace(/[^0-9]/g, '');
+        
+        // تحديث القيمة
+        input.value = value;
+    }
+
+    // ====== معالجة رفع الصور ======
+    function handleImageUpload(input, previewId) {
+        const file = input.files[0];
+        const previewContainer = document.getElementById(previewId);
+        
+        if (!file) {
+            return;
+        }
+        
+        // التحقق من نوع الملف
+        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+        if (!allowedTypes.includes(file.type)) {
+            showAlert('يرجى اختيار صورة بصيغة PNG أو JPG فقط', false);
+            input.value = '';
+            return;
+        }
+        
+        // التحقق من حجم الملف (5MB كحد أقصى)
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            showAlert('حجم الصورة يجب أن يكون أقل من 5 ميجابايت', false);
+            input.value = '';
+            return;
+        }
+        
+        // قراءة الملف وعرض المعاينة
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imageData = e.target.result;
+            
+            // حفظ الصورة في المتغير المناسب
+            if (previewId === 'nationalIdPreview') {
+                uploadedNationalId = {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    data: imageData
+                };
+            } else if (previewId === 'characterPreview') {
+                uploadedCharacterImage = {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    data: imageData
+                };
+            }
+            
+            // عرض المعاينة
+            previewContainer.innerHTML = `
+                <img src="${imageData}" alt="معاينة الصورة">
+                <div class="remove-image" onclick="removeImage('${previewId}', '${input.id}')">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="image-info">
+                    <i class="fas fa-check-circle"></i>
+                    <span>تم رفع الصورة بنجاح (${formatFileSize(file.size)})</span>
+                </div>
+            `;
+            previewContainer.classList.add('show');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // ====== إزالة الصورة ======
+    function removeImage(previewId, inputId) {
+        const previewContainer = document.getElementById(previewId);
+        const inputElement = document.getElementById(inputId);
+        
+        previewContainer.innerHTML = '';
+        previewContainer.classList.remove('show');
+        inputElement.value = '';
+        
+        // حذف الصورة من المتغير
+        if (previewId === 'nationalIdPreview') {
+            uploadedNationalId = null;
+        } else if (previewId === 'characterPreview') {
+            uploadedCharacterImage = null;
+        }
+        
+        showAlert('تم حذف الصورة', true);
+    }
+
+    // ====== تنسيق حجم الملف ======
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
     }
 </script>
 ```
