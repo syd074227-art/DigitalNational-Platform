@@ -6,7 +6,6 @@
     <title>هيئة KR الرقمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* === الأساسيات === */
         * {
             margin: 0;
             padding: 0;
@@ -21,7 +20,6 @@
             min-height: 100vh;
         }
         
-        /* === الهيدر === */
         .header {
             background: #2d68c4;
             color: white;
@@ -61,28 +59,11 @@
             font-size: 22px;
         }
         
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ff6b6b;
-            color: white;
-            font-size: 12px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        /* === المحتوى الرئيسي === */
-        .main-content {
+        .main {
             margin-top: 70px;
             padding: 20px;
         }
         
-        /* === البانر الرئيسي === */
         .banner {
             background: linear-gradient(135deg, #2d68c4, #4a90e2);
             color: white;
@@ -108,7 +89,7 @@
             margin-bottom: 20px;
         }
         
-        .apply-btn {
+        .btn {
             background: white;
             color: #2d68c4;
             border: none;
@@ -120,17 +101,6 @@
             align-items: center;
             gap: 8px;
             font-size: 16px;
-        }
-        
-        /* === الخدمات === */
-        .services-section {
-            margin-bottom: 30px;
-        }
-        
-        .section-title {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #333;
         }
         
         .services-grid {
@@ -169,7 +139,6 @@
             color: #666;
         }
         
-        /* === الشريط السفلي === */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -233,75 +202,57 @@
             </div>
             <div class="notification">
                 <i class="fas fa-bell"></i>
-                <span class="notification-badge" id="notificationBadge">0</span>
+                <span class="notification-badge" id="notificationBadge" style="display:none; position:absolute; top:-5px; right:-5px; background:#ff6b6b; color:white; font-size:10px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center;">0</span>
             </div>
         </div>
     </header>
     
     <!-- المحتوى الرئيسي -->
-    <main class="main-content">
+    <main class="main">
         <!-- البانر -->
         <section class="banner">
             <i class="fas fa-id-card-alt"></i>
             <h2>طلب تفعيل الهوية</h2>
             <p>نظام تفعيل الهوية الرسمي لهيئة KR الرقمية</p>
-            <button class="apply-btn" onclick="goToApply()">
-                <i class="fas fa-rocket"></i>
-                تقديم طلب التفعيل
+            <button class="btn" onclick="window.location.href='apply.html'">
+                <i class="fas fa-rocket"></i> تقديم طلب التفعيل
             </button>
         </section>
         
         <!-- الخدمات -->
-        <section class="services-section">
-            <h3 class="section-title">الخدمات الرقمية</h3>
+        <section>
+            <h3 style="font-size:18px; margin-bottom:15px; color:#333;">الخدمات الرقمية</h3>
             <div class="services-grid">
-                <div class="service-card" onclick="openService('kr')">
+                <div class="service-card" onclick="window.location.href='apply.html'">
                     <div class="service-icon" style="color: #2d68c4;">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-id-card"></i>
                     </div>
-                    <h3 class="service-title">KR</h3>
-                    <p class="service-desc">النظام الرئيسي لإدارة الهويات</p>
+                    <h3 class="service-title">طلب تفعيل</h3>
+                    <p class="service-desc">تقديم طلب جديد</p>
                 </div>
                 
-                <div class="service-card" onclick="openService('tracking')">
-                    <div class="service-icon" style="color: #00a86b;">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h3 class="service-title">واكب</h3>
-                    <p class="service-desc">متابعة الطلبات والتتبع</p>
-                </div>
-                
-                <div class="service-card" onclick="showServicesPage()">
-                    <div class="service-icon" style="color: #ff6b6b;">
-                        <i class="fas fa-cogs"></i>
-                    </div>
-                    <h3 class="service-title">الخدمات</h3>
-                    <p class="service-desc">جميع الخدمات الإلكترونية</p>
-                </div>
-                
-                <div class="service-card" onclick="showProfilePage()">
-                    <div class="service-icon" style="color: #9b59b6;">
-                        <i class="fas fa-user-circle"></i>
-                    </div>
-                    <h3 class="service-title">معلوماتي</h3>
-                    <p class="service-desc">المعلومات الشخصية</p>
-                </div>
-                
-                <!-- الخدمات الإدارية -->
-                <div class="service-card" onclick="openAdminPanel()">
+                <div class="service-card" onclick="window.open('admin/login.html', '_blank')">
                     <div class="service-icon" style="color: #1e3a8a;">
                         <i class="fas fa-user-shield"></i>
                     </div>
                     <h3 class="service-title">الخدمة الإدارية</h3>
-                    <p class="service-desc">إدارة الطلبات والمراجعة</p>
+                    <p class="service-desc">دخول المسؤولين</p>
                 </div>
                 
-                <div class="service-card" onclick="openOwnerPanel()">
-                    <div class="service-icon" style="color: #7c3aed;">
-                        <i class="fas fa-crown"></i>
+                <div class="service-card" onclick="alert('قريباً')">
+                    <div class="service-icon" style="color: #00a86b;">
+                        <i class="fas fa-map-marker-alt"></i>
                     </div>
-                    <h3 class="service-title">خدمة المسؤولين</h3>
-                    <p class="service-desc">الإدارة الكاملة للنظام</p>
+                    <h3 class="service-title">واكب</h3>
+                    <p class="service-desc">متابعة الطلبات</p>
+                </div>
+                
+                <div class="service-card" onclick="alert('قريباً')">
+                    <div class="service-icon" style="color: #9b59b6;">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3 class="service-title">معلوماتي</h3>
+                    <p class="service-desc">الملف الشخصي</p>
                 </div>
             </div>
         </section>
@@ -310,35 +261,35 @@
     <!-- الشريط السفلي -->
     <nav class="bottom-nav">
         <div class="nav-container">
-            <a href="javascript:void(0)" class="nav-item" onclick="showServicesPage()">
+            <a href="javascript:void(0)" class="nav-item" onclick="alert('قريباً')">
                 <div class="nav-icon">
                     <i class="fas fa-th-large"></i>
                 </div>
                 <span class="nav-label">الخدمات</span>
             </a>
             
-            <a href="javascript:void(0)" class="nav-item" onclick="openService('tracking')">
+            <a href="javascript:void(0)" class="nav-item" onclick="alert('قريباً')">
                 <div class="nav-icon">
                     <i class="fas fa-map-marker-alt"></i>
                 </div>
                 <span class="nav-label">واكب</span>
             </a>
             
-            <a href="javascript:void(0)" class="nav-item nav-main active" onclick="goToHome()">
+            <a href="javascript:void(0)" class="nav-item nav-main active" onclick="window.location.href='index.html'">
                 <div class="nav-icon">
                     <i class="fas fa-home"></i>
                 </div>
                 <span class="nav-label">الرئيسية</span>
             </a>
             
-            <a href="javascript:void(0)" class="nav-item" onclick="showMessagesPage()">
+            <a href="javascript:void(0)" class="nav-item" onclick="alert('قريباً')">
                 <div class="nav-icon">
                     <i class="fas fa-envelope"></i>
                 </div>
                 <span class="nav-label">الرسائل</span>
             </a>
             
-            <a href="javascript:void(0)" class="nav-item" onclick="showProfilePage()">
+            <a href="javascript:void(0)" class="nav-item" onclick="alert('قريباً')">
                 <div class="nav-icon">
                     <i class="fas fa-user"></i>
                 </div>
@@ -352,7 +303,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('موقع هيئة KR الرقمية - جاهز');
             updateNotifications();
-            setupBottomNav();
         });
         
         // تحديث الإشعارات
@@ -365,105 +315,11 @@
                 if (pending > 0) {
                     badge.textContent = pending;
                     badge.style.display = 'flex';
-                } else {
-                    badge.style.display = 'none';
                 }
                 
             } catch (error) {
                 console.log('لا توجد طلبات بعد');
             }
-        }
-        
-        // إعداد الشريط السفلي
-        function setupBottomNav() {
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    navItems.forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-        }
-        
-        // الانتقال للتقديم
-        function goToApply() {
-            window.location.href = 'apply.html';
-        }
-        
-        // العودة للرئيسية
-        function goToHome() {
-            window.location.href = 'index.html';
-        }
-        
-        // فتح الخدمات
-        function openService(service) {
-            switch(service) {
-                case 'kr':
-                    alert('🚀 خدمة KR - قريباً');
-                    break;
-                case 'tracking':
-                    alert('📍 خدمة المتابعة - قريباً');
-                    break;
-            }
-        }
-        
-        // فتح اللوحة الإدارية
-        function openAdminPanel() {
-            const username = prompt('🔐 اسم المستخدم الإداري:');
-            if (!username) return;
-            
-            const password = prompt('🔑 كلمة المرور:');
-            if (!password) return;
-            
-            if (username === 'admin' && password === 'admin123') {
-                // حفظ جلسة المسؤول
-                sessionStorage.setItem('admin_session', JSON.stringify({
-                    username: 'admin',
-                    role: 'admin',
-                    loginTime: new Date().getTime()
-                }));
-                
-                // توجيه للوحة الإدارية
-                window.location.href = 'admin/dashboard.html';
-            } else {
-                alert('❌ بيانات الدخول غير صحيحة!');
-            }
-        }
-        
-        // فتح لوحة المالك
-        function openOwnerPanel() {
-            const username = prompt('👑 اسم مستخدم المالك:');
-            if (!username) return;
-            
-            const password = prompt('🔑 كلمة المرور:');
-            if (!password) return;
-            
-            if (username === 'owner' && password === 'owner123') {
-                // حفظ جلسة المالك
-                sessionStorage.setItem('owner_session', JSON.stringify({
-                    username: 'owner',
-                    role: 'owner',
-                    loginTime: new Date().getTime()
-                }));
-                
-                // توجيه للوحة المالك
-                window.location.href = 'admin/owner.html';
-            } else {
-                alert('❌ بيانات الدخول غير صحيحة!');
-            }
-        }
-        
-        // عرض صفحات الشريط السفلي
-        function showServicesPage() {
-            alert('📋 صفحة الخدمات - قريباً');
-        }
-        
-        function showMessagesPage() {
-            alert('📧 صفحة الرسائل - قريباً');
-        }
-        
-        function showProfilePage() {
-            alert('👤 صفحة المعلومات الشخصية - قريباً');
         }
     </script>
 </body>
