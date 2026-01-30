@@ -471,4 +471,505 @@
                     <div class="stat-icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <div class="stat-number" id="activeUsers">0</
+                    <div class="stat-number" id="activeUsers">0</div>
+                    <div class="stat-label">مستخدمين مفعلين</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- البحث والفلترة -->
+        <section class="filters-section">
+            <div class="filters-header">
+                <h3 class="filters-title">
+                    <i class="fas fa-filter"></i>
+                    فلترة الطلبات
+                </h3>
+                
+                <div class="search-box">
+                    <input type="text" class="search-input" id="searchInput" placeholder="ابحث بالاسم أو رقم الهوية...">
+                    <button class="search-btn" onclick="searchRequests()">
+                        <i class="fas fa-search"></i> بحث
+                    </button>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterRequests('all')">
+                    <i class="fas fa-list"></i> الكل
+                </button>
+                <button class="filter-btn" onclick="filterRequests('pending')">
+                    <i class="fas fa-clock"></i> قيد المراجعة
+                </button>
+                <button class="filter-btn" onclick="filterRequests('approved')">
+                    <i class="fas fa-check"></i> مقبولة
+                </button>
+                <button class="filter-btn" onclick="filterRequests('rejected')">
+                    <i class="fas fa-times"></i> مرفوضة
+                </button>
+                <button class="filter-btn" onclick="showTodayRequests()">
+                    <i class="fas fa-calendar-day"></i> طلبات اليوم
+                </button>
+            </div>
+        </section>
+        
+        <!-- جدول الطلبات -->
+        <section class="requests-section">
+            <h3 class="requests-title">
+                <i class="fas fa-tasks"></i>
+                طلبات التفعيل
+                <span style="font-size: 16px; color: var(--gray); margin-right: 10px;" id="requestsCount">(0 طلب)</span>
+            </h3>
+            
+            <table class="requests-table" id="requestsTable">
+                <thead>
+                    <tr>
+                        <th>رقم الطلب</th>
+                        <th>الاسم</th>
+                        <th>رقم الهوية</th>
+                        <th>الوظيفة</th>
+                        <th>التاريخ</th>
+                        <th>الحالة</th>
+                        <th class="actions-cell">الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="requestsBody">
+                    <!-- البيانات تظهر هنا -->
+                </tbody>
+            </table>
+            
+            <!-- رسالة فارغة -->
+            <div class="empty-message" id="emptyMessage" style="display: none;">
+                <div class="empty-icon">
+                    <i class="fas fa-inbox"></i>
+                </div>
+                <h3 class="empty-title">لا توجد طلبات</h3>
+                <p class="empty-subtitle">لم يتم تقديم أي طلبات حتى الآن</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // بيانات التطبيق
+        let allRequests = [];
+        let currentFilter = 'all';
+        let currentSearch = '';
+        
+        // عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('لوحة التحكم الإدارية - جاهزة');
+            
+            // التحقق من تسجيل الدخول
+            checkAdminLogin();
+            
+            // تحميل البيانات
+            loadAllData();
+            
+            // إعداد الأحداث
+            setupEvents();
+            
+            // تعيين اسم المسؤول
+            setAdminName();
+        });
+        
+        // التحقق من تسجيل الدخول
+        function checkAdminLogin() {
+            try {
+                const session = JSON.parse(localStorage.getItem('admin_session'));
+                
+                if (!session) {
+                    redirectToLogin('يجب تسجيل الدخول أولاً');
+                    return false;
+                }
+                
+                // التحقق من انتهاء الجلسة (8 ساعات)
+                const currentTime = new Date().getTime();
+                const sessionAge = currentTime - session.loginTime;
+                const eightHours = 8 * 60 * 60 * 1000;
+                
+                if (sessionAge > eightHours) {
+                    localStorage.removeItem('admin_session');
+                    redirectToLogin('انتهت مدة الجلسة، يرجى تسجيل الدخول مرة أخرى');
+                    return false;
+                }
+                
+                return true;
+                
+            } catch (error) {
+                redirectToLogin('حدث خطأ في الجلسة');
+                return false;
+            }
+        }
+        
+        // توجيه لصفحة تسجيل الدخول
+        function redirectToLogin(message) {
+            alert('⛔ ' + message);
+            window.location.href = 'login.html';
+        }
+        
+        // تعيين اسم المسؤول
+        function setAdminName() {
+            try {
+                const session = JSON.parse(localStorage.getItem('admin_session'));
+                if (session && session.username) {
+                    const role = session.role === 'owner' ? '👑 المالك' : '👨‍💼 المسؤول';
+                    document.getElementById('adminName').textContent = `مرحباً، ${role}`;
+                }
+            } catch (error) {
+                console.error('خطأ في تعيين اسم المسؤول:', error);
+            }
+        }
+        
+        // تحميل جميع البيانات
+        function loadAllData() {
+            try {
+                // تحميل الطلبات
+                allRequests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+                
+                // تحميل الإحصائيات
+                loadStatistics();
+                
+                // تحميل الطلبات
+                loadRequests();
+                
+                // تحديث العداد
+                updateRequestsCount();
+                
+            } catch (error) {
+                console.error('خطأ في تحميل البيانات:', error);
+                showError('حدث خطأ في تحميل البيانات');
+            }
+        }
+        
+        // تحميل الإحصائيات
+        function loadStatistics() {
+            try {
+                const total = allRequests.length;
+                const pending = allRequests.filter(req => req.status === 'pending').length;
+                const approved = allRequests.filter(req => req.status === 'approved').length;
+                
+                document.getElementById('totalRequests').textContent = total;
+                document.getElementById('pendingRequests').textContent = pending;
+                document.getElementById('approvedRequests').textContent = approved;
+                document.getElementById('activeUsers').textContent = approved; // المستخدمين المفعلين = الطلبات المقبولة
+                
+            } catch (error) {
+                console.error('خطأ في تحميل الإحصائيات:', error);
+            }
+        }
+        
+        // تحميل الطلبات
+        function loadRequests() {
+            try {
+                const tbody = document.getElementById('requestsBody');
+                const emptyMessage = document.getElementById('emptyMessage');
+                
+                // مسح المحتوى السابق
+                tbody.innerHTML = '';
+                
+                // تصفية الطلبات
+                let filteredRequests = allRequests;
+                
+                // التصفية حسب النوع
+                if (currentFilter !== 'all') {
+                    filteredRequests = filteredRequests.filter(req => req.status === currentFilter);
+                }
+                
+                // التصفية حسب البحث
+                if (currentSearch.trim() !== '') {
+                    const searchTerm = currentSearch.toLowerCase();
+                    filteredRequests = filteredRequests.filter(req => 
+                        (req.fullName && req.fullName.toLowerCase().includes(searchTerm)) ||
+                        (req.gameId && req.gameId.includes(searchTerm)) ||
+                        (req.id && req.id.toLowerCase().includes(searchTerm))
+                    );
+                }
+                
+                // إذا لا توجد طلبات
+                if (filteredRequests.length === 0) {
+                    tbody.style.display = 'none';
+                    emptyMessage.style.display = 'block';
+                    return;
+                }
+                
+                // إخفاء رسالة الفارغة
+                tbody.style.display = '';
+                emptyMessage.style.display = 'none';
+                
+                // عرض الطلبات
+                filteredRequests.forEach((request, index) => {
+                    const row = document.createElement('tr');
+                    
+                    // تحديد الحالة
+                    let statusText, statusClass;
+                    switch (request.status) {
+                        case 'approved':
+                            statusText = 'مقبولة';
+                            statusClass = 'status-approved';
+                            break;
+                        case 'rejected':
+                            statusText = 'مرفوضة';
+                            statusClass = 'status-rejected';
+                            break;
+                        default:
+                            statusText = 'قيد المراجعة';
+                            statusClass = 'status-pending';
+                    }
+                    
+                    // تحديد اسم الوظيفة
+                    const jobNames = {
+                        citizen: 'مواطن',
+                        interior: 'منسوب الداخلية',
+                        health: 'منسوب الصحة',
+                        justice: 'منسوب العدل'
+                    };
+                    
+                    const jobName = jobNames[request.job] || request.job || 'غير محدد';
+                    
+                    // أزرار الإجراءات
+                    let actionButtons = '';
+                    if (request.status === 'pending') {
+                        actionButtons = `
+                            <button class="action-btn btn-view" onclick="viewRequest(${index})">
+                                <i class="fas fa-eye"></i> عرض
+                            </button>
+                            <button class="action-btn btn-approve" onclick="approveRequest(${index})">
+                                <i class="fas fa-check"></i> قبول
+                            </button>
+                            <button class="action-btn btn-reject" onclick="rejectRequest(${index})">
+                                <i class="fas fa-times"></i> رفض
+                            </button>
+                        `;
+                    } else {
+                        actionButtons = `
+                            <button class="action-btn btn-view" onclick="viewRequest(${index})">
+                                <i class="fas fa-eye"></i> عرض
+                            </button>
+                            <button class="action-btn btn-edit" onclick="editRequest(${index})">
+                                <i class="fas fa-edit"></i> تعديل
+                            </button>
+                        `;
+                    }
+                    
+                    row.innerHTML = `
+                        <td><strong>${request.id || 'غير محدد'}</strong></td>
+                        <td>${request.fullName || 'غير معروف'}</td>
+                        <td><code>${request.gameId || 'غير متوفر'}</code></td>
+                        <td>${jobName}</td>
+                        <td>${request.date || 'غير معروف'}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td class="actions-cell">
+                            <div class="action-buttons">
+                                ${actionButtons}
+                            </div>
+                        </td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
+                
+                // تحديث العداد
+                updateRequestsCount(filteredRequests.length);
+                
+            } catch (error) {
+                console.error('خطأ في تحميل الطلبات:', error);
+                showError('حدث خطأ في تحميل الطلبات');
+            }
+        }
+        
+        // تحديث عداد الطلبات
+        function updateRequestsCount(count = null) {
+            const element = document.getElementById('requestsCount');
+            if (count !== null) {
+                element.textContent = `(${count} طلب)`;
+            } else {
+                element.textContent = `(${allRequests.length} طلب)`;
+            }
+        }
+        
+        // فلترة الطلبات
+        function filterRequests(filterType) {
+            // تحديث الأزرار النشطة
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // تحديث الفلترة الحالية
+            currentFilter = filterType;
+            
+            // إعادة تحميل الطلبات
+            loadRequests();
+        }
+        
+        // البحث في الطلبات
+        function searchRequests() {
+            currentSearch = document.getElementById('searchInput').value;
+            loadRequests();
+        }
+        
+        // عرض طلبات اليوم
+        function showTodayRequests() {
+            const today = new Date().toLocaleDateString('ar-SA');
+            const todayRequests = allRequests.filter(req => {
+                return req.date && req.date.includes(today.split(' ')[0]);
+            });
+            
+            // عرض الطلبات
+            const tbody = document.getElementById('requestsBody');
+            tbody.innerHTML = '';
+            
+            if (todayRequests.length === 0) {
+                document.getElementById('emptyMessage').style.display = 'block';
+                updateRequestsCount(0);
+                return;
+            }
+            
+            todayRequests.forEach((request, index) => {
+                // ... نفس كود العرض السابق ...
+            });
+            
+            updateRequestsCount(todayRequests.length);
+        }
+        
+        // عرض تفاصيل الطلب
+        function viewRequest(index) {
+            try {
+                const request = allRequests[index];
+                if (!request) return;
+                
+                const jobNames = {
+                    citizen: 'مواطن',
+                    interior: 'منسوب الداخلية',
+                    health: 'منسوب الصحة',
+                    justice: 'منسوب العدل'
+                };
+                
+                const details = `
+📋 تفاصيل الطلب #${request.id}
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+👤 الاسم الكامل: ${request.fullName || 'غير معروف'}
+🔢 العمر: ${request.age || 'غير محدد'} سنة
+🎮 اسم اللعبة: ${request.gameUsername || 'غير متوفر'}
+🆔 رقم الهوية: ${request.gameId || 'غير متوفر'}
+💬 الديسكورد: ${request.discordUsername || 'غير متوفر'}
+👔 الوظيفة: ${jobNames[request.job] || request.job || 'غير محدد'}
+⭐ المنصب: ${request.rank || 'غير محدد'}
+📅 تاريخ التقديم: ${request.date || 'غير معروف'}
+📊 الحالة: ${request.status || 'قيد المراجعة'}
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+${request.status === 'rejected' && request.rejectionReason ? 
+`❌ سبب الرفض: ${request.rejectionReason}` : ''}
+${request.status === 'approved' && request.approvedDate ? 
+`✅ تاريخ القبول: ${request.approvedDate}` : ''}
+                `;
+                
+                alert(details);
+                
+            } catch (error) {
+                console.error('خطأ في عرض الطلب:', error);
+                alert('حدث خطأ في عرض تفاصيل الطلب');
+            }
+        }
+        
+        // قبول الطلب
+        function approveRequest(index) {
+            if (confirm('هل تريد قبول هذا الطلب؟')) {
+                try {
+                    // تحديث حالة الطلب
+                    allRequests[index].status = 'approved';
+                    allRequests[index].approvedDate = new Date().toLocaleString('ar-SA');
+                    allRequests[index].approvedBy = getCurrentAdmin();
+                    
+                    // حفظ التغييرات
+                    localStorage.setItem('identityRequests', JSON.stringify(allRequests));
+                    
+                    // إعادة تحميل البيانات
+                    loadAllData();
+                    
+                    // رسالة نجاح
+                    showSuccess('تم قبول الطلب بنجاح ✓');
+                    
+                } catch (error) {
+                    console.error('خطأ في قبول الطلب:', error);
+                    showError('حدث خطأ في قبول الطلب');
+                }
+            }
+        }
+        
+        // رفض الطلب
+        function rejectRequest(index) {
+            const reason = prompt('أدخل سبب الرفض:');
+            if (reason && reason.trim() !== '') {
+                try {
+                    // تحديث حالة الطلب
+                    allRequests[index].status = 'rejected';
+                    allRequests[index].rejectionReason = reason.trim();
+                    allRequests[index].rejectedDate = new Date().toLocaleString('ar-SA');
+                    allRequests[index].rejectedBy = getCurrentAdmin();
+                    
+                    // حفظ التغييرات
+                    localStorage.setItem('identityRequests', JSON.stringify(allRequests));
+                    
+                    // إعادة تحميل البيانات
+                    loadAllData();
+                    
+                    // رسالة نجاح
+                    showSuccess('تم رفض الطلب بنجاح ✓');
+                    
+                } catch (error) {
+                    console.error('خطأ في رفض الطلب:', error);
+                    showError('حدث خطأ في رفض الطلب');
+                }
+            }
+        }
+        
+        // تعديل الطلب
+        function editRequest(index) {
+            alert('ميزة التعديل قريباً...');
+        }
+        
+        // الحصول على اسم المسؤول الحالي
+        function getCurrentAdmin() {
+            try {
+                const session = JSON.parse(localStorage.getItem('admin_session'));
+                return session?.username || 'غير معروف';
+            } catch (error) {
+                return 'غير معروف';
+            }
+        }
+        
+        // إعداد الأحداث
+        function setupEvents() {
+            // البحث عند الضغط على Enter
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchRequests();
+                }
+            });
+        }
+        
+        // عرض رسالة نجاح
+        function showSuccess(message) {
+            alert('✅ ' + message);
+        }
+        
+        // عرض رسالة خطأ
+        function showError(message) {
+            alert('❌ ' + message);
+        }
+        
+        // تسجيل الخروج
+        function logout() {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
+                localStorage.removeItem('admin_session');
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // العودة للخلف
+        function goBack() {
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>
