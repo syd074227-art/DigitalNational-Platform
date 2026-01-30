@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم الإدارية - هيئة KR الرقمية</title>
+    <title>النظام الإداري المتقدم - هيئة KR الرقمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -12,9 +12,9 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --light: #f8fafc;
             --dark: #1f2937;
-            --gray: #6b7280;
+            --light: #f8fafc;
+            --sidebar: #111827;
         }
         
         * {
@@ -27,6 +27,83 @@
         body {
             background: var(--light);
             color: var(--dark);
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* القائمة الجانبية */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            overflow-y: auto;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid #374151;
+            text-align: center;
+        }
+        
+        .sidebar-header i {
+            font-size: 40px;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-header h2 {
+            font-size: 20px;
+            color: white;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .menu-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-right: 4px solid transparent;
+        }
+        
+        .menu-item:hover {
+            background: #1f2937;
+            border-right-color: #3b82f6;
+        }
+        
+        .menu-item.active {
+            background: #1f2937;
+            border-right-color: #3b82f6;
+            color: #3b82f6;
+        }
+        
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .menu-badge {
+            background: #3b82f6;
+            color: white;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-right: auto;
+        }
+        
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            margin-right: 280px;
             min-height: 100vh;
         }
         
@@ -38,38 +115,41 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
+            z-index: 100;
         }
         
-        .admin-logo {
+        .page-title {
+            font-size: 24px;
+            color: var(--primary);
             display: flex;
             align-items: center;
             gap: 15px;
         }
         
-        .admin-logo i {
-            font-size: 32px;
-            color: var(--primary);
-        }
-        
-        .admin-logo h1 {
-            font-size: 22px;
-            color: var(--primary);
-        }
-        
-        .admin-info {
+        .admin-actions {
             display: flex;
             align-items: center;
             gap: 20px;
         }
         
-        .admin-name {
-            font-weight: 600;
-            color: var(--primary);
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
         
         .logout-btn {
@@ -79,98 +159,62 @@
             padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
-        .logout-btn:hover {
-            background: #dc2626;
+        /* المحتوى */
+        .content-wrapper {
+            padding: 30px;
         }
         
-        /* المحتوى الرئيسي */
-        .admin-content {
-            margin-top: 80px;
-            padding: 20px;
+        /* حاوية الصفحات */
+        .page-container {
+            display: none;
         }
         
-        /* زر الرجوع */
-        .back-btn {
-            background: var(--gray);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 16px;
+        .page-container.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
         }
         
-        .back-btn:hover {
-            background: #4b5563;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        /* قسم الإحصائيات */
-        .stats-section {
-            margin-bottom: 30px;
-        }
-        
-        .stats-title {
-            font-size: 24px;
-            margin-bottom: 25px;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
+        /* بطاقات الإحصائيات */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-        }
-        
-        @media (max-width: 1024px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 640px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
+            margin-bottom: 30px;
         }
         
         .stat-card {
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            border: 2px solid transparent;
-            transition: all 0.3s;
+            transition: transform 0.3s;
         }
         
         .stat-card:hover {
             transform: translateY(-5px);
-            border-color: var(--primary);
         }
         
         .stat-icon {
             font-size: 40px;
-            margin-bottom: 20px;
-            width: 80px;
-            height: 80px;
+            margin-bottom: 15px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
+            margin: 0 auto 15px;
             color: white;
         }
         
@@ -180,20 +224,19 @@
         .stat-4 .stat-icon { background: linear-gradient(135deg, #8b5cf6, var(--primary)); }
         
         .stat-number {
-            font-size: 42px;
+            font-size: 36px;
             font-weight: 800;
             margin-bottom: 10px;
             color: var(--dark);
         }
         
         .stat-label {
-            color: var(--gray);
-            font-size: 16px;
-            font-weight: 500;
+            color: #6b7280;
+            font-size: 14px;
         }
         
-        /* فلترة */
-        .filters-section {
+        /* أدوات البحث والفلترة */
+        .search-section {
             background: white;
             border-radius: 15px;
             padding: 25px;
@@ -201,14 +244,14 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
         
-        .filters-header {
+        .search-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
         
-        .filters-title {
+        .search-title {
             font-size: 20px;
             color: var(--dark);
             display: flex;
@@ -218,7 +261,7 @@
         
         .search-box {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             align-items: center;
         }
         
@@ -253,14 +296,15 @@
             background: var(--secondary);
         }
         
-        .filters {
+        /* أزرار الفلترة */
+        .filter-buttons {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
         }
         
         .filter-btn {
-            padding: 12px 25px;
+            padding: 10px 20px;
             border: 2px solid #e5e7eb;
             background: white;
             border-radius: 10px;
@@ -283,30 +327,20 @@
             border-color: var(--primary);
         }
         
-        /* جدول الطلبات */
-        .requests-section {
+        /* جدول البيانات */
+        .data-table-container {
             background: white;
             border-radius: 15px;
-            padding: 30px;
+            overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
         
-        .requests-title {
-            font-size: 22px;
-            margin-bottom: 25px;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .requests-table {
+        .data-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
         
-        .requests-table th {
+        .data-table th {
             background: var(--light);
             padding: 18px 20px;
             text-align: right;
@@ -315,38 +349,12 @@
             border-bottom: 3px solid var(--primary);
         }
         
-        .requests-table td {
+        .data-table td {
             padding: 18px 20px;
             border-bottom: 1px solid #e5e7eb;
         }
         
-        .status-badge {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            display: inline-block;
-        }
-        
-        .status-pending {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        
-        .status-approved {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        
-        .status-rejected {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-        
-        .actions-cell {
-            min-width: 200px;
-        }
-        
+        /* أزرار الإجراءات */
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -375,26 +383,105 @@
             color: white;
         }
         
-        .btn-approve {
-            background: var(--success);
-            color: white;
-        }
-        
-        .btn-reject {
-            background: var(--danger);
-            color: white;
-        }
-        
         .btn-edit {
             background: var(--warning);
             color: white;
         }
         
-        /* رسالة فارغة */
-        .empty-message {
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-suspend {
+            background: #8b5cf6;
+            color: white;
+        }
+        
+        .btn-change {
+            background: var(--success);
+            color: white;
+        }
+        
+        /* نماذج */
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-submit {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            flex: 1;
+        }
+        
+        .btn-cancel {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            flex: 1;
+        }
+        
+        /* رسائل فارغة */
+        .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: var(--gray);
+            color: #6b7280;
         }
         
         .empty-icon {
@@ -403,160 +490,603 @@
             opacity: 0.5;
         }
         
-        .empty-title {
-            font-size: 20px;
-            margin-bottom: 10px;
+        /* نافذة العرض */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
         
-        .empty-subtitle {
-            font-size: 16px;
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        /* تخصيص للصفحات */
+        #activationRequests .data-table th:nth-child(1) { width: 15%; }
+        #activationRequests .data-table th:nth-child(2) { width: 20%; }
+        #activationRequests .data-table th:nth-child(3) { width: 15%; }
+        #activationRequests .data-table th:nth-child(4) { width: 15%; }
+        #activationRequests .data-table th:nth-child(5) { width: 15%; }
+        #activationRequests .data-table th:nth-child(6) { width: 10%; }
+        #activationRequests .data-table th:nth-child(7) { width: 10%; }
+        
+        /* تذييل */
+        .admin-footer {
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
+            font-size: 14px;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 50px;
+        }
+        
+        /* استجابة للشاشات الصغيرة */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar-header h2,
+            .menu-item span:not(.menu-badge) {
+                display: none;
+            }
+            
+            .main-content {
+                margin-right: 70px;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- الهيدر -->
-    <header class="admin-header">
-        <div class="admin-logo">
+    <!-- القائمة الجانبية -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
             <i class="fas fa-user-shield"></i>
-            <h1>لوحة التحكم الإدارية</h1>
+            <h2>النظام الإداري</h2>
         </div>
         
-        <div class="admin-info">
-            <span class="admin-name" id="adminName">مرحباً، المسؤول</span>
-            <button class="logout-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> تسجيل خروج
-            </button>
+        <div class="sidebar-menu">
+            <div class="menu-item active" onclick="showPage('dashboard')">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>لوحة التحكم</span>
+            </div>
+            
+            <div class="menu-item" onclick="showPage('activationRequests')">
+                <i class="fas fa-id-card"></i>
+                <span>طلبات التفعيل</span>
+                <span class="menu-badge" id="pendingBadge">0</span>
+            </div>
+            
+            <div class="menu-item" onclick="showPage('activeUsers')">
+                <i class="fas fa-users"></i>
+                <span>المستخدمين المفعلين</span>
+            </div>
+            
+            <div class="menu-item" onclick="showPage('suspendUser')">
+                <i class="fas fa-user-slash"></i>
+                <span>تعطيل حساب</span>
+            </div>
+            
+            <div class="menu-item" onclick="showPage('changeJob')">
+                <i class="fas fa-exchange-alt"></i>
+                <span>تغيير وظيفة</span>
+            </div>
+            
+            <div class="menu-item" onclick="showPage('viewLogs')">
+                <i class="fas fa-history"></i>
+                <span>سجلات النظام</span>
+            </div>
         </div>
-    </header>
+    </aside>
     
     <!-- المحتوى الرئيسي -->
-    <main class="admin-content">
-        <button class="back-btn" onclick="goBack()">
-            <i class="fas fa-arrow-right"></i> العودة
-        </button>
+    <main class="main-content">
+        <!-- الهيدر -->
+        <header class="admin-header">
+            <h1 class="page-title" id="pageTitle">
+                <i class="fas fa-tachometer-alt"></i>
+                لوحة التحكم
+            </h1>
+            
+            <div class="admin-actions">
+                <div class="admin-info">
+                    <div class="admin-avatar" id="adminAvatar">م</div>
+                    <div>
+                        <div style="font-weight: 600;" id="adminName">المسؤول</div>
+                        <div style="font-size: 12px; color: #6b7280;">النظام الإداري</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل خروج
+                </button>
+            </div>
+        </header>
         
-        <!-- الإحصائيات -->
-        <section class="stats-section">
-            <h2 class="stats-title">
-                <i class="fas fa-chart-bar"></i>
-                إحصائيات النظام
-            </h2>
-            
-            <div class="stats-grid">
-                <div class="stat-card stat-1">
-                    <div class="stat-icon">
-                        <i class="fas fa-file-alt"></i>
+        <!-- محتوى الصفحات -->
+        <div class="content-wrapper">
+            <!-- الصفحة 1: لوحة التحكم -->
+            <div class="page-container active" id="dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card stat-1">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-number" id="totalRequests">0</div>
+                        <div class="stat-label">إجمالي الطلبات</div>
                     </div>
-                    <div class="stat-number" id="totalRequests">0</div>
-                    <div class="stat-label">إجمالي الطلبات</div>
+                    
+                    <div class="stat-card stat-2">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-number" id="pendingRequests">0</div>
+                        <div class="stat-label">طلبات بانتظار المراجعة</div>
+                    </div>
+                    
+                    <div class="stat-card stat-3">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-number" id="approvedRequests">0</div>
+                        <div class="stat-label">طلبات مقبولة</div>
+                    </div>
+                    
+                    <div class="stat-card stat-4">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-number" id="activeUsersCount">0</div>
+                        <div class="stat-label">مستخدمين مفعلين</div>
+                    </div>
                 </div>
                 
-                <div class="stat-card stat-2">
-                    <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
+                <div class="search-section">
+                    <div class="search-header">
+                        <h3 class="search-title">
+                            <i class="fas fa-search"></i>
+                            البحث السريع
+                        </h3>
                     </div>
-                    <div class="stat-number" id="pendingRequests">0</div>
-                    <div class="stat-label">قيد المراجعة</div>
+                    
+                    <div class="search-box">
+                        <input type="text" class="search-input" id="globalSearch" placeholder="ابحث عن مستخدم أو طلب...">
+                        <button class="search-btn" onclick="globalSearch()">
+                            <i class="fas fa-search"></i>
+                            بحث
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="stat-card stat-3">
-                    <div class="stat-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="stat-number" id="approvedRequests">0</div>
-                    <div class="stat-label">مقبولة</div>
-                </div>
-                
-                <div class="stat-card stat-4">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-number" id="activeUsers">0</div>
-                    <div class="stat-label">مستخدمين مفعلين</div>
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الهوية</th>
+                                <th>الاسم</th>
+                                <th>الوظيفة</th>
+                                <th>الحالة</th>
+                                <th>التاريخ</th>
+                                <th>آخر نشاط</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentUsers">
+                            <!-- البيانات الأخيرة تظهر هنا -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </section>
+            
+            <!-- الصفحة 2: طلبات التفعيل -->
+            <div class="page-container" id="activationRequests">
+                <div class="search-section">
+                    <div class="search-header">
+                        <h3 class="search-title">
+                            <i class="fas fa-id-card"></i>
+                            طلبات تفعيل الهوية
+                        </h3>
+                        
+                        <div class="search-box">
+                            <input type="text" class="search-input" id="searchRequests" placeholder="ابحث برقم الهوية أو الاسم...">
+                            <button class="search-btn" onclick="searchActivationRequests()">
+                                <i class="fas fa-search"></i>
+                                بحث
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" onclick="filterActivationRequests('all')">الكل</button>
+                        <button class="filter-btn" onclick="filterActivationRequests('pending')">قيد المراجعة</button>
+                        <button class="filter-btn" onclick="filterActivationRequests('approved')">مقبولة</button>
+                        <button class="filter-btn" onclick="filterActivationRequests('rejected')">مرفوضة</button>
+                        <button class="filter-btn" onclick="filterActivationRequests('today')">طلبات اليوم</button>
+                    </div>
+                </div>
+                
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>الاسم</th>
+                                <th>رقم الهوية</th>
+                                <th>الوظيفة المطلوبة</th>
+                                <th>التاريخ</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requestsTable">
+                            <!-- طلبات التفعيل تظهر هنا -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- الصفحة 3: المستخدمين المفعلين -->
+            <div class="page-container" id="activeUsers">
+                <div class="search-section">
+                    <div class="search-header">
+                        <h3 class="search-title">
+                            <i class="fas fa-users"></i>
+                            المستخدمين المفعلين
+                        </h3>
+                        
+                        <div class="search-box">
+                            <input type="text" class="search-input" id="searchUsers" placeholder="ابحث عن مستخدم...">
+                            <button class="search-btn" onclick="searchActiveUsers()">
+                                <i class="fas fa-search"></i>
+                                بحث
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" onclick="filterUsers('all')">الكل</button>
+                        <button class="filter-btn" onclick="filterUsers('interior')">منسوبي الداخلية</button>
+                        <button class="filter-btn" onclick="filterUsers('health')">منسوبي الصحة</button>
+                        <button class="filter-btn" onclick="filterUsers('justice')">منسوبي العدل</button>
+                        <button class="filter-btn" onclick="filterUsers('citizen')">مواطنين</button>
+                    </div>
+                </div>
+                
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الهوية</th>
+                                <th>الاسم</th>
+                                <th>اسم اللعبة</th>
+                                <th>الوظيفة</th>
+                                <th>المنصب</th>
+                                <th>تاريخ التفعيل</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <!-- المستخدمين المفعلين يظهرون هنا -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- الصفحة 4: تعطيل حساب -->
+            <div class="page-container" id="suspendUser">
+                <div class="form-container">
+                    <h2 class="page-title" style="margin-bottom: 30px;">
+                        <i class="fas fa-user-slash"></i>
+                        تعطيل حساب مستخدم
+                    </h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-search"></i>
+                            البحث عن المستخدم
+                        </label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" class="form-input" id="searchUserToSuspend" 
+                                   placeholder="أدخل رقم الهوية أو اسم المستخدم..." 
+                                   style="flex: 1;">
+                            <button class="search-btn" onclick="searchUserForSuspension()" 
+                                    style="padding: 10px 20px;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="userInfoSection" style="display: none;">
+                        <div style="background: #f8fafc; padding: 20px; border-radius: 10px;">
+                            <h4 style="margin-bottom: 15px; color: var(--primary);">معلومات المستخدم</h4>
+                            <div id="userInfoDetails"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-ban"></i>
+                            نوع التعطيل
+                        </label>
+                        <div style="display: flex; gap: 15px; margin-top: 10px;">
+                            <label style="flex: 1; cursor: pointer;">
+                                <input type="radio" name="suspensionType" value="temporary" checked>
+                                <span style="margin-right: 10px;">تعطيل مؤقت</span>
+                            </label>
+                            <label style="flex: 1; cursor: pointer;">
+                                <input type="radio" name="suspensionType" value="permanent">
+                                <span style="margin-right: 10px;">تعطيل دائم</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="durationSection">
+                        <label class="form-label">
+                            <i class="fas fa-clock"></i>
+                            مدة التعطيل
+                        </label>
+                        <select class="form-select" id="suspensionDuration">
+                            <option value="1">24 ساعة</option>
+                            <option value="3">3 أيام</option>
+                            <option value="7">أسبوع</option>
+                            <option value="30">شهر</option>
+                            <option value="custom">مخصص</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="customDurationSection" style="display: none;">
+                        <label class="form-label">
+                            <i class="fas fa-calendar-alt"></i>
+                            تحديد المدة
+                        </label>
+                        <input type="number" class="form-input" id="customDuration" 
+                               placeholder="عدد الأيام" min="1" max="365">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-comment-alt"></i>
+                            سبب التعطيل
+                        </label>
+                        <textarea class="form-textarea" id="suspensionReason" 
+                                  placeholder="أدخل سبب التعطيل..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn-submit" onclick="suspendUser()">
+                            <i class="fas fa-ban"></i>
+                            تعطيل الحساب
+                        </button>
+                        <button class="btn-cancel" onclick="showPage('dashboard')">
+                            إلغاء
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- الصفحة 5: تغيير وظيفة -->
+            <div class="page-container" id="changeJob">
+                <div class="form-container">
+                    <h2 class="page-title" style="margin-bottom: 30px;">
+                        <i class="fas fa-exchange-alt"></i>
+                        تغيير وظيفة مستخدم
+                    </h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-search"></i>
+                            البحث عن المستخدم
+                        </label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" class="form-input" id="searchUserForJobChange" 
+                                   placeholder="أدخل رقم الهوية أو اسم المستخدم..." 
+                                   style="flex: 1;">
+                            <button class="search-btn" onclick="searchUserForJobChange()" 
+                                    style="padding: 10px 20px;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="userJobInfoSection" style="display: none;">
+                        <div style="background: #f8fafc; padding: 20px; border-radius: 10px;">
+                            <h4 style="margin-bottom: 15px; color: var(--primary);">الوظيفة الحالية</h4>
+                            <div id="userJobInfo"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-briefcase"></i>
+                            الوظيفة الجديدة
+                        </label>
+                        <select class="form-select" id="newJob">
+                            <option value="">اختر الوظيفة الجديدة</option>
+                            <option value="citizen">مواطن</option>
+                            <option value="interior">منسوب وزارة الداخلية</option>
+                            <option value="health">منسوب وزارة الصحة</option>
+                            <option value="justice">منسوب وزارة العدل</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-file-alt"></i>
+                            سبب التغيير
+                        </label>
+                        <select class="form-select" id="changeReason">
+                            <option value="">اختر سبب التغيير</option>
+                            <option value="retirement">تقاعد</option>
+                            <option value="resignation">استقالة</option>
+                            <option value="transfer">نقل</option>
+                            <option value="promotion">ترقية</option>
+                            <option value="demotion">تنزيل رتبة</option>
+                            <option value="other">سبب آخر</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="otherReasonSection" style="display: none;">
+                        <label class="form-label">
+                            <i class="fas fa-comment-alt"></i>
+                            اذكر السبب
+                        </label>
+                        <textarea class="form-textarea" id="otherReason" 
+                                  placeholder="أدخل سبب التغيير..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn-submit" onclick="changeUserJob()">
+                            <i class="fas fa-check"></i>
+                            تأكيد التغيير
+                        </button>
+                        <button class="btn-cancel" onclick="showPage('dashboard')">
+                            إلغاء
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- الصفحة 6: سجلات النظام -->
+            <div class="page-container" id="viewLogs">
+                <div class="search-section">
+                    <div class="search-header">
+                        <h3 class="search-title">
+                            <i class="fas fa-history"></i>
+                            سجلات النظام
+                        </h3>
+                        
+                        <div class="search-box">
+                            <input type="date" class="form-input" id="logDate" 
+                                   style="width: 200px;">
+                            <select class="form-select" id="logType" style="width: 150px;">
+                                <option value="">كل الأنواع</option>
+                                <option value="login">تسجيل دخول</option>
+                                <option value="suspension">تعطيل</option>
+                                <option value="job_change">تغيير وظيفة</option>
+                                <option value="approval">قبول طلب</option>
+                                <option value="rejection">رفض طلب</option>
+                            </select>
+                            <button class="search-btn" onclick="filterLogs()">
+                                <i class="fas fa-filter"></i>
+                                تصفية
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>النوع</th>
+                                <th>الوصف</th>
+                                <th>المستخدم</th>
+                                <th>المسؤول</th>
+                                <th>التاريخ والوقت</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsTable">
+                            <!-- سجلات النظام تظهر هنا -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         
-        <!-- البحث والفلترة -->
-        <section class="filters-section">
-            <div class="filters-header">
-                <h3 class="filters-title">
-                    <i class="fas fa-filter"></i>
-                    فلترة الطلبات
-                </h3>
-                
-                <div class="search-box">
-                    <input type="text" class="search-input" id="searchInput" placeholder="ابحث بالاسم أو رقم الهوية...">
-                    <button class="search-btn" onclick="searchRequests()">
-                        <i class="fas fa-search"></i> بحث
-                    </button>
-                </div>
-            </div>
-            
-            <div class="filters">
-                <button class="filter-btn active" onclick="filterRequests('all')">
-                    <i class="fas fa-list"></i> الكل
-                </button>
-                <button class="filter-btn" onclick="filterRequests('pending')">
-                    <i class="fas fa-clock"></i> قيد المراجعة
-                </button>
-                <button class="filter-btn" onclick="filterRequests('approved')">
-                    <i class="fas fa-check"></i> مقبولة
-                </button>
-                <button class="filter-btn" onclick="filterRequests('rejected')">
-                    <i class="fas fa-times"></i> مرفوضة
-                </button>
-                <button class="filter-btn" onclick="showTodayRequests()">
-                    <i class="fas fa-calendar-day"></i> طلبات اليوم
-                </button>
-            </div>
-        </section>
-        
-        <!-- جدول الطلبات -->
-        <section class="requests-section">
-            <h3 class="requests-title">
-                <i class="fas fa-tasks"></i>
-                طلبات التفعيل
-                <span style="font-size: 16px; color: var(--gray); margin-right: 10px;" id="requestsCount">(0 طلب)</span>
-            </h3>
-            
-            <table class="requests-table" id="requestsTable">
-                <thead>
-                    <tr>
-                        <th>رقم الطلب</th>
-                        <th>الاسم</th>
-                        <th>رقم الهوية</th>
-                        <th>الوظيفة</th>
-                        <th>التاريخ</th>
-                        <th>الحالة</th>
-                        <th class="actions-cell">الإجراءات</th>
-                    </tr>
-                </thead>
-                <tbody id="requestsBody">
-                    <!-- البيانات تظهر هنا -->
-                </tbody>
-            </table>
-            
-            <!-- رسالة فارغة -->
-            <div class="empty-message" id="emptyMessage" style="display: none;">
-                <div class="empty-icon">
-                    <i class="fas fa-inbox"></i>
-                </div>
-                <h3 class="empty-title">لا توجد طلبات</h3>
-                <p class="empty-subtitle">لم يتم تقديم أي طلبات حتى الآن</p>
-            </div>
-        </section>
+        <!-- تذييل -->
+        <footer class="admin-footer">
+            <p>© 2024 هيئة KR الرقمية - النظام الإداري المتقدم | الإصدار 2.0</p>
+        </footer>
     </main>
+    
+    <!-- نافذة عرض تفاصيل الطلب -->
+    <div class="modal-overlay" id="requestDetailsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-info-circle"></i>
+                    تفاصيل الطلب
+                </h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="requestDetailsContent">
+                <!-- محتوى تفاصيل الطلب -->
+            </div>
+        </div>
+    </div>
 
     <script>
         // بيانات التطبيق
+        let currentUser = null;
         let allRequests = [];
-        let currentFilter = 'all';
-        let currentSearch = '';
+        let systemLogs = [];
+        let currentPage = 'dashboard';
         
         // عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('لوحة التحكم الإدارية - جاهزة');
+            console.log('النظام الإداري المتقدم - جاهز');
             
             // التحقق من تسجيل الدخول
             checkAdminLogin();
@@ -567,8 +1097,14 @@
             // إعداد الأحداث
             setupEvents();
             
-            // تعيين اسم المسؤول
-            setAdminName();
+            // تحديث البادج
+            updatePendingBadge();
+            
+            // إعداد تغيير نوع التعطيل
+            setupSuspensionType();
+            
+            // إعداد سبب التغيير
+            setupChangeReason();
         });
         
         // التحقق من تسجيل الدخول
@@ -581,16 +1117,20 @@
                     return false;
                 }
                 
-                // التحقق من انتهاء الجلسة (8 ساعات)
+                // التحقق من انتهاء الجلسة
                 const currentTime = new Date().getTime();
                 const sessionAge = currentTime - session.loginTime;
                 const eightHours = 8 * 60 * 60 * 1000;
                 
                 if (sessionAge > eightHours) {
                     localStorage.removeItem('admin_session');
-                    redirectToLogin('انتهت مدة الجلسة، يرجى تسجيل الدخول مرة أخرى');
+                    redirectToLogin('انتهت مدة الجلسة');
                     return false;
                 }
+                
+                currentUser = session;
+                document.getElementById('adminName').textContent = session.username === 'owner' ? '👑 المالك' : '👨‍💼 المسؤول';
+                document.getElementById('adminAvatar').textContent = session.username.charAt(0).toUpperCase();
                 
                 return true;
                 
@@ -606,113 +1146,208 @@
             window.location.href = 'login.html';
         }
         
-        // تعيين اسم المسؤول
-        function setAdminName() {
-            try {
-                const session = JSON.parse(localStorage.getItem('admin_session'));
-                if (session && session.username) {
-                    const role = session.role === 'owner' ? '👑 المالك' : '👨‍💼 المسؤول';
-                    document.getElementById('adminName').textContent = `مرحباً، ${role}`;
-                }
-            } catch (error) {
-                console.error('خطأ في تعيين اسم المسؤول:', error);
-            }
-        }
-        
         // تحميل جميع البيانات
         function loadAllData() {
             try {
                 // تحميل الطلبات
                 allRequests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
                 
-                // تحميل الإحصائيات
-                loadStatistics();
+                // تحميل سجلات النظام
+                systemLogs = JSON.parse(localStorage.getItem('system_logs') || '[]');
                 
-                // تحميل الطلبات
-                loadRequests();
+                // إذا لا توجد سجلات، أنشئ بعض السجلات التجريبية
+                if (systemLogs.length === 0) {
+                    createSampleLogs();
+                }
                 
-                // تحديث العداد
-                updateRequestsCount();
+                // تحميل إحصائيات لوحة التحكم
+                loadDashboardStats();
+                
+                // تحميل المستخدمين الأخيرين
+                loadRecentUsers();
+                
+                // تحميل طلبات التفعيل
+                loadActivationRequests();
+                
+                // تحميل سجلات النظام
+                loadSystemLogs();
                 
             } catch (error) {
                 console.error('خطأ في تحميل البيانات:', error);
-                showError('حدث خطأ في تحميل البيانات');
+                showNotification('حدث خطأ في تحميل البيانات', 'error');
             }
         }
         
-        // تحميل الإحصائيات
-        function loadStatistics() {
+        // إنشاء سجلات تجريبية
+        function createSampleLogs() {
+            const sampleLogs = [
+                {
+                    id: 1,
+                    type: 'login',
+                    description: 'تسجيل دخول مسؤول',
+                    user: 'admin',
+                    admin: 'system',
+                    timestamp: new Date().toLocaleString('ar-SA')
+                },
+                {
+                    id: 2,
+                    type: 'approval',
+                    description: 'قبول طلب تفعيل هوية',
+                    user: 'أحمد محمد',
+                    admin: 'admin',
+                    timestamp: new Date(Date.now() - 3600000).toLocaleString('ar-SA')
+                },
+                {
+                    id: 3,
+                    type: 'rejection',
+                    description: 'رفض طلب تفعيل هوية',
+                    user: 'سارة علي',
+                    admin: 'admin',
+                    timestamp: new Date(Date.now() - 7200000).toLocaleString('ar-SA')
+                }
+            ];
+            
+            systemLogs = sampleLogs;
+            localStorage.setItem('system_logs', JSON.stringify(systemLogs));
+        }
+        
+        // تحميل إحصائيات لوحة التحكم
+        function loadDashboardStats() {
             try {
-                const total = allRequests.length;
-                const pending = allRequests.filter(req => req.status === 'pending').length;
-                const approved = allRequests.filter(req => req.status === 'approved').length;
+                const totalRequests = allRequests.length;
+                const pendingRequests = allRequests.filter(req => req.status === 'pending').length;
+                const approvedRequests = allRequests.filter(req => req.status === 'approved').length;
+                const activeUsers = allRequests.filter(req => req.status === 'approved').length;
                 
-                document.getElementById('totalRequests').textContent = total;
-                document.getElementById('pendingRequests').textContent = pending;
-                document.getElementById('approvedRequests').textContent = approved;
-                document.getElementById('activeUsers').textContent = approved; // المستخدمين المفعلين = الطلبات المقبولة
+                document.getElementById('totalRequests').textContent = totalRequests;
+                document.getElementById('pendingRequests').textContent = pendingRequests;
+                document.getElementById('approvedRequests').textContent = approvedRequests;
+                document.getElementById('activeUsersCount').textContent = activeUsers;
+                
+                // تحديث بادج الطلبات المعلقة
+                document.getElementById('pendingBadge').textContent = pendingRequests;
                 
             } catch (error) {
                 console.error('خطأ في تحميل الإحصائيات:', error);
             }
         }
         
-        // تحميل الطلبات
-        function loadRequests() {
+        // تحميل المستخدمين الأخيرين
+        function loadRecentUsers() {
             try {
-                const tbody = document.getElementById('requestsBody');
-                const emptyMessage = document.getElementById('emptyMessage');
+                const tbody = document.getElementById('recentUsers');
+                tbody.innerHTML = '';
                 
-                // مسح المحتوى السابق
+                // الحصول على آخر 10 طلبات مقبولة
+                const recentApproved = allRequests
+                    .filter(req => req.status === 'approved')
+                    .slice(-10)
+                    .reverse();
+                
+                if (recentApproved.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h3>لا توجد مستخدمين مفعلين</h3>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                recentApproved.forEach(request => {
+                    const row = document.createElement('tr');
+                    
+                    // تحديد اسم الوظيفة
+                    const jobNames = {
+                        citizen: 'مواطن',
+                        interior: 'منسوب الداخلية',
+                        health: 'منسوب الصحة',
+                        justice: 'منسوب العدل'
+                    };
+                    
+                    const jobName = jobNames[request.job] || request.job || 'غير محدد';
+                    
+                    row.innerHTML = `
+                        <td><strong>${request.gameId || 'غير متوفر'}</strong></td>
+                        <td>${request.fullName || 'غير معروف'}</td>
+                        <td>${jobName}</td>
+                        <td><span style="color: #10b981; font-weight: 600;">مفعل</span></td>
+                        <td>${request.date || 'غير معروف'}</td>
+                        <td>${request.approvedDate || 'غير معروف'}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn btn-view" onclick="viewRequestDetails('${request.id}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn btn-suspend" onclick="prepareSuspension('${request.id}')">
+                                    <i class="fas fa-user-slash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
+                
+            } catch (error) {
+                console.error('خطأ في تحميل المستخدمين الأخيرين:', error);
+            }
+        }
+        
+        // تحميل طلبات التفعيل
+        function loadActivationRequests(filter = 'all') {
+            try {
+                const tbody = document.getElementById('requestsTable');
                 tbody.innerHTML = '';
                 
                 // تصفية الطلبات
                 let filteredRequests = allRequests;
-                
-                // التصفية حسب النوع
-                if (currentFilter !== 'all') {
-                    filteredRequests = filteredRequests.filter(req => req.status === currentFilter);
+                if (filter !== 'all') {
+                    if (filter === 'today') {
+                        const today = new Date().toLocaleDateString('ar-SA').split(' ')[0];
+                        filteredRequests = allRequests.filter(req => 
+                            req.date && req.date.includes(today)
+                        );
+                    } else {
+                        filteredRequests = allRequests.filter(req => req.status === filter);
+                    }
                 }
                 
-                // التصفية حسب البحث
-                if (currentSearch.trim() !== '') {
-                    const searchTerm = currentSearch.toLowerCase();
-                    filteredRequests = filteredRequests.filter(req => 
-                        (req.fullName && req.fullName.toLowerCase().includes(searchTerm)) ||
-                        (req.gameId && req.gameId.includes(searchTerm)) ||
-                        (req.id && req.id.toLowerCase().includes(searchTerm))
-                    );
-                }
-                
-                // إذا لا توجد طلبات
                 if (filteredRequests.length === 0) {
-                    tbody.style.display = 'none';
-                    emptyMessage.style.display = 'block';
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fas fa-inbox"></i>
+                                </div>
+                                <h3>لا توجد طلبات</h3>
+                            </td>
+                        </tr>
+                    `;
                     return;
                 }
                 
-                // إخفاء رسالة الفارغة
-                tbody.style.display = '';
-                emptyMessage.style.display = 'none';
-                
-                // عرض الطلبات
                 filteredRequests.forEach((request, index) => {
                     const row = document.createElement('tr');
                     
                     // تحديد الحالة
-                    let statusText, statusClass;
+                    let statusText, statusColor;
                     switch (request.status) {
                         case 'approved':
                             statusText = 'مقبولة';
-                            statusClass = 'status-approved';
+                            statusColor = '#10b981';
                             break;
                         case 'rejected':
                             statusText = 'مرفوضة';
-                            statusClass = 'status-rejected';
+                            statusColor = '#ef4444';
                             break;
                         default:
                             statusText = 'قيد المراجعة';
-                            statusClass = 'status-pending';
+                            statusColor = '#f59e0b';
                     }
                     
                     // تحديد اسم الوظيفة
@@ -729,23 +1364,23 @@
                     let actionButtons = '';
                     if (request.status === 'pending') {
                         actionButtons = `
-                            <button class="action-btn btn-view" onclick="viewRequest(${index})">
-                                <i class="fas fa-eye"></i> عرض
+                            <button class="action-btn btn-view" onclick="viewRequestDetails('${request.id}')">
+                                <i class="fas fa-eye"></i>
                             </button>
-                            <button class="action-btn btn-approve" onclick="approveRequest(${index})">
-                                <i class="fas fa-check"></i> قبول
+                            <button class="action-btn btn-submit" style="background: #10b981;" onclick="approveRequest('${request.id}')">
+                                <i class="fas fa-check"></i>
                             </button>
-                            <button class="action-btn btn-reject" onclick="rejectRequest(${index})">
-                                <i class="fas fa-times"></i> رفض
+                            <button class="action-btn btn-delete" onclick="rejectRequest('${request.id}')">
+                                <i class="fas fa-times"></i>
                             </button>
                         `;
                     } else {
                         actionButtons = `
-                            <button class="action-btn btn-view" onclick="viewRequest(${index})">
-                                <i class="fas fa-eye"></i> عرض
+                            <button class="action-btn btn-view" onclick="viewRequestDetails('${request.id}')">
+                                <i class="fas fa-eye"></i>
                             </button>
-                            <button class="action-btn btn-edit" onclick="editRequest(${index})">
-                                <i class="fas fa-edit"></i> تعديل
+                            <button class="action-btn btn-edit" onclick="editRequest('${request.id}')">
+                                <i class="fas fa-edit"></i>
                             </button>
                         `;
                     }
@@ -756,8 +1391,8 @@
                         <td><code>${request.gameId || 'غير متوفر'}</code></td>
                         <td>${jobName}</td>
                         <td>${request.date || 'غير معروف'}</td>
-                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                        <td class="actions-cell">
+                        <td><span style="color: ${statusColor}; font-weight: 600;">${statusText}</span></td>
+                        <td>
                             <div class="action-buttons">
                                 ${actionButtons}
                             </div>
@@ -767,76 +1402,211 @@
                     tbody.appendChild(row);
                 });
                 
-                // تحديث العداد
-                updateRequestsCount(filteredRequests.length);
+            } catch (error) {
+                console.error('خطأ في تحميل طلبات التفعيل:', error);
+            }
+        }
+        
+        // تحميل سجلات النظام
+        function loadSystemLogs() {
+            try {
+                const tbody = document.getElementById('logsTable');
+                tbody.innerHTML = '';
+                
+                if (systemLogs.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fas fa-history"></i>
+                                </div>
+                                <h3>لا توجد سجلات</h3>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                // عرض أحدث السجلات أولاً
+                systemLogs.slice().reverse().forEach(log => {
+                    const row = document.createElement('tr');
+                    
+                    // تحديد لون النوع
+                    let typeColor, typeIcon;
+                    switch (log.type) {
+                        case 'login':
+                            typeColor = '#3b82f6';
+                            typeIcon = 'fa-sign-in-alt';
+                            break;
+                        case 'approval':
+                            typeColor = '#10b981';
+                            typeIcon = 'fa-check';
+                            break;
+                        case 'rejection':
+                            typeColor = '#ef4444';
+                            typeIcon = 'fa-times';
+                            break;
+                        case 'suspension':
+                            typeColor = '#8b5cf6';
+                            typeIcon = 'fa-user-slash';
+                            break;
+                        case 'job_change':
+                            typeColor = '#f59e0b';
+                            typeIcon = 'fa-exchange-alt';
+                            break;
+                        default:
+                            typeColor = '#6b7280';
+                            typeIcon = 'fa-info-circle';
+                    }
+                    
+                    row.innerHTML = `
+                        <td>${log.id || ''}</td>
+                        <td>
+                            <span style="color: ${typeColor}; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas ${typeIcon}"></i>
+                                ${getLogTypeText(log.type)}
+                            </span>
+                        </td>
+                        <td>${log.description || ''}</td>
+                        <td>${log.user || ''}</td>
+                        <td>${log.admin || ''}</td>
+                        <td>${log.timestamp || ''}</td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
                 
             } catch (error) {
-                console.error('خطأ في تحميل الطلبات:', error);
-                showError('حدث خطأ في تحميل الطلبات');
+                console.error('خطأ في تحميل سجلات النظام:', error);
             }
         }
         
-        // تحديث عداد الطلبات
-        function updateRequestsCount(count = null) {
-            const element = document.getElementById('requestsCount');
-            if (count !== null) {
-                element.textContent = `(${count} طلب)`;
+        // الحصول على نص نوع السجل
+        function getLogTypeText(type) {
+            const types = {
+                'login': 'تسجيل دخول',
+                'approval': 'قبول طلب',
+                'rejection': 'رفض طلب',
+                'suspension': 'تعطيل حساب',
+                'job_change': 'تغيير وظيفة'
+            };
+            return types[type] || type;
+        }
+        
+        // إضافة سجل جديد للنظام
+        function addSystemLog(type, description, user) {
+            try {
+                const newLog = {
+                    id: systemLogs.length + 1,
+                    type: type,
+                    description: description,
+                    user: user,
+                    admin: currentUser.username,
+                    timestamp: new Date().toLocaleString('ar-SA')
+                };
+                
+                systemLogs.push(newLog);
+                localStorage.setItem('system_logs', JSON.stringify(systemLogs));
+                
+                // إذا كنا في صفحة السجلات، قم بتحديثها
+                if (currentPage === 'viewLogs') {
+                    loadSystemLogs();
+                }
+                
+            } catch (error) {
+                console.error('خطأ في إضافة سجل:', error);
+            }
+        }
+        
+        // البحث الشامل
+        function globalSearch() {
+            const searchTerm = document.getElementById('globalSearch').value.toLowerCase();
+            
+            if (!searchTerm.trim()) {
+                showNotification('أدخل كلمة للبحث', 'warning');
+                return;
+            }
+            
+            // البحث في الطلبات
+            const foundInRequests = allRequests.filter(req => 
+                (req.fullName && req.fullName.toLowerCase().includes(searchTerm)) ||
+                (req.gameId && req.gameId.includes(searchTerm)) ||
+                (req.id && req.id.toLowerCase().includes(searchTerm))
+            );
+            
+            if (foundInRequests.length > 0) {
+                // الانتقال لصفحة الطلبات وعرض النتائج
+                showPage('activationRequests');
+                // تصفية وعرض النتائج
+                // (يمكن إضافة تصفية خاصة هنا)
+                showNotification(`تم العثور على ${foundInRequests.length} نتيجة`, 'success');
             } else {
-                element.textContent = `(${allRequests.length} طلب)`;
+                showNotification('لم يتم العثور على نتائج', 'info');
             }
         }
         
-        // فلترة الطلبات
-        function filterRequests(filterType) {
+        // البحث في طلبات التفعيل
+        function searchActivationRequests() {
+            const searchTerm = document.getElementById('searchRequests').value.toLowerCase();
+            // تنفيذ البحث
+            // (يمكن إضافة المنطق هنا)
+        }
+        
+        // فلترة طلبات التفعيل
+        function filterActivationRequests(filter) {
             // تحديث الأزرار النشطة
-            document.querySelectorAll('.filter-btn').forEach(btn => {
+            document.querySelectorAll('#activationRequests .filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
             
-            // تحديث الفلترة الحالية
-            currentFilter = filterType;
-            
-            // إعادة تحميل الطلبات
-            loadRequests();
+            // تحميل الطلبات المفلترة
+            loadActivationRequests(filter);
         }
         
-        // البحث في الطلبات
-        function searchRequests() {
-            currentSearch = document.getElementById('searchInput').value;
-            loadRequests();
+        // البحث في المستخدمين
+        function searchActiveUsers() {
+            const searchTerm = document.getElementById('searchUsers').value.toLowerCase();
+            // تنفيذ البحث
+            // (يمكن إضافة المنطق هنا)
         }
         
-        // عرض طلبات اليوم
-        function showTodayRequests() {
-            const today = new Date().toLocaleDateString('ar-SA');
-            const todayRequests = allRequests.filter(req => {
-                return req.date && req.date.includes(today.split(' ')[0]);
+        // فلترة المستخدمين
+        function filterUsers(filter) {
+            // تحديث الأزرار النشطة
+            document.querySelectorAll('#activeUsers .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
+            event.target.classList.add('active');
             
-            // عرض الطلبات
-            const tbody = document.getElementById('requestsBody');
-            tbody.innerHTML = '';
+            // تنفيذ الفلترة
+            // (يمكن إضافة المنطق هنا)
+        }
+        
+        // البحث عن مستخدم للتعطيل
+        function searchUserForSuspension() {
+            const searchTerm = document.getElementById('searchUserToSuspend').value.trim();
             
-            if (todayRequests.length === 0) {
-                document.getElementById('emptyMessage').style.display = 'block';
-                updateRequestsCount(0);
+            if (!searchTerm) {
+                showNotification('أدخل رقم الهوية أو اسم المستخدم', 'warning');
                 return;
             }
             
-            todayRequests.forEach((request, index) => {
-                // ... نفس كود العرض السابق ...
-            });
+            // البحث عن المستخدم في الطلبات المقبولة
+            const user = allRequests.find(req => 
+                req.status === 'approved' && 
+                (req.gameId === searchTerm || 
+                 (req.fullName && req.fullName.includes(searchTerm)))
+            );
             
-            updateRequestsCount(todayRequests.length);
-        }
-        
-        // عرض تفاصيل الطلب
-        function viewRequest(index) {
-            try {
-                const request = allRequests[index];
-                if (!request) return;
+            if (user) {
+                // التحقق إذا كان حساب إداري
+                if (user.isAdmin) {
+                    showNotification('لا يمكن تعطيل حسابات المسؤولين', 'error');
+                    return;
+                }
                 
+                // عرض معلومات المستخدم
                 const jobNames = {
                     citizen: 'مواطن',
                     interior: 'منسوب الداخلية',
@@ -844,132 +1614,506 @@
                     justice: 'منسوب العدل'
                 };
                 
-                const details = `
-📋 تفاصيل الطلب #${request.id}
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-👤 الاسم الكامل: ${request.fullName || 'غير معروف'}
-🔢 العمر: ${request.age || 'غير محدد'} سنة
-🎮 اسم اللعبة: ${request.gameUsername || 'غير متوفر'}
-🆔 رقم الهوية: ${request.gameId || 'غير متوفر'}
-💬 الديسكورد: ${request.discordUsername || 'غير متوفر'}
-👔 الوظيفة: ${jobNames[request.job] || request.job || 'غير محدد'}
-⭐ المنصب: ${request.rank || 'غير محدد'}
-📅 تاريخ التقديم: ${request.date || 'غير معروف'}
-📊 الحالة: ${request.status || 'قيد المراجعة'}
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-${request.status === 'rejected' && request.rejectionReason ? 
-`❌ سبب الرفض: ${request.rejectionReason}` : ''}
-${request.status === 'approved' && request.approvedDate ? 
-`✅ تاريخ القبول: ${request.approvedDate}` : ''}
+                document.getElementById('userInfoDetails').innerHTML = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <strong>الاسم:</strong>
+                            <div>${user.fullName}</div>
+                        </div>
+                        <div>
+                            <strong>رقم الهوية:</strong>
+                            <div>${user.gameId}</div>
+                        </div>
+                        <div>
+                            <strong>الوظيفة:</strong>
+                            <div>${jobNames[user.job] || user.job}</div>
+                        </div>
+                        <div>
+                            <strong>تاريخ التفعيل:</strong>
+                            <div>${user.approvedDate || user.date}</div>
+                        </div>
+                    </div>
                 `;
                 
-                alert(details);
+                document.getElementById('userInfoSection').style.display = 'block';
                 
-            } catch (error) {
-                console.error('خطأ في عرض الطلب:', error);
-                alert('حدث خطأ في عرض تفاصيل الطلب');
+                // تخزين معرف المستخدم
+                document.getElementById('userInfoSection').dataset.userId = user.id;
+                
+            } else {
+                showNotification('لم يتم العثور على المستخدم', 'error');
+                document.getElementById('userInfoSection').style.display = 'none';
             }
         }
         
-        // قبول الطلب
-        function approveRequest(index) {
-            if (confirm('هل تريد قبول هذا الطلب؟')) {
-                try {
-                    // تحديث حالة الطلب
-                    allRequests[index].status = 'approved';
-                    allRequests[index].approvedDate = new Date().toLocaleString('ar-SA');
-                    allRequests[index].approvedBy = getCurrentAdmin();
-                    
-                    // حفظ التغييرات
-                    localStorage.setItem('identityRequests', JSON.stringify(allRequests));
-                    
-                    // إعادة تحميل البيانات
-                    loadAllData();
-                    
-                    // رسالة نجاح
-                    showSuccess('تم قبول الطلب بنجاح ✓');
-                    
-                } catch (error) {
-                    console.error('خطأ في قبول الطلب:', error);
-                    showError('حدث خطأ في قبول الطلب');
-                }
-            }
-        }
-        
-        // رفض الطلب
-        function rejectRequest(index) {
-            const reason = prompt('أدخل سبب الرفض:');
-            if (reason && reason.trim() !== '') {
-                try {
-                    // تحديث حالة الطلب
-                    allRequests[index].status = 'rejected';
-                    allRequests[index].rejectionReason = reason.trim();
-                    allRequests[index].rejectedDate = new Date().toLocaleString('ar-SA');
-                    allRequests[index].rejectedBy = getCurrentAdmin();
-                    
-                    // حفظ التغييرات
-                    localStorage.setItem('identityRequests', JSON.stringify(allRequests));
-                    
-                    // إعادة تحميل البيانات
-                    loadAllData();
-                    
-                    // رسالة نجاح
-                    showSuccess('تم رفض الطلب بنجاح ✓');
-                    
-                } catch (error) {
-                    console.error('خطأ في رفض الطلب:', error);
-                    showError('حدث خطأ في رفض الطلب');
-                }
-            }
-        }
-        
-        // تعديل الطلب
-        function editRequest(index) {
-            alert('ميزة التعديل قريباً...');
-        }
-        
-        // الحصول على اسم المسؤول الحالي
-        function getCurrentAdmin() {
-            try {
-                const session = JSON.parse(localStorage.getItem('admin_session'));
-                return session?.username || 'غير معروف';
-            } catch (error) {
-                return 'غير معروف';
-            }
-        }
-        
-        // إعداد الأحداث
-        function setupEvents() {
-            // البحث عند الضغط على Enter
-            document.getElementById('searchInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    searchRequests();
+        // إعداد نوع التعطيل
+        function setupSuspensionType() {
+            const suspensionTypes = document.querySelectorAll('input[name="suspensionType"]');
+            const durationSection = document.getElementById('durationSection');
+            const customDurationSection = document.getElementById('customDurationSection');
+            
+            suspensionTypes.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'permanent') {
+                        durationSection.style.display = 'none';
+                        customDurationSection.style.display = 'none';
+                    } else {
+                        durationSection.style.display = 'block';
+                        const durationSelect = document.getElementById('suspensionDuration');
+                        if (durationSelect.value === 'custom') {
+                            customDurationSection.style.display = 'block';
+                        }
+                    }
+                });
+            });
+            
+            // مراقبة تغيير مدة التعطيل
+            document.getElementById('suspensionDuration').addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    customDurationSection.style.display = 'block';
+                } else {
+                    customDurationSection.style.display = 'none';
                 }
             });
         }
         
-        // عرض رسالة نجاح
-        function showSuccess(message) {
-            alert('✅ ' + message);
-        }
-        
-        // عرض رسالة خطأ
-        function showError(message) {
-            alert('❌ ' + message);
-        }
-        
-        // تسجيل الخروج
-        function logout() {
-            if (confirm('هل تريد تسجيل الخروج؟')) {
-                localStorage.removeItem('admin_session');
-                window.location.href = 'login.html';
+        // تعطيل حساب مستخدم
+        function suspendUser() {
+            const userId = document.getElementById('userInfoSection').dataset.userId;
+            
+            if (!userId) {
+                showNotification('يرجى البحث عن مستخدم أولاً', 'warning');
+                return;
+            }
+            
+            const suspensionType = document.querySelector('input[name="suspensionType"]:checked').value;
+            const reason = document.getElementById('suspensionReason').value.trim();
+            
+            if (!reason) {
+                showNotification('يرجى إدخال سبب التعطيل', 'warning');
+                return;
+            }
+            
+            let duration = null;
+            if (suspensionType === 'temporary') {
+                const durationSelect = document.getElementById('suspensionDuration').value;
+                if (durationSelect === 'custom') {
+                    duration = parseInt(document.getElementById('customDuration').value);
+                    if (!duration || duration < 1) {
+                        showNotification('يرجى إدخال مدة صحيحة', 'warning');
+                        return;
+                    }
+                } else {
+                    duration = parseInt(durationSelect);
+                }
+            }
+            
+            if (confirm(`هل أنت متأكد من تعطيل هذا الحساب؟${duration ? `\nالمدة: ${duration} يوم` : ''}`)) {
+                // العثور على المستخدم وتحديث حالته
+                const userIndex = allRequests.findIndex(req => req.id === userId);
+                if (userIndex !== -1) {
+                    allRequests[userIndex].suspended = true;
+                    allRequests[userIndex].suspensionType = suspensionType;
+                    allRequests[userIndex].suspensionReason = reason;
+                    allRequests[userIndex].suspendedDate = new Date().toLocaleString('ar-SA');
+                    allRequests[userIndex].suspendedBy = currentUser.username;
+                    
+                    if (duration) {
+                        const suspensionEnd = new Date();
+                        suspensionEnd.setDate(suspensionEnd.getDate() + duration);
+                        allRequests[userIndex].suspensionEndDate = suspensionEnd.toLocaleString('ar-SA');
+                    }
+                    
+                    // حفظ التغييرات
+                    localStorage.setItem('identityRequests', JSON.stringify(allRequests));
+                    
+                    // إضافة سجل للنظام
+                    addSystemLog(
+                        'suspension',
+                        `تعطيل حساب ${allRequests[userIndex].fullName} - السبب: ${reason}`,
+                        allRequests[userIndex].fullName
+                    );
+                    
+                    // رسالة نجاح
+                    showNotification('تم تعطيل الحساب بنجاح', 'success');
+                    
+                    // إعادة تعيين النموذج
+                    resetSuspensionForm();
+                    
+                    // تحديث البيانات
+                    loadAllData();
+                }
             }
         }
         
-        // العودة للخلف
-        function goBack() {
-            window.location.href = '../index.html';
+        // إعادة تعيين نموذج التعطيل
+        function resetSuspensionForm() {
+            document.getElementById('searchUserToSuspend').value = '';
+            document.getElementById('userInfoSection').style.display = 'none';
+            document.getElementById('suspensionReason').value = '';
+            document.getElementById('suspensionDuration').value = '1';
+            document.getElementById('customDuration').value = '';
+            document.getElementById('customDurationSection').style.display = 'none';
+            document.querySelector('input[name="suspensionType"][value="temporary"]').checked = true;
         }
-    </script>
-</body>
-</html>
+        
+        // البحث عن مستخدم لتغيير الوظيفة
+        function searchUserForJobChange() {
+            const searchTerm = document.getElementById('searchUserForJobChange').value.trim();
+            
+            if (!searchTerm) {
+                showNotification('أدخل رقم الهوية أو اسم المستخدم', 'warning');
+                return;
+            }
+            
+            // البحث عن المستخدم في الطلبات المقبولة
+            const user = allRequests.find(req => 
+                req.status === 'approved' && 
+                (req.gameId === searchTerm || 
+                 (req.fullName && req.fullName.includes(searchTerm)))
+            );
+            
+            if (user) {
+                // عرض معلومات الوظيفة الحالية
+                const jobNames = {
+                    citizen: 'مواطن',
+                    interior: 'منسوب وزارة الداخلية',
+                    health: 'منسوب وزارة الصحة',
+                    justice: 'منسوب وزارة العدل'
+                };
+                
+                document.getElementById('userJobInfo').innerHTML = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <strong>الاسم:</strong>
+                            <div>${user.fullName}</div>
+                        </div>
+                        <div>
+                            <strong>الوظيفة الحالية:</strong>
+                            <div>${jobNames[user.job] || user.job}</div>
+                        </div>
+                        <div>
+                            <strong>المنصب:</strong>
+                            <div>${user.rank || 'غير محدد'}</div>
+                        </div>
+                        <div>
+                            <strong>رقم الهوية:</strong>
+                            <div>${user.gameId}</div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('userJobInfoSection').style.display = 'block';
+                
+                // تخزين معرف المستخدم
+                document.getElementById('userJobInfoSection').dataset.userId = user.id;
+                
+                // تحديد الوظيفة الحالية في القائمة
+                document.getElementById('newJob').value = user.job;
+                
+            } else {
+                showNotification('لم يتم العثور على المستخدم', 'error');
+                document.getElementById('userJobInfoSection').style.display = 'none';
+            }
+        }
+        
+        // إعداد سبب التغيير
+        function setupChangeReason() {
+            document.getElementById('changeReason').addEventListener('change', function() {
+                if (this.value === 'other') {
+                    document.getElementById('otherReasonSection').style.display = 'block';
+                } else {
+                    document.getElementById('otherReasonSection').style.display = 'none';
+                }
+            });
+        }
+        
+        // تغيير وظيفة مستخدم
+        function changeUserJob() {
+            const userId = document.getElementById('userJobInfoSection').dataset.userId;
+            
+            if (!userId) {
+                showNotification('يرجى البحث عن مستخدم أولاً', 'warning');
+                return;
+            }
+            
+            const newJob = document.getElementById('newJob').value;
+            const changeReason = document.getElementById('changeReason').value;
+            
+            if (!newJob) {
+                showNotification('يرجى اختيار الوظيفة الجديدة', 'warning');
+                return;
+            }
+            
+            if (!changeReason) {
+                showNotification('يرجى اختيار سبب التغيير', 'warning');
+                return;
+            }
+            
+            let reasonText = changeReason;
+            if (changeReason === 'other') {
+                reasonText = document.getElementById('otherReason').value.trim();
+                if (!reasonText) {
+                    showNotification('يرجى إدخال سبب التغيير', 'warning');
+                    return;
+                }
+            }
+            
+            // العثور على المستخدم وتحديث وظيفته
+            const userIndex = allRequests.findIndex(req => req.id === userId);
+            if (userIndex !== -1) {
+                const oldJob = allRequests[userIndex].job;
+                
+                // حفظ الوظيفة القديمة في التاريخ
+                if (!allRequests[userIndex].jobHistory) {
+                    allRequests[userIndex].jobHistory = [];
+                }
+                
+                allRequests[userIndex].jobHistory.push({
+                    from: oldJob,
+                    to: newJob,
+                    reason: reasonText,
+                    date: new Date().toLocaleString('ar-SA'),
+                    changedBy: currentUser.username
+                });
+                
+                // تحديث الوظيفة الحالية
+                allRequests[userIndex].job = newJob;
+                
+                // إذا تغيرت إلى مواطن، إعادة تعيين المنصب
+                if (newJob === 'citizen') {
+                    allRequests[userIndex].rank = 'مواطن';
+                }
+                
+                // حفظ التغييرات
+                localStorage.setItem('identityRequests', JSON.stringify(allRequests));
+                
+                // إضافة سجل للنظام
+                addSystemLog(
+                    'job_change',
+                    `تغيير وظيفة ${allRequests[userIndex].fullName} من ${oldJob} إلى ${newJob} - السبب: ${reasonText}`,
+                    allRequests[userIndex].fullName
+                );
+                
+                // رسالة نجاح
+                showNotification('تم تغيير الوظيفة بنجاح', 'success');
+                
+                // إعادة تعيين النموذج
+                resetJobChangeForm();
+                
+                // تحديث البيانات
+                loadAllData();
+            }
+        }
+        
+        // إعادة تعيين نموذج تغيير الوظيفة
+        function resetJobChangeForm() {
+            document.getElementById('searchUserForJobChange').value = '';
+            document.getElementById('userJobInfoSection').style.display = 'none';
+            document.getElementById('newJob').value = '';
+            document.getElementById('changeReason').value = '';
+            document.getElementById('otherReason').value = '';
+            document.getElementById('otherReasonSection').style.display = 'none';
+        }
+        
+        // فلترة سجلات النظام
+        function filterLogs() {
+            const date = document.getElementById('logDate').value;
+            const type = document.getElementById('logType').value;
+            
+            let filteredLogs = systemLogs;
+            
+            if (date) {
+                filteredLogs = filteredLogs.filter(log => {
+                    const logDate = new Date(log.timestamp).toISOString().split('T')[0];
+                    return logDate === date;
+                });
+            }
+            
+            if (type) {
+                filteredLogs = filteredLogs.filter(log => log.type === type);
+            }
+            
+            // عرض السجلات المفلترة
+            const tbody = document.getElementById('logsTable');
+            tbody.innerHTML = '';
+            
+            filteredLogs.slice().reverse().forEach(log => {
+                // ... (نفس كود عرض السجلات)
+            });
+        }
+        
+        // عرض تفاصيل الطلب
+        function viewRequestDetails(requestId) {
+            const request = allRequests.find(req => req.id === requestId);
+            if (!request) return;
+            
+            const jobNames = {
+                citizen: 'مواطن',
+                interior: 'منسوب وزارة الداخلية',
+                health: 'منسوب وزارة الصحة',
+                justice: 'منسوب وزارة العدل'
+            };
+            
+            const statusText = {
+                'pending': 'قيد المراجعة',
+                'approved': 'مقبولة',
+                'rejected': 'مرفوضة'
+            }[request.status] || request.status;
+            
+            document.getElementById('requestDetailsContent').innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <strong>رقم الطلب:</strong>
+                        <div>${request.id}</div>
+                    </div>
+                    <div>
+                        <strong>الحالة:</strong>
+                        <div>${statusText}</div>
+                    </div>
+                    <div>
+                        <strong>الاسم الكامل:</strong>
+                        <div>${request.fullName}</div>
+                    </div>
+                    <div>
+                        <strong>العمر:</strong>
+                        <div>${request.age || 'غير محدد'} سنة</div>
+                    </div>
+                    <div>
+                        <strong>رقم الهوية:</strong>
+                        <div>${request.gameId}</div>
+                    </div>
+                    <div>
+                        <strong>اسم اللعبة:</strong>
+                        <div>${request.gameUsername || 'غير متوفر'}</div>
+                    </div>
+                    <div>
+                        <strong>الديسكورد:</strong>
+                        <div>${request.discordUsername || 'غير متوفر'}</div>
+                    </div>
+                    <div>
+                        <strong>الوظيفة:</strong>
+                        <div>${jobNames[request.job] || request.job}</div>
+                    </div>
+                    <div>
+                        <strong>المنصب:</strong>
+                        <div>${request.rank || 'غير محدد'}</div>
+                    </div>
+                    <div>
+                        <strong>تاريخ التقديم:</strong>
+                        <div>${request.date}</div>
+                    </div>
+                    ${request.approvedDate ? `
+                        <div>
+                            <strong>تاريخ القبول:</strong>
+                            <div>${request.approvedDate}</div>
+                        </div>
+                    ` : ''}
+                    ${request.rejectionReason ? `
+                        <div style="grid-column: 1 / -1;">
+                            <strong>سبب الرفض:</strong>
+                            <div>${request.rejectionReason}</div>
+                        </div>
+                    ` : ''}
+                    ${request.suspended ? `
+                        <div style="grid-column: 1 / -1; background: #fee2e2; padding: 15px; border-radius: 10px;">
+                            <strong style="color: #991b1b;">⚠️ الحساب معطل</strong>
+                            <div>السبب: ${request.suspensionReason}</div>
+                            <div>تاريخ التعطيل: ${request.suspendedDate}</div>
+                            ${request.suspensionEndDate ? `<div>ينتهي في: ${request.suspensionEndDate}</div>` : ''}
+                        </div>
+                    ` : ''}
+                </div>
+                
+                <div style="margin-top: 30px; display: flex; gap: 15px;">
+                    ${request.status === 'pending' ? `
+                        <button class="search-btn" onclick="approveRequest('${request.id}'); closeModal();" style="flex: 1;">
+                            <i class="fas fa-check"></i> قبول الطلب
+                        </button>
+                        <button class="logout-btn" onclick="rejectRequest('${request.id}'); closeModal();" style="flex: 1;">
+                            <i class="fas fa-times"></i> رفض الطلب
+                        </button>
+                    ` : ''}
+                    <button class="btn-cancel" onclick="closeModal()" style="flex: 1;">
+                        إغلاق
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('requestDetailsModal').classList.add('active');
+        }
+        
+        // قبول طلب
+        function approveRequest(requestId) {
+            const requestIndex = allRequests.findIndex(req => req.id === requestId);
+            if (requestIndex !== -1) {
+                allRequests[requestIndex].status = 'approved';
+                allRequests[requestIndex].approvedDate = new Date().toLocaleString('ar-SA');
+                allRequests[requestIndex].approvedBy = currentUser.username;
+                
+                localStorage.setItem('identityRequests', JSON.stringify(allRequests));
+                
+                // إضافة سجل
+                addSystemLog(
+                    'approval',
+                    `قبول طلب تفعيل هوية - ${allRequests[requestIndex].fullName}`,
+                    allRequests[requestIndex].fullName
+                );
+                
+                showNotification('تم قبول الطلب بنجاح', 'success');
+                loadAllData();
+            }
+        }
+        
+        // رفض طلب
+        function rejectRequest(requestId) {
+            const reason = prompt('أدخل سبب الرفض:');
+            if (reason && reason.trim()) {
+                const requestIndex = allRequests.findIndex(req => req.id === requestId);
+                if (requestIndex !== -1) {
+                    allRequests[requestIndex].status = 'rejected';
+                    allRequests[requestIndex].rejectionReason = reason.trim();
+                    allRequests[requestIndex].rejectedDate = new Date().toLocaleString('ar-SA');
+                    allRequests[requestIndex].rejectedBy = currentUser.username;
+                    
+                    localStorage.setItem('identityRequests', JSON.stringify(allRequests));
+                    
+                    // إضافة سجل
+                    addSystemLog(
+                        'rejection',
+                        `رفض طلب تفعيل هوية - ${allRequests[requestIndex].fullName} - السبب: ${reason}`,
+                        allRequests[requestIndex].fullName
+                    );
+                    
+                    showNotification('تم رفض الطلب', 'success');
+                    loadAllData();
+                }
+            }
+        }
+        
+        // إغلاق النافذة
+        function closeModal() {
+            document.getElementById('requestDetailsModal').classList.remove('active');
+        }
+        
+        // عرض صفحة معينة
+        function showPage(pageId) {
+            // إخفاء جميع الصفحات
+            document.querySelectorAll('.page-container').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // إلغاء تفعيل جميع عناصر القائمة
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // إظهار الصفحة المطلوبة
+            document.getElementById(pageId).classList.add('active');
+            
+            // تفعيل عنصر القائمة المناسب
+            document.querySelector(`.menu-item[onclick="showPage('${pageId}')"]`).classList.add('active');
+            
+            // تحديث عنوان الصفحة
+            const pageTitles = {
+                '
