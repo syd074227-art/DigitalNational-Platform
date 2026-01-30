@@ -21,6 +21,8 @@
             --light: #f8f9fa;
             --dark: #1a1a1a;
             --gray: #6c757d;
+            --admin: #1e3a8a;
+            --owner: #7c3aed;
         }
         
         body {
@@ -267,13 +269,19 @@
         
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
+        }
+        
+        @media (max-width: 992px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
         @media (max-width: 768px) {
             .services-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr;
             }
         }
         
@@ -288,12 +296,15 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             position: relative;
             overflow: hidden;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         
         .service-card:hover {
             transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 25px rgba(45, 104, 196, 0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
         
         .service-icon {
@@ -308,6 +319,7 @@
             color: white;
         }
         
+        /* ألوان الخدمات */
         .service-1 .service-icon {
             background: linear-gradient(135deg, #2d68c4, #4a90e2);
         }
@@ -324,6 +336,15 @@
             background: linear-gradient(135deg, #9b59b6, #8e44ad);
         }
         
+        /* الخدمات الإدارية */
+        .service-5 .service-icon {
+            background: linear-gradient(135deg, var(--admin), #3b82f6);
+        }
+        
+        .service-6 .service-icon {
+            background: linear-gradient(135deg, var(--owner), #a78bfa);
+        }
+        
         .service-title {
             font-size: 18px;
             font-weight: 600;
@@ -336,18 +357,84 @@
             color: #666;
             margin-bottom: 15px;
             line-height: 1.5;
+            flex-grow: 1;
         }
         
         .service-badge {
             position: absolute;
             top: 15px;
-            left: 15px;
+            right: 15px;
             background: var(--accent);
             color: white;
             font-size: 12px;
             padding: 4px 10px;
             border-radius: 10px;
             font-weight: 600;
+        }
+        
+        .service-5 .service-badge {
+            background: var(--admin);
+        }
+        
+        .service-6 .service-badge {
+            background: var(--owner);
+        }
+        
+        .service-arrow {
+            color: var(--primary);
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        
+        /* ====== شريط حالة الخدمات ====== */
+        .services-status {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 5%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 2px solid #f0f0f0;
+        }
+        
+        .status-title {
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .status-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .status-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+        }
+        
+        .status-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .status-label {
+            font-size: 14px;
+            color: var(--gray);
         }
         
         /* ====== القائمة الجانبية ====== */
@@ -497,7 +584,7 @@
         }
         
         .warning-content {
-            background: linear-gradient(135deg, #2d68c4, #0056b3);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             padding: 40px;
             border-radius: 20px;
             max-width: 500px;
@@ -514,6 +601,40 @@
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
+        }
+        
+        /* ====== تحذير الوصول الإداري ====== */
+        .admin-warning {
+            background: linear-gradient(135deg, var(--admin), #3b82f6);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 5%;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .admin-warning-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .admin-warning-btn {
+            background: white;
+            color: var(--admin);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .admin-warning-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
         }
         
         /* ====== الفوتر ====== */
@@ -654,6 +775,21 @@
     
     <!-- ====== المحتوى الرئيسي ====== -->
     <main class="main-content">
+        <!-- تحذير الوصول الإداري -->
+        <div class="admin-warning" id="adminWarning">
+            <div class="admin-warning-content">
+                <i class="fas fa-lock"></i>
+                <div>
+                    <h3>الوصول إلى الخدمات الإدارية</h3>
+                    <p>هذه الخدمات مخصصة للمسؤولين المعتمدين فقط</p>
+                </div>
+            </div>
+            <button class="admin-warning-btn" onclick="goToAdminLogin()">
+                <i class="fas fa-sign-in-alt"></i>
+                تسجيل دخول المسؤول
+            </button>
+        </div>
+        
         <!-- البانر الرئيسي -->
         <section class="main-banner">
             <div class="banner-content">
@@ -671,6 +807,32 @@
                 </button>
             </div>
         </section>
+        
+        <!-- شريط الإحصائيات -->
+        <div class="services-status">
+            <h3 class="status-title">
+                <i class="fas fa-chart-line"></i>
+                إحصائيات النظام
+            </h3>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-number" id="totalRequests">0</div>
+                    <div class="status-label">إجمالي الطلبات</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-number" id="pendingRequests">0</div>
+                    <div class="status-label">طلبات قيد المراجعة</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-number" id="activatedUsers">0</div>
+                    <div class="status-label">مستخدمين مفعلين</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-number" id="todayRequests">0</div>
+                    <div class="status-label">طلبات اليوم</div>
+                </div>
+            </div>
+        </div>
         
         <!-- شريط الخدمات -->
         <section class="services-section">
@@ -734,8 +896,56 @@
                         <i class="fas fa-arrow-left"></i>
                     </div>
                 </div>
+                
+                <!-- الخدمة 5: الخدمة الإدارية -->
+                <div class="service-card service-5" onclick="openAdminService('admin')" id="adminService">
+                    <div class="service-badge">إداري</div>
+                    <div class="service-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3 class="service-title">الخدمة الإدارية</h3>
+                    <p class="service-description">
+                        نظام إدارة الطلبات وتفعيل الهويات للمسؤولين
+                    </p>
+                    <div class="service-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+                
+                <!-- الخدمة 6: خدمة المسؤولين -->
+                <div class="service-card service-6" onclick="openAdminService('owner')" id="ownerService">
+                    <div class="service-badge">أونر</div>
+                    <div class="service-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="service-title">خدمة المسؤولين</h3>
+                    <p class="service-description">
+                        لوحة التحكم الكاملة لإدارة النظام والمراقبة
+                    </p>
+                    <div class="service-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
             </div>
         </section>
+        
+        <!-- قسم المعلومات الإدارية -->
+        <div class="services-status" id="adminInfo" style="display: none;">
+            <h3 class="status-title">
+                <i class="fas fa-user-tie"></i>
+                معلومات الوصول الإداري
+            </h3>
+            <div style="text-align: center; padding: 20px;">
+                <p style="color: var(--admin); margin-bottom: 15px;">
+                    <i class="fas fa-info-circle"></i>
+                    أنت مسجل كمسؤول في النظام
+                </p>
+                <button class="admin-warning-btn" onclick="goToAdminPanel()" style="background: var(--admin); color: white;">
+                    <i class="fas fa-tachometer-alt"></i>
+                    الانتقال إلى لوحة التحكم
+                </button>
+            </div>
+        </div>
     </main>
     
     <!-- ====== تحذير التفعيل ====== -->
@@ -774,6 +984,7 @@
                 <a href="apply.html">تقديم طلب جديد</a>
                 <a href="#" onclick="viewRequests()">الاستعلام عن الطلب</a>
                 <a href="#" onclick="openService('services')">جميع الخدمات</a>
+                <a href="#" onclick="openAdminService('admin')">لوحة المسؤولين</a>
                 <a href="#">الشروط والأحكام</a>
                 <a href="#">سياسة الخصوصية</a>
             </div>
@@ -790,6 +1001,14 @@
         // البيانات
         let currentUser = null;
         let isActivated = false;
+        let isAdmin = false;
+        let isOwner = false;
+        
+        // بيانات المسؤولين (يمكن نقلها لملف منفصل لاحقاً)
+        const ADMIN_USERS = [
+            { username: "admin", password: "admin123", role: "admin" },
+            { username: "owner", password: "owner123", role: "owner" }
+        ];
         
         // عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
@@ -798,11 +1017,20 @@
             // تحميل بيانات المستخدم
             loadUserData();
             
+            // التحقق من حالة المسؤول
+            checkAdminStatus();
+            
             // تحديث الإشعارات
             updateNotifications();
             
+            // تحديث الإحصائيات
+            updateStatistics();
+            
             // إضافة تأثيرات للخدمات
             setupServiceCards();
+            
+            // التحقق من وجود جلسة مسؤول
+            checkAdminSession();
         });
         
         // تحميل بيانات المستخدم من localStorage
@@ -824,7 +1052,6 @@
                         rank: lastRequest.rank || 'غير محدد',
                         date: lastRequest.date || new Date().toLocaleDateString('ar-SA'),
                         status: 'مفعل',
-                        // الصورة مخزنة في طلب آخر أو في مكان منفصل
                         avatar: localStorage.getItem('user_avatar') || ''
                     };
                     
@@ -841,14 +1068,38 @@
         
         // التحقق من حالة التفعيل
         function checkActivationStatus(request) {
-            // في نظام حقيقي، هنا نتحقق من حالة الطلب
-            // حالياً نفترض أن كل طلب مقدم = مفعل
             isActivated = true;
-            
-            // يمكننا التحقق من وجود صورة كدليل على التفعيل
             const hasPhoto = localStorage.getItem('user_avatar');
             if (hasPhoto) {
                 isActivated = true;
+            }
+        }
+        
+        // التحقق من حالة المسؤول
+        function checkAdminStatus() {
+            const adminSession = localStorage.getItem('admin_session');
+            if (adminSession) {
+                const session = JSON.parse(adminSession);
+                const now = new Date().getTime();
+                
+                if (session.expires > now) {
+                    isAdmin = true;
+                    if (session.role === 'owner') {
+                        isOwner = true;
+                    }
+                    showAdminInfo();
+                } else {
+                    // انتهت الجلسة
+                    localStorage.removeItem('admin_session');
+                }
+            }
+        }
+        
+        // التحقق من جلسة المسؤول
+        function checkAdminSession() {
+            if (isAdmin || isOwner) {
+                document.getElementById('adminWarning').style.display = 'none';
+                document.getElementById('adminInfo').style.display = 'block';
             }
         }
         
@@ -866,11 +1117,10 @@
                 document.getElementById('userNameDisplay').textContent = currentUser.fullName;
                 document.getElementById('userIdDisplay').textContent = `ID: ${currentUser.gameId}`;
                 
-                // تحميل الصورة إذا كانت موجودة
+                // تحميل الصورة
                 if (currentUser.avatar) {
                     document.getElementById('userAvatar').src = currentUser.avatar;
                 } else {
-                    // صورة افتراضية
                     document.getElementById('userAvatar').src = 'https://via.placeholder.com/150/2d68c4/ffffff?text=' + 
                         currentUser.fullName.charAt(0);
                 }
@@ -919,7 +1169,7 @@
             }
         }
         
-        // فتح الخدمات (مع التحقق من التفعيل)
+        // فتح الخدمات العادية
         function openService(serviceName) {
             if (!currentUser || !isActivated) {
                 showWarning();
@@ -929,19 +1179,100 @@
             switch(serviceName) {
                 case 'kr':
                     alert('سيتم توجيهك إلى خدمة KR قريباً');
-                    // window.location.href = 'kr.html';
                     break;
                 case 'tracking':
                     alert('سيتم توجيهك إلى خدمة المتابعة قريباً');
-                    // window.location.href = 'tracking.html';
                     break;
                 case 'services':
                     alert('سيتم توجيهك إلى قائمة الخدمات قريباً');
-                    // window.location.href = 'services.html';
                     break;
                 case 'profile':
                     toggleSidebar();
                     break;
+            }
+        }
+        
+        // فتح الخدمات الإدارية
+        function openAdminService(serviceType) {
+            if (!isAdmin && !isOwner) {
+                document.getElementById('adminWarning').style.display = 'flex';
+                return;
+            }
+            
+            if (serviceType === 'owner' && !isOwner) {
+                alert('⛔ هذا القسم مخصص للمالك فقط!');
+                return;
+            }
+            
+            if (serviceType === 'admin') {
+                openAdminPanel();
+            } else if (serviceType === 'owner') {
+                openOwnerPanel();
+            }
+        }
+        
+        // فتح لوحة المسؤول
+        function openAdminPanel() {
+            alert('سيتم فتح لوحة التحكم الإدارية قريباً...');
+            // window.location.href = 'admin/index.html';
+        }
+        
+        // فتح لوحة المالك
+        function openOwnerPanel() {
+            alert('سيتم فتح لوحة تحكم المالك قريباً...');
+            // window.location.href = 'admin/owner.html';
+        }
+        
+        // الانتقال إلى صفحة تسجيل دخول المسؤول
+        function goToAdminLogin() {
+            // في الحقيقة، سنقوم بفتح نافذة تسجيل دخول
+            const username = prompt('اسم المستخدم الإداري:');
+            if (!username) return;
+            
+            const password = prompt('كلمة المرور:');
+            if (!password) return;
+            
+            // التحقق من بيانات المسؤول
+            const admin = ADMIN_USERS.find(a => a.username === username && a.password === password);
+            
+            if (admin) {
+                // إنشاء جلسة
+                const session = {
+                    username: admin.username,
+                    role: admin.role,
+                    expires: new Date().getTime() + (8 * 60 * 60 * 1000) // 8 ساعات
+                };
+                
+                localStorage.setItem('admin_session', JSON.stringify(session));
+                
+                isAdmin = true;
+                if (admin.role === 'owner') {
+                    isOwner = true;
+                }
+                
+                document.getElementById('adminWarning').style.display = 'none';
+                document.getElementById('adminInfo').style.display = 'block';
+                
+                alert(`✅ تم تسجيل دخولك كـ ${admin.role === 'owner' ? 'مالك النظام' : 'مسؤول'}`);
+            } else {
+                alert('❌ بيانات الدخول غير صحيحة!');
+            }
+        }
+        
+        // الانتقال إلى لوحة التحكم
+        function goToAdminPanel() {
+            if (isOwner) {
+                openOwnerPanel();
+            } else if (isAdmin) {
+                openAdminPanel();
+            }
+        }
+        
+        // عرض معلومات المسؤول
+        function showAdminInfo() {
+            const adminSession = JSON.parse(localStorage.getItem('admin_session') || '{}');
+            if (adminSession.username) {
+                document.getElementById('adminInfo').style.display = 'block';
             }
         }
         
@@ -960,7 +1291,6 @@
         }
         
         function goToLogin() {
-            // إذا كان هناك مستخدم بياناته موجودة
             if (currentUser) {
                 toggleSidebar();
             } else {
@@ -982,6 +1312,22 @@
             }
         }
         
+        // تحديث الإحصائيات
+        function updateStatistics() {
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            const today = new Date().toLocaleDateString('ar-SA');
+            
+            const totalRequests = requests.length;
+            const pendingRequests = requests.filter(req => req.status === 'pending').length;
+            const activatedUsers = requests.filter(req => req.status === 'activated').length;
+            const todayRequests = requests.filter(req => req.date && req.date.includes(today)).length;
+            
+            document.getElementById('totalRequests').textContent = totalRequests;
+            document.getElementById('pendingRequests').textContent = pendingRequests;
+            document.getElementById('activatedUsers').textContent = activatedUsers;
+            document.getElementById('todayRequests').textContent = todayRequests;
+        }
+        
         // إعداد تأثيرات البطاقات
         function setupServiceCards() {
             const cards = document.querySelectorAll('.service-card');
@@ -998,7 +1344,21 @@
                 showWarning();
                 return;
             }
-            alert('سيتم عرض سجل الطلبات قريباً');
+            
+            const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+            if (requests.length === 0) {
+                alert('لا توجد طلبات مرفوعة بعد');
+                return;
+            }
+            
+            let message = '📋 سجل الطلبات:\n\n';
+            requests.forEach((req, index) => {
+                message += `${index + 1}. ${req.fullName} - ${req.gameId}\n`;
+                message += `   الحالة: ${req.status || 'قيد المراجعة'}\n`;
+                message += `   التاريخ: ${req.date}\n\n`;
+            });
+            
+            alert(message);
         }
         
         // تسجيل الخروج
@@ -1014,6 +1374,14 @@
                 // إعادة تعيين البيانات
                 currentUser = null;
                 isActivated = false;
+                
+                // تسجيل خروج المسؤول إذا كان مسجلاً
+                if (isAdmin || isOwner) {
+                    localStorage.removeItem('admin_session');
+                    isAdmin = false;
+                    isOwner = false;
+                    document.getElementById('adminInfo').style.display = 'none';
+                }
             }
         }
         
