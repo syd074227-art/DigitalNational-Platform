@@ -4,319 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام تفعيل الهوية الرقمي - KR</title>
+    <title>طلب تفعيل الهوية - KR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #1a237e;
-            --accent: #ff6f00;
-            --success: #00c853;
-            --warning: #ffd600;
-            --danger: #d50000;
-            --dark: #0d1117;
-            --light: #ffffff;
-            --gray-light: #c9d1d9;
-            --border: rgba(255, 255, 255, 0.1);
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-dark: rgba(0, 0, 0, 0.3);
-            --gradient-primary: linear-gradient(135deg, #1a237e 0%, #3f51b5 100%);
-            --gradient-accent: linear-gradient(135deg, #ff6f00 0%, #ff9800 100%);
-            --gradient-dark: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%);
-        }
-
-```
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', 'Cairo', sans-serif;
-    }
-
-    body {
-        background: var(--gradient-dark);
-        min-height: 100vh;
-        color: var(--light);
-        padding: 20px;
-    }
-
-    .container {
-        max-width: 1000px;
-        margin: 0 auto;
-        background: var(--glass-dark);
-        backdrop-filter: blur(20px);
-        border-radius: 24px;
-        border: 1px solid var(--border);
-        overflow: hidden;
-    }
-
-    .header {
-        background: var(--gradient-primary);
-        padding: 40px;
-        text-align: center;
-        border-bottom: 4px solid var(--accent);
-    }
-
-    .header h1 {
-        font-size: 32px;
-        margin-bottom: 10px;
-    }
-
-    .content {
-        padding: 40px;
-    }
-
-    .step {
-        background: var(--glass);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 30px;
-        margin-bottom: 20px;
-    }
-
-    .step-title {
-        font-size: 24px;
-        color: var(--accent);
-        margin-bottom: 25px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .step-number {
-        width: 50px;
-        height: 50px;
-        background: var(--gradient-accent);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 900;
-        font-size: 20px;
-    }
-
-    .input-group {
-        margin-bottom: 20px;
-    }
-
-    .input-group label {
-        display: block;
-        margin-bottom: 10px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .input-group input {
-        width: 100%;
-        padding: 15px;
-        background: rgba(0, 0, 0, 0.3);
-        border: 2px solid var(--border);
-        border-radius: 12px;
-        color: white;
-        font-size: 16px;
-        outline: none;
-        transition: all 0.3s;
-    }
-
-    .input-group input:focus {
-        border-color: var(--accent);
-    }
-
-    .departments-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-        margin: 20px 0;
-    }
-
-    .department-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 2px solid var(--border);
-        border-radius: 16px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .department-card:hover {
-        transform: translateY(-3px);
-        border-color: var(--accent);
-    }
-
-    .department-card.selected {
-        border-color: var(--accent);
-        background: rgba(255, 111, 0, 0.1);
-    }
-
-    .department-icon {
-        width: 60px;
-        height: 60px;
-        margin: 0 auto 15px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .department-icon i {
-        font-size: 28px;
-        color: white;
-    }
-
-    .health .department-icon { background: linear-gradient(135deg, #2196f3, #1976d2); }
-    .interior .department-icon { background: linear-gradient(135deg, #f44336, #d32f2f); }
-    .justice .department-icon { background: linear-gradient(135deg, #4caf50, #388e3c); }
-    .citizen .department-icon { background: linear-gradient(135deg, #9c27b0, #7b1fa2); }
-
-    .ranks-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 12px;
-        margin: 20px 0;
-        max-height: 400px;
-        overflow-y: auto;
-        padding: 10px;
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 12px;
-    }
-
-    .rank-item {
-        background: rgba(0, 0, 0, 0.3);
-        border: 2px solid var(--border);
-        border-radius: 10px;
-        padding: 15px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .rank-item:hover {
-        border-color: var(--accent);
-        transform: translateY(-2px);
-    }
-
-    .rank-item.selected {
-        background: rgba(255, 111, 0, 0.2);
-        border-color: var(--accent);
-    }
-
-    .btn {
-        width: 100%;
-        padding: 18px;
-        background: var(--gradient-accent);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-size: 18px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s;
-        margin-top: 20px;
-    }
-
-    .btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(255, 111, 0, 0.4);
-    }
-
-    .btn-secondary {
-        background: rgba(255, 255, 255, 0.1);
-        border: 2px solid var(--border);
-    }
-
-    .btn-group {
-        display: flex;
-        gap: 15px;
-    }
-
-    .btn-group .btn {
-        flex: 1;
-    }
-
-    .alert {
-        padding: 20px;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        text-align: center;
-        display: none;
-    }
-
-    .alert.show {
-        display: block;
-    }
-
-    .alert.success {
-        background: rgba(0, 200, 83, 0.2);
-        border: 2px solid var(--success);
-        color: var(--success);
-    }
-
-    .alert.warning {
-        background: rgba(255, 214, 0, 0.2);
-        border: 2px solid var(--warning);
-        color: var(--warning);
-    }
-
-    .file-upload-label {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 30px;
-        background: rgba(0, 0, 0, 0.2);
-        border: 2px dashed var(--border);
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .file-upload-label:hover {
-        border-color: var(--accent);
-    }
-
-    .file-upload-label i {
-        font-size: 40px;
-        color: var(--accent);
-        margin-bottom: 10px;
-    }
-
-    .image-preview {
-        display: none;
-        margin-top: 15px;
-        position: relative;
-    }
-
-    .image-preview.show {
-        display: block;
-    }
-
-    .image-preview img {
-        width: 100%;
-        max-width: 400px;
-        border-radius: 12px;
-        border: 2px solid var(--accent);
-    }
-
-    .success-message {
-        text-align: center;
-        padding: 40px;
-    }
-
-    .success-message i {
-        font-size: 80px;
-        color: var(--success);
-        margin-bottom: 20px;
-    }
-
-    @media (max-width: 768px) {
-        .departments-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
-```
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Cairo', sans-serif; }
+        body { background: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%); min-height: 100vh; color: white; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #1a237e, #3f51b5); padding: 40px; text-align: center; border-bottom: 3px solid #ff6f00; }
+        .header h1 { font-size: 32px; margin-bottom: 10px; }
+        .content { padding: 40px; }
+        .step { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 30px; margin-bottom: 20px; }
+        .step-title { font-size: 24px; color: #ff9800; margin-bottom: 25px; display: flex; align-items: center; gap: 15px; }
+        .step-number { width: 50px; height: 50px; background: linear-gradient(135deg, #ff6f00, #ff9800); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 20px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 10px; font-weight: 600; }
+        .input-group input { width: 100%; padding: 15px; background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 10px; color: white; font-size: 16px; outline: none; }
+        .input-group input:focus { border-color: #ff6f00; }
+        .departments-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0; }
+        .department-card { background: rgba(255, 255, 255, 0.03); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .department-card:hover { transform: translateY(-3px); border-color: #ff6f00; }
+        .department-card.selected { border-color: #ff6f00; background: rgba(255, 111, 0, 0.1); }
+        .department-icon { width: 60px; height: 60px; margin: 0 auto 15px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .department-icon i { font-size: 28px; color: white; }
+        .health .department-icon { background: linear-gradient(135deg, #2196f3, #1976d2); }
+        .interior .department-icon { background: linear-gradient(135deg, #f44336, #d32f2f); }
+        .justice .department-icon { background: linear-gradient(135deg, #4caf50, #388e3c); }
+        .citizen .department-icon { background: linear-gradient(135deg, #9c27b0, #7b1fa2); }
+        .ranks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin: 20px 0; max-height: 400px; overflow-y: auto; padding: 10px; background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+        .rank-item { background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.3s; font-size: 14px; }
+        .rank-item:hover { border-color: #ff6f00; }
+        .rank-item.selected { background: rgba(255, 111, 0, 0.2); border-color: #ff6f00; font-weight: 700; }
+        .btn { width: 100%; padding: 18px; background: linear-gradient(135deg, #ff6f00, #ff9800); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 20px; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 111, 0, 0.4); }
+        .btn-secondary { background: rgba(255, 255, 255, 0.1); }
+        .btn-group { display: flex; gap: 15px; }
+        .btn-group .btn { flex: 1; }
+        .file-upload-label { display: flex; flex-direction: column; align-items: center; padding: 30px; background: rgba(0, 0, 0, 0.2); border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 10px; cursor: pointer; transition: all 0.3s; }
+        .file-upload-label:hover { border-color: #ff6f00; }
+        .file-upload-label i { font-size: 40px; color: #ff6f00; margin-bottom: 10px; }
+        .image-preview { display: none; margin-top: 15px; }
+        .image-preview.show { display: block; }
+        .image-preview img { width: 100%; max-width: 400px; border-radius: 10px; border: 2px solid #ff6f00; }
+        .alert { padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; display: none; }
+        .alert.show { display: block; }
+        .alert.warning { background: rgba(255, 214, 0, 0.2); border: 2px solid #ffd600; color: #ffd600; }
+        .alert.success { background: rgba(0, 200, 83, 0.2); border: 2px solid #00c853; color: #00c853; }
+        .success-message { text-align: center; padding: 50px 20px; }
+        .success-message i { font-size: 80px; color: #00c853; margin-bottom: 20px; }
+        .success-message h2 { font-size: 32px; margin-bottom: 15px; }
+        @media (max-width: 768px) { .departments-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -324,307 +61,63 @@
             <h1><i class="fas fa-id-card"></i> نظام تفعيل الهوية الرقمي</h1>
             <p>الجهة الرقمية المسؤولة - KR</p>
         </div>
-
-```
-    <div class="content">
-        <div class="alert" id="alertBox"></div>
-
-        <div id="applicationForm">
-            <!-- الخطوة 1 -->
-            <div class="step" id="step1">
-                <div class="step-title">
-                    <div class="step-number">1</div>
-                    <span>البيانات الأساسية</span>
+        <div class="content">
+            <div class="alert" id="alertBox"></div>
+            <div id="applicationForm">
+                <div class="step" id="step1">
+                    <div class="step-title"><div class="step-number">1</div><span>البيانات الأساسية</span></div>
+                    <div class="input-group"><label><i class="fas fa-user"></i> الاسم الكامل ثلاثي</label><input type="text" id="fullName" placeholder="مثال: محمد بن فهد الحربي"></div>
+                    <div class="input-group"><label><i class="fas fa-calendar-alt"></i> العمر</label><input type="number" id="age" placeholder="18 سنة فأكثر" min="18"></div>
+                    <div class="input-group"><label><i class="fas fa-gamepad"></i> اسم المستخدم في اللعبة</label><input type="text" id="gameUsername" placeholder="مثال: Ahmed_KR"></div>
+                    <div class="input-group"><label><i class="fab fa-discord"></i> اسم المستخدم في الديسكورد</label><input type="text" id="discordUsername" placeholder="مثال: Ahmed#1234"></div>
+                    <div class="input-group"><label><i class="fas fa-fingerprint"></i> رقم الهوية (10 أرقام)</label><input type="text" id="gameId" placeholder="0000000000" maxlength="10"></div>
+                    <div class="input-group"><label><i class="fas fa-id-card"></i> صورة الهوية الوطنية</label><input type="file" id="nationalIdImage" accept="image/*" onchange="handleImageUpload(this, 'nationalIdPreview')" style="display: none;"><label for="nationalIdImage" class="file-upload-label"><i class="fas fa-cloud-upload-alt"></i><span>اضغط لاختيار الصورة</span></label><div id="nationalIdPreview" class="image-preview"></div></div>
+                    <div class="input-group"><label><i class="fas fa-camera"></i> صورة الشخصية</label><input type="file" id="characterImage" accept="image/*" onchange="handleImageUpload(this, 'characterPreview')" style="display: none;"><label for="characterImage" class="file-upload-label"><i class="fas fa-cloud-upload-alt"></i><span>اضغط لاختيار الصورة</span></label><div id="characterPreview" class="image-preview"></div></div>
+                    <button class="btn" onclick="validateStep1()"><i class="fas fa-arrow-left"></i> التالي</button>
                 </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-user"></i> الاسم الكامل ثلاثي</label>
-                    <input type="text" id="fullName" placeholder="مثال: محمد بن فهد الحربي">
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-calendar-alt"></i> العمر</label>
-                    <input type="number" id="age" placeholder="18 سنة فأكثر" min="18">
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-gamepad"></i> اسم المستخدم في اللعبة</label>
-                    <input type="text" id="gameUsername" placeholder="مثال: Ahmed_KR">
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fab fa-discord"></i> اسم المستخدم في الديسكورد</label>
-                    <input type="text" id="discordUsername" placeholder="مثال: Ahmed#1234">
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-fingerprint"></i> رقم الهوية (10 أرقام)</label>
-                    <input type="text" id="gameId" placeholder="0000000000" maxlength="10">
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-id-card"></i> صورة الهوية الوطنية</label>
-                    <input type="file" id="nationalIdImage" accept="image/*" onchange="handleImageUpload(this, 'nationalIdPreview')" style="display: none;">
-                    <label for="nationalIdImage" class="file-upload-label">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <span>اضغط لاختيار الصورة</span>
-                    </label>
-                    <div id="nationalIdPreview" class="image-preview"></div>
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-camera"></i> صورة الشخصية</label>
-                    <input type="file" id="characterImage" accept="image/*" onchange="handleImageUpload(this, 'characterPreview')" style="display: none;">
-                    <label for="characterImage" class="file-upload-label">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <span>اضغط لاختيار الصورة</span>
-                    </label>
-                    <div id="characterPreview" class="image-preview"></div>
-                </div>
-
-                <button class="btn" onclick="validateStep1()">التالي</button>
-            </div>
-
-            <!-- الخطوة 2 -->
-            <div class="step" id="step2" style="display: none;">
-                <div class="step-title">
-                    <div class="step-number">2</div>
-                    <span>اختر التصنيف</span>
-                </div>
-
-                <div class="departments-grid">
-                    <div class="department-card health" onclick="selectDepartment(this, 'health')">
-                        <div class="department-icon"><i class="fas fa-heartbeat"></i></div>
-                        <h4>وزارة الصحة</h4>
+                <div class="step" id="step2" style="display: none;">
+                    <div class="step-title"><div class="step-number">2</div><span>اختر التصنيف</span></div>
+                    <div class="departments-grid">
+                        <div class="department-card health" onclick="selectDepartment(this, 'health')"><div class="department-icon"><i class="fas fa-heartbeat"></i></div><h4>وزارة الصحة</h4></div>
+                        <div class="department-card interior" onclick="selectDepartment(this, 'interior')"><div class="department-icon"><i class="fas fa-shield-alt"></i></div><h4>وزارة الداخلية</h4></div>
+                        <div class="department-card justice" onclick="selectDepartment(this, 'justice')"><div class="department-icon"><i class="fas fa-gavel"></i></div><h4>وزارة العدل</h4></div>
+                        <div class="department-card citizen" onclick="selectDepartment(this, 'citizen')"><div class="department-icon"><i class="fas fa-user"></i></div><h4>مواطن</h4></div>
                     </div>
-                    <div class="department-card interior" onclick="selectDepartment(this, 'interior')">
-                        <div class="department-icon"><i class="fas fa-shield-alt"></i></div>
-                        <h4>وزارة الداخلية</h4>
-                    </div>
-                    <div class="department-card justice" onclick="selectDepartment(this, 'justice')">
-                        <div class="department-icon"><i class="fas fa-gavel"></i></div>
-                        <h4>وزارة العدل</h4>
-                    </div>
-                    <div class="department-card citizen" onclick="selectDepartment(this, 'citizen')">
-                        <div class="department-icon"><i class="fas fa-user"></i></div>
-                        <h4>مواطن</h4>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="showStep(1)"><i class="fas fa-arrow-right"></i> السابق</button>
+                        <button class="btn" onclick="validateStep2()"><i class="fas fa-arrow-left"></i> التالي</button>
                     </div>
                 </div>
-
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="showStep(1)">السابق</button>
-                    <button class="btn" onclick="showStep(3)">التالي</button>
+                <div class="step" id="step3" style="display: none;">
+                    <div class="step-title"><div class="step-number">3</div><span>اختيار الرتبة</span></div>
+                    <div id="ranksContainer"></div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="showStep(2)"><i class="fas fa-arrow-right"></i> السابق</button>
+                        <button class="btn" onclick="submitRequest()"><i class="fas fa-paper-plane"></i> إرسال الطلب</button>
+                    </div>
                 </div>
             </div>
-
-            <!-- الخطوة 3 -->
-            <div class="step" id="step3" style="display: none;">
-                <div class="step-title">
-                    <div class="step-number">3</div>
-                    <span>اختيار الرتبة</span>
-                </div>
-
-                <div id="ranksContainer"></div>
-
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="showStep(2)">السابق</button>
-                    <button class="btn" onclick="submitRequest()">إرسال الطلب</button>
-                </div>
+            <div class="success-message" id="successMessage" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <h2>تم إرسال طلبك بنجاح! ✨</h2>
+                <p style="margin: 20px 0; font-size: 18px; color: #c9d1d9;">سيتم مراجعة طلبك من قبل الإدارة خلال 24-48 ساعة</p>
+                <div id="requestDetails" style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 12px; margin: 25px 0; text-align: right;"></div>
+                <button class="btn" onclick="location.reload()"><i class="fas fa-redo"></i> تقديم طلب جديد</button>
             </div>
-        </div>
-
-        <!-- رسالة النجاح -->
-        <div class="success-message" id="successMessage" style="display: none;">
-            <i class="fas fa-check-circle"></i>
-            <h2>تم إرسال طلبك بنجاح!</h2>
-            <p style="margin: 20px 0;">سيتم مراجعة طلبك خلال 24-48 ساعة</p>
-            <div id="requestDetails"></div>
-            <button class="btn" onclick="location.reload()">تقديم طلب جديد</button>
         </div>
     </div>
-</div>
-
-<script>
-    const DEPARTMENTS = {
-        health: {
-            name: 'وزارة الصحة',
-            ranks: ['مسعف', 'ممرض', 'دكتور', 'استشاري', 'وزير الصحة']
-        },
-        interior: {
-            name: 'وزارة الداخلية',
-            ranks: ['جندي', 'عريف', 'رقيب', 'ملازم', 'نقيب', 'رائد', 'مقدم', 'عقيد', 'عميد', 'لواء', 'وزير الداخلية']
-        },
-        justice: {
-            name: 'وزارة العدل',
-            ranks: ['محامي', 'قاضي', 'مستشار', 'وزير العدل']
-        },
-        citizen: {
-            name: 'مواطن',
-            ranks: ['مواطن']
-        }
-    };
-
-    let selectedDepartment = null;
-    let selectedRank = null;
-    let uploadedNationalId = null;
-    let uploadedCharacterImage = null;
-
-    function validateStep1() {
-        const name = document.getElementById('fullName').value.trim();
-        const age = document.getElementById('age').value;
-        const gameUsername = document.getElementById('gameUsername').value.trim();
-        const discordUsername = document.getElementById('discordUsername').value.trim();
-        const gameId = document.getElementById('gameId').value.trim();
-
-        if (!name || name.split(' ').length < 3) {
-            showAlert('يجب أن يكون الاسم ثلاثي', false);
-            return;
-        }
-        if (!age || age < 18) {
-            showAlert('العمر يجب أن يكون 18 سنة أو أكثر', false);
-            return;
-        }
-        if (!gameUsername || !discordUsername) {
-            showAlert('يرجى ملء جميع الحقول', false);
-            return;
-        }
-        if (!gameId || gameId.length !== 10) {
-            showAlert('رقم الهوية يجب أن يكون 10 أرقام', false);
-            return;
-        }
-        if (!uploadedNationalId || !uploadedCharacterImage) {
-            showAlert('يرجى رفع الصور المطلوبة', false);
-            return;
-        }
-
-        showStep(2);
-    }
-
-    function selectDepartment(element, deptId) {
-        document.querySelectorAll('.department-card').forEach(card => {
-            card.classList.remove('selected');
-        });
-        element.classList.add('selected');
-        selectedDepartment = deptId;
-
-        // تحديث الرتب
-        const dept = DEPARTMENTS[deptId];
-        const container = document.getElementById('ranksContainer');
-        container.innerHTML = `
-            <div class="ranks-grid">
-                ${dept.ranks.map(rank => `
-                    <div class="rank-item" onclick="selectRank(this, '${rank}')">${rank}</div>
-                `).join('')}
-            </div>
-        `;
-    }
-
-    function selectRank(element, rank) {
-        document.querySelectorAll('.rank-item').forEach(item => {
-            item.classList.remove('selected');
-        });
-        element.classList.add('selected');
-        selectedRank = rank;
-    }
-
-    function showStep(stepNumber) {
-        for (let i = 1; i <= 3; i++) {
-            document.getElementById('step' + i).style.display = 'none';
-        }
-        document.getElementById('step' + stepNumber).style.display = 'block';
-    }
-
-    function handleImageUpload(input, previewId) {
-        const file = input.files[0];
-        if (!file) return;
-
-        if (file.size > 5 * 1024 * 1024) {
-            showAlert('حجم الصورة يجب أن يكون أقل من 5MB', false);
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const imageData = e.target.result;
-            
-            if (previewId === 'nationalIdPreview') {
-                uploadedNationalId = { name: file.name, data: imageData };
-            } else {
-                uploadedCharacterImage = { name: file.name, data: imageData };
-            }
-
-            document.getElementById(previewId).innerHTML = `<img src="${imageData}">`;
-            document.getElementById(previewId).classList.add('show');
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function submitRequest() {
-        if (!selectedDepartment || !selectedRank) {
-            showAlert('يرجى اختيار التصنيف والرتبة', false);
-            return;
-        }
-
-        const requestData = {
-            id: 'KR-' + Date.now().toString().slice(-8),
-            fullName: document.getElementById('fullName').value.trim(),
-            age: parseInt(document.getElementById('age').value),
-            gameUsername: document.getElementById('gameUsername').value.trim(),
-            discordUsername: document.getElementById('discordUsername').value.trim(),
-            gameId: document.getElementById('gameId').value.trim(),
-            department: selectedDepartment,
-            departmentName: DEPARTMENTS[selectedDepartment].name,
-            rank: selectedRank,
-            nationalIdImage: uploadedNationalId,
-            characterImage: uploadedCharacterImage,
-            date: new Date().toLocaleString('ar-SA'),
-            submissionDate: new Date().toISOString(),
-            status: 'pending',
-            deviceId: getDeviceId()
-        };
-
-        // حفظ في localStorage
-        let requests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
-        requests.unshift(requestData);
-        localStorage.setItem('admin_pending_requests', JSON.stringify(requests));
-
-        // حفظ في طلبات المستخدم
-        let userRequests = JSON.parse(localStorage.getItem('user_requests') || '[]');
-        userRequests.push(requestData);
-        localStorage.setItem('user_requests', JSON.stringify(userRequests));
-
-        console.log('✅ تم حفظ الطلب:', requestData);
-
-        // عرض رسالة النجاح
-        document.getElementById('applicationForm').style.display = 'none';
-        document.getElementById('successMessage').style.display = 'block';
-        document.getElementById('requestDetails').innerHTML = `
-            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; margin: 20px 0;">
-                <p><strong>رقم الطلب:</strong> ${requestData.id}</p>
-                <p><strong>التاريخ:</strong> ${requestData.date}</p>
-                <p><strong>الحالة:</strong> قيد المراجعة</p>
-            </div>
-        `;
-    }
-
-    function getDeviceId() {
-        let deviceId = localStorage.getItem('device_id');
-        if (!deviceId) {
-            deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('device_id', deviceId);
-        }
-        return deviceId;
-    }
-
-    function showAlert(message, isSuccess) {
-        const alertBox = document.getElementById('alertBox');
-        alertBox.textContent = message;
-        alertBox.className = 'alert ' + (isSuccess ? 'success' : 'warning');
-        alertBox.classList.add('show');
-        setTimeout(() => alertBox.classList.remove('show'), 4000);
-    }
-</script>
-```
-
+    <script>
+        const DEPARTMENTS={health:{name:'وزارة الصحة',ranks:['مسعف','ممرض','دكتور','استشاري','وزير الصحة']},interior:{name:'وزارة الداخلية',ranks:['جندي','عريف','رقيب','ملازم','نقيب','رائد','مقدم','عقيد','عميد','لواء','وزير الداخلية']},justice:{name:'وزارة العدل',ranks:['محامي','قاضي','مستشار','وزير العدل']},citizen:{name:'مواطن',ranks:['مواطن']}};
+        let selectedDepartment=null,selectedRank=null,uploadedNationalId=null,uploadedCharacterImage=null;
+        function validateStep1(){const name=document.getElementById('fullName').value.trim(),age=document.getElementById('age').value,gameUsername=document.getElementById('gameUsername').value.trim(),discordUsername=document.getElementById('discordUsername').value.trim(),gameId=document.getElementById('gameId').value.trim();if(!name||name.split(' ').length<3)return showAlert('يجب أن يكون الاسم ثلاثي',!1);if(!age||age<18)return showAlert('العمر يجب أن يكون 18 سنة أو أكثر',!1);if(!gameUsername||!discordUsername)return showAlert('يرجى ملء جميع الحقول',!1);if(!gameId||10!==gameId.length||!/^\d+$/.test(gameId))return showAlert('رقم الهوية يجب أن يكون 10 أرقام',!1);if(!uploadedNationalId||!uploadedCharacterImage)return showAlert('يرجى رفع الصور المطلوبة',!1);showStep(2)}
+        function validateStep2(){if(!selectedDepartment)return showAlert('يرجى اختيار التصنيف',!1);showStep(3)}
+        function selectDepartment(element,deptId){document.querySelectorAll('.department-card').forEach(card=>card.classList.remove('selected')),element.classList.add('selected'),selectedDepartment=deptId;const dept=DEPARTMENTS[deptId],container=document.getElementById('ranksContainer');container.innerHTML=`<div class="ranks-grid">${dept.ranks.map(rank=>`<div class="rank-item" onclick="selectRank(this, '${rank}')">${rank}</div>`).join('')}</div>`}
+        function selectRank(element,rank){document.querySelectorAll('.rank-item').forEach(item=>item.classList.remove('selected')),element.classList.add('selected'),selectedRank=rank}
+        function showStep(stepNumber){for(let i=1;i<=3;i++)document.getElementById('step'+i).style.display='none';document.getElementById('step'+stepNumber).style.display='block',window.scrollTo({top:0,behavior:'smooth'})}
+        function handleImageUpload(input,previewId){const file=input.files[0];if(!file)return;if(file.size>5242880)return showAlert('حجم الصورة يجب أن يكون أقل من 5MB',!1),void(input.value='');const reader=new FileReader;reader.onload=function(e){const imageData=e.target.result;'nationalIdPreview'===previewId?uploadedNationalId={name:file.name,data:imageData}:uploadedCharacterImage={name:file.name,data:imageData},document.getElementById(previewId).innerHTML=`<img src="${imageData}">`,document.getElementById(previewId).classList.add('show'),showAlert('تم رفع الصورة بنجاح ✓',!0)},reader.readAsDataURL(file)}
+        function submitRequest(){if(!selectedDepartment||!selectedRank)return showAlert('يرجى اختيار التصنيف والرتبة',!1);const requestData={id:'KR-'+Date.now().toString().slice(-8),fullName:document.getElementById('fullName').value.trim(),age:parseInt(document.getElementById('age').value),gameUsername:document.getElementById('gameUsername').value.trim(),discordUsername:document.getElementById('discordUsername').value.trim(),gameId:document.getElementById('gameId').value.trim(),department:selectedDepartment,departmentName:DEPARTMENTS[selectedDepartment].name,rank:selectedRank,nationalIdImage:uploadedNationalId,characterImage:uploadedCharacterImage,date:new Date().toLocaleString('ar-SA',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}),submissionDate:new Date().toISOString(),status:'pending',deviceId:getDeviceId()};let adminRequests=JSON.parse(localStorage.getItem('admin_pending_requests')||'[]');adminRequests.unshift(requestData),localStorage.setItem('admin_pending_requests',JSON.stringify(adminRequests));let userRequests=JSON.parse(localStorage.getItem('user_requests')||'[]');userRequests.push(requestData),localStorage.setItem('user_requests',JSON.stringify(userRequests)),console.log('✅ تم حفظ الطلب:',requestData),console.log('📊 إجمالي الطلبات:',adminRequests.length),document.getElementById('applicationForm').style.display='none',document.getElementById('successMessage').style.display='block',document.getElementById('requestDetails').innerHTML=`<p style="margin-bottom: 12px;"><strong style="color: #ff9800;">رقم الطلب:</strong> <span style="color: #00c853; font-size: 20px; font-weight: 900;">${requestData.id}</span></p><p style="margin-bottom: 12px;"><strong style="color: #ff9800;">التاريخ:</strong> ${requestData.date}</p><p style="margin-bottom: 12px;"><strong style="color: #ff9800;">الاسم:</strong> ${requestData.fullName}</p><p style="margin-bottom: 12px;"><strong style="color: #ff9800;">التصنيف:</strong> ${requestData.departmentName}</p><p><strong style="color: #ff9800;">الحالة:</strong> <span style="color: #ffd600;">⏱ قيد المراجعة</span></p>`,window.scrollTo({top:0,behavior:'smooth'})}
+        function getDeviceId(){let deviceId=localStorage.getItem('device_id');return deviceId||(deviceId='device_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),localStorage.setItem('device_id',deviceId)),deviceId}
+        function showAlert(message,isSuccess){const alertBox=document.getElementById('alertBox');alertBox.innerHTML=`<i class="fas fa-${isSuccess?'check-circle':'exclamation-triangle'}"></i> ${message}`,alertBox.className='alert '+(isSuccess?'success':'warning'),alertBox.classList.add('show'),setTimeout(()=>alertBox.classList.remove('show'),4e3)}
+    </script>
 </body>
 </html>
