@@ -8,62 +8,673 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Cairo', sans-serif; }
-        body { background: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%); min-height: 100vh; color: white; padding: 20px; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        .header { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .header-title h1 { font-size: 28px; color: #ff9800; margin-bottom: 5px; }
-        .header-title p { color: #c9d1d9; }
-        .stats { display: flex; gap: 20px; }
-        .stat-card { background: rgba(255, 255, 255, 0.05); padding: 15px 25px; border-radius: 12px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .stat-number { font-size: 32px; font-weight: 900; color: #ff6f00; }
-        .stat-label { font-size: 13px; color: #c9d1d9; margin-top: 5px; }
-        .filters { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 20px; margin-bottom: 20px; display: flex; gap: 15px; }
-        .filter-btn { padding: 10px 20px; background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 50px; color: white; cursor: pointer; transition: all 0.3s; font-weight: 600; }
-        .filter-btn:hover { border-color: #ff6f00; }
-        .filter-btn.active { background: linear-gradient(135deg, #ff6f00, #ff9800); border-color: #ff6f00; }
-        .requests-grid { display: grid; gap: 20px; }
-        .request-card { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px; transition: all 0.3s; }
-        .request-card:hover { border-color: #ff6f00; transform: translateY(-3px); }
-        .request-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 25px; }
-        .request-info { flex: 1; }
-        .request-id { font-size: 14px; color: #ff6f00; font-weight: 700; margin-bottom: 10px; }
-        .request-name { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
-        .request-date { font-size: 13px; color: #c9d1d9; }
-        .request-images { display: flex; gap: 15px; }
-        .request-img { width: 100px; height: 100px; border-radius: 12px; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.1); cursor: pointer; transition: all 0.3s; }
-        .request-img:hover { transform: scale(1.05); border-color: #ff6f00; }
-        .request-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 25px 0; }
-        .detail-item { background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 12px; border-right: 3px solid #ff6f00; }
-        .detail-label { font-size: 12px; color: #c9d1d9; margin-bottom: 5px; }
-        .detail-value { font-size: 16px; font-weight: 700; }
-        .request-actions { display: flex; gap: 15px; margin-top: 25px; }
-        .btn { flex: 1; padding: 15px; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-accept { background: linear-gradient(135deg, #00c853, #00e676); color: white; }
-        .btn-accept:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4); }
-        .btn-reject { background: linear-gradient(135deg, #d50000, #ff1744); color: white; }
-        .btn-reject:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(213, 0, 0, 0.4); }
-        .empty-state { text-align: center; padding: 80px 20px; background: rgba(255, 255, 255, 0.05); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .empty-state i { font-size: 80px; color: #8b949e; margin-bottom: 20px; }
-        .empty-state p { color: #c9d1d9; font-size: 18px; }
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.95); z-index: 1000; padding: 20px; overflow-y: auto; }
-        .modal.show { display: flex; align-items: center; justify-content: center; }
-        .image-modal { max-width: 90%; max-height: 90vh; border-radius: 12px; }
-        @media (max-width: 768px) { .stats { flex-wrap: wrap; } .request-header { flex-direction: column; gap: 20px; } }
-    </style>
+        body { background: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%); min-height: 100vh; color: white; }
+
+```
+    /* الشريط الجانبي */
+    .sidebar {
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 30px 20px;
+        z-index: 1000;
+        overflow-y: auto;
+    }
+    
+    .logo-section {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .logo-section i {
+        font-size: 50px;
+        color: #ff6f00;
+        margin-bottom: 15px;
+    }
+    
+    .logo-section h2 {
+        font-size: 22px;
+        color: #ff9800;
+        margin-bottom: 5px;
+    }
+    
+    .logo-section p {
+        font-size: 12px;
+        color: #8b949e;
+    }
+    
+    .menu-section {
+        margin-bottom: 30px;
+    }
+    
+    .menu-title {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #8b949e;
+        margin-bottom: 15px;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+    
+    .menu-item {
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #c9d1d9;
+        background: transparent;
+        border: 1px solid transparent;
+    }
+    
+    .menu-item:hover {
+        background: rgba(255, 111, 0, 0.1);
+        border-color: rgba(255, 111, 0, 0.3);
+        color: white;
+        transform: translateX(-5px);
+    }
+    
+    .menu-item.active {
+        background: linear-gradient(135deg, #ff6f00, #ff9800);
+        color: white;
+        box-shadow: 0 5px 15px rgba(255, 111, 0, 0.3);
+    }
+    
+    .menu-item i {
+        font-size: 18px;
+        width: 25px;
+        text-align: center;
+    }
+    
+    .logout-btn {
+        margin-top: 30px;
+        padding: 15px;
+        background: linear-gradient(135deg, #d50000, #ff1744);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s;
+    }
+    
+    .logout-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(213, 0, 0, 0.4);
+    }
+    
+    /* المحتوى الرئيسي */
+    .main-content {
+        margin-right: 280px;
+        padding: 30px;
+        min-height: 100vh;
+    }
+    
+    .header {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+    
+    .header-title h1 {
+        font-size: 28px;
+        color: #ff9800;
+        margin-bottom: 5px;
+    }
+    
+    .header-title p {
+        color: #8b949e;
+        font-size: 14px;
+    }
+    
+    .stats {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 20px 30px;
+        border-radius: 16px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        flex: 1;
+        min-width: 150px;
+    }
+    
+    .stat-number {
+        font-size: 36px;
+        font-weight: 900;
+        color: #ff6f00;
+        margin-bottom: 5px;
+    }
+    
+    .stat-label {
+        font-size: 13px;
+        color: #c9d1d9;
+    }
+    
+    .filters {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 30px;
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+        padding: 12px 24px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .filter-btn:hover {
+        border-color: #ff6f00;
+        transform: translateY(-2px);
+    }
+    
+    .filter-btn.active {
+        background: linear-gradient(135deg, #ff6f00, #ff9800);
+        border-color: #ff6f00;
+    }
+    
+    /* البطاقات */
+    .requests-grid {
+        display: grid;
+        gap: 25px;
+    }
+    
+    .request-card {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 30px;
+        transition: all 0.3s;
+    }
+    
+    .request-card:hover {
+        border-color: #ff6f00;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    }
+    
+    .request-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 25px;
+    }
+    
+    .request-info {
+        flex: 1;
+    }
+    
+    .request-id {
+        font-size: 14px;
+        color: #ff6f00;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    
+    .request-name {
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+    
+    .request-date {
+        font-size: 13px;
+        color: #8b949e;
+    }
+    
+    .request-images {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .request-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .request-img:hover {
+        transform: scale(1.1);
+        border-color: #ff6f00;
+        box-shadow: 0 5px 20px rgba(255, 111, 0, 0.4);
+    }
+    
+    .request-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 25px 0;
+    }
+    
+    .detail-item {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 15px;
+        border-radius: 12px;
+        border-right: 3px solid #ff6f00;
+    }
+    
+    .detail-label {
+        font-size: 12px;
+        color: #8b949e;
+        margin-bottom: 5px;
+    }
+    
+    .detail-value {
+        font-size: 16px;
+        font-weight: 700;
+    }
+    
+    .request-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 25px;
+    }
+    
+    .btn {
+        flex: 1;
+        padding: 15px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .btn-accept {
+        background: linear-gradient(135deg, #00c853, #00e676);
+        color: white;
+    }
+    
+    .btn-accept:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4);
+    }
+    
+    .btn-reject {
+        background: linear-gradient(135deg, #d50000, #ff1744);
+        color: white;
+    }
+    
+    .btn-reject:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(213, 0, 0, 0.4);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .empty-state i {
+        font-size: 80px;
+        color: #8b949e;
+        margin-bottom: 20px;
+    }
+    
+    .empty-state p {
+        color: #c9d1d9;
+        font-size: 18px;
+    }
+    
+    /* النوافذ المنبثقة */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 2000;
+        padding: 20px;
+        overflow-y: auto;
+    }
+    
+    .modal.show {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .image-modal {
+        max-width: 90%;
+        max-height: 90vh;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    }
+    
+    .modal-content {
+        background: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 40px;
+        max-width: 600px;
+        width: 90%;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .modal-header {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    
+    .modal-header h2 {
+        font-size: 28px;
+        color: #ff9800;
+        margin-bottom: 10px;
+    }
+    
+    .modal-header p {
+        color: #8b949e;
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        color: #c9d1d9;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: white;
+        font-size: 15px;
+        transition: all 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #ff6f00;
+        background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    .file-upload {
+        border: 2px dashed rgba(255, 255, 255, 0.2);
+        padding: 30px;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .file-upload:hover {
+        border-color: #ff6f00;
+        background: rgba(255, 111, 0, 0.05);
+    }
+    
+    .file-upload i {
+        font-size: 40px;
+        color: #ff6f00;
+        margin-bottom: 10px;
+    }
+    
+    .modal-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #ff6f00, #ff9800);
+        color: white;
+    }
+    
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+    
+    /* الصفحات */
+    .page-section {
+        display: none;
+    }
+    
+    .page-section.active {
+        display: block;
+        animation: fadeIn 0.5s;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* المستخدمون المفعلون */
+    .users-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    
+    .user-card {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 25px;
+        transition: all 0.3s;
+    }
+    
+    .user-card:hover {
+        border-color: #00c853;
+        transform: translateY(-5px);
+    }
+    
+    .user-card-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .user-card-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 2px solid #00c853;
+    }
+    
+    .user-card-info h3 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    
+    .user-card-info p {
+        font-size: 12px;
+        color: #8b949e;
+    }
+    
+    .user-card-details {
+        font-size: 13px;
+        color: #c9d1d9;
+        line-height: 1.8;
+    }
+    
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 70px;
+            padding: 20px 10px;
+        }
+        
+        .logo-section h2,
+        .logo-section p,
+        .menu-title,
+        .menu-item span {
+            display: none;
+        }
+        
+        .main-content {
+            margin-right: 70px;
+        }
+        
+        .logout-btn span {
+            display: none;
+        }
+    }
+</style>
+```
+
 </head>
 <body>
-    <div class="container">
+    <!-- الشريط الجانبي -->
+    <div class="sidebar">
+        <div class="logo-section">
+            <i class="fas fa-shield-alt"></i>
+            <h2>لوحة الإدارة</h2>
+            <p>KR Admin Panel</p>
+        </div>
+
+```
+    <div class="menu-section">
+        <div class="menu-title">القوائم الرئيسية</div>
+        <div class="menu-item active" onclick="showPage('requests')">
+            <i class="fas fa-inbox"></i>
+            <span>طلبات التفعيل</span>
+        </div>
+        <div class="menu-item" onclick="showPage('activated')">
+            <i class="fas fa-users"></i>
+            <span>المستخدمون المفعلون</span>
+        </div>
+        <div class="menu-item" onclick="showPage('renewals')">
+            <i class="fas fa-sync"></i>
+            <span>طلبات التجديد</span>
+        </div>
+        <div class="menu-item" onclick="showPage('disabled')">
+            <i class="fas fa-ban"></i>
+            <span>الحسابات المعطلة</span>
+        </div>
+    </div>
+    
+    <div class="menu-section">
+        <div class="menu-title">إجراءات الإدارة</div>
+        <div class="menu-item" onclick="openRenewalModal('id')">
+            <i class="fas fa-id-card"></i>
+            <span>تجديد رقم الهوية</span>
+        </div>
+        <div class="menu-item" onclick="openRenewalModal('game')">
+            <i class="fas fa-gamepad"></i>
+            <span>تجديد اسم اللعبة</span>
+        </div>
+        <div class="menu-item" onclick="openRenewalModal('discord')">
+            <i class="fab fa-discord"></i>
+            <span>تجديد اسم ديسكورد</span>
+        </div>
+        <div class="menu-item" onclick="openDisableModal()">
+            <i class="fas fa-user-slash"></i>
+            <span>تعطيل حساب</span>
+        </div>
+    </div>
+    
+    <div class="menu-section">
+        <div class="menu-title">الإعدادات</div>
+        <div class="menu-item" onclick="showPage('settings')">
+            <i class="fas fa-cog"></i>
+            <span>الإعدادات</span>
+        </div>
+    </div>
+    
+    <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>تسجيل الخروج</span>
+    </button>
+</div>
+
+<!-- المحتوى الرئيسي -->
+<div class="main-content">
+    <!-- صفحة طلبات التفعيل -->
+    <div class="page-section active" id="requestsPage">
         <div class="header">
-            <div class="header-title">
-                <h1><i class="fas fa-shield-alt"></i> لوحة الإدارة - KR</h1>
-                <p>مراجعة طلبات تفعيل الهوية الرقمية</p>
+            <div class="header-top">
+                <div class="header-title">
+                    <h1><i class="fas fa-inbox"></i> طلبات التفعيل</h1>
+                    <p>مراجعة وقبول طلبات تفعيل الهوية الرقمية</p>
+                </div>
             </div>
             <div class="stats">
-                <div class="stat-card"><div class="stat-number" id="pendingCount">0</div><div class="stat-label">قيد المراجعة</div></div>
-                <div class="stat-card"><div class="stat-number" id="acceptedCount">0</div><div class="stat-label">تم القبول</div></div>
-                <div class="stat-card"><div class="stat-number" id="rejectedCount">0</div><div class="stat-label">تم الرفض</div></div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingCount">0</div>
+                    <div class="stat-label">قيد المراجعة</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="acceptedCount">0</div>
+                    <div class="stat-label">تم القبول</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="rejectedCount">0</div>
+                    <div class="stat-label">تم الرفض</div>
+                </div>
             </div>
         </div>
+        
         <div class="filters">
             <button class="filter-btn active" onclick="filterRequests('all')">الكل</button>
             <button class="filter-btn" onclick="filterRequests('pending')">قيد المراجعة</button>
@@ -71,49 +682,513 @@
             <button class="filter-btn" onclick="filterRequests('rejected')">المرفوضة</button>
             <button class="filter-btn" onclick="loadRequests()"><i class="fas fa-sync-alt"></i> تحديث</button>
         </div>
+        
         <div class="requests-grid" id="requestsContainer"></div>
     </div>
-    <div class="modal" id="imageModal" onclick="closeModal()"><img id="modalImage" class="image-modal"></div>
-    <script>
-        let currentFilter='all',allRequests=[];
-        document.addEventListener('DOMContentLoaded',function(){console.log('🎛 لوحة الإدارة جاهزة'),loadRequests()});
-        function loadRequests(){allRequests=JSON.parse(localStorage.getItem('admin_pending_requests')||'[]'),console.log('📥 تم تحميل',allRequests.length,'طلب'),updateStats(),displayRequests()}
-        function updateStats(){const pending=allRequests.filter(r=>'pending'===r.status).length,accepted=allRequests.filter(r=>'accepted'===r.status).length,rejected=allRequests.filter(r=>'rejected'===r.status).length;document.getElementById('pendingCount').textContent=pending,document.getElementById('acceptedCount').textContent=accepted,document.getElementById('rejectedCount').textContent=rejected}
-        function displayRequests(){const container=document.getElementById('requestsContainer');let filteredRequests=allRequests;if('all'!==currentFilter&&(filteredRequests=allRequests.filter(r=>r.status===currentFilter)),0===filteredRequests.length)return void(container.innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>لا توجد طلبات حالياً</p></div>');container.innerHTML=filteredRequests.map(request=>`
-                <div class="request-card">
-                    <div class="request-header">
-                        <div class="request-info">
-                            <div class="request-id">#${request.id}</div>
-                            <div class="request-name">${request.fullName}</div>
-                            <div class="request-date">${request.date}</div>
-                        </div>
-                        <div class="request-images">
-                            ${request.nationalIdImage?`<img src="${request.nationalIdImage.data}" class="request-img" onclick="viewImage('${request.nationalIdImage.data}')" title="الهوية">`:''} 
-                            ${request.characterImage?`<img src="${request.characterImage.data}" class="request-img" onclick="viewImage('${request.characterImage.data}')" title="الشخصية">`:''} 
-                        </div>
+    
+    <!-- صفحة المستخدمون المفعلون -->
+    <div class="page-section" id="activatedPage">
+        <div class="header">
+            <div class="header-title">
+                <h1><i class="fas fa-users"></i> المستخدمون المفعلون</h1>
+                <p>جميع المستخدمين الذين تم قبول طلباتهم</p>
+            </div>
+        </div>
+        <div class="users-grid" id="activatedUsersContainer"></div>
+    </div>
+    
+    <!-- صفحة طلبات التجديد -->
+    <div class="page-section" id="renewalsPage">
+        <div class="header">
+            <div class="header-title">
+                <h1><i class="fas fa-sync"></i> طلبات التجديد</h1>
+                <p>طلبات تجديد البيانات الشخصية</p>
+            </div>
+        </div>
+        <div class="requests-grid" id="renewalsContainer"></div>
+    </div>
+    
+    <!-- صفحة الحسابات المعطلة -->
+    <div class="page-section" id="disabledPage">
+        <div class="header">
+            <div class="header-title">
+                <h1><i class="fas fa-ban"></i> الحسابات المعطلة</h1>
+                <p>الحسابات التي تم تعطيلها مع الأسباب</p>
+            </div>
+        </div>
+        <div class="requests-grid" id="disabledContainer"></div>
+    </div>
+    
+    <!-- صفحة الإعدادات -->
+    <div class="page-section" id="settingsPage">
+        <div class="header">
+            <div class="header-title">
+                <h1><i class="fas fa-cog"></i> الإعدادات</h1>
+                <p>إعدادات لوحة الإدارة</p>
+            </div>
+        </div>
+        <div class="empty-state">
+            <i class="fas fa-cog"></i>
+            <p>الإعدادات قريباً</p>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة عرض الصورة -->
+<div class="modal" id="imageModal" onclick="closeModal('imageModal')">
+    <img id="modalImage" class="image-modal">
+</div>
+
+<!-- نافذة التجديد -->
+<div class="modal" id="renewalModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="renewalTitle">تجديد البيانات</h2>
+            <p id="renewalDesc">تجديد معلومات المستخدم</p>
+        </div>
+        
+        <div class="form-group">
+            <label>رقم الهوية الحالي</label>
+            <input type="text" id="renewalCurrentId" placeholder="أدخل رقم الهوية الحالي">
+        </div>
+        
+        <div class="form-group" id="renewalNewField">
+            <label id="renewalNewLabel">القيمة الجديدة</label>
+            <input type="text" id="renewalNewValue" placeholder="أدخل القيمة الجديدة">
+        </div>
+        
+        <div class="modal-actions">
+            <button class="btn btn-primary" onclick="submitRenewal()">
+                <i class="fas fa-check"></i> تأكيد التجديد
+            </button>
+            <button class="btn btn-secondary" onclick="closeModal('renewalModal')">
+                <i class="fas fa-times"></i> إلغاء
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة تعطيل الحساب -->
+<div class="modal" id="disableModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>تعطيل حساب مستخدم</h2>
+            <p>يرجى تعبئة البيانات المطلوبة</p>
+        </div>
+        
+        <div class="form-group">
+            <label>رقم الهوية</label>
+            <input type="text" id="disableGameId" placeholder="رقم الهوية المراد تعطيله">
+        </div>
+        
+        <div class="form-group">
+            <label>اسم المستخدم في اللعبة</label>
+            <input type="text" id="disableGameUsername" placeholder="اسم المستخدم في اللعبة">
+        </div>
+        
+        <div class="form-group">
+            <label>اسم المستخدم في الديسكورد</label>
+            <input type="text" id="disableDiscordUsername" placeholder="اسم المستخدم في الديسكورد">
+        </div>
+        
+        <div class="form-group">
+            <label>سبب التعطيل</label>
+            <textarea id="disableReason" placeholder="اذكر سبب تعطيل الحساب بالتفصيل..."></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label>صورة الدليل</label>
+            <input type="file" id="disableProofImage" accept="image/*" style="display: none;" onchange="handleDisableImageUpload(this)">
+            <div class="file-upload" onclick="document.getElementById('disableProofImage').click()">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>اضغط لرفع صورة الدليل</p>
+                <small>PNG, JPG (الحد الأقصى: 5MB)</small>
+            </div>
+            <div id="disableImagePreview"></div>
+        </div>
+        
+        <div class="modal-actions">
+            <button class="btn btn-reject" onclick="submitDisable()">
+                <i class="fas fa-ban"></i> تعطيل الحساب
+            </button>
+            <button class="btn btn-secondary" onclick="closeModal('disableModal')">
+                <i class="fas fa-times"></i> إلغاء
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentFilter = 'all';
+    let allRequests = [];
+    let currentRenewalType = '';
+    let disableProofImageData = null;
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🎛 لوحة الإدارة جاهزة');
+        loadRequests();
+    });
+    
+    function loadRequests() {
+        allRequests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
+        console.log('📥 تم تحميل', allRequests.length, 'طلب');
+        updateStats();
+        displayRequests();
+    }
+    
+    function updateStats() {
+        const pending = allRequests.filter(r => r.status === 'pending').length;
+        const accepted = allRequests.filter(r => r.status === 'accepted').length;
+        const rejected = allRequests.filter(r => r.status === 'rejected').length;
+        
+        document.getElementById('pendingCount').textContent = pending;
+        document.getElementById('acceptedCount').textContent = accepted;
+        document.getElementById('rejectedCount').textContent = rejected;
+    }
+    
+    function displayRequests() {
+        const container = document.getElementById('requestsContainer');
+        let filteredRequests = allRequests;
+        
+        if (currentFilter !== 'all') {
+            filteredRequests = allRequests.filter(r => r.status === currentFilter);
+        }
+        
+        if (filteredRequests.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>لا توجد طلبات حالياً</p></div>';
+            return;
+        }
+        
+        container.innerHTML = filteredRequests.map(request => `
+            <div class="request-card">
+                <div class="request-header">
+                    <div class="request-info">
+                        <div class="request-id">#${request.id}</div>
+                        <div class="request-name">${request.fullName}</div>
+                        <div class="request-date">${request.date}</div>
                     </div>
-                    <div class="request-details">
-                        <div class="detail-item"><div class="detail-label">العمر</div><div class="detail-value">${request.age} سنة</div></div>
-                        <div class="detail-item"><div class="detail-label">اللعبة</div><div class="detail-value">${request.gameUsername}</div></div>
-                        <div class="detail-item"><div class="detail-label">ديسكورد</div><div class="detail-value">${request.discordUsername}</div></div>
-                        <div class="detail-item"><div class="detail-label">رقم الهوية</div><div class="detail-value">${request.gameId}</div></div>
-                        <div class="detail-item"><div class="detail-label">التصنيف</div><div class="detail-value">${request.departmentName}</div></div>
-                        <div class="detail-item"><div class="detail-label">الرتبة</div><div class="detail-value">${request.rank}</div></div>
-                    </div>
-                    <div class="request-actions">
-                        ${'pending'===request.status?`
-                            <button class="btn btn-accept" onclick="acceptRequest('${request.id}')"><i class="fas fa-check"></i> قبول الطلب</button>
-                            <button class="btn btn-reject" onclick="rejectRequest('${request.id}')"><i class="fas fa-times"></i> رفض الطلب</button>
-                        `:'accepted'===request.status?'<button class="btn btn-accept" disabled style="opacity: 0.6;"><i class="fas fa-check-circle"></i> تم القبول</button>':'<button class="btn btn-reject" disabled style="opacity: 0.6;"><i class="fas fa-times-circle"></i> تم الرفض</button>'}
+                    <div class="request-images">
+                        ${request.nationalIdImage ? `<img src="${request.nationalIdImage.data}" class="request-img" onclick="viewImage('${request.nationalIdImage.data}')" title="الهوية">` : ''}
+                        ${request.characterImage ? `<img src="${request.characterImage.data}" class="request-img" onclick="viewImage('${request.characterImage.data}')" title="الشخصية">` : ''}
                     </div>
                 </div>
-            `).join('')}
-        function acceptRequest(requestId){if(!confirm('هل أنت متأكد من قبول هذا الطلب؟'))return;allRequests=allRequests.map(req=>(req.id===requestId&&(req.status='accepted',saveActivatedUser(req)),req)),localStorage.setItem('admin_pending_requests',JSON.stringify(allRequests)),alert('✅ تم قبول الطلب بنجاح!'),loadRequests()}
-        function rejectRequest(requestId){if(!confirm('هل أنت متأكد من رفض هذا الطلب؟'))return;allRequests=allRequests.map(req=>(req.id===requestId&&(req.status='rejected'),req)),localStorage.setItem('admin_pending_requests',JSON.stringify(allRequests)),alert('❌ تم رفض الطلب'),loadRequests()}
-        function saveActivatedUser(req){let activatedUsers=JSON.parse(localStorage.getItem('activated_users')||'[]');activatedUsers.push({...req,activationDate:new Date().toISOString()}),localStorage.setItem('activated_users',JSON.stringify(activatedUsers)),console.log('✅ تم حفظ المستخدم المفعّل:',req.fullName)}
-        function filterRequests(filter){currentFilter=filter,document.querySelectorAll('.filter-btn').forEach(btn=>btn.classList.remove('active')),event.target.classList.add('active'),displayRequests()}
-        function viewImage(imageSrc){document.getElementById('modalImage').src=imageSrc,document.getElementById('imageModal').classList.add('show')}
-        function closeModal(){document.getElementById('imageModal').classList.remove('show')}
-    </script>
+                <div class="request-details">
+                    <div class="detail-item"><div class="detail-label">العمر</div><div class="detail-value">${request.age} سنة</div></div>
+                    <div class="detail-item"><div class="detail-label">اللعبة</div><div class="detail-value">${request.gameUsername}</div></div>
+                    <div class="detail-item"><div class="detail-label">ديسكورد</div><div class="detail-value">${request.discordUsername}</div></div>
+                    <div class="detail-item"><div class="detail-label">رقم الهوية</div><div class="detail-value">${request.gameId}</div></div>
+                    <div class="detail-item"><div class="detail-label">التصنيف</div><div class="detail-value">${request.departmentName}</div></div>
+                    <div class="detail-item"><div class="detail-label">الرتبة</div><div class="detail-value">${request.rank}</div></div>
+                </div>
+                <div class="request-actions">
+                    ${request.status === 'pending' ? `
+                        <button class="btn btn-accept" onclick="acceptRequest('${request.id}')"><i class="fas fa-check"></i> قبول</button>
+                        <button class="btn btn-reject" onclick="rejectRequest('${request.id}')"><i class="fas fa-times"></i> رفض</button>
+                    ` : request.status === 'accepted' ? 
+                        '<button class="btn btn-accept" disabled style="opacity: 0.6;"><i class="fas fa-check-circle"></i> تم القبول</button>' :
+                        '<button class="btn btn-reject" disabled style="opacity: 0.6;"><i class="fas fa-times-circle"></i> تم الرفض</button>'}
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function acceptRequest(requestId) {
+        if (!confirm('هل أنت متأكد من قبول هذا الطلب؟')) return;
+        
+        allRequests = allRequests.map(req => {
+            if (req.id === requestId) {
+                req.status = 'accepted';
+                saveActivatedUser(req);
+            }
+            return req;
+        });
+        
+        localStorage.setItem('admin_pending_requests', JSON.stringify(allRequests));
+        alert('✅ تم قبول الطلب بنجاح!');
+        loadRequests();
+    }
+    
+    function rejectRequest(requestId) {
+        if (!confirm('هل أنت متأكد من رفض هذا الطلب؟')) return;
+        
+        allRequests = allRequests.map(req => {
+            if (req.id === requestId) {
+                req.status = 'rejected';
+            }
+            return req;
+        });
+        
+        localStorage.setItem('admin_pending_requests', JSON.stringify(allRequests));
+        alert('❌ تم رفض الطلب');
+        loadRequests();
+    }
+    
+    function saveActivatedUser(req) {
+        let activatedUsers = JSON.parse(localStorage.getItem('activated_users') || '[]');
+        activatedUsers.push({
+            ...req,
+            activationDate: new Date().toISOString()
+        });
+        localStorage.setItem('activated_users', JSON.stringify(activatedUsers));
+        console.log('✅ تم حفظ المستخدم المفعّل:', req.fullName);
+    }
+    
+    function filterRequests(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        displayRequests();
+    }
+    
+    function showPage(page) {
+        document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+        
+        if (page === 'requests') {
+            document.getElementById('requestsPage').classList.add('active');
+            event.target.closest('.menu-item').classList.add('active');
+            loadRequests();
+        } else if (page === 'activated') {
+            document.getElementById('activatedPage').classList.add('active');
+            event.target.closest('.menu-item').classList.add('active');
+            loadActivatedUsers();
+        } else if (page === 'renewals') {
+            document.getElementById('renewalsPage').classList.add('active');
+            event.target.closest('.menu-item').classList.add('active');
+            loadRenewals();
+        } else if (page === 'disabled') {
+            document.getElementById('disabledPage').classList.add('active');
+            event.target.closest('.menu-item').classList.add('active');
+            loadDisabledAccounts();
+        } else if (page === 'settings') {
+            document.getElementById('settingsPage').classList.add('active');
+            event.target.closest('.menu-item').classList.add('active');
+        }
+    }
+    
+    function loadActivatedUsers() {
+        const container = document.getElementById('activatedUsersContainer');
+        const users = JSON.parse(localStorage.getItem('activated_users') || '[]');
+        
+        if (users.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i><p>لا يوجد مستخدمون مفعلون</p></div>';
+            return;
+        }
+        
+        container.innerHTML = users.map(user => `
+            <div class="user-card">
+                <div class="user-card-header">
+                    ${user.characterImage ? `<img src="${user.characterImage.data}" class="user-card-avatar">` : '<div class="user-card-avatar" style="background: #ff6f00;"></div>'}
+                    <div class="user-card-info">
+                        <h3>${user.fullName}</h3>
+                        <p>${user.departmentName} - ${user.rank}</p>
+                    </div>
+                </div>
+                <div class="user-card-details">
+                    <p><i class="fas fa-fingerprint"></i> ${user.gameId}</p>
+                    <p><i class="fas fa-gamepad"></i> ${user.gameUsername}</p>
+                    <p><i class="fab fa-discord"></i> ${user.discordUsername}</p>
+                    <p><i class="fas fa-calendar-check"></i> ${new Date(user.activationDate).toLocaleDateString('ar-SA')}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function loadRenewals() {
+        const container = document.getElementById('renewalsContainer');
+        const renewals = JSON.parse(localStorage.getItem('renewals') || '[]');
+        
+        if (renewals.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-sync"></i><p>لا توجد طلبات تجديد</p></div>';
+            return;
+        }
+        
+        container.innerHTML = renewals.map(renewal => `
+            <div class="request-card">
+                <div class="detail-item">
+                    <div class="detail-label">نوع التجديد</div>
+                    <div class="detail-value">${renewal.type}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">رقم الهوية</div>
+                    <div class="detail-value">${renewal.currentId}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">القيمة الجديدة</div>
+                    <div class="detail-value">${renewal.newValue}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">التاريخ</div>
+                    <div class="detail-value">${renewal.date}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function loadDisabledAccounts() {
+        const container = document.getElementById('disabledContainer');
+        const disabled = JSON.parse(localStorage.getItem('disabled_accounts') || '[]');
+        
+        if (disabled.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-ban"></i><p>لا توجد حسابات معطلة</p></div>';
+            return;
+        }
+        
+        container.innerHTML = disabled.map(account => `
+            <div class="request-card">
+                <div class="request-header">
+                    <div class="request-info">
+                        <div class="request-name">${account.gameUsername}</div>
+                        <div class="request-date">${account.date}</div>
+                    </div>
+                    ${account.proofImage ? `<img src="${account.proofImage}" class="request-img" onclick="viewImage('${account.proofImage}')" title="دليل التعطيل">` : ''}
+                </div>
+                <div class="request-details">
+                    <div class="detail-item"><div class="detail-label">رقم الهوية</div><div class="detail-value">${account.gameId}</div></div>
+                    <div class="detail-item"><div class="detail-label">اللعبة</div><div class="detail-value">${account.gameUsername}</div></div>
+                    <div class="detail-item"><div class="detail-label">ديسكورد</div><div class="detail-value">${account.discordUsername}</div></div>
+                    <div class="detail-item" style="grid-column: 1 / -1;">
+                        <div class="detail-label">سبب التعطيل</div>
+                        <div class="detail-value">${account.reason}</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function openRenewalModal(type) {
+        currentRenewalType = type;
+        const modal = document.getElementById('renewalModal');
+        const title = document.getElementById('renewalTitle');
+        const desc = document.getElementById('renewalDesc');
+        const label = document.getElementById('renewalNewLabel');
+        
+        if (type === 'id') {
+            title.textContent = 'تجديد رقم الهوية';
+            desc.textContent = 'تحديث رقم هوية المستخدم';
+            label.textContent = 'رقم الهوية الجديد';
+        } else if (type === 'game') {
+            title.textContent = 'تجديد اسم اللعبة';
+            desc.textContent = 'تحديث اسم المستخدم في اللعبة';
+            label.textContent = 'اسم اللعبة الجديد';
+        } else if (type === 'discord') {
+            title.textContent = 'تجديد اسم ديسكورد';
+            desc.textContent = 'تحديث اسم المستخدم في ديسكورد';
+            label.textContent = 'اسم ديسكورد الجديد';
+        }
+        
+        modal.classList.add('show');
+    }
+    
+    function submitRenewal() {
+        const currentId = document.getElementById('renewalCurrentId').value.trim();
+        const newValue = document.getElementById('renewalNewValue').value.trim();
+        
+        if (!currentId || !newValue) {
+            alert('⚠️ يرجى تعبئة جميع الحقول');
+            return;
+        }
+        
+        const renewals = JSON.parse(localStorage.getItem('renewals') || '[]');
+        renewals.push({
+            type: currentRenewalType === 'id' ? 'رقم الهوية' : 
+                  currentRenewalType === 'game' ? 'اسم اللعبة' : 'اسم ديسكورد',
+            currentId: currentId,
+            newValue: newValue,
+            date: new Date().toLocaleString('ar-SA')
+        });
+        
+        localStorage.setItem('renewals', JSON.stringify(renewals));
+        alert('✅ تم تسجيل طلب التجديد بنجاح!');
+        closeModal('renewalModal');
+        document.getElementById('renewalCurrentId').value = '';
+        document.getElementById('renewalNewValue').value = '';
+    }
+    
+    function openDisableModal() {
+        document.getElementById('disableModal').classList.add('show');
+    }
+    
+    function handleDisableImageUpload(input) {
+        const file = input.files[0];
+        if (!file) return;
+        
+        if (!['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
+            alert('⚠️ يرجى اختيار صورة بصيغة PNG أو JPG فقط');
+            input.value = '';
+            return;
+        }
+        
+        if (file.size > 5 * 1024 * 1024) {
+            alert('⚠️ حجم الصورة يجب أن يكون أقل من 5 ميجابايت');
+            input.value = '';
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            disableProofImageData = e.target.result;
+            document.getElementById('disableImagePreview').innerHTML = `
+                <div style="margin-top: 15px; text-align: center;">
+                    <img src="${disableProofImageData}" style="max-width: 200px; border-radius: 12px; border: 2px solid #00c853;">
+                    <p style="margin-top: 10px; color: #00c853;"><i class="fas fa-check-circle"></i> تم رفع الصورة</p>
+                </div>
+            `;
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    function submitDisable() {
+        const gameId = document.getElementById('disableGameId').value.trim();
+        const gameUsername = document.getElementById('disableGameUsername').value.trim();
+        const discordUsername = document.getElementById('disableDiscordUsername').value.trim();
+        const reason = document.getElementById('disableReason').value.trim();
+        
+        if (!gameId || !gameUsername || !discordUsername || !reason || !disableProofImageData) {
+            alert('⚠️ يرجى تعبئة جميع الحقول ورفع صورة الدليل');
+            return;
+        }
+        
+        const disabled = JSON.parse(localStorage.getItem('disabled_accounts') || '[]');
+        disabled.push({
+            gameId: gameId,
+            gameUsername: gameUsername,
+            discordUsername: discordUsername,
+            reason: reason,
+            proofImage: disableProofImageData,
+            date: new Date().toLocaleString('ar-SA')
+        });
+        
+        localStorage.setItem('disabled_accounts', JSON.stringify(disabled));
+        alert('✅ تم تعطيل الحساب بنجاح!');
+        closeModal('disableModal');
+        
+        document.getElementById('disableGameId').value = '';
+        document.getElementById('disableGameUsername').value = '';
+        document.getElementById('disableDiscordUsername').value = '';
+        document.getElementById('disableReason').value = '';
+        document.getElementById('disableProofImage').value = '';
+        document.getElementById('disableImagePreview').innerHTML = '';
+        disableProofImageData = null;
+    }
+    
+    function viewImage(imageSrc) {
+        document.getElementById('modalImage').src = imageSrc;
+        document.getElementById('imageModal').classList.add('show');
+    }
+    
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('show');
+    }
+    
+    function logout() {
+        if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+            alert('✅ تم تسجيل الخروج بنجاح!');
+            window.location.href = '../index.html';
+        }
+    }
+</script>
+```
+
 </body>
 </html>
