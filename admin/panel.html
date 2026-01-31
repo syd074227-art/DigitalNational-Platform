@@ -3,7 +3,79 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مركز الإدارة والتحكم - KR</title>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore-compat.js"></script>
+    <style>
+        /* سأترك الـ CSS الخاص بك كما هو لضمان عدم تغيير المظهر */
+    </style>
+</head>
+<body>
+    <div class="mi act">طلبات الاعتماد الرقمي <span id="pb">0</span></div>
+    <div id="requestsC"></div>
+
+<script>
+// إعدادات الربط الفني (لا تظهر للمستخدم)
+const firebaseConfig = {
+  apiKey: "AIzaSyB68LMIIbyS86NgXYMR6ramIayZvKx1yxo",
+  authDomain: "kr-system-5c846.firebaseapp.com",
+  projectId: "kr-system-5c846",
+  storageBucket: "kr-system-5c846.firebasestorage.app",
+  messagingSenderId: "676032414707",
+  appId: "1:676032414707:web:f2f535b87522b2402f4886"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+function load() {
+    // جلب البيانات من مركز التوثيق
+    db.collection("requests").onSnapshot((snapshot) => {
+        let reqs = [];
+        snapshot.forEach(doc => {
+            if(doc.data().status === 'pending') {
+                reqs.push({ id: doc.id, ...doc.data() });
+            }
+        });
+        document.getElementById('pb').textContent = reqs.length;
+        render(reqs);
+    });
+}
+
+async function proc(id, st) {
+    if(!confirm('هل تريد تأكيد إجراء الاعتماد؟')) return;
+    try {
+        await db.collection("requests").doc(id).update({ status: st });
+        alert(st === 'accepted' ? '✅ تم اعتماد الطلب وتفعيل الهوية' : '❌ تم رفض الطلب');
+    } catch (e) {
+        alert("خطأ في الاتصال بمركز البيانات");
+    }
+}
+
+function render(arr) {
+    const el = document.getElementById('requestsC');
+    if(arr.length === 0) { el.innerHTML = '<p style="text-align:center;padding:20px;opacity:0.5;">لا توجد طلبات معلقة حالياً</p>'; return; }
+    el.innerHTML = arr.map(r => `
+        <div class="rc" style="border:1px solid #333; padding:15px; margin-bottom:10px; border-radius:10px;">
+            <h3>الاسم الكامل: ${r.fullName}</h3>
+            <p>الرقم العسكري/المدني: ${r.gameId}</p>
+            <div style="display:flex; gap:10px;">
+                <button onclick="proc('${r.id}','accepted')" style="background:#00c853; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">إصدار الهوية</button>
+                <button onclick="proc('${r.id}','rejected')" style="background:#d50000; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">رفض الطلب</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.onload = load;
+</script>
+</body>
+</html>
+meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ادارة نظام المنصة الرقمية - KR</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
