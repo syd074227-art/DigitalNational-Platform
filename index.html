@@ -375,8 +375,6 @@
 
         .service-card:nth-child(1) { animation-delay: 0.1s; }
         .service-card:nth-child(2) { animation-delay: 0.2s; }
-        .service-card:nth-child(3) { animation-delay: 0.3s; }
-        .service-card:nth-child(4) { animation-delay: 0.4s; }
 
         .service-card::before {
             content: '';
@@ -439,95 +437,6 @@
             line-height: 1.6;
             position: relative;
             z-index: 2;
-        }
-
-        /* ===== الشريط السفلي الفاخر ===== */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 1000;
-            padding: 15px 0;
-            animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.6);
-            flex: 1;
-            padding: 10px;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .nav-item.active {
-            color: var(--gold);
-        }
-
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            top: -15px;
-            width: 40px;
-            height: 3px;
-            background: var(--gold);
-            border-radius: 2px;
-            animation: navPulse 2s infinite;
-        }
-
-        .nav-icon {
-            font-size: 22px;
-            margin-bottom: 5px;
-            transition: all 0.3s;
-        }
-
-        .nav-item:hover {
-            color: white;
-            transform: translateY(-5px);
-        }
-
-        .nav-item:hover .nav-icon {
-            color: var(--primary-light);
-        }
-
-        .nav-main {
-            position: relative;
-        }
-
-        .nav-main .nav-icon {
-            background: var(--gradient);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: -30px;
-            box-shadow: var(--glow);
-            animation: navFloat 4s ease-in-out infinite;
-        }
-
-        .nav-label {
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
         }
 
         /* ===== الأنيميشن ===== */
@@ -619,27 +528,6 @@
             50% { transform: scale(1.05); }
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes navPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        @keyframes navFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
         /* ===== تصميم متجاوب ===== */
         @media (max-width: 768px) {
             .banner {
@@ -659,12 +547,6 @@
             .services-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .nav-main .nav-icon {
-                width: 50px;
-                height: 50px;
-                margin-top: -25px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -683,18 +565,6 @@
             .banner-btn {
                 padding: 15px 30px;
                 font-size: 16px;
-            }
-            
-            .nav-container {
-                padding: 0 10px;
-            }
-            
-            .nav-icon {
-                font-size: 20px;
-            }
-            
-            .nav-label {
-                font-size: 10px;
             }
         }
     </style>
@@ -765,65 +635,9 @@
                     <h3 class="service-title">النظام الإداري</h3>
                     <p class="service-desc">منصة متطورة لإدارة الطلبات والتحكم الكامل في النظام</p>
                 </div>
-                
-                <div class="service-card" onclick="showComingSoon()">
-                    <div class="service-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h3 class="service-title">متابعة الطلبات</h3>
-                    <p class="service-desc">تتبع حالة طلبك خطوة بخطة مع تحديثات فورية</p>
-                </div>
-                
-                <div class="service-card" onclick="showComingSoon()">
-                    <div class="service-icon">
-                        <i class="fas fa-user-circle"></i>
-                    </div>
-                    <h3 class="service-title">الملف الشخصي</h3>
-                    <p class="service-desc">إدارة معلوماتك الشخصية وتاريخ الطلبات السابقة</p>
-                </div>
             </div>
         </section>
     </main>
-    
-    <!-- الشريط السفلي الفاخر -->
-    <nav class="bottom-nav">
-        <div class="nav-container">
-            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
-                <div class="nav-icon">
-                    <i class="fas fa-th-large"></i>
-                </div>
-                <span class="nav-label">الخدمات</span>
-            </a>
-            
-            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
-                <div class="nav-icon">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <span class="nav-label">متابعة</span>
-            </a>
-            
-            <a href="javascript:void(0)" class="nav-item nav-main active" onclick="navigateTo('index.html')">
-                <div class="nav-icon">
-                    <i class="fas fa-home"></i>
-                </div>
-                <span class="nav-label">الرئيسية</span>
-            </a>
-            
-            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
-                <div class="nav-icon">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <span class="nav-label">الرسائل</span>
-            </a>
-            
-            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
-                <div class="nav-icon">
-                    <i class="fas fa-user"></i>
-                </div>
-                <span class="nav-label">حسابي</span>
-            </a>
-        </div>
-    </nav>
 
     <script>
         // ====== إنشاء الجسيمات المتحركة ======
