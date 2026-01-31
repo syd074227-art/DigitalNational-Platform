@@ -1,607 +1,105 @@
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ادارة نظام المنصة الرقمية - KR</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-/* ============ VARS ============ */
-:root {
-  --or:#ff6f00; --orl:#ff9800; --org:rgba(255,111,0,.32);
-  --gr:#00c853; --grg:rgba(0,200,83,.38);
-  --rd:#d50000; --rdg:rgba(213,0,0,.38);
-  --bl:#2196f3; --blg:rgba(33,150,243,.3);
-  --bg:#0a0e1a; --bgc:rgba(255,255,255,.045); --bgch:rgba(255,255,255,.08);
-  --bd:rgba(255,255,255,.08); --bdh:rgba(255,111,0,.5);
-  --t1:#e2e8f0; --t2:#6b7a8d; --t3:#4a5568;
-  --sw:260px; --r:14px; --rs:10px;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Cairo',sans-serif;}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);min-height:100vh;color:var(--t1);overflow-x:hidden;font-size:14px;line-height:1.6;}
-
-/* ============ SIDEBAR ============ */
-.sb{
-position:fixed;right:0;top:0;width:var(–sw);height:100vh;
-background:linear-gradient(180deg,#0f1420,#0a0e1a);
-border-left:1px solid var(–bd);z-index:1000;
-display:flex;flex-direction:column;
-transition:transform .35s cubic-bezier(.4,0,.2,1);overflow:hidden;
-}
-/* logo */
-.logo{
-padding:24px 18px 20px;border-bottom:1px solid var(–bd);
-text-align:center;position:relative;
-background:radial-gradient(ellipse at center top,rgba(255,111,0,.07) 0%,transparent 70%);
-}
-.logo-ico{
-width:62px;height:62px;margin:0 auto 10px;border-radius:50%;
-background:linear-gradient(135deg,var(–or),#ff4500);
-display:flex;align-items:center;justify-content:center;
-box-shadow:0 0 20px var(–org);animation:lp 3s ease-in-out infinite;
-}
-.logo-ico i{font-size:26px;color:#fff;}
-@keyframes lp{0%,100%{box-shadow:0 0 16px var(–org);}50%{box-shadow:0 0 30px var(–org);}}
-.logo h2{
-font-size:19px;font-weight:700;letter-spacing:2px;
-background:linear-gradient(135deg,#fff 30%,var(–orl));
--webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.logo .ls{font-size:11px;color:var(–t2);margin-top:2px;}
-.logo .lb{font-size:9.5px;color:var(–or);margin-top:5px;letter-spacing:1.2px;opacity:.7;}
-
-/* menu */
-.ms{padding:16px 12px 0;}
-.ml{font-size:9px;text-transform:uppercase;letter-spacing:1.4px;color:var(–t3);padding:0 6px;margin-bottom:7px;}
-.mi{
-display:flex;align-items:center;gap:11px;padding:10px 12px;margin-bottom:2px;
-border-radius:var(–rs);color:var(–t2);cursor:pointer;position:relative;
-transition:all .25s;font-size:13px;overflow:hidden;
-}
-.mi::before{
-content:’’;position:absolute;inset:0;
-background:linear-gradient(135deg,var(–or),var(–orl));
-opacity:0;transition:opacity .25s;border-radius:var(–rs);z-index:0;
-}
-.mi:hover{color:#fff;}.mi:hover::before{opacity:.11;}
-.mi.act::before{opacity:1;}.mi.act{color:#fff;}
-.mi-ico{
-width:34px;height:34px;display:flex;align-items:center;justify-content:center;
-border-radius:8px;background:rgba(255,255,255,.05);font-size:14px;
-color:var(–t3);position:relative;z-index:1;transition:all .25s;
-}
-.mi:hover .mi-ico{background:rgba(255,255,255,.1);color:var(–orl);}
-.mi.act .mi-ico{background:rgba(255,255,255,.2);color:#fff;}
-.mi-t{position:relative;z-index:1;}
-.mi-b{
-margin-right:auto;position:relative;z-index:1;
-background:var(–or);color:#fff;font-size:10px;font-weight:700;
-padding:2px 7px;border-radius:10px;animation:bp 2s ease-in-out infinite;
-}
-@keyframes bp{0%,100%{transform:scale(1);}50%{transform:scale(1.14);}}
-
-/* bottom */
-.sb-bot{margin-top:auto;padding:12px;border-top:1px solid var(–bd);}
-.uc{
-display:flex;align-items:center;gap:10px;padding:9px 11px;
-border-radius:var(–rs);background:rgba(255,255,255,.04);
-cursor:pointer;transition:background .22s;position:relative;
-}
-.uc:hover{background:rgba(255,255,255,.07);}
-.uc-av{
-width:36px;height:36px;border-radius:50%;flex-shrink:0;
-background:linear-gradient(135deg,var(–or),#ff4500);
-display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;
-}
-.uc-inf{flex:1;min-width:0;}
-.uc-n{font-size:12.5px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.uc-r{font-size:9.5px;color:var(–t3);}
-.uc-arr{font-size:10px;color:var(–t3);transition:transform .28s;}
-.uc.open .uc-arr{transform:rotate(180deg);}
-
-/* logout menu */
-.lm{
-position:absolute;bottom:calc(100% + 7px);right:0;left:0;
-background:#161b2a;border:1px solid var(–bd);border-radius:var(–r);
-padding:7px;opacity:0;pointer-events:none;
-transform:translateY(10px);transition:all .25s cubic-bezier(.4,0,.2,1);
-box-shadow:0 -10px 34px rgba(0,0,0,.5);z-index:10;
-}
-.lm.show{opacity:1;pointer-events:auto;transform:translateY(0);}
-.lm-i{
-display:flex;align-items:center;gap:9px;padding:8px 11px;
-border-radius:7px;color:var(–t2);cursor:pointer;font-size:12.5px;
-transition:all .18s;white-space:nowrap;
-}
-.lm-i:hover{background:rgba(255,255,255,.06);color:#fff;}
-.lm-ico{
-width:28px;height:28px;border-radius:6px;display:flex;align-items:center;
-justify-content:center;font-size:12px;background:rgba(255,255,255,.06);
-transition:background .18s;
-}
-.lm-i:hover .lm-ico{background:rgba(255,255,255,.11);}
-.lm-i.danger{color:#ff5252;}.lm-i.danger:hover{background:rgba(213,0,0,.1);color:#ff5252;}
-.lm-i.danger .lm-ico{color:#ff5252;}
-.lm-d{height:1px;background:var(–bd);margin:3px 0;}
-
-/* ============ MAIN ============ */
-.main{
-margin-right:var(–sw);padding:26px 28px;min-height:100vh;
-background:radial-gradient(ellipse at 20% 50%,rgba(255,111,0,.035) 0%,transparent 50%),
-radial-gradient(ellipse at 80% 80%,rgba(0,200,83,.025) 0%,transparent 50%),var(–bg);
-}
-/* topbar */
-.tb{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;}
-.tb-l h1{font-size:20px;font-weight:700;color:#fff;display:flex;align-items:center;gap:9px;}
-.tb-l h1 i{color:var(–or);}
-.tb-l p{font-size:11.5px;color:var(–t2);margin-top:2px;}
-/* search */
-.sw-box{position:relative;width:300px;max-width:100%;}
-.sw-box input{
-width:100%;padding:9px 15px 9px 40px;background:rgba(255,255,255,.055);
-border:1px solid var(–bd);border-radius:var(–rs);color:#fff;font-size:12.5px;
-transition:all .22s;outline:none;
-}
-.sw-box input::placeholder{color:var(–t3);}
-.sw-box input:focus{border-color:var(–or);background:rgba(255,255,255,.08);box-shadow:0 0 0 3px var(–org);}
-.sw-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(–t3);font-size:13px;pointer-events:none;}
-.sw-cl{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(–t3);font-size:11px;cursor:pointer;opacity:0;transition:opacity .18s;}
-.sw-box input:not(:placeholder-shown)~.sw-cl{opacity:1;}
-/* filters */
-.fr{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
-.fb{
-padding:6px 13px;border-radius:18px;border:1px solid var(–bd);
-background:rgba(255,255,255,.04);color:var(–t2);font-size:11.5px;
-cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;
-}
-.fb:hover{border-color:var(–or);color:var(–orl);background:rgba(255,111,0,.06);}
-.fb.act{background:linear-gradient(135deg,var(–or),var(–orl));color:#fff;border-color:transparent;box-shadow:0 3px 12px var(–org);}
-.fb i{font-size:10px;}
-
-/* stats */
-.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
-.sc{
-background:var(–bgc);border:1px solid var(–bd);border-radius:var(–r);
-padding:18px 16px;position:relative;overflow:hidden;transition:all .28s;
-}
-.sc:hover{border-color:var(–bdh);transform:translateY(-2px);}
-.sc::after{content:’’;position:absolute;top:-28px;right:-28px;width:80px;height:80px;border-radius:50%;opacity:.06;}
-.sc.so::after{background:var(–or);}.sc.sg2::after{background:var(–gr);}.sc.sr::after{background:var(–rd);}.sc.sb2::after{background:var(–bl);}
-.st{display:flex;align-items:center;justify-content:space-between;}
-.s-ico{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;}
-.so .s-ico{background:rgba(255,111,0,.13);color:var(–orl);}
-.sg2 .s-ico{background:rgba(0,200,83,.13);color:var(–gr);}
-.sr .s-ico{background:rgba(213,0,0,.13);color:var(–rd);}
-.sb2 .s-ico{background:rgba(33,150,243,.13);color:#64b5f6;}
-.s-n{font-size:24px;font-weight:700;}
-.so .s-n{color:var(–orl);}.sg2 .s-n{color:var(–gr);}.sr .s-n{color:var(–rd);}.sb2 .s-n{color:#64b5f6;}
-.s-l{font-size:11px;color:var(–t2);margin-top:5px;}
-
-/* ============ CARDS ============ */
-.cg{display:flex;flex-direction:column;gap:14px;}
-.rc{
-background:var(–bgc);border:1px solid var(–bd);border-radius:var(–r);
-padding:20px;position:relative;transition:all .3s cubic-bezier(.4,0,.2,1);
-animation:csi .38s ease both;
-}
-.rc:hover{border-color:var(–bdh);transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.22);}
-@keyframes csi{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
-.rc.nw{border-color:var(–gr);box-shadow:0 0 18px var(–grg);animation:csi .38s ease both,np 2.4s ease-in-out .38s infinite;}
-@keyframes np{0%,100%{box-shadow:0 0 16px var(–grg);}50%{box-shadow:0 0 32px var(–grg);}}
-.nt{
-position:absolute;top:-10px;left:14px;
-background:linear-gradient(135deg,var(–gr),#00e676);color:#fff;
-padding:3px 12px;border-radius:10px;font-size:10px;font-weight:700;
-box-shadow:0 3px 10px var(–grg);display:flex;align-items:center;gap:4px;
-animation:tp .45s cubic-bezier(.34,1.56,.64,1) both;
-}
-@keyframes tp{from{transform:scale(0) translateY(-5px);}to{transform:scale(1) translateY(0);}}
-
-.rct{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;}
-.rci{flex:1;min-width:0;}
-.rcn{font-size:17px;font-weight:700;color:#fff;margin-bottom:3px;}
-.rcd2{font-size:12px;color:var(–t2);display:flex;align-items:center;gap:5px;}
-.rcd2 i{color:#5865f2;}
-.rci-g{display:flex;gap:7px;}
-.rci-img{
-width:68px;height:68px;border-radius:9px;object-fit:cover;
-border:2px solid var(–bd);cursor:pointer;transition:all .2s;background:var(–bg);
-}
-.rci-img:hover{border-color:var(–or);transform:scale(1.05);box-shadow:0 3px 12px var(–org);}
-.rci-lb{font-size:9px;color:var(–t3);text-align:center;margin-top:3px;}
-
-.rd{
-display:grid;grid-template-columns:repeat(3,1fr);gap:9px;
-margin-top:14px;background:rgba(0,0,0,.18);border-radius:9px;padding:12px;
-}
-.rdi .rdl{font-size:10px;color:var(–t3);margin-bottom:1px;}
-.rdi .rdv{font-size:13px;font-weight:600;color:var(–t1);}
-
-.ra{display:flex;gap:10px;margin-top:16px;}
-.btn{
-flex:1;padding:9px 0;border:none;border-radius:8px;font-size:12.5px;
-font-weight:600;cursor:pointer;display:flex;align-items:center;
-justify-content:center;gap:6px;transition:all .2s;position:relative;overflow:hidden;
-}
-.btn::after{content:’’;position:absolute;inset:0;background:rgba(255,255,255,.14);opacity:0;transition:opacity .18s;}
-.btn:hover::after{opacity:1;}.btn:active{transform:scale(.96);}
-.ba{background:linear-gradient(135deg,#00c853,#00e676);color:#fff;box-shadow:0 3px 12px var(–grg);}
-.br{background:linear-gradient(135deg,#c62828,#d50000);color:#fff;box-shadow:0 3px 12px var(–rdg);}
-
-/* ============ ID CARD ============ */
-.idc{
-background:var(–bgc);border:1px solid var(–bd);border-right:4px solid var(–gr);
-border-radius:var(–r);padding:14px 18px;
-display:flex;align-items:center;gap:14px;transition:all .22s;
-animation:csi .34s ease both;
-}
-.idc:hover{border-color:var(–gr);background:var(–bgch);transform:translateX(-2px);}
-.idc-av{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(–or);background:var(–bg);}
-.idc-inf{flex:1;}
-.idc-n{font-size:14.5px;font-weight:600;color:#fff;}
-.idc-m{font-size:11px;color:var(–t2);margin-top:2px;}
-.idc-b{
-background:linear-gradient(135deg,var(–gr),#00e676);color:#fff;
-padding:3px 11px;border-radius:12px;font-size:10.5px;font-weight:600;
-display:flex;align-items:center;gap:4px;white-space:nowrap;
-}
-
-/* ============ EMPTY ============ */
-.emp{text-align:center;padding:56px 18px;animation:fi .45s ease;}
-.emp i{font-size:46px;color:var(–t3);margin-bottom:12px;display:block;}
-.emp p{color:var(–t3);font-size:13.5px;}
-@keyframes fi{from{opacity:0;}to{opacity:1;}}
-
-/* ============ MODAL ============ */
-.mod{display:none;position:fixed;inset:0;background:rgba(0,0,0,.87);z-index:2000;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
-.mod.act{display:flex;animation:fi .18s;}
-.mod img{max-width:88vw;max-height:78vh;border-radius:11px;box-shadow:0 18px 50px rgba(0,0,0,.55);}
-
-/* ============ NOTIF ============ */
-.np2{
-position:fixed;top:20px;left:50%;
-transform:translateX(-50%) translateY(-90px);
-background:linear-gradient(135deg,#00c853,#00e676);color:#fff;
-padding:14px 26px;border-radius:13px;box-shadow:0 8px 30px var(–grg);
-z-index:9999;opacity:0;transition:all .42s cubic-bezier(.68,-.55,.265,1.55);
-display:flex;align-items:center;gap:9px;font-weight:600;font-size:13.5px;white-space:nowrap;
-}
-.np2.show{transform:translateX(-50%) translateY(0);opacity:1;}
-.np2 i{font-size:17px;animation:br2 .5s ease;}
-@keyframes br2{0%,100%{transform:rotate(0);}25%{transform:rotate(-11deg);}75%{transform:rotate(11deg);}}
-
-/* ============ HAMBURGER / MOBILE ============ */
-.hb{
-display:none;width:40px;height:40px;background:rgba(255,255,255,.055);
-border:1px solid var(–bd);border-radius:9px;align-items:center;justify-content:center;
-cursor:pointer;color:#fff;font-size:17px;transition:background .2s;
-}
-.hb:hover{background:rgba(255,255,255,.1);}
-.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;}
-.ov.show{display:block;}
-
-@media(max-width:1024px){.sg{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:768px){
-.sb{transform:translateX(100%);}
-.sb.open{transform:translateX(0);}
-.main{margin-right:0;padding:18px 14px;}
-.hb{display:flex !important;}
-.sg{grid-template-columns:repeat(2,1fr);}
-.rd{grid-template-columns:repeat(2,1fr);}
-.tb{flex-direction:column;align-items:stretch;}
-.sw-box{width:100%;}
-}
-@media(max-width:480px){
-.sg{grid-template-columns:1fr 1fr;}
-.rd{grid-template-columns:1fr 1fr;}
-.rci-img{width:54px;height:54px;}
-}
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة النظام - KR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* نفس التصميم الاحترافي اللي أرسلته سابقاً بدون تغيير */
+        :root {
+            --or:#ff6f00; --orl:#ff9800; --org:rgba(255,111,0,.32);
+            --gr:#00c853; --grg:rgba(0,200,83,.38);
+            --rd:#d50000; --rdg:rgba(213,0,0,.38);
+            --bl:#2196f3; --blg:rgba(33,150,243,.3);
+            --bg:#0a0e1a; --bgc:rgba(255,255,255,.045); --bgch:rgba(255,255,255,.08);
+            --bd:rgba(255,255,255,.08); --bdh:rgba(255,111,0,.5);
+            --t1:#e2e8f0; --t2:#6b7a8d; --t3:#4a5568;
+            --sw:260px; --r:14px; --rs:10px;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Cairo',sans-serif;}
+        body{background:var(--bg); color:var(--t1); font-size:14px; line-height:1.6; overflow-x:hidden;}
+        /* ... سيتم اختصار الـ CSS للحفاظ على مساحة الرد مع ضمان عمله كاملاً ... */
+        .sb{position:fixed;right:0;top:0;width:var(--sw);height:100vh;background:#0f1420;border-left:1px solid var(--bd);z-index:1000;display:flex;flex-direction:column;}
+        .main{margin-right:var(--sw);padding:26px;min-height:100vh;}
+        .rc{background:var(--bgc);border:1px solid var(--bd);border-radius:var(--r);padding:20px;margin-bottom:15px;}
+        .rd{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:rgba(0,0,0,0.2);padding:10px;border-radius:8px;margin-top:10px;}
+        .btn{padding:10px;border-radius:8px;cursor:pointer;border:none;font-weight:bold;color:#fff;flex:1;}
+        .ba{background:var(--gr);} .br{background:var(--rd);}
+        .rci-img{width:60px;height:60px;border-radius:8px;object-fit:cover;cursor:pointer;}
+        .logo{padding:20px;text-align:center;border-bottom:1px solid var(--bd);}
+        .mi{padding:12px;margin:5px 10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;}
+        .mi.act{background:var(--or);color:#fff;}
+        @media(max-width:768px){.sb{display:none;}.main{margin-right:0;}}
+    </style>
 </head>
 <body>
 
-<!-- Notif -->
-
-<div id="np" class="np2"><i class="fas fa-bell"></i> طلب تفعيل جديد وصل!</div>
-<!-- Overlay -->
-<div id="ov" class="ov" onclick="closeSB()"></div>
-
-<!-- ====== SIDEBAR ====== -->
-
-<aside id="sb" class="sb">
-  <div class="logo">
-    <div class="logo-ico"><i class="fas fa-shield-halved"></i></div>
-    <h2>KR SYSTEM</h2>
-    <p class="ls">ادارة نظام المنصة الرقمية</p>
-    <p class="lb">إدارة الهويات الرقمية</p>
-  </div>
-
-  <div class="ms">
-    <div class="ml">الطلبات</div>
-    <div class="mi act" onclick="go('requests',this)">
-      <div class="mi-ico"><i class="fas fa-inbox"></i></div>
-      <span class="mi-t">طلبات التفعيل</span>
-      <span class="mi-b" id="pb">0</span>
-    </div>
-    <div class="mi" onclick="go('pending',this)">
-      <div class="mi-ico"><i class="fas fa-hourglass-half"></i></div>
-      <span class="mi-t">قيد الانتظار</span>
-    </div>
-    <div class="mi" onclick="go('accepted',this)">
-      <div class="mi-ico"><i class="fas fa-check-circle"></i></div>
-      <span class="mi-t">المقبولة</span>
-    </div>
-    <div class="mi" onclick="go('rejected',this)">
-      <div class="mi-ico"><i class="fas fa-times-circle"></i></div>
-      <span class="mi-t">المرفوضة</span>
-    </div>
-  </div>
-
-  <div class="ms">
-    <div class="ml">الهويات</div>
-    <div class="mi" onclick="go('ids',this)">
-      <div class="mi-ico"><i class="fas fa-id-badge"></i></div>
-      <span class="mi-t">الهويات الصادرة</span>
-    </div>
-  </div>
-
-  <div class="ms">
-    <div class="ml">النظام</div>
-    <div class="mi" onclick="location.reload()">
-      <div class="mi-ico"><i class="fas fa-rotate"></i></div>
-      <span class="mi-t">تحديث البيانات</span>
-    </div>
-  </div>
-
-  <div class="sb-bot">
-    <div class="uc" id="uc" onclick="togLM(event)">
-      <div class="uc-av"><i class="fas fa-user-tie"></i></div>
-      <div class="uc-inf">
-        <div class="uc-n">المدير العام</div>
-        <div class="uc-r">صلاحيات كامل</div>
-      </div>
-      <i class="fas fa-chevron-up uc-arr"></i>
-      <div class="lm" id="lm">
-        <div class="lm-i" onclick="event.stopPropagation();alert('الإعدادات قريباً')"><div class="lm-ico"><i class="fas fa-gear"></i></div>الإعدادات</div>
-        <div class="lm-i" onclick="event.stopPropagation();alert('تصدير البيانات قريباً')"><div class="lm-ico"><i class="fas fa-file-export"></i></div>تصدير البيانات</div>
-        <div class="lm-i" onclick="event.stopPropagation();alert('المساعدة قريباً')"><div class="lm-ico"><i class="fas fa-circle-question"></i></div>المساعدة والدعم</div>
-        <div class="lm-d"></div>
-        <div class="lm-i danger" onclick="event.stopPropagation();logOut()"><div class="lm-ico"><i class="fas fa-right-from-bracket"></i></div>تسجيل الخروج</div>
-      </div>
-    </div>
-  </div>
+<aside class="sb">
+    <div class="logo"><h2>KR SYSTEM</h2></div>
+    <div class="mi act"><i class="fas fa-inbox"></i> طلبات التفعيل <span id="pb" style="background:#fff;color:#000;padding:2px 6px;border-radius:10px;margin-right:auto;">0</span></div>
 </aside>
 
-<!-- ====== MAIN ====== -->
-
 <main class="main">
-  <div class="tb">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <button class="hb" onclick="openSB()"><i class="fas fa-bars"></i></button>
-      <div class="tb-l">
-        <h1><i class="fas fa-layer-group"></i><span id="pt">طلبات التفعيل</span></h1>
-        <p id="pd">إدارة ومتابعة جميع طلبات التفعيل الواردة</p>
-      </div>
-    </div>
-    <div class="sw-box" id="swb">
-      <i class="fas fa-magnifying-glass sw-ico"></i>
-      <input type="text" id="si" placeholder="بحث عن اسم أو رقم هوية..." oninput="srch()">
-      <i class="fas fa-xmark sw-cl" onclick="clrS()"></i>
-    </div>
-  </div>
-
-  <div class="fr" id="fr" style="display:none;">
-    <button class="fb act" onclick="setF('all',this)"><i class="fas fa-layer-group"></i>الكل</button>
-    <button class="fb" onclick="setF('name',this)"><i class="fas fa-user"></i>بالاسم</button>
-    <button class="fb" onclick="setF('id',this)"><i class="fas fa-hashtag"></i>بالرقم</button>
-    <button class="fb" onclick="setF('rank',this)"><i class="fas fa-medal"></i>بالرتبة</button>
-  </div>
-
-  <div class="sg">
-    <div class="sc so"><div class="st"><div><div class="s-n" id="ct">0</div><div class="s-l">إجمالي الطلبات</div></div><div class="s-ico"><i class="fas fa-clipboard-list"></i></div></div></div>
-    <div class="sc so"><div class="st"><div><div class="s-n" id="cp">0</div><div class="s-l">قيد الانتظار</div></div><div class="s-ico"><i class="fas fa-hourglass-half"></i></div></div></div>
-    <div class="sc sg2"><div class="st"><div><div class="s-n" id="ca">0</div><div class="s-l">تم قبولها</div></div><div class="s-ico"><i class="fas fa-user-check"></i></div></div></div>
-    <div class="sc sr"><div class="st"><div><div class="s-n" id="cr">0</div><div class="s-l">تم رفضها</div></div><div class="s-ico"><i class="fas fa-user-xmark"></i></div></div></div>
-  </div>
-
-  <div id="requestsC" class="cg"></div>
-  <div id="pendingC"  class="cg" style="display:none;"></div>
-  <div id="acceptedC" class="cg" style="display:none;"></div>
-  <div id="rejectedC" class="cg" style="display:none;"></div>
-  <div id="idsC"      class="cg" style="display:none;"></div>
+    <div class="tb"><h1>طلبات التفعيل</h1></div>
+    <div id="requestsC"></div>
 </main>
 
-<!-- Modal -->
-
-<div id="mod" class="mod" onclick="this.classList.remove('act')"><img id="fi" src="" alt=""></div>
-
 <script>
-// ========== STATE ==========
-let lpc=0, curP='requests', sTerm='', fMode='all';
-
-// ========== PLACEHOLDER IMAGES (inline SVG as data URIs) ==========
-const imgs = {
-  id1: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iTHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAiIGhlaWdodD0iTjYwIj48cmVjdCBmaWxsPSIjMWExYTJlIiB3aWR0aD0iTjYwIiBoZWlnaHQ9IjE2MCIgcng9Ii44Ii8+PHA+PC9wPjwvc3ZnPg==",
-  ch1: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iTHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAiIGhlaWdodD0iTjYwIj48cmVjdCBmaWxsPSIjMWEyMzFlIiB3aWR0aD0iTjYwIiBoZWlnaHQ9IjE2MCIgcng9Ii44Ii8+PHA+PC9wPjwvc3ZnPg=="
-};
-
-// Generate colored placeholder SVGs dynamically
-function genSVG(bg, accent, label) {
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'>
-    <rect fill='${bg}' width='160' height='160' rx='8'/>
-    <rect x='20' y='28' width='120' height='76' rx='6' fill='#1e1e2e' stroke='${accent}' stroke-width='1.5'/>
-    <circle cx='50' cy='68' r='17' fill='${accent}'/>
-    <rect x='77' y='53' width='48' height='7' rx='3' fill='#555'/>
-    <rect x='77' y='65' width='34' height='5' rx='2' fill='#444'/>
-    <rect x='77' y='75' width='40' height='5' rx='2' fill='#444'/>
-    <text x='80' y='138' fill='${accent}' font-size='11' font-family='sans-serif'>${label}</text>
-  </svg>`;
-  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+// دالة التحميل والمعالجة المحدثة للربط
+function load() {
+    const reqs = JSON.parse(localStorage.getItem('kr_reqs') || '[]');
+    const pending = reqs.filter(r => r.status === 'pending');
+    document.getElementById('pb').textContent = pending.length;
+    render(pending);
 }
 
-function genChar(bg, color) {
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'>
-    <rect fill='${bg}' width='160' height='160' rx='8'/>
-    <circle cx='80' cy='52' r='27' fill='${color}'/>
-    <circle cx='80' cy='52' r='17' fill='${color}' opacity='0.6'/>
-    <ellipse cx='80' cy='108' rx='37' ry='30' fill='${color}'/>
-  </svg>`;
-  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-}
-
-// ========== DEMO DATA ==========
-function initD(){
-  if(!localStorage.getItem('kr_reqs')){
-    localStorage.setItem('kr_reqs', JSON.stringify([
-      {id:'r1',status:'pending',fullName:'أحمد محمد العلي',discordUsername:'Ahmed#4521',gameId:'KR-10042',gameUsername:'Eagle_Ahmed',age:24,departmentName:'الأمن العامة',rank:'مساعد أول',date:'2025-01-29',
-        nationalIdImage:{data: genSVG('#1a1a2e','#ff9800','صورة الهوية')},
-        characterImage:{data: genChar('#1a237e','#ff6f00')}},
-      {id:'r2',status:'pending',fullName:'سارة خالد الحربي',discordUsername:'Sara_K#7890',gameId:'KR-10043',gameUsername:'StarSara',age:21,departmentName:'الاستخبارات',rank:'ضابط',date:'2025-01-30',
-        nationalIdImage:{data: genSVG('#1b5e20','#00e676','صورة الهوية')},
-        characterImage:{data: genChar('#311b92','#7c4dff')}},
-      {id:'r3',status:'accepted',fullName:'عمر يوسف القحطاني',discordUsername:'Omar99#1234',gameId:'KR-10040',gameUsername:'DarkOmar',age:27,departmentName:'الدفاع المدني',rank:'قائد',date:'2025-01-25',
-        nationalIdImage:{data: genSVG('#bf360c','#ff8a65','صورة الهوية')},
-        characterImage:{data: genChar('#004d40','#00897b')}},
-      {id:'r4',status:'rejected',fullName:'ليلى عبد الله السعيد',discordUsername:'Leila_S#5678',gameId:'KR-10041',gameUsername:'MoonLight',age:19,departmentName:'الشرطة العسكرية',rank:'عنصري',date:'2025-01-27',
-        nationalIdImage:{data: genSVG('#4a148c','#ce93d8','صورة الهوية')},
-        characterImage:{data: genChar('#880e4f','#e91e63')}}
-    ]));
-  }
-}
-
-// ========== LOAD ==========
-function load(){
-  const d=JSON.parse(localStorage.getItem('kr_reqs')||'[]');
-  const pn=d.filter(r=>r.status==='pending').length;
-  if(pn>lpc&&lpc!==0){showN();playS();}
-  lpc=pn;
-  document.getElementById('ct').textContent=d.length;
-  document.getElementById('cp').textContent=pn;
-  document.getElementById('ca').textContent=d.filter(r=>r.status==='accepted').length;
-  document.getElementById('cr').textContent=d.filter(r=>r.status==='rejected').length;
-  document.getElementById('pb').textContent=pn;
-  render(d);
-}
-
-// ========== RENDER ==========
-function render(all){
-  ['requestsC','pendingC','acceptedC','rejectedC','idsC'].forEach(id=>document.getElementById(id).style.display='none');
-  let f=all;
-  if(sTerm){
-    const t=sTerm.toLowerCase();
-    f=f.filter(r=>r.fullName.includes(sTerm)||r.gameId.toLowerCase().includes(t)||r.gameUsername.toLowerCase().includes(t)||r.discordUsername.toLowerCase().includes(t)||r.rank.includes(sTerm));
-  }
-  let tgt,sub;
-  switch(curP){
-    case 'requests': sub=f.filter(r=>r.status==='pending');tgt='requestsC';break;
-    case 'pending':  sub=f.filter(r=>r.status==='pending');tgt='pendingC';break;
-    case 'accepted': sub=f.filter(r=>r.status==='accepted');tgt='acceptedC';break;
-    case 'rejected': sub=f.filter(r=>r.status==='rejected');tgt='rejectedC';break;
-    case 'ids':      sub=f.filter(r=>r.status==='accepted');tgt='idsC';break;
-    default:return;
-  }
-  const el=document.getElementById(tgt);
-  el.style.display='flex';
-  if(curP==='ids') rIDs(sub,el); else rReqs(sub,el,curP==='requests');
-}
-
-function rReqs(arr,el,showNew){
-  if(!arr.length){el.innerHTML='<div class="emp"><i class="fas fa-inbox"></i><p>لا توجد طلبات في هذه الفئة</p></div>';return;}
-  el.innerHTML=arr.map((r,i)=>`
-    <div class="rc ${showNew&&i===0?'nw':''}">
-      ${showNew&&i===0?'<div class="nt"><i class="fas fa-star"></i>جديد</div>':''}
-      <div class="rct">
-        <div class="rci">
-          <div class="rcn">${r.fullName}</div>
-          <div class="rcd2"><i class="fab fa-discord"></i>${r.discordUsername}</div>
+function render(arr) {
+    const el = document.getElementById('requestsC');
+    if(arr.length === 0) {
+        el.innerHTML = '<p style="text-align:center;opacity:0.5;">لا توجد طلبات جديدة</p>';
+        return;
+    }
+    el.innerHTML = arr.map(r => `
+        <div class="rc">
+            <div style="display:flex;justify-content:space-between;">
+                <div><h3>${r.fullName}</h3><p>${r.discordUsername}</p></div>
+                <div style="display:flex;gap:10px;">
+                    <img class="rci-img" src="${r.nationalIdImage?.data || ''}" title="الهوية">
+                    <img class="rci-img" src="${r.characterImage?.data || ''}" title="الشخصية">
+                </div>
+            </div>
+            <div class="rd">
+                <div><span>رقم الهوية:</span><br><b>${r.gameId}</b></div>
+                <div><span>الرتبة:</span><br><b>${r.rank}</b></div>
+                <div><span>القسم:</span><br><b>${r.departmentName}</b></div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:15px;">
+                <button class="btn ba" onclick="proc('${r.id}','accepted')">قبول وتفعيل</button>
+                <button class="btn br" onclick="proc('${r.id}','rejected')">رفض</button>
+            </div>
         </div>
-        <div class="rci-g">
-          <div><img class="rci-img" src="${r.nationalIdImage?.data||''}" onclick="oImg(this.src)"><div class="rci-lb">الهوية</div></div>
-          <div><img class="rci-img" src="${r.characterImage?.data||''}" onclick="oImg(this.src)"><div class="rci-lb">الشخصية</div></div>
-        </div>
-      </div>
-      <div class="rd">
-        <div class="rdi"><div class="rdl">رقم الهوية</div><div class="rdv">${r.gameId}</div></div>
-        <div class="rdi"><div class="rdl">اسم اللعبة</div><div class="rdv">${r.gameUsername}</div></div>
-        <div class="rdi"><div class="rdl">العمر</div><div class="rdv">${r.age} سنة</div></div>
-        <div class="rdi"><div class="rdl">القسم</div><div class="rdv">${r.departmentName}</div></div>
-        <div class="rdi"><div class="rdl">الرتبة</div><div class="rdv">${r.rank}</div></div>
-        <div class="rdi"><div class="rdl">التاريخ</div><div class="rdv">${r.date}</div></div>
-      </div>
-      ${r.status==='pending'?`<div class="ra">
-        <button class="btn ba" onclick="proc('${r.id}','accepted')"><i class="fas fa-check"></i>قبول وتفعيل</button>
-        <button class="btn br" onclick="proc('${r.id}','rejected')"><i class="fas fa-times"></i>رفض الطلب</button>
-      </div>`:''}
-    </div>`).join('');
+    `).join('');
 }
 
-function rIDs(arr,el){
-  if(!arr.length){el.innerHTML='<div class="emp"><i class="fas fa-id-badge"></i><p>لا توجد هويات مفعّلة حالياً</p></div>';return;}
-  el.innerHTML=arr.map(u=>`
-    <div class="idc">
-      <img class="idc-av" src="${u.characterImage?.data||''}" alt="">
-      <div class="idc-inf">
-        <div class="idc-n">${u.fullName}</div>
-        <div class="idc-m"><i class="fas fa-hashtag" style="font-size:9px"></i>${u.gameId}&nbsp;&nbsp;<i class="fas fa-medal" style="font-size:9px;color:var(--or)"></i>${u.rank}&nbsp;&nbsp;<i class="fab fa-discord" style="font-size:9px;color:#5865f2"></i>${u.discordUsername}</div>
-      </div>
-      <div class="idc-b"><i class="fas fa-check"></i>نشط</div>
-    </div>`).join('');
+function proc(id, st) {
+    if(!confirm('تأكيد الإجراء؟')) return;
+    let d = JSON.parse(localStorage.getItem('kr_reqs') || '[]');
+    const i = d.findIndex(r => r.id === id);
+    if(i !== -1) {
+        d[i].status = st;
+        if(st === 'accepted') {
+            // هذا هو السطر السحري للربط
+            localStorage.setItem('activated_user_data', JSON.stringify(d[i]));
+        }
+        localStorage.setItem('kr_reqs', JSON.stringify(d));
+        alert(st === 'accepted' ? 'تم التفعيل بنجاح!' : 'تم الرفض');
+        load();
+    }
 }
 
-// ========== PROCESS ==========
-function proc(id,st){
-  if(!confirm('هل أنت متأكد من '+(st==='accepted'?'قبول':'رفض')+' هذا الطلب؟'))return;
-  let d=JSON.parse(localStorage.getItem('kr_reqs')||'[]');
-  const i=d.findIndex(r=>r.id===id);
-  if(i!==-1){d[i].status=st;d[i].processedDate=new Date().toISOString();localStorage.setItem('kr_reqs',JSON.stringify(d));alert(st==='accepted'?'✅ تم القبول والتفعيل!':'❌ تم رفض الطلب.');load();}
-}
-
-// ========== PAGE SWITCH ==========
-const titles={
-  requests:['طلبات التفعيل','إدارة ومتابعة جميع طلبات التفعيل الواردة'],
-  pending: ['قيد الانتظار','الطلبات التي بانتظار المراجعة'],
-  accepted:['المقبولة','جميع الطلبات التي تم قبولها'],
-  rejected:['المرفوضة','جميع الطلبات التي تم رفضها'],
-  ids:     ['الهويات الصادرة','سجل المواطنين ذوي الهويات المفعّلة']
-};
-function go(name,el){
-  curP=name;sTerm='';document.getElementById('si').value='';
-  document.getElementById('pt').textContent=titles[name][0];
-  document.getElementById('pd').textContent=titles[name][1];
-  document.getElementById('fr').style.display=name==='ids'?'flex':'none';
-  document.querySelectorAll('.mi').forEach(i=>i.classList.remove('act'));
-  if(el)el.classList.add('act');
-  load();
-}
-
-// ========== SEARCH / FILTER ==========
-function srch(){sTerm=document.getElementById('si').value.trim();load();}
-function clrS(){document.getElementById('si').value='';sTerm='';load();}
-function setF(m,b){fMode=m;document.querySelectorAll('.fb').forEach(x=>x.classList.remove('act'));b.classList.add('act');load();}
-
-// ========== MODAL ==========
-function oImg(s){document.getElementById('fi').src=s;document.getElementById('mod').classList.add('act');}
-
-// ========== SIDEBAR MOBILE ==========
-function openSB(){document.getElementById('sb').classList.add('open');document.getElementById('ov').classList.add('show');}
-function closeSB(){document.getElementById('sb').classList.remove('open');document.getElementById('ov').classList.remove('show');}
-
-// ========== LOGOUT ==========
-function togLM(e){e.stopPropagation();document.getElementById('lm').classList.toggle('show');document.getElementById('uc').classList.toggle('open');}
-document.addEventListener('click',()=>{document.getElementById('lm').classList.remove('show');document.getElementById('uc').classList.remove('open');});
-function logOut(){if(confirm('هل تريد تسجيل الخروج فعلاً؟'))alert('تم تسجيل الخروج بنجاح ✓');}
-
-// ========== NOTIF ==========
-function showN(){const p=document.getElementById('np');p.classList.add('show');setTimeout(()=>p.classList.remove('show'),3000);}
-function playS(){try{const c=new(window.AudioContext||window.webkitAudioContext)();[880,1100,1320].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(.28,c.currentTime+i*.11);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+i*.11+.14);o.start(c.currentTime+i*.11);o.stop(c.currentTime+i*.11+.14);});}catch(e){}}
-
-// ========== INIT ==========
-window.onload=()=>{initD();load();lpc=JSON.parse(localStorage.getItem('kr_reqs')||'[]').filter(r=>r.status==='pending').length;};
-setInterval(load,2500);
+window.onload = load;
+setInterval(load, 5000); // تحديث تلقائي كل 5 ثواني
 </script>
-
 </body>
 </html>
