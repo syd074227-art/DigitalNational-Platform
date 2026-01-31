@@ -774,7 +774,7 @@
 <header class="main-header">
     <div class="header-content">
         <div class="user-section" onclick="showPage('profile')">
-            <img src="" alt="صورة المستخدم" class="user-avatar" id="headerAvatar">
+            <img src="https://via.placeholder.com/100" alt="صورة المستخدم" class="user-avatar" id="headerAvatar">
             <div class="user-info">
                 <h3 id="headerName">مرحباً</h3>
                 <div class="user-status">
@@ -817,7 +817,7 @@
                         </div>
                         
                         <div class="card-body">
-                            <img src="" alt="صورة المستخدم" class="card-avatar" id="cardAvatar">
+                            <img src="https://via.placeholder.com/100" alt="صورة المستخدم" class="card-avatar" id="cardAvatar">
                             <div class="card-info">
                                 <h2 id="cardName">اسم المستخدم</h2>
                                 <div class="card-id" id="cardId">0000000000</div>
@@ -954,8 +954,9 @@
                     <i class="fas fa-th-large"></i>
                     جميع الخدمات
                 </h2>
-                <div class="services-grid">
-                    <!-- نفس الخدمات من الصفحة الرئيسية -->
+                <div class="empty-state">
+                    <i class="fas fa-cog"></i>
+                    <p>جاري تحميل الخدمات...</p>
                 </div>
             </div>
         </div>
@@ -985,7 +986,7 @@
                 </h2>
                 
                 <div style="text-align: center; margin-bottom: 40px;">
-                    <img src="" alt="صورة المستخدم" class="card-avatar" id="profileAvatar" style="width: 120px; height: 120px; margin: 0 auto;">
+                    <img src="https://via.placeholder.com/120" alt="صورة المستخدم" class="card-avatar" id="profileAvatar" style="width: 120px; height: 120px; margin: 0 auto;">
                     <h2 style="margin-top: 20px; font-size: 28px;" id="profileName">اسم المستخدم</h2>
                     <p style="color: var(--accent); margin-top: 10px;">
                         <i class="fas fa-shield-check"></i>
@@ -1050,16 +1051,33 @@
     function loadUserData() {
         const deviceId = localStorage.getItem('device_id');
         if (!deviceId) {
-            window.location.href = 'apply.html';
-            return;
-        }
+            // بيانات تجريبية للعرض التوضيحي
+            currentUser = {
+                fullName: 'محمد أحمد السعيد',
+                id: '1234567890',
+                departmentName: 'وزارة الداخلية',
+                rank: 'ملازم أول',
+                age: 28,
+                gameUsername: 'mohammed_sa',
+                discordUsername: 'MohammedSa#1234',
+                activationDate: new Date().toISOString()
+            };
+        } else {
+            const activatedUsers = JSON.parse(localStorage.getItem('activated_users') || '[]');
+            currentUser = activatedUsers.find(u => u.deviceId === deviceId);
 
-        const activatedUsers = JSON.parse(localStorage.getItem('activated_users') || '[]');
-        currentUser = activatedUsers.find(u => u.deviceId === deviceId);
-
-        if (!currentUser) {
-            window.location.href = 'apply.html';
-            return;
+            if (!currentUser) {
+                currentUser = {
+                    fullName: 'مستخدم جديد',
+                    id: '0000000000',
+                    departmentName: '-',
+                    rank: '-',
+                    age: 0,
+                    gameUsername: '-',
+                    discordUsername: '-',
+                    activationDate: new Date().toISOString()
+                };
+            }
         }
 
         // عرض البيانات
@@ -1157,7 +1175,11 @@
     // تحميل الرسائل
     function loadMessages() {
         const deviceId = localStorage.getItem('device_id');
-        const notifications = JSON.parse(localStorage.getItem('user_notifications_' + deviceId) || '[]');
+        let notifications = [];
+        
+        if (deviceId) {
+            notifications = JSON.parse(localStorage.getItem('user_notifications_' + deviceId) || '[]');
+        }
         
         if (notifications.length === 0) {
             return;
@@ -1191,6 +1213,8 @@
     // تحديد كمقروء
     function markAsRead(notifId) {
         const deviceId = localStorage.getItem('device_id');
+        if (!deviceId) return;
+        
         let notifications = JSON.parse(localStorage.getItem('user_notifications_' + deviceId) || '[]');
         
         notifications = notifications.map(notif => {
