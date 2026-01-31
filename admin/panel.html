@@ -108,10 +108,9 @@
                     </div>
                 </div>
             `).join('')}
-        function acceptRequest(requestId){if(!confirm('هل أنت متأكد من قبول هذا الطلب؟'))return;allRequests=allRequests.map(req=>(req.id===requestId&&(req.status='accepted',saveActivatedUser(req)),req)),localStorage.setItem('admin_pending_requests',JSON.stringify(allRequests)),updateUserRequests(requestId,'accepted'),alert('✅ تم قبول الطلب بنجاح!'),loadRequests()}
-        function rejectRequest(requestId){if(!confirm('هل أنت متأكد من رفض هذا الطلب؟'))return;allRequests=allRequests.map(req=>(req.id===requestId&&(req.status='rejected'),req)),localStorage.setItem('admin_pending_requests',JSON.stringify(allRequests)),updateUserRequests(requestId,'rejected'),alert('❌ تم رفض الطلب'),loadRequests()}
+        function acceptRequest(requestId){if(!confirm('هل أنت متأكد من قبول هذا الطلب؟'))return;allRequests=allRequests.map(req=>(req.id===requestId&&(req.status='accepted',saveActivatedUser(req)),req)),localStorage.setItem('admin_pending_requests',JSON.stringify(allRequests)),alert('✅ تم قبول الطلب بنجاح!'),loadRequests()}
+        function rejectRequest(requestId){if(!confirm('هل أنت متأكد من رفض هذا الطلب؟'))return;allRequests=allRequests.map(req=>(req.id===requestId&&(req.status='rejected'),req)),localStorage.setItem('admin_pending_requests',JSON.stringify(allRequests)),alert('❌ تم رفض الطلب'),loadRequests()}
         function saveActivatedUser(req){let activatedUsers=JSON.parse(localStorage.getItem('activated_users')||'[]');activatedUsers.push({...req,activationDate:new Date().toISOString()}),localStorage.setItem('activated_users',JSON.stringify(activatedUsers)),console.log('✅ تم حفظ المستخدم المفعّل:',req.fullName)}
-        function updateUserRequests(requestId,status){let userRequests=JSON.parse(localStorage.getItem('user_requests')||'[]');userRequests=userRequests.map(req=>(req.id===requestId&&(req.status=status),req)),localStorage.setItem('user_requests',JSON.stringify(userRequests))}
         function filterRequests(filter){currentFilter=filter,document.querySelectorAll('.filter-btn').forEach(btn=>btn.classList.remove('active')),event.target.classList.add('active'),displayRequests()}
         function viewImage(imageSrc){document.getElementById('modalImage').src=imageSrc,document.getElementById('imageModal').classList.add('show')}
         function closeModal(){document.getElementById('imageModal').classList.remove('show')}
