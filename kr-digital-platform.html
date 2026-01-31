@@ -11,7 +11,7 @@
         :root {
             --bg-dark: #080808;
             --card-dark: #121212;
-            --accent: #00e676; /* نيون أخضر فخم */
+            --accent: #00e676;
             --accent-gradient: linear-gradient(135deg, #00c853, #b2ff59);
             --text-main: #ffffff;
             --text-dim: #a0a0a0;
@@ -20,10 +20,38 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Kufi Arabic', sans-serif; -webkit-tap-highlight-color: transparent; }
-
         body { background-color: var(--bg-dark); color: var(--text-main); overflow-x: hidden; padding-bottom: 100px; }
 
-        /* --- Header & Profile --- */
+        /* شاشة التحميل */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 5px solid rgba(0, 230, 118, 0.2);
+            border-top: 5px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .top-nav { padding: 25px 20px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to bottom, #111, transparent); }
         .profile-area { display: flex; align-items: center; gap: 12px; }
         .profile-pic { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--accent); padding: 2px; position: relative; }
@@ -32,7 +60,6 @@
         .welcome-text p { font-size: 16px; font-weight: 700; }
         .top-icons { display: flex; gap: 15px; font-size: 20px; }
 
-        /* --- Advanced Search --- */
         .search-container { padding: 0 20px; margin-bottom: 25px; }
         .search-bar { 
             background: var(--card-dark); 
@@ -49,12 +76,10 @@
         .search-bar input { background: none; border: none; color: white; width: 100%; outline: none; font-size: 14px; }
         .search-bar i { color: var(--text-dim); }
 
-        /* --- Section Titles --- */
         .sec-header { padding: 0 20px 15px; display: flex; justify-content: space-between; align-items: center; }
         .sec-header h3 { font-size: 17px; font-weight: 700; }
         .sec-header span { color: var(--accent); font-size: 13px; font-weight: 500; cursor: pointer; }
 
-        /* --- Quick Access (Scrollable) --- */
         .quick-access { display: flex; gap: 12px; overflow-x: auto; padding: 0 20px 25px; scrollbar-width: none; }
         .quick-access::-webkit-scrollbar { display: none; }
         .q-item { 
@@ -70,7 +95,6 @@
         .q-item span { font-size: 12px; color: var(--text-dim); }
         .q-item:active { transform: scale(0.9); background: var(--glass); }
 
-        /* --- Featured Cards --- */
         .featured-cards { padding: 0 20px 25px; }
         .digital-id { 
             background: linear-gradient(135deg, #111 0%, #1a1a1a 100%); 
@@ -88,7 +112,6 @@
         .id-info h2 { font-size: 20px; letter-spacing: 1px; margin-bottom: 5px; }
         .id-info p { font-size: 12px; color: var(--text-dim); }
 
-        /* --- Grid Categories --- */
         .categories-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
@@ -109,7 +132,6 @@
         }
         .cat-item span { font-size: 11px; font-weight: 500; display: block; height: 30px; }
 
-        /* --- Bottom Navigation --- */
         .bottom-nav { 
             position: fixed; bottom: 20px; left: 20px; right: 20px; 
             background: rgba(18, 18, 18, 0.9); 
@@ -128,137 +150,175 @@
         .nav-item.active { color: var(--accent); }
         .nav-item.active::after { content: ''; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 20px; height: 3px; background: var(--accent); border-radius: 0 0 10px 10px; box-shadow: 0 5px 10px rgba(0, 230, 118, 0.4); }
 
-        /* Animations */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div class="top-nav">
-        <div class="profile-area">
-            <div class="profile-pic">
-                <img src="https://via.placeholder.com/100" alt="User">
-            </div>
-            <div class="welcome-text">
-                <h4>أهلاً بك</h4>
-                <p>عبدالله محمد</p>
-            </div>
-        </div>
-        <div class="top-icons">
-            <i class="far fa-bell"></i>
-            <i class="far fa-clock"></i>
-        </div>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div style="color: var(--accent); font-size: 18px; font-weight: 700;">جاري تحميل بياناتك...</div>
     </div>
 
-    <div class="search-container">
-        <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="ابحث في الخدمات الرقمية، الهويات، أو الأخبار...">
-            <i class="fas fa-sliders-h"></i> </div>
-    </div>
-
-    <div class="sec-header">
-        <h3>الوصول السريع</h3>
-    </div>
-    <div class="quick-access">
-        <div class="q-item"><i class="fas fa-calendar-alt"></i><span>التقويم</span></div>
-        <div class="q-item"><i class="fas fa-university"></i><span>الجهات</span></div>
-        <div class="q-item"><i class="fas fa-qrcode"></i><span>تصريحي</span></div>
-        <div class="q-item"><i class="fas fa-wallet"></i><span>المحفظة</span></div>
-    </div>
-
-    <div class="sec-header">
-        <h3>البطاقات المفضلة</h3>
-        <span>عرض الكل</span>
-    </div>
-    <div class="featured-cards">
-        <div class="digital-id">
-            <div class="id-top">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Coat_of_arms_of_Saudi_Arabia.svg" alt="Logo">
-                <i class="fas fa-ellipsis-h"></i>
+    <div id="mainContent" style="display: none;">
+        <div class="top-nav">
+            <div class="profile-area">
+                <div class="profile-pic">
+                    <img id="userProfileImage" src="https://via.placeholder.com/100" alt="User">
+                </div>
+                <div class="welcome-text">
+                    <h4>أهلاً بك</h4>
+                    <p id="userName">عبدالله محمد</p>
+                </div>
             </div>
-            <div class="id-info">
-                <p>بطاقة الهوية الوطنية</p>
-                <h2>١٠٩٢٨٣٧٤٦٥</h2>
-                <p style="margin-top: 10px; font-size: 10px; color: var(--accent);">نشط • تم التحقق الرقمي</p>
+            <div class="top-icons">
+                <i class="far fa-bell"></i>
+                <i class="far fa-clock"></i>
             </div>
         </div>
-    </div>
 
-    <div class="sec-header">
-        <h3>استكشف التصنيفات</h3>
-        <span>عرض الكل</span>
-    </div>
-    <div class="categories-grid">
-        <div class="cat-item">
-            <div class="cat-icon" style="background: rgba(168, 85, 247, 0.1); color: #a855f7;"><i class="fas fa-users"></i></div>
-            <span>الشخصية والأسرة</span>
+        <div class="search-container">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="ابحث في الخدمات الرقمية، الهويات، أو الأخبار...">
+                <i class="fas fa-sliders-h"></i>
+            </div>
         </div>
-        <div class="cat-item" style="animation-delay: 0.1s;">
-            <div class="cat-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;"><i class="fas fa-heartbeat"></i></div>
-            <span>الصحة</span>
-        </div>
-        <div class="cat-item" style="animation-delay: 0.2s;">
-            <div class="cat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;"><i class="fas fa-mosque"></i></div>
-            <span>الدينية</span>
-        </div>
-        <div class="cat-item" style="animation-delay: 0.3s;">
-            <div class="cat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fas fa-graduation-cap"></i></div>
-            <span>التعليم</span>
-        </div>
-        <div class="cat-item" style="animation-delay: 0.4s;">
-            <div class="cat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-hand-holding-usd"></i></div>
-            <span>التجارة والمالية</span>
-        </div>
-        <div class="cat-item" style="animation-delay: 0.5s;">
-            <div class="cat-icon" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;"><i class="fas fa-car"></i></div>
-            <span>المركبات والمرور</span>
-        </div>
-    </div>
 
-    <div class="bottom-nav">
-        <div class="nav-item active">
-            <i class="fas fa-home"></i>
-            <span>الرئيسية</span>
+        <div class="sec-header">
+            <h3>الوصول السريع</h3>
         </div>
-        <div class="nav-item">
-            <i class="fas fa-th-large"></i>
-            <span>الخدمات</span>
+        <div class="quick-access">
+            <div class="q-item"><i class="fas fa-calendar-alt"></i><span>التقويم</span></div>
+            <div class="q-item"><i class="fas fa-university"></i><span>الجهات</span></div>
+            <div class="q-item"><i class="fas fa-qrcode"></i><span>تصريحي</span></div>
+            <div class="q-item"><i class="fas fa-wallet"></i><span>المحفظة</span></div>
         </div>
-        <div class="nav-item">
-            <i class="fas fa-compass"></i>
-            <span>واكب</span>
+
+        <div class="sec-header">
+            <h3>البطاقات المفضلة</h3>
+            <span>عرض الكل</span>
         </div>
-        <div class="nav-item">
-            <i class="fas fa-comment-dots"></i>
-            <span>رسائل</span>
+        <div class="featured-cards">
+            <div class="digital-id">
+                <div class="id-top">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Coat_of_arms_of_Saudi_Arabia.svg" alt="Logo">
+                    <i class="fas fa-ellipsis-h"></i>
+                </div>
+                <div class="id-info">
+                    <p>بطاقة الهوية الوطنية</p>
+                    <h2 id="userGameId">١٠٩٢٨٣٧٤٦٥</h2>
+                    <p style="margin-top: 10px; font-size: 10px; color: var(--accent);">نشط • تم التحقق الرقمي</p>
+                </div>
+            </div>
         </div>
-        <div class="nav-item">
-            <i class="fas fa-user-circle"></i>
-            <span>معلوماتي</span>
+
+        <div class="sec-header">
+            <h3>استكشف التصنيفات</h3>
+            <span>عرض الكل</span>
+        </div>
+        <div class="categories-grid">
+            <div class="cat-item">
+                <div class="cat-icon" style="background: rgba(168, 85, 247, 0.1); color: #a855f7;"><i class="fas fa-users"></i></div>
+                <span>الشخصية والأسرة</span>
+            </div>
+            <div class="cat-item" style="animation-delay: 0.1s;">
+                <div class="cat-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;"><i class="fas fa-heartbeat"></i></div>
+                <span>الصحة</span>
+            </div>
+            <div class="cat-item" style="animation-delay: 0.2s;">
+                <div class="cat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;"><i class="fas fa-mosque"></i></div>
+                <span>الدينية</span>
+            </div>
+            <div class="cat-item" style="animation-delay: 0.3s;">
+                <div class="cat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fas fa-graduation-cap"></i></div>
+                <span>التعليم</span>
+            </div>
+            <div class="cat-item" style="animation-delay: 0.4s;">
+                <div class="cat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-hand-holding-usd"></i></div>
+                <span>التجارة والمالية</span>
+            </div>
+            <div class="cat-item" style="animation-delay: 0.5s;">
+                <div class="cat-icon" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;"><i class="fas fa-car"></i></div>
+                <span>المركبات والمرور</span>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>الرئيسية</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-th-large"></i>
+                <span>الخدمات</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-compass"></i>
+                <span>واكب</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-comment-dots"></i>
+                <span>رسائل</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-user-circle"></i>
+                <span>معلوماتي</span>
+            </div>
         </div>
     </div>
 
     <script>
-        // أنيميشن بسيط عند النقر على الشريط السفلي
+        // ✅ تحميل بيانات المستخدم المفعّل
+        function loadUserData() {
+            const userData = JSON.parse(localStorage.getItem('activated_user_data'));
+            
+            if (!userData) {
+                // إذا لم يكن هناك بيانات، نرجع للصفحة الرئيسية
+                setTimeout(() => {
+                    window.location.href = 'apply.html';
+                }, 1500);
+                return;
+            }
+            
+            // تحديث البيانات في الصفحة
+            document.getElementById('userName').textContent = userData.fullName;
+            document.getElementById('userGameId').textContent = userData.gameId;
+            
+            if (userData.characterImage?.data) {
+                document.getElementById('userProfileImage').src = userData.characterImage.data;
+            }
+            
+            // إخفاء شاشة التحميل وعرض المحتوى
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            }, 1000);
+        }
+
+        // التشغيل التلقائي
+        window.onload = loadUserData;
+
+        // أنيميشن الشريط السفلي
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 document.querySelector('.nav-item.active').classList.remove('active');
                 this.classList.add('active');
                 
-                // إضافة اهتزاز بسيط (Haptic feedback simulation)
                 if (window.navigator.vibrate) window.navigator.vibrate(10);
             });
         });
 
         // أنيميشن البحث
         const searchInput = document.querySelector('.search-bar input');
-        searchInput.addEventListener('focus', () => {
-            document.querySelector('.search-bar').style.transform = 'scale(1.02)';
-        });
-        searchInput.addEventListener('blur', () => {
-            document.querySelector('.search-bar').style.transform = 'scale(1)';
-        });
+        if (searchInput) {
+            searchInput.addEventListener('focus', () => {
+                document.querySelector('.search-bar').style.transform = 'scale(1.02)';
+            });
+            searchInput.addEventListener('blur', () => {
+                document.querySelector('.search-bar').style.transform = 'scale(1)';
+            });
+        }
     </script>
 </body>
 </html>
