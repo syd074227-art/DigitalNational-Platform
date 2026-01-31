@@ -893,20 +893,29 @@
     }
     
     function acceptRequest(requestId) {
-        if (!confirm('هل أنت متأكد من قبول هذا الطلب؟')) return;
-        
-        allRequests = allRequests.map(req => {
-            if (req.id === requestId) {
-                req.status = 'accepted';
-                saveActivatedUser(req);
-            }
-            return req;
-        });
-        
-        localStorage.setItem('admin_pending_requests', JSON.stringify(allRequests));
-        alert('✅ تم قبول الطلب بنجاح!');
-        loadRequests();
-    }
+    if (!confirm('هل أنت متأكد من قبول هذا الطلب؟\n\n✅ سيتم توجيه المستخدم تلقائياً إلى المنصة الرقمية فور القبول!')) return;
+    
+    console.log('✅ قبول الطلب:', requestId);
+    
+    allRequests = allRequests.map(req => {
+        if (req.id === requestId) {
+            req.status = 'accepted';
+            req.acceptedDate = new Date().toISOString();
+            saveActivatedUser(req);
+            
+            console.log('✅ تم تحديث حالة الطلب إلى مقبول');
+            console.log('✅ المستخدم:', req.gameUsername);
+        }
+        return req;
+    });
+    
+    localStorage.setItem('admin_pending_requests', JSON.stringify(allRequests));
+    
+    // إعلام المستخدم أن التفعيل تم بنجاح
+    alert(`✅ تم قبول الطلب بنجاح!\n\n🎉 المستخدم: ${allRequests.find(r => r.id === requestId).fullName}\n🚀 سيتم توجيهه تلقائياً إلى kr-digital-platform.html عند فتح الصفحة`);
+    
+    loadRequests();
+}
     
     function rejectRequest(requestId) {
         if (!confirm('هل أنت متأكد من رفض هذا الطلب؟')) return;
