@@ -4,352 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة الإدارة - مراجعة الطلبات | KR</title>
+    <title>لوحة الإدارة - KR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #1a237e;
-            --accent: #ff6f00;
-            --success: #00c853;
-            --danger: #d50000;
-            --warning: #ffd600;
-            --dark: #0d1117;
-            --light: #ffffff;
-            --gray: #8b949e;
-            --gray-light: #c9d1d9;
-            --border: rgba(255, 255, 255, 0.1);
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-dark: rgba(0, 0, 0, 0.3);
-            --gradient-primary: linear-gradient(135deg, #1a237e 0%, #3f51b5 100%);
-            --gradient-accent: linear-gradient(135deg, #ff6f00 0%, #ff9800 100%);
-            --gradient-dark: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%);
-        }
-
-```
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', 'Cairo', sans-serif;
-    }
-
-    body {
-        background: var(--gradient-dark);
-        min-height: 100vh;
-        color: var(--light);
-        padding: 20px;
-    }
-
-    .container {
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-
-    .header {
-        background: var(--glass-dark);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .header-title h1 {
-        font-size: 28px;
-        color: var(--accent);
-        margin-bottom: 5px;
-    }
-
-    .header-title p {
-        color: var(--gray-light);
-    }
-
-    .stats {
-        display: flex;
-        gap: 20px;
-    }
-
-    .stat-card {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 15px 25px;
-        border-radius: 12px;
-        text-align: center;
-        border: 1px solid var(--border);
-    }
-
-    .stat-number {
-        font-size: 32px;
-        font-weight: 900;
-        color: var(--accent);
-    }
-
-    .stat-label {
-        font-size: 13px;
-        color: var(--gray-light);
-        margin-top: 5px;
-    }
-
-    .filters {
-        background: var(--glass);
-        backdrop-filter: blur(10px);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 20px;
-        display: flex;
-        gap: 15px;
-    }
-
-    .filter-btn {
-        padding: 10px 20px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 2px solid var(--border);
-        border-radius: 50px;
-        color: var(--light);
-        cursor: pointer;
-        transition: all 0.3s;
-        font-weight: 600;
-    }
-
-    .filter-btn:hover {
-        border-color: var(--accent);
-    }
-
-    .filter-btn.active {
-        background: var(--gradient-accent);
-        border-color: var(--accent);
-    }
-
-    .requests-grid {
-        display: grid;
-        gap: 20px;
-    }
-
-    .request-card {
-        background: var(--glass-dark);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 30px;
-        transition: all 0.3s;
-    }
-
-    .request-card:hover {
-        border-color: var(--accent);
-        transform: translateY(-3px);
-    }
-
-    .request-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: start;
-        margin-bottom: 25px;
-    }
-
-    .request-info {
-        flex: 1;
-    }
-
-    .request-id {
-        font-size: 14px;
-        color: var(--accent);
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-
-    .request-name {
-        font-size: 24px;
-        font-weight: 800;
-        margin-bottom: 5px;
-    }
-
-    .request-date {
-        font-size: 13px;
-        color: var(--gray-light);
-    }
-
-    .request-images {
-        display: flex;
-        gap: 15px;
-    }
-
-    .request-img {
-        width: 100px;
-        height: 100px;
-        border-radius: 12px;
-        object-fit: cover;
-        border: 2px solid var(--border);
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .request-img:hover {
-        transform: scale(1.05);
-        border-color: var(--accent);
-    }
-
-    .request-details {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-        margin: 25px 0;
-    }
-
-    .detail-item {
-        background: rgba(0, 0, 0, 0.3);
-        padding: 15px;
-        border-radius: 12px;
-        border-right: 3px solid var(--accent);
-    }
-
-    .detail-label {
-        font-size: 12px;
-        color: var(--gray-light);
-        margin-bottom: 5px;
-    }
-
-    .detail-value {
-        font-size: 16px;
-        font-weight: 700;
-    }
-
-    .request-actions {
-        display: flex;
-        gap: 15px;
-        margin-top: 25px;
-    }
-
-    .btn {
-        flex: 1;
-        padding: 15px;
-        border: none;
-        border-radius: 12px;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .btn-accept {
-        background: linear-gradient(135deg, #00c853, #00e676);
-        color: white;
-    }
-
-    .btn-accept:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4);
-    }
-
-    .btn-reject {
-        background: linear-gradient(135deg, #d50000, #ff1744);
-        color: white;
-    }
-
-    .btn-reject:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(213, 0, 0, 0.4);
-    }
-
-    .btn-view {
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        border: 2px solid var(--border);
-    }
-
-    .btn-view:hover {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: var(--accent);
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 80px 20px;
-        background: var(--glass);
-        border-radius: 20px;
-        border: 1px solid var(--border);
-    }
-
-    .empty-state i {
-        font-size: 80px;
-        color: var(--gray);
-        margin-bottom: 20px;
-    }
-
-    .empty-state p {
-        color: var(--gray-light);
-        font-size: 18px;
-    }
-
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.9);
-        z-index: 1000;
-        padding: 20px;
-        overflow-y: auto;
-    }
-
-    .modal.show {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .modal-content {
-        background: var(--dark);
-        border-radius: 20px;
-        padding: 40px;
-        max-width: 800px;
-        width: 100%;
-        border: 1px solid var(--border);
-    }
-
-    .modal-close {
-        float: left;
-        font-size: 32px;
-        cursor: pointer;
-        color: var(--gray-light);
-        transition: all 0.3s;
-    }
-
-    .modal-close:hover {
-        color: var(--danger);
-    }
-
-    .image-modal {
-        max-width: 90%;
-        max-height: 90vh;
-        border-radius: 12px;
-    }
-
-    @media (max-width: 768px) {
-        .stats {
-            flex-wrap: wrap;
-        }
-        
-        .request-header {
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .request-images {
-            width: 100%;
-        }
-    }
-</style>
-```
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Cairo', sans-serif; }
+        body { background: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%); min-height: 100vh; color: white; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header-title h1 { font-size: 28px; color: #ff9800; margin-bottom: 5px; }
+        .header-title p { color: #c9d1d9; }
+        .stats { display: flex; gap: 20px; }
+        .stat-card { background: rgba(255, 255, 255, 0.05); padding: 15px 25px; border-radius: 12px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .stat-number { font-size: 32px; font-weight: 900; color: #ff6f00; }
+        .stat-label { font-size: 13px; color: #c9d1d9; margin-top: 5px; }
+        .filters { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 20px; margin-bottom: 20px; display: flex; gap: 15px; }
+        .filter-btn { padding: 10px 20px; background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 50px; color: white; cursor: pointer; transition: all 0.3s; font-weight: 600; }
+        .filter-btn:hover { border-color: #ff6f00; }
+        .filter-btn.active { background: linear-gradient(135deg, #ff6f00, #ff9800); border-color: #ff6f00; }
+        .requests-grid { display: grid; gap: 20px; }
+        .request-card { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px; transition: all 0.3s; }
+        .request-card:hover { border-color: #ff6f00; transform: translateY(-3px); }
+        .request-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 25px; }
+        .request-info { flex: 1; }
+        .request-id { font-size: 14px; color: #ff6f00; font-weight: 700; margin-bottom: 10px; }
+        .request-name { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
+        .request-date { font-size: 13px; color: #c9d1d9; }
+        .request-images { display: flex; gap: 15px; }
+        .request-img { width: 100px; height: 100px; border-radius: 12px; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.1); cursor: pointer; transition: all 0.3s; }
+        .request-img:hover { transform: scale(1.05); border-color: #ff6f00; }
+        .request-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 25px 0; }
+        .detail-item { background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 12px; border-right: 3px solid #ff6f00; }
+        .detail-label { font-size: 12px; color: #c9d1d9; margin-bottom: 5px; }
+        .detail-value { font-size: 16px; font-weight: 700; }
+        .request-actions { display: flex; gap: 15px; margin-top: 25px; }
+        .btn { flex: 1; padding: 15px; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-accept { background: linear-gradient(135deg, #00c853, #00e676); color: white; }
+        .btn-accept:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4); }
+        .btn-reject { background: linear-gradient(135deg, #d50000, #ff1744); color: white; }
+        .btn-reject:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(213, 0, 0, 0.4); }
+        .empty-state { text-align: center; padding: 80px 20px; background: rgba(255, 255, 255, 0.05); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .empty-state i { font-size: 80px; color: #8b949e; margin-bottom: 20px; }
+        .empty-state p { color: #c9d1d9; font-size: 18px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.95); z-index: 1000; padding: 20px; overflow-y: auto; }
+        .modal.show { display: flex; align-items: center; justify-content: center; }
+        .image-modal { max-width: 90%; max-height: 90vh; border-radius: 12px; }
+        @media (max-width: 768px) { .stats { flex-wrap: wrap; } .request-header { flex-direction: column; gap: 20px; } }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -359,238 +59,62 @@
                 <p>مراجعة طلبات تفعيل الهوية الرقمية</p>
             </div>
             <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="pendingCount">0</div>
-                    <div class="stat-label">قيد المراجعة</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="acceptedCount">0</div>
-                    <div class="stat-label">تم القبول</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="rejectedCount">0</div>
-                    <div class="stat-label">تم الرفض</div>
-                </div>
+                <div class="stat-card"><div class="stat-number" id="pendingCount">0</div><div class="stat-label">قيد المراجعة</div></div>
+                <div class="stat-card"><div class="stat-number" id="acceptedCount">0</div><div class="stat-label">تم القبول</div></div>
+                <div class="stat-card"><div class="stat-number" id="rejectedCount">0</div><div class="stat-label">تم الرفض</div></div>
             </div>
         </div>
-
-```
-    <div class="filters">
-        <button class="filter-btn active" onclick="filterRequests('all')">الكل</button>
-        <button class="filter-btn" onclick="filterRequests('pending')">قيد المراجعة</button>
-        <button class="filter-btn" onclick="filterRequests('accepted')">المقبولة</button>
-        <button class="filter-btn" onclick="filterRequests('rejected')">المرفوضة</button>
-        <button class="filter-btn" onclick="refreshRequests()"><i class="fas fa-sync-alt"></i> تحديث</button>
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterRequests('all')">الكل</button>
+            <button class="filter-btn" onclick="filterRequests('pending')">قيد المراجعة</button>
+            <button class="filter-btn" onclick="filterRequests('accepted')">المقبولة</button>
+            <button class="filter-btn" onclick="filterRequests('rejected')">المرفوضة</button>
+            <button class="filter-btn" onclick="loadRequests()"><i class="fas fa-sync-alt"></i> تحديث</button>
+        </div>
+        <div class="requests-grid" id="requestsContainer"></div>
     </div>
-
-    <div class="requests-grid" id="requestsContainer"></div>
-</div>
-
-<!-- Modal for image viewing -->
-<div class="modal" id="imageModal" onclick="closeModal()">
-    <img id="modalImage" class="image-modal">
-</div>
-
-<script>
-    let currentFilter = 'all';
-    let allRequests = [];
-
-    // تحميل الطلبات عند فتح الصفحة
-    document.addEventListener('DOMContentLoaded', function() {
-        loadRequests();
-    });
-
-    function loadRequests() {
-        allRequests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
-        updateStats();
-        displayRequests();
-    }
-
-    function updateStats() {
-        const pending = allRequests.filter(r => r.status === 'pending').length;
-        const accepted = allRequests.filter(r => r.status === 'accepted').length;
-        const rejected = allRequests.filter(r => r.status === 'rejected').length;
-
-        document.getElementById('pendingCount').textContent = pending;
-        document.getElementById('acceptedCount').textContent = accepted;
-        document.getElementById('rejectedCount').textContent = rejected;
-    }
-
-    function displayRequests() {
-        const container = document.getElementById('requestsContainer');
-        let filteredRequests = allRequests;
-
-        if (currentFilter !== 'all') {
-            filteredRequests = allRequests.filter(r => r.status === currentFilter);
-        }
-
-        if (filteredRequests.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-inbox"></i>
-                    <p>لا توجد طلبات حالياً</p>
-                </div>
-            `;
-            return;
-        }
-
-        container.innerHTML = filteredRequests.map(request => `
-            <div class="request-card">
-                <div class="request-header">
-                    <div class="request-info">
-                        <div class="request-id">#${request.id}</div>
-                        <div class="request-name">${request.fullName}</div>
-                        <div class="request-date">${request.date}</div>
+    <div class="modal" id="imageModal" onclick="closeModal()"><img id="modalImage" class="image-modal"></div>
+    <script>
+        let currentFilter='all',allRequests=[];
+        document.addEventListener('DOMContentLoaded',function(){console.log('🎛 لوحة الإدارة جاهزة'),loadRequests()});
+        function loadRequests(){allRequests=JSON.parse(localStorage.getItem('admin_pending_requests')||'[]'),console.log('📥 تم تحميل',allRequests.length,'طلب'),updateStats(),displayRequests()}
+        function updateStats(){const pending=allRequests.filter(r=>'pending'===r.status).length,accepted=allRequests.filter(r=>'accepted'===r.status).length,rejected=allRequests.filter(r=>'rejected'===r.status).length;document.getElementById('pendingCount').textContent=pending,document.getElementById('acceptedCount').textContent=accepted,document.getElementById('rejectedCount').textContent=rejected}
+        function displayRequests(){const container=document.getElementById('requestsContainer');let filteredRequests=allRequests;if('all'!==currentFilter&&(filteredRequests=allRequests.filter(r=>r.status===currentFilter)),0===filteredRequests.length)return void(container.innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>لا توجد طلبات حالياً</p></div>');container.innerHTML=filteredRequests.map(request=>`
+                <div class="request-card">
+                    <div class="request-header">
+                        <div class="request-info">
+                            <div class="request-id">#${request.id}</div>
+                            <div class="request-name">${request.fullName}</div>
+                            <div class="request-date">${request.date}</div>
+                        </div>
+                        <div class="request-images">
+                            ${request.nationalIdImage?`<img src="${request.nationalIdImage.data}" class="request-img" onclick="viewImage('${request.nationalIdImage.data}')" title="الهوية">`:''} 
+                            ${request.characterImage?`<img src="${request.characterImage.data}" class="request-img" onclick="viewImage('${request.characterImage.data}')" title="الشخصية">`:''} 
+                        </div>
                     </div>
-                    <div class="request-images">
-                        ${request.nationalIdImage ? `
-                            <img src="${request.nationalIdImage.data}" 
-                                 class="request-img" 
-                                 onclick="viewImage('${request.nationalIdImage.data}')" 
-                                 title="الهوية الوطنية">
-                        ` : ''}
-                        ${request.characterImage ? `
-                            <img src="${request.characterImage.data}" 
-                                 class="request-img" 
-                                 onclick="viewImage('${request.characterImage.data}')" 
-                                 title="صورة الشخصية">
-                        ` : ''}
+                    <div class="request-details">
+                        <div class="detail-item"><div class="detail-label">العمر</div><div class="detail-value">${request.age} سنة</div></div>
+                        <div class="detail-item"><div class="detail-label">اللعبة</div><div class="detail-value">${request.gameUsername}</div></div>
+                        <div class="detail-item"><div class="detail-label">ديسكورد</div><div class="detail-value">${request.discordUsername}</div></div>
+                        <div class="detail-item"><div class="detail-label">رقم الهوية</div><div class="detail-value">${request.gameId}</div></div>
+                        <div class="detail-item"><div class="detail-label">التصنيف</div><div class="detail-value">${request.departmentName}</div></div>
+                        <div class="detail-item"><div class="detail-label">الرتبة</div><div class="detail-value">${request.rank}</div></div>
+                    </div>
+                    <div class="request-actions">
+                        ${'pending'===request.status?`
+                            <button class="btn btn-accept" onclick="acceptRequest('${request.id}')"><i class="fas fa-check"></i> قبول الطلب</button>
+                            <button class="btn btn-reject" onclick="rejectRequest('${request.id}')"><i class="fas fa-times"></i> رفض الطلب</button>
+                        `:'accepted'===request.status?'<button class="btn btn-accept" disabled style="opacity: 0.6;"><i class="fas fa-check-circle"></i> تم القبول</button>':'<button class="btn btn-reject" disabled style="opacity: 0.6;"><i class="fas fa-times-circle"></i> تم الرفض</button>'}
                     </div>
                 </div>
-
-                <div class="request-details">
-                    <div class="detail-item">
-                        <div class="detail-label">العمر</div>
-                        <div class="detail-value">${request.age} سنة</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">اسم المستخدم (اللعبة)</div>
-                        <div class="detail-value">${request.gameUsername}</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">اسم المستخدم (ديسكورد)</div>
-                        <div class="detail-value">${request.discordUsername}</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">رقم الهوية</div>
-                        <div class="detail-value">${request.gameId}</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">التصنيف</div>
-                        <div class="detail-value">${request.departmentName}</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">الرتبة</div>
-                        <div class="detail-value">${request.rank}</div>
-                    </div>
-                </div>
-
-                <div class="request-actions">
-                    ${request.status === 'pending' ? `
-                        <button class="btn btn-accept" onclick="acceptRequest('${request.id}')">
-                            <i class="fas fa-check"></i> قبول الطلب
-                        </button>
-                        <button class="btn btn-reject" onclick="rejectRequest('${request.id}')">
-                            <i class="fas fa-times"></i> رفض الطلب
-                        </button>
-                    ` : request.status === 'accepted' ? `
-                        <button class="btn btn-accept" disabled style="opacity: 0.6;">
-                            <i class="fas fa-check-circle"></i> تم القبول
-                        </button>
-                    ` : `
-                        <button class="btn btn-reject" disabled style="opacity: 0.6;">
-                            <i class="fas fa-times-circle"></i> تم الرفض
-                        </button>
-                    `}
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function acceptRequest(requestId) {
-        if (!confirm('هل أنت متأكد من قبول هذا الطلب؟')) return;
-
-        // تحديث حالة الطلب
-        allRequests = allRequests.map(req => {
-            if (req.id === requestId) {
-                req.status = 'accepted';
-                
-                // حفظ المستخدم المفعّل
-                let activatedUsers = JSON.parse(localStorage.getItem('activated_users') || '[]');
-                activatedUsers.push({
-                    ...req,
-                    activationDate: new Date().toISOString()
-                });
-                localStorage.setItem('activated_users', JSON.stringify(activatedUsers));
-            }
-            return req;
-        });
-
-        localStorage.setItem('admin_pending_requests', JSON.stringify(allRequests));
-        
-        // تحديث طلبات المستخدم
-        updateUserRequests(requestId, 'accepted');
-        
-        alert('✅ تم قبول الطلب بنجاح!');
-        loadRequests();
-    }
-
-    function rejectRequest(requestId) {
-        if (!confirm('هل أنت متأكد من رفض هذا الطلب؟')) return;
-
-        allRequests = allRequests.map(req => {
-            if (req.id === requestId) {
-                req.status = 'rejected';
-            }
-            return req;
-        });
-
-        localStorage.setItem('admin_pending_requests', JSON.stringify(allRequests));
-        
-        // تحديث طلبات المستخدم
-        updateUserRequests(requestId, 'rejected');
-        
-        alert('❌ تم رفض الطلب');
-        loadRequests();
-    }
-
-    function updateUserRequests(requestId, status) {
-        let userRequests = JSON.parse(localStorage.getItem('user_requests') || '[]');
-        userRequests = userRequests.map(req => {
-            if (req.id === requestId) {
-                req.status = status;
-            }
-            return req;
-        });
-        localStorage.setItem('user_requests', JSON.stringify(userRequests));
-    }
-
-    function filterRequests(filter) {
-        currentFilter = filter;
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        event.target.classList.add('active');
-        displayRequests();
-    }
-
-    function refreshRequests() {
-        loadRequests();
-        alert('تم تحديث البيانات');
-    }
-
-    function viewImage(imageSrc) {
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-        modalImage.src = imageSrc;
-        modal.classList.add('show');
-    }
-
-    function closeModal() {
-        document.getElementById('imageModal').classList.remove('show');
-    }
-</script>
-```
-
+            `).join('')}
+        function acceptRequest(requestId){if(!confirm('هل أنت متأكد من قبول هذا الطلب؟'))return;allRequests=allRequests.map(req=>(req.id===requestId&&(req.status='accepted',saveActivatedUser(req)),req)),localStorage.setItem('admin_pending_requests',JSON.stringify(allRequests)),updateUserRequests(requestId,'accepted'),alert('✅ تم قبول الطلب بنجاح!'),loadRequests()}
+        function rejectRequest(requestId){if(!confirm('هل أنت متأكد من رفض هذا الطلب؟'))return;allRequests=allRequests.map(req=>(req.id===requestId&&(req.status='rejected'),req)),localStorage.setItem('admin_pending_requests',JSON.stringify(allRequests)),updateUserRequests(requestId,'rejected'),alert('❌ تم رفض الطلب'),loadRequests()}
+        function saveActivatedUser(req){let activatedUsers=JSON.parse(localStorage.getItem('activated_users')||'[]');activatedUsers.push({...req,activationDate:new Date().toISOString()}),localStorage.setItem('activated_users',JSON.stringify(activatedUsers)),console.log('✅ تم حفظ المستخدم المفعّل:',req.fullName)}
+        function updateUserRequests(requestId,status){let userRequests=JSON.parse(localStorage.getItem('user_requests')||'[]');userRequests=userRequests.map(req=>(req.id===requestId&&(req.status=status),req)),localStorage.setItem('user_requests',JSON.stringify(userRequests))}
+        function filterRequests(filter){currentFilter=filter,document.querySelectorAll('.filter-btn').forEach(btn=>btn.classList.remove('active')),event.target.classList.add('active'),displayRequests()}
+        function viewImage(imageSrc){document.getElementById('modalImage').src=imageSrc,document.getElementById('imageModal').classList.add('show')}
+        function closeModal(){document.getElementById('imageModal').classList.remove('show')}
+    </script>
 </body>
 </html>
