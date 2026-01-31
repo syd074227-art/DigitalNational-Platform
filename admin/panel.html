@@ -4,23 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم الإدارية - هيئة KR الرقمية</title>
+    <title>لوحة الإدارة - مراجعة الطلبات | KR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #1a237e;
-            --primary-dark: #0d1557;
-            --primary-light: #3f51b5;
-            --accent: #00c853;
-            --accent-dark: #00a843;
+            --accent: #ff6f00;
+            --success: #00c853;
             --danger: #d50000;
             --warning: #ffd600;
-            --info: #2196f3;
             --dark: #0d1117;
-            --dark-card: #161b22;
-            --glass: rgba(255, 255, 255, 0.05);
+            --light: #ffffff;
+            --gray: #8b949e;
+            --gray-light: #c9d1d9;
             --border: rgba(255, 255, 255, 0.1);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-dark: rgba(0, 0, 0, 0.3);
+            --gradient-primary: linear-gradient(135deg, #1a237e 0%, #3f51b5 100%);
+            --gradient-accent: linear-gradient(135deg, #ff6f00 0%, #ff9800 100%);
+            --gradient-dark: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%);
         }
 
 ```
@@ -32,352 +34,259 @@
     }
 
     body {
-        background: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%);
-        color: white;
+        background: var(--gradient-dark);
         min-height: 100vh;
+        color: var(--light);
+        padding: 20px;
     }
 
-    /* الهيدر */
-    .admin-header {
-        background: var(--glass);
-        backdrop-filter: blur(20px);
-        border-bottom: 1px solid var(--border);
-        padding: 20px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: var(--shadow);
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
     }
 
-    .logo-section {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .logo-icon {
-        width: 50px;
-        height: 50px;
-        background: linear-gradient(135deg, var(--accent), #00e676);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-    }
-
-    .logo-text h1 {
-        font-size: 22px;
-        background: linear-gradient(135deg, white, var(--accent));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .logo-text p {
-        font-size: 13px;
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    /* الشريط الجانبي */
-    .sidebar {
-        position: fixed;
-        right: 0;
-        top: 90px;
-        width: 280px;
-        height: calc(100vh - 90px);
-        background: var(--glass);
-        backdrop-filter: blur(20px);
-        border-left: 1px solid var(--border);
-        padding: 30px 20px;
-        overflow-y: auto;
-    }
-
-    .menu-item {
-        padding: 15px 20px;
-        margin-bottom: 10px;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: rgba(255, 255, 255, 0.8);
-    }
-
-    .menu-item:hover {
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateX(-5px);
-    }
-
-    .menu-item.active {
-        background: linear-gradient(135deg, var(--accent), #00e676);
-        color: white;
-        font-weight: 600;
-    }
-
-    .menu-item i {
-        font-size: 18px;
-        width: 24px;
-    }
-
-    /* المحتوى الرئيسي */
-    .main-content {
-        margin-right: 280px;
-        padding: 40px;
-    }
-
-    /* البحث الذكي */
-    .smart-search {
-        background: var(--glass);
+    .header {
+        background: var(--glass-dark);
         backdrop-filter: blur(20px);
         border: 1px solid var(--border);
         border-radius: 20px;
         padding: 30px;
-        margin-bottom: 30px;
-        box-shadow: var(--shadow);
-    }
-
-    .search-box {
-        position: relative;
         margin-bottom: 20px;
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 18px 60px 18px 25px;
-        background: rgba(0, 0, 0, 0.3);
-        border: 2px solid var(--border);
-        border-radius: 15px;
-        color: white;
-        font-size: 16px;
-    }
-
-    .search-input:focus {
-        outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.2);
-    }
-
-    .search-btn {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: linear-gradient(135deg, var(--accent), #00e676);
-        border: none;
-        width: 45px;
-        height: 45px;
-        border-radius: 12px;
-        color: white;
-        cursor: pointer;
-        font-size: 18px;
-    }
-
-    /* الإحصائيات */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 25px;
-        margin-bottom: 40px;
-    }
-
-    .stat-card {
-        background: var(--glass);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 25px;
-        transition: all 0.3s;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow);
-    }
-
-    .stat-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 15px;
     }
 
-    .stat-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
+    .header-title h1 {
+        font-size: 28px;
+        color: var(--accent);
+        margin-bottom: 5px;
+    }
+
+    .header-title p {
+        color: var(--gray-light);
+    }
+
+    .stats {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
+        gap: 20px;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px 25px;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid var(--border);
     }
 
     .stat-number {
-        font-size: 36px;
-        font-weight: 800;
-        margin: 10px 0;
+        font-size: 32px;
+        font-weight: 900;
+        color: var(--accent);
     }
 
     .stat-label {
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 14px;
+        font-size: 13px;
+        color: var(--gray-light);
+        margin-top: 5px;
     }
 
-    /* قائمة الطلبات */
-    .requests-list {
+    .filters {
         background: var(--glass);
-        backdrop-filter: blur(20px);
+        backdrop-filter: blur(10px);
         border: 1px solid var(--border);
-        border-radius: 20px;
-        overflow: hidden;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        display: flex;
+        gap: 15px;
+    }
+
+    .filter-btn {
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid var(--border);
+        border-radius: 50px;
+        color: var(--light);
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 600;
+    }
+
+    .filter-btn:hover {
+        border-color: var(--accent);
+    }
+
+    .filter-btn.active {
+        background: var(--gradient-accent);
+        border-color: var(--accent);
+    }
+
+    .requests-grid {
+        display: grid;
+        gap: 20px;
     }
 
     .request-card {
-        padding: 25px;
-        border-bottom: 1px solid var(--border);
+        background: var(--glass-dark);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 30px;
         transition: all 0.3s;
     }
 
     .request-card:hover {
-        background: rgba(255, 255, 255, 0.05);
+        border-color: var(--accent);
+        transform: translateY(-3px);
     }
 
     .request-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-
-    .request-id {
-        background: linear-gradient(135deg, var(--accent), #00e676);
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-weight: 700;
-        font-size: 14px;
-    }
-
-    .request-status {
-        padding: 8px 20px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .status-pending {
-        background: rgba(255, 214, 0, 0.2);
-        color: var(--warning);
-        border: 1px solid var(--warning);
-    }
-
-    .status-approved {
-        background: rgba(0, 200, 83, 0.2);
-        color: var(--accent);
-        border: 1px solid var(--accent);
-    }
-
-    .status-rejected {
-        background: rgba(213, 0, 0, 0.2);
-        color: var(--danger);
-        border: 1px solid var(--danger);
+        align-items: start;
+        margin-bottom: 25px;
     }
 
     .request-info {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-        margin: 20px 0;
+        flex: 1;
     }
 
-    .info-item {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
+    .request-id {
+        font-size: 14px;
+        color: var(--accent);
+        font-weight: 700;
+        margin-bottom: 10px;
     }
 
-    .info-label {
-        color: rgba(255, 255, 255, 0.6);
+    .request-name {
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+
+    .request-date {
         font-size: 13px;
-    }
-
-    .info-value {
-        color: white;
-        font-weight: 600;
-        font-size: 15px;
+        color: var(--gray-light);
     }
 
     .request-images {
         display: flex;
         gap: 15px;
-        margin: 20px 0;
     }
 
-    .image-preview {
-        position: relative;
-        width: 150px;
-        height: 150px;
+    .request-img {
+        width: 100px;
+        height: 100px;
         border-radius: 12px;
-        overflow: hidden;
+        object-fit: cover;
         border: 2px solid var(--border);
         cursor: pointer;
+        transition: all 0.3s;
     }
 
-    .image-preview img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .request-img:hover {
+        transform: scale(1.05);
+        border-color: var(--accent);
     }
 
-    .image-label {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(0, 0, 0, 0.8);
-        padding: 5px;
-        text-align: center;
+    .request-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 25px 0;
+    }
+
+    .detail-item {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 15px;
+        border-radius: 12px;
+        border-right: 3px solid var(--accent);
+    }
+
+    .detail-label {
         font-size: 12px;
+        color: var(--gray-light);
+        margin-bottom: 5px;
+    }
+
+    .detail-value {
+        font-size: 16px;
+        font-weight: 700;
     }
 
     .request-actions {
         display: flex;
         gap: 15px;
-        margin-top: 20px;
+        margin-top: 25px;
     }
 
     .btn {
-        padding: 12px 25px;
+        flex: 1;
+        padding: 15px;
         border: none;
         border-radius: 12px;
-        font-weight: 600;
+        font-size: 16px;
+        font-weight: 700;
         cursor: pointer;
         transition: all 0.3s;
         display: flex;
         align-items: center;
-        gap: 8px;
+        justify-content: center;
+        gap: 10px;
     }
 
-    .btn-review {
-        background: linear-gradient(135deg, var(--info), #42a5f5);
+    .btn-accept {
+        background: linear-gradient(135deg, #00c853, #00e676);
         color: white;
     }
 
-    .btn-approve {
-        background: linear-gradient(135deg, var(--accent), #00e676);
-        color: white;
+    .btn-accept:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4);
     }
 
     .btn-reject {
-        background: linear-gradient(135deg, var(--danger), #ff1744);
+        background: linear-gradient(135deg, #d50000, #ff1744);
         color: white;
     }
 
-    .btn:hover {
+    .btn-reject:hover {
         transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 10px 30px rgba(213, 0, 0, 0.4);
     }
 
-    /* المودال */
+    .btn-view {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 2px solid var(--border);
+    }
+
+    .btn-view:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--accent);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        background: var(--glass);
+        border-radius: 20px;
+        border: 1px solid var(--border);
+    }
+
+    .empty-state i {
+        font-size: 80px;
+        color: var(--gray);
+        margin-bottom: 20px;
+    }
+
+    .empty-state p {
+        color: var(--gray-light);
+        font-size: 18px;
+    }
+
     .modal {
         display: none;
         position: fixed;
@@ -385,201 +294,57 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(10px);
+        background: rgba(0, 0, 0, 0.9);
         z-index: 1000;
-        justify-content: center;
-        align-items: center;
         padding: 20px;
+        overflow-y: auto;
     }
 
     .modal.show {
         display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .modal-content {
-        background: var(--dark-card);
-        border: 1px solid var(--border);
-        border-radius: 24px;
+        background: var(--dark);
+        border-radius: 20px;
         padding: 40px;
         max-width: 800px;
         width: 100%;
-        max-height: 90vh;
-        overflow-y: auto;
+        border: 1px solid var(--border);
     }
 
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-    }
-
-    .modal-title {
-        font-size: 24px;
-        font-weight: 700;
-    }
-
-    .close-btn {
-        background: rgba(255, 255, 255, 0.1);
-        border: none;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        color: white;
+    .modal-close {
+        float: left;
+        font-size: 32px;
         cursor: pointer;
-        font-size: 20px;
+        color: var(--gray-light);
+        transition: all 0.3s;
     }
 
-    /* نموذج التجديد */
-    .renewal-form {
-        margin: 30px 0;
-    }
-
-    .form-group {
-        margin-bottom: 25px;
-    }
-
-    .form-label {
-        display: block;
-        margin-bottom: 10px;
-        color: rgba(255, 255, 255, 0.9);
-        font-weight: 600;
-    }
-
-    .form-input {
-        width: 100%;
-        padding: 15px 20px;
-        background: rgba(0, 0, 0, 0.3);
-        border: 2px solid var(--border);
-        border-radius: 12px;
-        color: white;
-        font-size: 16px;
-    }
-
-    .form-input:focus {
-        outline: none;
-        border-color: var(--accent);
-    }
-
-    .checkbox-group {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .checkbox-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 15px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
-        cursor: pointer;
-    }
-
-    .checkbox-item input[type="checkbox"] {
-        width: 20px;
-        height: 20px;
-        accent-color: var(--accent);
-    }
-
-    /* التنبيهات */
-    .alert {
-        padding: 20px 25px;
-        border-radius: 15px;
-        margin-bottom: 25px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .alert-success {
-        background: rgba(0, 200, 83, 0.2);
-        border: 1px solid var(--accent);
-        color: var(--accent);
-    }
-
-    .alert-danger {
-        background: rgba(213, 0, 0, 0.2);
-        border: 1px solid var(--danger);
+    .modal-close:hover {
         color: var(--danger);
     }
 
-    .alert-warning {
-        background: rgba(255, 214, 0, 0.2);
-        border: 1px solid var(--warning);
-        color: var(--warning);
-    }
-
-    /* عارض الصور */
-    .image-viewer {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.95);
-        z-index: 2000;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .image-viewer.show {
-        display: flex;
-    }
-
-    .image-viewer img {
+    .image-modal {
         max-width: 90%;
-        max-height: 90%;
+        max-height: 90vh;
         border-radius: 12px;
     }
 
-    .viewer-close {
-        position: absolute;
-        top: 30px;
-        left: 30px;
-        background: white;
-        color: black;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-    }
-
-    @media (max-width: 1024px) {
-        .sidebar {
-            transform: translateX(100%);
-            transition: transform 0.3s;
-        }
-
-        .sidebar.show {
-            transform: translateX(0);
-        }
-
-        .main-content {
-            margin-right: 0;
-        }
-    }
-
     @media (max-width: 768px) {
-        .admin-header {
-            padding: 15px 20px;
+        .stats {
+            flex-wrap: wrap;
         }
-
-        .main-content {
-            padding: 20px;
+        
+        .request-header {
+            flex-direction: column;
+            gap: 20px;
         }
-
-        .stats-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .request-info {
-            grid-template-columns: 1fr;
+        
+        .request-images {
+            width: 100%;
         }
     }
 </style>
@@ -587,847 +352,242 @@
 
 </head>
 <body>
-    <!-- الهيدر -->
-    <div class="admin-header">
-        <div class="logo-section">
-            <div class="logo-icon">
-                <i class="fas fa-shield-alt"></i>
+    <div class="container">
+        <div class="header">
+            <div class="header-title">
+                <h1><i class="fas fa-shield-alt"></i> لوحة الإدارة - KR</h1>
+                <p>مراجعة طلبات تفعيل الهوية الرقمية</p>
             </div>
-            <div class="logo-text">
-                <h1>لوحة التحكم الإدارية</h1>
-                <p>هيئة KR الرقمية</p>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingCount">0</div>
+                    <div class="stat-label">قيد المراجعة</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="acceptedCount">0</div>
+                    <div class="stat-label">تم القبول</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="rejectedCount">0</div>
+                    <div class="stat-label">تم الرفض</div>
+                </div>
             </div>
         </div>
-        <div>
-            <button class="btn btn-approve" onclick="refreshData()">
-                <i class="fas fa-sync-alt"></i>
-                <span>تحديث</span>
-            </button>
-        </div>
-    </div>
 
 ```
-<!-- الشريط الجانبي -->
-<div class="sidebar" id="sidebar">
-    <div class="menu-item active" onclick="showSection('dashboard')">
-        <i class="fas fa-home"></i>
-        <span>القائمة الرئيسية</span>
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterRequests('all')">الكل</button>
+        <button class="filter-btn" onclick="filterRequests('pending')">قيد المراجعة</button>
+        <button class="filter-btn" onclick="filterRequests('accepted')">المقبولة</button>
+        <button class="filter-btn" onclick="filterRequests('rejected')">المرفوضة</button>
+        <button class="filter-btn" onclick="refreshRequests()"><i class="fas fa-sync-alt"></i> تحديث</button>
     </div>
-    <div class="menu-item" onclick="showSection('pending')">
-        <i class="fas fa-clock"></i>
-        <span>الطلبات المعلقة</span>
-    </div>
-    <div class="menu-item" onclick="showSection('approved')">
-        <i class="fas fa-check-circle"></i>
-        <span>الطلبات المقبولة</span>
-    </div>
-    <div class="menu-item" onclick="showSection('rejected')">
-        <i class="fas fa-times-circle"></i>
-        <span>الطلبات المرفوضة</span>
-    </div>
-    <div class="menu-item" onclick="showSection('renewal')">
-        <i class="fas fa-sync"></i>
-        <span>تجديد هوية مستخدم</span>
-    </div>
+
+    <div class="requests-grid" id="requestsContainer"></div>
 </div>
 
-<!-- المحتوى الرئيسي -->
-<div class="main-content">
-    <!-- البحث الذكي -->
-    <div class="smart-search">
-        <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-            <i class="fas fa-search" style="color: var(--accent);"></i>
-            البحث الذكي عن الهويات
-        </h3>
-        <div class="search-box">
-            <input type="text" class="search-input" id="smartSearch" 
-                   placeholder="ابحث برقم الهوية، الاسم، اسم المستخدم، أو رقم الطلب..."
-                   oninput="performSmartSearch(this.value)">
-            <button class="search-btn" onclick="performSmartSearch(document.getElementById('smartSearch').value)">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-        <div id="searchResults"></div>
-    </div>
-
-    <!-- لوحة الإحصائيات -->
-    <div id="dashboardSection">
-        <h2 style="margin-bottom: 25px;">الإحصائيات</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-label">قيد المراجعة</div>
-                        <div class="stat-number" id="pendingCount">0</div>
-                    </div>
-                    <div class="stat-icon" style="background: linear-gradient(135deg, var(--warning), #ffeb3b);">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-label">الطلبات المقبولة</div>
-                        <div class="stat-number" id="approvedCount">0</div>
-                    </div>
-                    <div class="stat-icon" style="background: linear-gradient(135deg, var(--accent), #00e676);">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-label">الطلبات المرفوضة</div>
-                        <div class="stat-number" id="rejectedCount">0</div>
-                    </div>
-                    <div class="stat-icon" style="background: linear-gradient(135deg, var(--danger), #ff1744);">
-                        <i class="fas fa-times-circle"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-label">إجمالي الطلبات</div>
-                        <div class="stat-number" id="totalCount">0</div>
-                    </div>
-                    <div class="stat-icon" style="background: linear-gradient(135deg, var(--info), #42a5f5);">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h2 style="margin: 40px 0 25px;">الطلبات المعلقة</h2>
-        <div class="requests-list" id="pendingRequests"></div>
-    </div>
-
-    <!-- قسم التجديد -->
-    <div id="renewalSection" style="display: none;">
-        <h2 style="margin-bottom: 25px;">تجديد هوية مستخدم</h2>
-        
-        <div class="smart-search">
-            <div class="search-box">
-                <input type="text" class="search-input" id="renewalSearch" 
-                       placeholder="أدخل رقم الهوية للبحث..."
-                       dir="ltr">
-                <button class="search-btn" onclick="searchForRenewal()">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-            <div id="renewalSearchResult"></div>
-        </div>
-
-        <div id="renewalForm" style="display: none;">
-            <div class="renewal-form">
-                <div class="alert alert-warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div>
-                        <strong>تنبيه:</strong> في حال طُلب تجديد هوية كذلك اسم مستخدم اللعبة أو الديسكورد قم باختيارهما
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-tasks"></i>
-                        نوع التجديد (يمكنك اختيار أكثر من خيار)
-                    </label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" id="renewId" onchange="updateRenewalForm()">
-                            <span>تجديد رقم الهوية</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" id="renewGameUsername" onchange="updateRenewalForm()">
-                            <span>تجديد اسم المستخدم في اللعبة</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" id="renewDiscordUsername" onchange="updateRenewalForm()">
-                            <span>تجديد اسم المستخدم في الديسكورد</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div id="renewalFields"></div>
-
-                <div style="display: flex; gap: 15px; margin-top: 30px;">
-                    <button class="btn btn-approve" onclick="processRenewal()">
-                        <i class="fas fa-check"></i>
-                        <span>تنفيذ التجديد</span>
-                    </button>
-                    <button class="btn btn-reject" onclick="cancelRenewal()">
-                        <i class="fas fa-times"></i>
-                        <span>إلغاء</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- مودال مراجعة الطلب -->
-<div class="modal" id="reviewModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">مراجعة التقديم</h2>
-            <button class="close-btn" onclick="closeReviewModal()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div id="reviewContent"></div>
-    </div>
-</div>
-
-<!-- عارض الصور -->
-<div class="image-viewer" id="imageViewer" onclick="closeImageViewer()">
-    <button class="viewer-close">
-        <i class="fas fa-times"></i>
-    </button>
-    <img id="viewerImage" src="" alt="">
+<!-- Modal for image viewing -->
+<div class="modal" id="imageModal" onclick="closeModal()">
+    <img id="modalImage" class="image-modal">
 </div>
 
 <script>
+    let currentFilter = 'all';
     let allRequests = [];
-    let currentRenewalUser = null;
 
-    // تحميل البيانات عند بدء الصفحة
+    // تحميل الطلبات عند فتح الصفحة
     document.addEventListener('DOMContentLoaded', function() {
-        loadAllRequests();
-        updateStatistics();
-        renderPendingRequests();
+        loadRequests();
     });
 
-    // تحميل جميع الطلبات
-    function loadAllRequests() {
+    function loadRequests() {
         allRequests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
-        console.log('تم تحميل', allRequests.length, 'طلب');
+        updateStats();
+        displayRequests();
     }
 
-    // تحديث الإحصائيات
-    function updateStatistics() {
+    function updateStats() {
         const pending = allRequests.filter(r => r.status === 'pending').length;
-        const approved = allRequests.filter(r => r.status === 'accepted').length;
+        const accepted = allRequests.filter(r => r.status === 'accepted').length;
         const rejected = allRequests.filter(r => r.status === 'rejected').length;
 
         document.getElementById('pendingCount').textContent = pending;
-        document.getElementById('approvedCount').textContent = approved;
+        document.getElementById('acceptedCount').textContent = accepted;
         document.getElementById('rejectedCount').textContent = rejected;
-        document.getElementById('totalCount').textContent = allRequests.length;
     }
 
-    // عرض الطلبات المعلقة
-    function renderPendingRequests() {
-        const container = document.getElementById('pendingRequests');
-        const pending = allRequests.filter(r => r.status === 'pending');
+    function displayRequests() {
+        const container = document.getElementById('requestsContainer');
+        let filteredRequests = allRequests;
 
-        if (pending.length === 0) {
+        if (currentFilter !== 'all') {
+            filteredRequests = allRequests.filter(r => r.status === currentFilter);
+        }
+
+        if (filteredRequests.length === 0) {
             container.innerHTML = `
-                <div style="padding: 60px; text-align: center;">
-                    <i class="fas fa-inbox" style="font-size: 60px; color: rgba(255,255,255,0.2); margin-bottom: 20px;"></i>
-                    <h3 style="color: rgba(255,255,255,0.5);">لا توجد طلبات معلقة</h3>
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>لا توجد طلبات حالياً</p>
                 </div>
             `;
             return;
         }
 
-        container.innerHTML = pending.map(request => `
+        container.innerHTML = filteredRequests.map(request => `
             <div class="request-card">
                 <div class="request-header">
-                    <div class="request-id">#${request.id}</div>
-                    <div class="request-status status-pending">
-                        <i class="fas fa-clock"></i> قيد المراجعة
+                    <div class="request-info">
+                        <div class="request-id">#${request.id}</div>
+                        <div class="request-name">${request.fullName}</div>
+                        <div class="request-date">${request.date}</div>
+                    </div>
+                    <div class="request-images">
+                        ${request.nationalIdImage ? `
+                            <img src="${request.nationalIdImage.data}" 
+                                 class="request-img" 
+                                 onclick="viewImage('${request.nationalIdImage.data}')" 
+                                 title="الهوية الوطنية">
+                        ` : ''}
+                        ${request.characterImage ? `
+                            <img src="${request.characterImage.data}" 
+                                 class="request-img" 
+                                 onclick="viewImage('${request.characterImage.data}')" 
+                                 title="صورة الشخصية">
+                        ` : ''}
                     </div>
                 </div>
 
-                <div class="request-info">
-                    <div class="info-item">
-                        <div class="info-label">الاسم الكامل</div>
-                        <div class="info-value">${request.fullName}</div>
+                <div class="request-details">
+                    <div class="detail-item">
+                        <div class="detail-label">العمر</div>
+                        <div class="detail-value">${request.age} سنة</div>
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">اسم المستخدم (اللعبة)</div>
-                        <div class="info-value">${request.gameUsername}</div>
+                    <div class="detail-item">
+                        <div class="detail-label">اسم المستخدم (اللعبة)</div>
+                        <div class="detail-value">${request.gameUsername}</div>
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">اسم المستخدم (ديسكورد)</div>
-                        <div class="info-value">${request.discordUsername}</div>
+                    <div class="detail-item">
+                        <div class="detail-label">اسم المستخدم (ديسكورد)</div>
+                        <div class="detail-value">${request.discordUsername}</div>
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">رقم الهوية</div>
-                        <div class="info-value" dir="ltr">${request.gameId}</div>
+                    <div class="detail-item">
+                        <div class="detail-label">رقم الهوية</div>
+                        <div class="detail-value">${request.gameId}</div>
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">العمر</div>
-                        <div class="info-value">${request.age} سنة</div>
+                    <div class="detail-item">
+                        <div class="detail-label">التصنيف</div>
+                        <div class="detail-value">${request.departmentName}</div>
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">الوزارة/التصنيف</div>
-                        <div class="info-value">${request.departmentName}</div>
+                    <div class="detail-item">
+                        <div class="detail-label">الرتبة</div>
+                        <div class="detail-value">${request.rank}</div>
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">الرتبة</div>
-                        <div class="info-value">${request.rank}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">تاريخ التقديم</div>
-                        <div class="info-value">${request.date}</div>
-                    </div>
-                </div>
-
-                ${request.additionals && request.additionals.length > 0 ? `
-                    <div class="info-item" style="margin-top: 15px;">
-                        <div class="info-label">المناصب الإدارية</div>
-                        <div class="info-value">${request.additionals.join(' • ')}</div>
-                    </div>
-                ` : ''}
-
-                <div class="request-images">
-                    ${request.nationalIdImage ? `
-                        <div class="image-preview" onclick="viewImage('${request.nationalIdImage.data}')">
-                            <img src="${request.nationalIdImage.data}" alt="الهوية الوطنية">
-                            <div class="image-label">
-                                <i class="fas fa-id-card"></i> الهوية الوطنية
-                            </div>
-                        </div>
-                    ` : ''}
-                    ${request.characterImage ? `
-                        <div class="image-preview" onclick="viewImage('${request.characterImage.data}')">
-                            <img src="${request.characterImage.data}" alt="صورة الشخصية">
-                            <div class="image-label">
-                                <i class="fas fa-user"></i> صورة الشخصية
-                            </div>
-                        </div>
-                    ` : ''}
                 </div>
 
                 <div class="request-actions">
-                    <button class="btn btn-review" onclick="reviewRequest('${request.id}')">
-                        <i class="fas fa-eye"></i>
-                        <span>مراجعة التقديم</span>
-                    </button>
+                    ${request.status === 'pending' ? `
+                        <button class="btn btn-accept" onclick="acceptRequest('${request.id}')">
+                            <i class="fas fa-check"></i> قبول الطلب
+                        </button>
+                        <button class="btn btn-reject" onclick="rejectRequest('${request.id}')">
+                            <i class="fas fa-times"></i> رفض الطلب
+                        </button>
+                    ` : request.status === 'accepted' ? `
+                        <button class="btn btn-accept" disabled style="opacity: 0.6;">
+                            <i class="fas fa-check-circle"></i> تم القبول
+                        </button>
+                    ` : `
+                        <button class="btn btn-reject" disabled style="opacity: 0.6;">
+                            <i class="fas fa-times-circle"></i> تم الرفض
+                        </button>
+                    `}
                 </div>
             </div>
         `).join('');
     }
 
-    // مراجعة الطلب
-    function reviewRequest(requestId) {
-        const request = allRequests.find(r => r.id === requestId);
-        if (!request) return;
+    function acceptRequest(requestId) {
+        if (!confirm('هل أنت متأكد من قبول هذا الطلب؟')) return;
 
-        const content = `
-            <div class="request-info">
-                <div class="info-item">
-                    <div class="info-label">الاسم الكامل</div>
-                    <div class="info-value">${request.fullName}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">العمر</div>
-                    <div class="info-value">${request.age} سنة</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">اسم المستخدم (اللعبة)</div>
-                    <div class="info-value">${request.gameUsername}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">اسم المستخدم (ديسكورد)</div>
-                    <div class="info-value">${request.discordUsername}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">رقم الهوية</div>
-                    <div class="info-value" dir="ltr">${request.gameId}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">الوزارة/التصنيف</div>
-                    <div class="info-value">${request.departmentName}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">الرتبة</div>
-                    <div class="info-value">${request.rank}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">تاريخ التقديم</div>
-                    <div class="info-value">${request.date}</div>
-                </div>
-            </div>
-
-            ${request.additionals && request.additionals.length > 0 ? `
-                <div class="info-item" style="margin: 20px 0;">
-                    <div class="info-label">المناصب الإدارية</div>
-                    <div class="info-value">${request.additionals.join(' • ')}</div>
-                </div>
-            ` : ''}
-
-            <h3 style="margin: 30px 0 15px;">الصور المرفقة</h3>
-            <div class="request-images">
-                ${request.nationalIdImage ? `
-                    <div class="image-preview" onclick="viewImage('${request.nationalIdImage.data}')">
-                        <img src="${request.nationalIdImage.data}" alt="الهوية الوطنية">
-                        <div class="image-label">
-                            <i class="fas fa-id-card"></i> الهوية الوطنية
-                        </div>
-                    </div>
-                ` : ''}
-                ${request.characterImage ? `
-                    <div class="image-preview" onclick="viewImage('${request.characterImage.data}')">
-                        <img src="${request.characterImage.data}" alt="صورة الشخصية">
-                        <div class="image-label">
-                            <i class="fas fa-user"></i> صورة الشخصية
-                        </div>
-                    </div>
-                ` : ''}
-            </div>
-
-            <div style="display: flex; gap: 15px; margin-top: 40px;">
-                <button class="btn btn-approve" onclick="approveRequest('${request.id}')">
-                    <i class="fas fa-check"></i>
-                    <span>قبول الطلب</span>
-                </button>
-                <button class="btn btn-reject" onclick="rejectRequest('${request.id}')">
-                    <i class="fas fa-times"></i>
-                    <span>رفض الطلب</span>
-                </button>
-            </div>
-        `;
-
-        document.getElementById('reviewContent').innerHTML = content;
-        document.getElementById('reviewModal').classList.add('show');
-    }
-
-    // قبول الطلب
-    function approveRequest(requestId) {
-        const request = allRequests.find(r => r.id === requestId);
-        if (!request) return;
-
-        request.status = 'accepted';
-        request.reviewDate = new Date().toISOString();
-
-        // حفظ التحديثات
-        localStorage.setItem('admin_pending_requests', JSON.stringify(allRequests));
-
-        // تحديث طلبات المستخدم
-        updateUserRequest(request);
-
-        // إنشاء حساب المستخدم المفعّل
-        createActivatedUser(request);
-
-        // إرسال إشعار
-        sendNotification(request.deviceId, {
-            type: 'success',
-            title: 'تم التفعيل بنجاح',
-            message: 'تم تفعيلك بنجاح! يمكنك استخدام الخدمات الآن'
+        // تحديث حالة الطلب
+        allRequests = allRequests.map(req => {
+            if (req.id === requestId) {
+                req.status = 'accepted';
+                
+                // حفظ المستخدم المفعّل
+                let activatedUsers = JSON.parse(localStorage.getItem('activated_users') || '[]');
+                activatedUsers.push({
+                    ...req,
+                    activationDate: new Date().toISOString()
+                });
+                localStorage.setItem('activated_users', JSON.stringify(activatedUsers));
+            }
+            return req;
         });
 
-        closeReviewModal();
-        loadAllRequests();
-        updateStatistics();
-        renderPendingRequests();
-
-        showAlert('تم قبول الطلب بنجاح! ✓', 'success');
+        localStorage.setItem('admin_pending_requests', JSON.stringify(allRequests));
+        
+        // تحديث طلبات المستخدم
+        updateUserRequests(requestId, 'accepted');
+        
+        alert('✅ تم قبول الطلب بنجاح!');
+        loadRequests();
     }
 
-    // رفض الطلب
     function rejectRequest(requestId) {
-        const request = allRequests.find(r => r.id === requestId);
-        if (!request) return;
+        if (!confirm('هل أنت متأكد من رفض هذا الطلب؟')) return;
 
-        request.status = 'rejected';
-        request.reviewDate = new Date().toISOString();
-
-        // حفظ التحديثات
-        localStorage.setItem('admin_pending_requests', JSON.stringify(allRequests));
-
-        // تحديث طلبات المستخدم
-        updateUserRequest(request);
-
-        // إرسال إشعار
-        sendNotification(request.deviceId, {
-            type: 'error',
-            title: 'تم رفض الطلب',
-            message: 'نعتذر لعدم قبولك، حاول مرة أخرى'
+        allRequests = allRequests.map(req => {
+            if (req.id === requestId) {
+                req.status = 'rejected';
+            }
+            return req;
         });
 
-        closeReviewModal();
-        loadAllRequests();
-        updateStatistics();
-        renderPendingRequests();
-
-        showAlert('تم رفض الطلب', 'danger');
+        localStorage.setItem('admin_pending_requests', JSON.stringify(allRequests));
+        
+        // تحديث طلبات المستخدم
+        updateUserRequests(requestId, 'rejected');
+        
+        alert('❌ تم رفض الطلب');
+        loadRequests();
     }
 
-    // تحديث طلبات المستخدم
-    function updateUserRequest(request) {
+    function updateUserRequests(requestId, status) {
         let userRequests = JSON.parse(localStorage.getItem('user_requests') || '[]');
         userRequests = userRequests.map(req => {
-            if (req.id === request.id) {
-                return request;
+            if (req.id === requestId) {
+                req.status = status;
             }
             return req;
         });
         localStorage.setItem('user_requests', JSON.stringify(userRequests));
     }
 
-    // إنشاء حساب المستخدم المفعّل
-    function createActivatedUser(request) {
-        const activatedUsers = JSON.parse(localStorage.getItem('activated_users') || '[]');
-        
-        const user = {
-            id: request.gameId,
-            fullName: request.fullName,
-            age: request.age,
-            gameUsername: request.gameUsername,
-            discordUsername: request.discordUsername,
-            department: request.department,
-            departmentName: request.departmentName,
-            rank: request.rank,
-            additionals: request.additionals || [],
-            nationalIdImage: request.nationalIdImage,
-            characterImage: request.characterImage,
-            activationDate: new Date().toISOString(),
-            requestId: request.id,
-            deviceId: request.deviceId
-        };
-
-        activatedUsers.push(user);
-        localStorage.setItem('activated_users', JSON.stringify(activatedUsers));
-    }
-
-    // إرسال إشعار
-    function sendNotification(deviceId, notification) {
-        const notifications = JSON.parse(localStorage.getItem('user_notifications_' + deviceId) || '[]');
-        notifications.unshift({
-            ...notification,
-            id: 'notif_' + Date.now(),
-            date: new Date().toLocaleString('ar-SA'),
-            read: false
+    function filterRequests(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
         });
-        localStorage.setItem('user_notifications_' + deviceId, JSON.stringify(notifications));
+        event.target.classList.add('active');
+        displayRequests();
     }
 
-    // البحث الذكي
-    function performSmartSearch(query) {
-        const resultsDiv = document.getElementById('searchResults');
-        
-        if (!query || query.length < 2) {
-            resultsDiv.innerHTML = '';
-            return;
-        }
-
-        query = query.toLowerCase();
-        const results = allRequests.filter(req => 
-            req.id.toLowerCase().includes(query) ||
-            req.fullName.toLowerCase().includes(query) ||
-            req.gameId.includes(query) ||
-            req.gameUsername.toLowerCase().includes(query) ||
-            req.discordUsername.toLowerCase().includes(query)
-        );
-
-        if (results.length === 0) {
-            resultsDiv.innerHTML = `
-                <div class="alert alert-warning" style="margin-top: 20px;">
-                    <i class="fas fa-search"></i>
-                    <span>لا توجد نتائج للبحث "${query}"</span>
-                </div>
-            `;
-            return;
-        }
-
-        resultsDiv.innerHTML = `
-            <div style="margin-top: 20px;">
-                <h4 style="margin-bottom: 15px;">نتائج البحث (${results.length})</h4>
-                <div class="requests-list">
-                    ${results.map(req => `
-                        <div class="request-card" style="padding: 15px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <strong>${req.fullName}</strong>
-                                    <div style="font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 5px;">
-                                        رقم الهوية: ${req.gameId} • رقم الطلب: ${req.id}
-                                    </div>
-                                </div>
-                                <div class="request-status status-${req.status}">
-                                    ${req.status === 'pending' ? 'قيد المراجعة' : 
-                                      req.status === 'accepted' ? 'مقبول' : 'مرفوض'}
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
+    function refreshRequests() {
+        loadRequests();
+        alert('تم تحديث البيانات');
     }
 
-    // البحث عن مستخدم للتجديد
-    function searchForRenewal() {
-        const searchValue = document.getElementById('renewalSearch').value.trim();
-        const resultsDiv = document.getElementById('renewalSearchResult');
-        
-        if (!searchValue) {
-            showAlert('يرجى إدخال رقم الهوية', 'warning');
-            return;
-        }
-
-        const activatedUsers = JSON.parse(localStorage.getItem('activated_users') || '[]');
-        const user = activatedUsers.find(u => u.id === searchValue);
-
-        if (!user) {
-            resultsDiv.innerHTML = `
-                <div class="alert alert-danger" style="margin-top: 20px;">
-                    <i class="fas fa-times-circle"></i>
-                    <span>الهوية غير صحيحة - لم يتم العثور على مستخدم بهذا الرقم</span>
-                </div>
-            `;
-            document.getElementById('renewalForm').style.display = 'none';
-            currentRenewalUser = null;
-            return;
-        }
-
-        currentRenewalUser = user;
-        resultsDiv.innerHTML = `
-            <div class="alert alert-success" style="margin-top: 20px;">
-                <i class="fas fa-check-circle"></i>
-                <span>تم العثور على المستخدم: ${user.fullName}</span>
-            </div>
-        `;
-        document.getElementById('renewalForm').style.display = 'block';
+    function viewImage(imageSrc) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = imageSrc;
+        modal.classList.add('show');
     }
 
-    // تحديث نموذج التجديد
-    function updateRenewalForm() {
-        const renewId = document.getElementById('renewId').checked;
-        const renewGame = document.getElementById('renewGameUsername').checked;
-        const renewDiscord = document.getElementById('renewDiscordUsername').checked;
-
-        let fieldsHTML = '';
-
-        if (renewId) {
-            fieldsHTML += `
-                <div class="form-group">
-                    <label class="form-label">رقم الهوية الجديد</label>
-                    <input type="text" class="form-input" id="newGameId" 
-                           placeholder="أدخل رقم الهوية الجديد (10 أرقام)" 
-                           maxlength="10" dir="ltr">
-                </div>
-            `;
-        }
-
-        if (renewGame) {
-            fieldsHTML += `
-                <div class="form-group">
-                    <label class="form-label">اسم المستخدم الجديد في اللعبة</label>
-                    <input type="text" class="form-input" id="newGameUsername" 
-                           placeholder="أدخل اسم المستخدم الجديد" dir="ltr">
-                </div>
-            `;
-        }
-
-        if (renewDiscord) {
-            fieldsHTML += `
-                <div class="form-group">
-                    <label class="form-label">اسم المستخدم الجديد في الديسكورد</label>
-                    <input type="text" class="form-input" id="newDiscordUsername" 
-                           placeholder="أدخل اسم المستخدم الجديد" dir="ltr">
-                </div>
-            `;
-        }
-
-        document.getElementById('renewalFields').innerHTML = fieldsHTML;
-    }
-
-    // تنفيذ التجديد
-    function processRenewal() {
-        if (!currentRenewalUser) {
-            showAlert('يرجى البحث عن مستخدم أولاً', 'warning');
-            return;
-        }
-
-        const renewId = document.getElementById('renewId').checked;
-        const renewGame = document.getElementById('renewGameUsername').checked;
-        const renewDiscord = document.getElementById('renewDiscordUsername').checked;
-
-        if (!renewId && !renewGame && !renewDiscord) {
-            showAlert('يرجى اختيار نوع التجديد', 'warning');
-            return;
-        }
-
-        let updates = [];
-
-        if (renewId) {
-            const newId = document.getElementById('newGameId').value.trim();
-            if (!newId || newId.length !== 10) {
-                showAlert('رقم الهوية يجب أن يكون 10 أرقام', 'warning');
-                return;
-            }
-            currentRenewalUser.id = newId;
-            updates.push('رقم الهوية');
-        }
-
-        if (renewGame) {
-            const newUsername = document.getElementById('newGameUsername').value.trim();
-            if (!newUsername) {
-                showAlert('يرجى إدخال اسم المستخدم الجديد في اللعبة', 'warning');
-                return;
-            }
-            currentRenewalUser.gameUsername = newUsername;
-            updates.push('اسم المستخدم في اللعبة');
-        }
-
-        if (renewDiscord) {
-            const newDiscord = document.getElementById('newDiscordUsername').value.trim();
-            if (!newDiscord) {
-                showAlert('يرجى إدخال اسم المستخدم الجديد في الديسكورد', 'warning');
-                return;
-            }
-            currentRenewalUser.discordUsername = newDiscord;
-            updates.push('اسم المستخدم في الديسكورد');
-        }
-
-        // حفظ التحديثات
-        let activatedUsers = JSON.parse(localStorage.getItem('activated_users') || '[]');
-        activatedUsers = activatedUsers.map(u => 
-            u.deviceId === currentRenewalUser.deviceId ? currentRenewalUser : u
-        );
-        localStorage.setItem('activated_users', JSON.stringify(activatedUsers));
-
-        // إرسال إشعار
-        sendNotification(currentRenewalUser.deviceId, {
-            type: 'success',
-            title: 'تم التجديد بنجاح',
-            message: `تم تجديد: ${updates.join(' و ')}`
-        });
-
-        showAlert('تم تنفيذ التجديد بنجاح! ✓', 'success');
-        cancelRenewal();
-    }
-
-    // إلغاء التجديد
-    function cancelRenewal() {
-        document.getElementById('renewalSearch').value = '';
-        document.getElementById('renewalSearchResult').innerHTML = '';
-        document.getElementById('renewalForm').style.display = 'none';
-        document.getElementById('renewId').checked = false;
-        document.getElementById('renewGameUsername').checked = false;
-        document.getElementById('renewDiscordUsername').checked = false;
-        document.getElementById('renewalFields').innerHTML = '';
-        currentRenewalUser = null;
-    }
-
-    // عرض الأقسام
-    function showSection(section) {
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        event.target.closest('.menu-item').classList.add('active');
-
-        document.getElementById('dashboardSection').style.display = 'none';
-        document.getElementById('renewalSection').style.display = 'none';
-
-        if (section === 'dashboard') {
-            document.getElementById('dashboardSection').style.display = 'block';
-            renderPendingRequests();
-        } else if (section === 'renewal') {
-            document.getElementById('renewalSection').style.display = 'block';
-        } else if (section === 'pending') {
-            document.getElementById('dashboardSection').style.display = 'block';
-            renderPendingRequests();
-        } else if (section === 'approved') {
-            document.getElementById('dashboardSection').style.display = 'block';
-            renderFilteredRequests('accepted');
-        } else if (section === 'rejected') {
-            document.getElementById('dashboardSection').style.display = 'block';
-            renderFilteredRequests('rejected');
-        }
-    }
-
-    // عرض الطلبات المفلترة
-    function renderFilteredRequests(status) {
-        const container = document.getElementById('pendingRequests');
-        const filtered = allRequests.filter(r => r.status === status);
-
-        if (filtered.length === 0) {
-            container.innerHTML = `
-                <div style="padding: 60px; text-align: center;">
-                    <i class="fas fa-inbox" style="font-size: 60px; color: rgba(255,255,255,0.2); margin-bottom: 20px;"></i>
-                    <h3 style="color: rgba(255,255,255,0.5);">لا توجد طلبات</h3>
-                </div>
-            `;
-            return;
-        }
-
-        container.innerHTML = filtered.map(request => `
-            <div class="request-card">
-                <div class="request-header">
-                    <div class="request-id">#${request.id}</div>
-                    <div class="request-status status-${status}">
-                        ${status === 'accepted' ? '<i class="fas fa-check-circle"></i> مقبول' : 
-                          '<i class="fas fa-times-circle"></i> مرفوض'}
-                    </div>
-                </div>
-                <div class="request-info">
-                    <div class="info-item">
-                        <div class="info-label">الاسم الكامل</div>
-                        <div class="info-value">${request.fullName}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">رقم الهوية</div>
-                        <div class="info-value" dir="ltr">${request.gameId}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">التاريخ</div>
-                        <div class="info-value">${request.date}</div>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    // عرض الصورة
-    function viewImage(imageData) {
-        document.getElementById('viewerImage').src = imageData;
-        document.getElementById('imageViewer').classList.add('show');
-    }
-
-    // إغلاق عارض الصور
-    function closeImageViewer() {
-        document.getElementById('imageViewer').classList.remove('show');
-    }
-
-    // إغلاق مودال المراجعة
-    function closeReviewModal() {
-        document.getElementById('reviewModal').classList.remove('show');
-    }
-
-    // تحديث البيانات
-    function refreshData() {
-        loadAllRequests();
-        updateStatistics();
-        renderPendingRequests();
-        showAlert('تم تحديث البيانات بنجاح', 'success');
-    }
-
-    // عرض التنبيه
-    function showAlert(message, type) {
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type}`;
-        alertDiv.style.position = 'fixed';
-        alertDiv.style.top = '100px';
-        alertDiv.style.right = '40px';
-        alertDiv.style.zIndex = '9999';
-        alertDiv.innerHTML = `
-            <i class="fas fa-${type === 'success' ? 'check-circle' : 
-                               type === 'danger' ? 'times-circle' : 'exclamation-triangle'}"></i>
-            <span>${message}</span>
-        `;
-        document.body.appendChild(alertDiv);
-
-        setTimeout(() => {
-            alertDiv.remove();
-        }, 3000);
+    function closeModal() {
+        document.getElementById('imageModal').classList.remove('show');
     }
 </script>
 ```
