@@ -5,289 +5,718 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام تفعيل الهوية الرقمي - KR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-
     <style>
         :root {
-            --primary: #1a237e; --primary-dark: #0d1557; --primary-light: #3f51b5;
-            --accent: #ff6f00; --accent-dark: #e65100; --accent-light: #ff9800;
-            --health: #2196f3; --interior: #f44336; --justice: #4caf50;
-            --success: #00c853; --warning: #ffd600; --danger: #d50000;
-            --dark: #0d1117; --light: #ffffff; --gray: #8b949e;
-            --gray-light: #c9d1d9; --border: rgba(255, 255, 255, 0.1);
+            --primary: #1a237e;
+            --primary-dark: #0d1557;
+            --primary-light: #3f51b5;
+            --accent: #ff6f00;
+            --accent-dark: #e65100;
+            --accent-light: #ff9800;
+            --health: #2196f3;
+            --health-dark: #1976d2;
+            --interior: #f44336;
+            --interior-dark: #d32f2f;
+            --justice: #4caf50;
+            --justice-dark: #388e3c;
+            --success: #00c853;
+            --warning: #ffd600;
+            --danger: #d50000;
+            --info: #2196f3;
+            --dark: #0d1117;
+            --dark-card: #161b22;
+            --light: #ffffff;
+            --gray: #8b949e;
+            --gray-light: #c9d1d9;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
             --glass-dark: rgba(0, 0, 0, 0.3);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.4);
+            --gradient-primary: linear-gradient(135deg, #1a237e 0%, #3f51b5 100%);
+            --gradient-accent: linear-gradient(135deg, #ff6f00 0%, #ff9800 100%);
+            --gradient-health: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+            --gradient-interior: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            --gradient-justice: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
             --gradient-dark: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Cairo', sans-serif; }
-        body { background: var(--gradient-dark); min-height: 100vh; color: var(--light); display: flex; justify-content: center; align-items: center; padding: 20px; overflow-x: hidden; }
-        
-        .loading-screen { position: fixed; inset: 0; background: var(--gradient-dark); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
-        .loading-spinner { width: 60px; height: 60px; border: 5px solid rgba(255, 111, 0, 0.2); border-top: 5px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .container { width: 100%; max-width: 1100px; background: var(--glass-dark); backdrop-filter: blur(20px); border-radius: 24px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.4); position: relative; }
-        .header { background: linear-gradient(135deg, #1a237e 0%, #3f51b5 100%); padding: 40px; text-align: center; border-bottom: 4px solid var(--accent); }
-        .kr-badge { position: absolute; top: 20px; left: 20px; background: var(--accent); padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: bold; }
-        
-        .content { padding: 40px; }
-        .step { background: rgba(255,255,255,0.03); padding: 35px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 25px; display: none; }
-        .step.active { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
-        .input-group { margin-bottom: 25px; }
-        .input-group label { display: block; margin-bottom: 12px; color: var(--accent-light); font-weight: 600; font-size: 16px; }
-        .input-group input { width: 100%; padding: 18px; background: rgba(0,0,0,0.3); border: 2px solid var(--border); border-radius: 12px; color: white; outline: none; transition: 0.3s; }
-        .input-group input:focus { border-color: var(--accent); }
-
-        /* التصنيفات */
-        .departments-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-        .department-card { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 15px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
-        .department-card i { font-size: 35px; margin-bottom: 15px; color: var(--accent); }
-        .department-card.selected { border-color: var(--accent); background: rgba(255, 111, 0, 0.2); transform: translateY(-5px); }
-
-        /* الرتب */
-        .ranks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-top: 20px; max-height: 400px; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px; }
-        .rank-item { padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; text-align: center; cursor: pointer; border: 1px solid var(--border); transition: 0.2s; }
-        .rank-item.selected { background: var(--accent); color: white; border-color: white; }
-
-        .btn { padding: 18px 30px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; width: 100%; margin-top: 15px; font-size: 17px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-primary { background: var(--accent); color: white; }
-        .btn-secondary { background: #333; color: white; }
-        
-        .example-box { margin-top: 15px; padding: 15px; background: rgba(33, 150, 243, 0.1); border-radius: 12px; border: 1px solid rgba(33, 150, 243, 0.2); }
-        .example-box img { width: 100%; max-width: 350px; border-radius: 8px; margin-top: 10px; border: 2px solid rgba(255,255,255,0.1); }
-
-        .file-upload-label { display: flex; flex-direction: column; align-items: center; padding: 30px; background: rgba(0,0,0,0.2); border: 2px dashed var(--border); border-radius: 15px; cursor: pointer; }
-        .image-preview img { width: 100%; max-height: 250px; object-fit: contain; border-radius: 10px; margin-top: 15px; border: 2px solid var(--accent); }
-        
-        .status-message { padding: 40px; text-align: center; display: none; }
-        .status-message.show { display: block; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Cairo', 'Tajawal', sans-serif; }
+        body { background: var(--gradient-dark); min-height: 100vh; color: var(--light); display: flex; justify-content: center; align-items: center; padding: 20px; overflow-x: hidden; position: relative; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 80%, rgba(33, 150, 243, 0.08) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(244, 67, 54, 0.08) 0%, transparent 50%), radial-gradient(circle at 40% 40%, rgba(76, 175, 80, 0.08) 0%, transparent 50%); pointer-events: none; z-index: 0; }
+        .loading-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--gradient-dark); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
+        .loading-spinner { width: 80px; height: 80px; border: 5px solid rgba(255, 111, 0, 0.2); border-top: 5px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: var(--accent); font-size: 18px; font-weight: 700; animation: pulse 1.5s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .container { width: 100%; max-width: 1200px; background: var(--glass-dark); backdrop-filter: blur(20px); border-radius: 24px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-lg); animation: containerAppear 1s cubic-bezier(0.4, 0, 0.2, 1); position: relative; z-index: 1; }
+        @keyframes containerAppear { from { opacity: 0; transform: translateY(50px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .header { background: var(--gradient-primary); color: white; padding: 50px 30px; text-align: center; position: relative; overflow: hidden; border-bottom: 4px solid var(--accent); }
+        .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(45deg, transparent 30%, rgba(255, 111, 0, 0.1) 50%, transparent 70%); animation: headerShine 8s infinite linear; }
+        @keyframes headerShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .logo-container { position: relative; z-index: 1; }
+        .logo-icon { width: 100px; height: 100px; margin: 0 auto 25px; background: var(--gradient-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: logoFloat 6s ease-in-out infinite; box-shadow: 0 15px 40px rgba(255, 111, 0, 0.4); }
+        .logo-icon i { font-size: 48px; color: white; }
+        @keyframes logoFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+        .logo h1 { font-size: 38px; font-weight: 800; margin: 0 0 15px 0; background: linear-gradient(135deg, #fff 0%, var(--accent-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); }
+        .logo p { font-size: 16px; color: rgba(255, 255, 255, 0.9); font-weight: 500; }
+        .kr-badge { position: absolute; top: 25px; left: 25px; background: var(--gradient-accent); color: white; padding: 10px 24px; border-radius: 50px; font-weight: 700; font-size: 14px; animation: badgePulse 3s infinite; box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3); letter-spacing: 1px; }
+        @keyframes badgePulse { 0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3); } 50% { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255, 111, 0, 0.5); } }
+        .content { padding: 50px 40px; }
+        .step { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 24px; padding: 45px; margin-bottom: 30px; animation: stepAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; opacity: 0; transform: translateY(30px); }
+        .step:nth-child(1) { animation-delay: 0.1s; }
+        .step:nth-child(2) { animation-delay: 0.2s; }
+        .step:nth-child(3) { animation-delay: 0.3s; }
+        .step:nth-child(4) { animation-delay: 0.4s; }
+        .step:nth-child(5) { animation-delay: 0.5s; }
+        @keyframes stepAppear { to { opacity: 1; transform: translateY(0); } }
+        .step-title { color: var(--accent-light); margin-bottom: 40px; display: flex; align-items: center; gap: 20px; font-size: 28px; font-weight: 700; }
+        .step-number { width: 65px; height: 65px; background: var(--gradient-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 26px; color: white; animation: numberGlow 3s infinite; box-shadow: 0 8px 25px rgba(255, 111, 0, 0.4); }
+        @keyframes numberGlow { 0%, 100% { box-shadow: 0 8px 25px rgba(255, 111, 0, 0.3); } 50% { box-shadow: 0 12px 35px rgba(255, 111, 0, 0.5); } }
+        .input-group { margin-bottom: 30px; position: relative; }
+        .input-group label { display: block; margin-bottom: 14px; color: rgba(255, 255, 255, 0.95); font-weight: 600; font-size: 17px; display: flex; align-items: center; gap: 12px; }
+        .input-group label i { color: var(--accent); font-size: 20px; width: 24px; text-align: center; }
+        .input-group input { width: 100%; padding: 20px 24px; background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 14px; color: white; font-size: 17px; transition: all 0.3s ease; outline: none; }
+        .input-group input::placeholder { color: rgba(255, 255, 255, 0.4); }
+        .input-group input:focus { border-color: var(--accent); background: rgba(0, 0, 0, 0.4); box-shadow: 0 0 0 4px rgba(255, 111, 0, 0.15); transform: translateY(-2px); }
+        .char-counter { position: absolute; left: 20px; bottom: 24px; font-size: 13px; color: rgba(255, 255, 255, 0.5); background: rgba(0, 0, 0, 0.4); padding: 6px 14px; border-radius: 20px; font-weight: 600; transition: all 0.3s; }
+        .departments-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin: 35px 0; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .department-card { background: rgba(255, 255, 255, 0.03); border: 2px solid rgba(255, 255, 255, 0.08); border-radius: 18px; padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; backdrop-filter: blur(10px); }
+        .department-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.03)); opacity: 0; transition: opacity 0.3s; }
+        .department-card:hover::before { opacity: 1; }
+        .department-card:hover { transform: translateY(-5px); border-color: rgba(255, 255, 255, 0.15); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); }
+        .department-card.selected { border-color: var(--accent); background: rgba(255, 111, 0, 0.08); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(255, 111, 0, 0.25); }
+        .department-card.selected::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: 12px; right: 12px; background: var(--accent); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; animation: checkAppear 0.3s ease; box-shadow: 0 4px 12px rgba(255, 111, 0, 0.4); }
+        @keyframes checkAppear { from { transform: scale(0) rotate(-180deg); } to { transform: scale(1) rotate(0deg); } }
+        .department-icon { width: 75px; height: 75px; margin: 0 auto 20px; border-radius: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); transition: all 0.3s ease; }
+        .department-card:hover .department-icon { transform: scale(1.05); }
+        .department-icon i { font-size: 36px; color: white; }
+        .health .department-icon { background: var(--gradient-health); }
+        .interior .department-icon { background: var(--gradient-interior); }
+        .justice .department-icon { background: var(--gradient-justice); }
+        .citizen .department-icon { background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%); }
+        .department-card h4 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--light); }
+        .department-card small { font-size: 13px; color: var(--gray-light); font-weight: 500; display: block; line-height: 1.4; }
+        .ranks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; margin-top: 30px; max-height: 550px; overflow-y: auto; padding: 15px; background: rgba(0, 0, 0, 0.1); border-radius: 16px; }
+        .ranks-grid::-webkit-scrollbar { width: 10px; }
+        .ranks-grid::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 5px; }
+        .ranks-grid::-webkit-scrollbar-thumb { background: var(--gradient-accent); border-radius: 5px; }
+        .ranks-grid::-webkit-scrollbar-thumb:hover { background: var(--accent-dark); }
+        .rank-item { background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 22px 18px; text-align: center; cursor: pointer; transition: all 0.3s ease; color: rgba(255, 255, 255, 0.9); font-weight: 600; font-size: 15px; position: relative; }
+        .rank-item:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 8px 20px rgba(255, 111, 0, 0.25); background: rgba(255, 111, 0, 0.05); }
+        .rank-item.selected { background: linear-gradient(135deg, rgba(255, 111, 0, 0.25), rgba(26, 35, 126, 0.3)); border-color: var(--accent); color: white; font-weight: 700; transform: translateY(-4px); }
+        .rank-item.selected::before { content: '\f005'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: 8px; right: 8px; color: var(--accent); font-size: 14px; }
+        .additionals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; margin: 35px 0; }
+        .additional-item { background: rgba(0, 0, 0, 0.25); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 28px 24px; cursor: pointer; transition: all 0.3s ease; position: relative; }
+        .additional-item:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(255, 111, 0, 0.2); background: rgba(255, 111, 0, 0.05); }
+        .additional-item.selected { background: linear-gradient(135deg, rgba(255, 111, 0, 0.15), rgba(26, 35, 126, 0.25)); border-color: var(--accent); transform: translateY(-5px); }
+        .additional-item.selected::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: 15px; left: 15px; background: var(--accent); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+        .additional-item label { display: flex; align-items: center; gap: 14px; cursor: pointer; color: rgba(255, 255, 255, 0.95); font-weight: 600; font-size: 16px; }
+        .additional-item label i { color: var(--accent); font-size: 22px; width: 28px; text-align: center; }
+        .additional-item input { display: none; }
+        .btn { background: var(--gradient-accent); color: white; border: none; padding: 22px 45px; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.4s ease; display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%; margin-top: 35px; animation: btnGlow 3s infinite; letter-spacing: 0.5px; }
+        @keyframes btnGlow { 0%, 100% { box-shadow: 0 10px 35px rgba(255, 111, 0, 0.35); } 50% { box-shadow: 0 15px 45px rgba(255, 111, 0, 0.5); } }
+        .btn:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(255, 111, 0, 0.5); }
+        .btn:active { transform: translateY(-3px); }
+        .btn i { font-size: 20px; }
+        .btn-secondary { background: rgba(255, 255, 255, 0.08); color: white; border: 2px solid rgba(255, 255, 255, 0.2); animation: none; box-shadow: none; }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.3); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+        .btn-group { display: flex; gap: 25px; margin-top: 40px; }
+        .btn-group .btn { flex: 1; margin-top: 0; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin: 35px 0; }
+        .summary-item { background: rgba(0, 0, 0, 0.3); padding: 25px; border-radius: 18px; border-left: 5px solid var(--accent); transition: all 0.3s ease; }
+        .summary-item:hover { transform: translateX(-5px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); }
+        .summary-item .label { color: rgba(255, 255, 255, 0.65); font-size: 14px; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary-item .value { color: white; font-size: 19px; font-weight: 700; }
+        .status-message, .alert, .success-message { display: none; padding: 35px; border-radius: 20px; margin-bottom: 30px; text-align: center; animation: messageAppear 0.5s ease; border: 2px solid transparent; }
+        .status-message.show, .alert.show, .success-message.show { display: block; }
+        @keyframes messageAppear { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        .alert.success { background: linear-gradient(135deg, rgba(0, 200, 83, 0.15), rgba(0, 150, 63, 0.15)); border-color: var(--success); color: var(--success); }
+        .alert.warning { background: linear-gradient(135deg, rgba(255, 214, 0, 0.15), rgba(255, 193, 7, 0.15)); border-color: var(--warning); color: var(--warning); }
+        .alert.danger { background: linear-gradient(135deg, rgba(213, 0, 0, 0.15), rgba(183, 28, 28, 0.15)); border-color: var(--danger); color: var(--danger); }
+        .success-message { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--border); }
+        .success-message i.fa-check-circle { color: var(--success); filter: drop-shadow(0 0 20px rgba(0, 200, 83, 0.5)); }
+        .terms-container { background: rgba(255, 111, 0, 0.06); border-radius: 18px; padding: 30px; margin: 35px 0; border: 1px solid rgba(255, 111, 0, 0.2); }
+        .terms-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+        .terms-header i { color: var(--accent); font-size: 26px; }
+        .terms-header h4 { color: var(--accent-light); font-size: 20px; font-weight: 700; }
+        .term-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 18px; padding: 18px; background: rgba(0, 0, 0, 0.25); border-radius: 12px; transition: all 0.3s ease; }
+        .term-item:hover { background: rgba(0, 0, 0, 0.35); transform: translateX(-5px); }
+        .term-item input[type="checkbox"] { margin-top: 5px; width: 20px; height: 20px; cursor: pointer; accent-color: var(--accent); }
+        .term-item label { color: rgba(255, 255, 255, 0.95); cursor: pointer; font-weight: 500; font-size: 15px; line-height: 1.6; }
+        .file-upload-container { margin-top: 12px; }
+        .file-upload-label { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 30px; background: rgba(0, 0, 0, 0.2); border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 16px; cursor: pointer; transition: all 0.3s ease; text-align: center; }
+        .file-upload-label:hover { background: rgba(0, 0, 0, 0.3); border-color: var(--accent); transform: translateY(-3px); }
+        .file-upload-label i { font-size: 48px; color: var(--accent); margin-bottom: 15px; }
+        .file-upload-label span { font-size: 17px; font-weight: 600; color: var(--light); margin-bottom: 8px; }
+        .file-upload-label small { font-size: 13px; color: var(--gray-light); }
+        .image-preview { display: none; margin-top: 20px; position: relative; }
+        .image-preview.show { display: block; }
+        .image-preview img { width: 100%; max-width: 500px; border-radius: 16px; border: 3px solid var(--accent); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); }
+        .image-preview .remove-image { position: absolute; top: 10px; right: 10px; background: var(--danger); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(213, 0, 0, 0.4); }
+        .image-preview .remove-image:hover { background: #b71c1c; transform: scale(1.1); }
+        .image-preview .image-info { margin-top: 12px; padding: 12px; background: rgba(0, 200, 83, 0.1); border-radius: 10px; text-align: center; }
+        .image-preview .image-info i { color: var(--success); margin-left: 8px; }
+        .image-preview .image-info span { color: var(--success); font-weight: 600; }
+        @media (max-width: 768px) {
+            .container { max-width: 95%; border-radius: 20px; }
+            .header { padding: 35px 20px; }
+            .logo h1 { font-size: 28px; }
+            .logo-icon { width: 80px; height: 80px; }
+            .logo-icon i { font-size: 38px; }
+            .kr-badge { top: 15px; left: 15px; padding: 8px 18px; font-size: 12px; }
+            .content { padding: 30px 20px; }
+            .step { padding: 30px 20px; }
+            .step-title { font-size: 22px; }
+            .step-number { width: 55px; height: 55px; font-size: 22px; }
+            .departments-grid { grid-template-columns: 1fr; gap: 15px; }
+            .ranks-grid, .additionals-grid, .summary-grid { grid-template-columns: 1fr; }
+            .department-icon { width: 70px; height: 70px; }
+            .department-icon i { font-size: 32px; }
+            .btn-group { flex-direction: column; }
+            .btn { font-size: 16px; padding: 18px 35px; }
+        }
+        @media (max-width: 480px) {
+            .logo h1 { font-size: 24px; }
+            .step-title { font-size: 20px; flex-direction: column; text-align: center; }
+            .input-group input { padding: 18px 20px; font-size: 16px; }
+            .department-card { padding: 25px 20px; }
+            .department-card h4 { font-size: 17px; }
+            .file-upload-label { padding: 30px 20px; }
+            .file-upload-label i { font-size: 40px; }
+            .image-preview img { max-width: 100%; }
+        }
     </style>
 </head>
 <body>
-
-<div class="loading-screen" id="loadingScreen">
-    <div class="loading-spinner"></div>
-    <div style="margin-top: 20px; color: var(--accent); font-weight: bold;">جاري التحقق من الأنظمة...</div>
-</div>
-
-<div class="container">
-    <div class="header">
-        <div class="kr-badge">KR OFFICIAL</div>
-        <h1>نظام تفعيل الهوية الرقمي</h1>
-        <p>الجهة الرقمية المسؤولة - KR</p>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">جاري التحقق من حالة التفعيل...</div>
     </div>
 
-    <div class="content">
-        <div id="applicationForm">
-            <div class="step active" id="step1">
-                <h3 class="step-title"><i class="fas fa-user-edit"></i> الخطوة 1: البيانات الشخصية</h3>
-                <div class="input-group">
-                    <label>الاسم الكامل (ثلاثي باللغة العربية)</label>
-                    <input type="text" id="fullName" placeholder="محمد بن فهد الحربي">
+    <div class="container">
+        <div class="header">
+            <div class="kr-badge"><i class="fas fa-crown"></i> KR OFFICIAL</div>
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-icon"><i class="fas fa-id-card"></i></div>
+                    <h1>نظام تفعيل الهوية الرقمي</h1>
+                    <p><i class="fas fa-shield-alt"></i> الجهة الرقمية المسؤولة - KR</p>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="input-group"><label>العمر</label><input type="number" id="age" placeholder="18+"></div>
-                    <div class="input-group"><label>رقم الهوية (الآيدي)</label><input type="text" id="gameId" maxlength="10" placeholder="10 أرقام"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="previousRequestMessage" class="status-message"></div>
+            <div class="alert" id="alertBox"></div>
+            
+            <div id="applicationForm" style="display: none;">
+                <div class="step" id="step1">
+                    <div class="step-title">
+                        <div class="step-number">1</div>
+                        <span><i class="fas fa-user-circle"></i> البيانات الأساسية</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-user"></i><span>الاسم الكامل ثلاثي</span></label>
+                        <input type="text" id="fullName" placeholder="مثال: محمد بن فهد الحربي">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-calendar-alt"></i><span>العمر</span></label>
+                        <input type="number" id="age" placeholder="أدخل عمرك (18 سنة فأكثر)" min="18" max="99">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-gamepad"></i><span>اسم المستخدم في اللعبة</span></label>
+                        <input type="text" id="gameUsername" placeholder="مثال: Ahmed_KR" dir="ltr">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fab fa-discord"></i><span>اسم المستخدم في الديسكورد</span></label>
+                        <input type="text" id="discordUsername" placeholder="مثال: Ahmed#1234" dir="ltr">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-fingerprint"></i><span>رقم الهوية في اللعبة</span></label>
+                        <input type="text" id="gameId" placeholder="أدخل 10 أرقام فقط" maxlength="10" dir="ltr" oninput="validateGameId(this)">
+                        <div class="char-counter" id="gameIdCounter">0/10</div>
+                        
+                        <div style="margin-top: 15px; padding: 15px; background: rgba(33, 150, 243, 0.1); border-radius: 12px; border: 1px solid rgba(33, 150, 243, 0.2);">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <i class="fas fa-info-circle" style="color: #2196f3;"></i>
+                                <strong style="color: #2196f3;">مثال على رقم الهوية المطلوب:</strong>
+                            </div>
+                            <a href="https://image2url.com/r2/default/images/1769805384049-10717217-5fab-4b62-a7c3-63bf1ced898c.jpeg" target="_blank" style="display: block; margin-top: 10px;">
+                                <img src="https://image2url.com/r2/default/images/1769805384049-10717217-5fab-4b62-a7c3-63bf1ced898c.jpeg" alt="مثال رقم الهوية" style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid rgba(33, 150, 243, 0.3); cursor: pointer; transition: all 0.3s;">
+                            </a>
+                            <small style="display: block; margin-top: 8px; color: var(--gray-light);"><i class="fas fa-mouse-pointer"></i> اضغط على الصورة لعرضها بحجم أكبر</small>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-id-card"></i><span>قم بإرفاق هويتك الوطنية داخل اللعبة</span></label>
+                        <div class="file-upload-container">
+                            <input type="file" id="nationalIdImage" accept="image/*" onchange="handleImageUpload(this, 'nationalIdPreview')" style="display: none;">
+                            <label for="nationalIdImage" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>اضغط لاختيار الصورة</span>
+                                <small>PNG, JPG, JPEG (الحد الأقصى: 5MB)</small>
+                            </label>
+                            <div id="nationalIdPreview" class="image-preview"></div>
+                        </div>
+                        
+                        <div style="margin-top: 15px; padding: 15px; background: rgba(76, 175, 80, 0.1); border-radius: 12px; border: 1px solid rgba(76, 175, 80, 0.2);">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <i class="fas fa-info-circle" style="color: #4caf50;"></i>
+                                <strong style="color: #4caf50;">مثال على الصورة المطلوبة:</strong>
+                            </div>
+                            <a href="https://image2url.com/r2/default/images/1769805658220-13fbc5c4-b22b-4b75-81cf-9d53e13bb9e1.jpeg" target="_blank" style="display: block; margin-top: 10px;">
+                                <img src="https://image2url.com/r2/default/images/1769805658220-13fbc5c4-b22b-4b75-81cf-9d53e13bb9e1.jpeg" alt="مثال الهوية الوطنية" style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid rgba(76, 175, 80, 0.3); cursor: pointer; transition: all 0.3s;">
+                            </a>
+                            <small style="display: block; margin-top: 8px; color: var(--gray-light);"><i class="fas fa-mouse-pointer"></i> اضغط على الصورة لعرضها بحجم أكبر</small>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-camera"></i><span>قم بتصوير شخصيتك داخل اللعبة</span></label>
+                        <div class="file-upload-container">
+                            <input type="file" id="characterImage" accept="image/*" onchange="handleImageUpload(this, 'characterPreview')" style="display: none;">
+                            <label for="characterImage" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>اضغط لاختيار الصورة</span>
+                                <small>PNG, JPG, JPEG (الحد الأقصى: 5MB)</small>
+                            </label>
+                            <div id="characterPreview" class="image-preview"></div>
+                        </div>
+                        
+                        <div style="margin-top: 15px; padding: 15px; background: rgba(255, 152, 0, 0.1); border-radius: 12px; border: 1px solid rgba(255, 152, 0, 0.2);">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <i class="fas fa-exclamation-triangle" style="color: #ff9800;"></i>
+                                <strong style="color: #ff9800;">تنبيه مهم:</strong>
+                            </div>
+                            <p style="color: var(--gray-light); margin-bottom: 12px; font-size: 14px;"><i class="fas fa-ban" style="color: #f44336;"></i> يُمنع استخدام الإكسسوارات أو القبعات في الصورة</p>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <i class="fas fa-info-circle" style="color: #ff9800;"></i>
+                                <strong style="color: #ff9800;">مثال على الصورة المطلوبة:</strong>
+                            </div>
+                            <a href="https://image2url.com/r2/default/images/1769805924361-f7311e74-b60a-4726-b2e8-8e8678948984.jpeg" target="_blank" style="display: block; margin-top: 10px;">
+                                <img src="https://image2url.com/r2/default/images/1769805924361-f7311e74-b60a-4726-b2e8-8e8678948984.jpeg" alt="مثال صورة الشخصية" style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid rgba(255, 152, 0, 0.3); cursor: pointer; transition: all 0.3s;">
+                            </a>
+                            <small style="display: block; margin-top: 8px; color: var(--gray-light);"><i class="fas fa-mouse-pointer"></i> اضغط على الصورة لعرضها بحجم أكبر</small>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" onclick="validateStep1()"><span>التالي</span><i class="fas fa-arrow-left"></i></button>
                 </div>
-                <div class="input-group"><label>اسم المستخدم في اللعبة</label><input type="text" id="gameUsername" placeholder="مثال: Ahmed_KR"></div>
-                <div class="input-group"><label>اسم المستخدم في ديسكورد</label><input type="text" id="discordUsername" placeholder="مثال: Ahmed#1234"></div>
                 
-                <div class="input-group">
-                    <label>صورة الهوية الوطنية (داخل اللعبة)</label>
-                    <label for="idFile" class="file-upload-label">
-                        <i class="fas fa-cloud-upload-alt fa-2x"></i>
-                        <input type="file" id="idFile" hidden accept="image/*" onchange="previewImg(this, 'p1')">
-                        <div id="p1" class="image-preview"></div>
-                    </label>
-                    <div class="example-box">
-                        <strong>مثال للصورة المطلوبة:</strong><br>
-                        <img src="https://image2url.com/r2/default/images/1769805658220-13fbc5c4-b22b-4b75-81cf-9d53e13bb9e1.jpeg">
+                <div class="step" id="step2" style="display: none;">
+                    <div class="step-title">
+                        <div class="step-number">2</div>
+                        <span><i class="fas fa-id-badge"></i> اختر التصنيف</span>
+                    </div>
+                    
+                    <p style="text-align: center; color: var(--gray-light); margin-bottom: 35px; font-size: 16px;"><i class="fas fa-info-circle"></i> اختر الوزارة التي تعمل بها، أو اختر "مواطن" إذا لم تكن موظفاً حكومياً</p>
+                    
+                    <div class="departments-grid">
+                        <div class="department-card health" onclick="selectDepartment(this, 'health')">
+                            <div class="department-icon"><i class="fas fa-heartbeat"></i></div>
+                            <h4>وزارة الصحة</h4>
+                            <small>القطاع الطبي والإسعافي</small>
+                        </div>
+                        
+                        <div class="department-card interior" onclick="selectDepartment(this, 'interior')">
+                            <div class="department-icon"><i class="fas fa-shield-alt"></i></div>
+                            <h4>وزارة الداخلية</h4>
+                            <small>القطاع الأمني والحماية</small>
+                        </div>
+                        
+                        <div class="department-card justice" onclick="selectDepartment(this, 'justice')">
+                            <div class="department-icon"><i class="fas fa-gavel"></i></div>
+                            <h4>وزارة العدل</h4>
+                            <small>القطاع القضائي والقانوني</small>
+                        </div>
+                        
+                        <div class="department-card citizen" onclick="selectDepartment(this, 'citizen')">
+                            <div class="department-icon"><i class="fas fa-user"></i></div>
+                            <h4>مواطن</h4>
+                            <small>للمواطنين غير الموظفين</small>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="goBackToStep1()"><i class="fas fa-arrow-right"></i><span>السابق</span></button>
+                        <button class="btn" onclick="showStep3()"><span>التالي</span><i class="fas fa-arrow-left"></i></button>
                     </div>
                 </div>
-                <button class="btn btn-primary" onclick="goToStep(2)">التالي <i class="fas fa-arrow-left"></i></button>
-            </div>
-
-            <div class="step" id="step2">
-                <h3><i class="fas fa-shield-alt"></i> الخطوة 2: اختر التصنيف</h3>
-                <div class="departments-grid">
-                    <div class="department-card" onclick="selectDept('health', this)"><i class="fas fa-heartbeat"></i><br>وزارة الصحة</div>
-                    <div class="department-card" onclick="selectDept('interior', this)"><i class="fas fa-shield-alt"></i><br>وزارة الداخلية</div>
-                    <div class="department-card" onclick="selectDept('justice', this)"><i class="fas fa-gavel"></i><br>وزارة العدل</div>
-                    <div class="department-card" onclick="selectDept('citizen', this)"><i class="fas fa-user"></i><br>مواطن</div>
+                
+                <div class="step" id="step3" style="display: none;">
+                    <div class="step-title">
+                        <div class="step-number">3</div>
+                        <span><i class="fas fa-medal"></i> اختيار الرتبة</span>
+                    </div>
+                    
+                    <div id="ranksContainer"></div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="goBackToStep2()"><i class="fas fa-arrow-right"></i><span>السابق</span></button>
+                        <button class="btn" onclick="showStep4()"><span>التالي</span><i class="fas fa-arrow-left"></i></button>
+                    </div>
                 </div>
-                <div style="display:flex; gap:10px; margin-top:20px;">
-                    <button class="btn btn-secondary" onclick="goToStep(1)">السابق</button>
-                    <button class="btn btn-primary" onclick="goToStep(3)">التالي</button>
+                
+                <div class="step" id="step4" style="display: none;">
+                    <div class="step-title">
+                        <div class="step-number">4</div>
+                        <span><i class="fas fa-briefcase"></i> المناصب الإدارية</span>
+                    </div>
+                    
+                    <div id="additionalContainer"></div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="goBackToStep3()"><i class="fas fa-arrow-right"></i><span>السابق</span></button>
+                        <button class="btn" onclick="showStep5()"><span>التالي</span><i class="fas fa-arrow-left"></i></button>
+                    </div>
+                </div>
+                
+                <div class="step" id="step5" style="display: none;">
+                    <div class="step-title">
+                        <div class="step-number">5</div>
+                        <span><i class="fas fa-check-double"></i> تأكيد وإرسال الطلب</span>
+                    </div>
+                    
+                    <div class="summary-grid" id="requestSummary"></div>
+                    
+                    <div class="terms-container">
+                        <div class="terms-header">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h4>شروط الموافقة والالتزام</h4>
+                        </div>
+                        
+                        <div class="term-item">
+                            <input type="checkbox" id="agreeTerms1">
+                            <label for="agreeTerms1"><i class="fas fa-check-circle"></i> أوافق على صحة المعلومات المدخلة وأتحمل المسؤولية الكاملة عن صحتها</label>
+                        </div>
+                        
+                        <div class="term-item">
+                            <input type="checkbox" id="agreeTerms2">
+                            <label for="agreeTerms2"><i class="fas fa-file-contract"></i> أوافق على الالتزام بأنظمة وقوانين الجهة الرقمية KR بشكل كامل</label>
+                        </div>
+                        
+                        <div class="term-item">
+                            <input type="checkbox" id="agreeTerms3">
+                            <label for="agreeTerms3"><i class="fas fa-balance-scale"></i> أقر بأن أي مخالفة أو معلومات خاطئة ستؤدي إلى رفض الطلب أو إلغاء التفعيل</label>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="goBackToStep4()"><i class="fas fa-arrow-right"></i><span>السابق</span></button>
+                        <button class="btn" onclick="submitRequest()"><i class="fas fa-paper-plane"></i><span>إرسال الطلب</span></button>
+                    </div>
                 </div>
             </div>
-
-            <div class="step" id="step3">
-                <h3><i class="fas fa-medal"></i> الخطوة 3: اختر الرتبة</h3>
-                <div id="ranksList" class="ranks-grid"></div>
-                <div style="display:flex; gap:10px; margin-top:20px;">
-                    <button class="btn btn-secondary" onclick="goToStep(2)">السابق</button>
-                    <button class="btn btn-primary" onclick="goToStep(4)">التالي</button>
+            
+            <div class="success-message" id="successMessage" style="display: none;">
+                <i class="fas fa-check-circle" style="font-size: 90px; margin-bottom: 35px;"></i>
+                <h3 style="font-size: 34px; margin-bottom: 20px; font-weight: 800;">تم إرسال طلبك بنجاح! ✨</h3>
+                <p style="font-size: 18px; margin-bottom: 35px; color: var(--gray-light);"><i class="fas fa-clock"></i> سيتم مراجعة طلبك خلال 24-48 ساعة عمل</p>
+                <div id="successDetails"></div>
+                <div class="btn-group" style="max-width: 650px; margin: 45px auto 0;">
+                    <button class="btn" onclick="checkRequestStatus()"><i class="fas fa-sync-alt"></i><span>تحديث حالة الطلب</span></button>
+                    <button class="btn btn-secondary" onclick="goToHomePage()"><i class="fas fa-home"></i><span>العودة للرئيسية</span></button>
                 </div>
             </div>
-
-            <div class="step" id="step4">
-                <h3><i class="fas fa-briefcase"></i> الخطوة 4: المناصب الإدارية</h3>
-                <div id="addList" class="ranks-grid"></div>
-                <div style="display:flex; gap:10px; margin-top:20px;">
-                    <button class="btn btn-secondary" onclick="goToStep(3)">السابق</button>
-                    <button class="btn btn-primary" onclick="goToStep(5)">التالي</button>
-                </div>
-            </div>
-
-            <div class="step" id="step5">
-                <h3><i class="fas fa-check-double"></i> الخطوة 5: مراجعة الطلب</h3>
-                <div id="finalSummary" style="background:rgba(0,0,0,0.3); padding:20px; border-radius:15px; margin:20px 0;"></div>
-                <button class="btn btn-primary" onclick="submitToFirebase()" style="background:var(--success);">إرسال الطلب لمدير النظام</button>
-                <button class="btn btn-secondary" onclick="goToStep(4)">تعديل</button>
-            </div>
-        </div>
-
-        <div id="successMessage" class="status-message">
-            <i class="fas fa-hourglass-half" style="font-size:70px; color:var(--warning); margin-bottom: 25px;"></i>
-            <h2 id="statusTitle">طلبك قيد المراجعة الفنية</h2>
-            <p id="dynamicMsg">سيتم توجيهك للمنصة فور قبول طلبك من الإدارة.</p>
         </div>
     </div>
-</div>
 
 <script>
-    // تكوين Firebase (نفس قاعدة بياناتك السابقة)
-    const firebaseConfig = { databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/" };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+const DEPARTMENTS = {
+    health: { name: 'وزارة الصحة', color: '#2196f3', icon: 'fa-heartbeat', ranks: ['مسعف', 'مسعف أول', 'ممرض', 'ممرض أول', 'فني صحي', 'فني صحي أول', 'أخصائي', 'مساعد جراح', 'دكتور عام', 'دكتور', 'استشاري', 'جراح', 'رئيس استشاري', 'مدير طبي', 'مستشار وزير الصحة', 'نائب وزير الصحة', 'وزير الصحة'], additionals: ['إدارة القبول والتسجيل', 'إدارة الشؤون الصحية', 'مسؤول الشؤون الصحية', 'إدارة متطوعين الهلال الأحمر', 'إدارة الشكاوي بوزارة الصحة', 'إدارة الكلية الصحية'] },
+    interior: { name: 'وزارة الداخلية', color: '#f44336', icon: 'fa-shield-alt', ranks: ['جندي', 'جندي أول', 'عريف', 'وكيل رقيب', 'رقيب', 'رقيب أول', 'رئيس رقباء', 'ملازم', 'ملازم أول', 'نقيب', 'رائد', 'مقدم', 'عقيد', 'عميد', 'لواء', 'فريق', 'فريق أول', 'نائب مدير الأمن العام', 'مدير الأمن العام', 'نائب وزير الداخلية', 'وزير الداخلية'], additionals: ['إدارة القبول والتجنيد', 'إدارة شؤون الداخلية', 'إدارة شؤون الأفراد سلك الضباط', 'الادارة العامة لوزارة الداخلية', 'ادارة الشكاوي بوزارة الداخلية'] },
+    justice: { name: 'وزارة العدل', color: '#4caf50', icon: 'fa-gavel', ranks: ['محامي', 'محامي خبير', 'محامي متمرس', 'قاضي', 'قاضي متمرس', 'قاضي خبير', 'قاضي محكمة عليا', 'مستشار القضايا', 'مستشار وزير العدل', 'نائب وزير العدل', 'وزير العدل'], additionals: ['الاداره العامه للشؤون العدلية', 'ادارة القبول والتسجيل', 'ادارة الشكاوي بوزارة العدل'] },
+    citizen: { name: 'مواطن', color: '#9c27b0', icon: 'fa-user', ranks: ['مواطن'], additionals: [] }
+};
 
-    const DEPARTMENTS = {
-        health: { name: 'وزارة الصحة', ranks: ['مسعف', 'مسعف أول', 'ممرض', 'ممرض أول', 'دكتور عام', 'استشاري', 'وزير الصحة'], adds: ['إدارة القبول', 'شؤون صحية'] },
-        interior: { name: 'وزارة الداخلية', ranks: ['جندي', 'عريف', 'رقيب', 'ملازم', 'نقيب', 'عقيد', 'لواء', 'فريق أول', 'وزير الداخلية'], adds: ['القبول والتجنيد', 'شؤون الأفراد'] },
-        justice: { name: 'وزارة العدل', ranks: ['محامي', 'قاضي', 'قاضي محكمة عليا', 'وزير العدل'], adds: ['الشؤون العدلية'] },
-        citizen: { name: 'مواطن', ranks: ['مواطن'], adds: [] }
-    };
+let selectedDepartment = null, selectedRank = null, selectedAdditionals = [], hasExistingRequest = false, existingRequestData = null, uploadedNationalId = null, uploadedCharacterImage = null, statusCheckInterval = null;
 
-    let selectedDept = "", selectedRank = "", selectedAdds = [], uploadedImg = "";
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 نظام تفعيل الهوية الرقمي - جاهز للعمل');
+    checkExistingRequest();
+    setupGameIdField();
+    startStatusMonitoring();
+});
 
-    function previewImg(input, pId) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById(pId).innerHTML = `<img src="${e.target.result}">`;
-                uploadedImg = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function selectDept(id, el) {
-        selectedDept = id;
-        document.querySelectorAll('.department-card').forEach(c => c.classList.remove('selected'));
-        el.classList.add('selected');
-        
-        // تحديث الرتب والمناصب بناءً على الاختيار
-        const ranksGrid = document.getElementById('ranksList');
-        ranksGrid.innerHTML = DEPARTMENTS[id].ranks.map(r => `<div class="rank-item" onclick="selectRank('${r}', this)">${r}</div>`).join('');
-        
-        const addGrid = document.getElementById('addList');
-        addGrid.innerHTML = DEPARTMENTS[id].adds.length ? DEPARTMENTS[id].adds.map(a => `<div class="rank-item" onclick="toggleAdd('${a}', this)">${a}</div>`).join('') : "لا توجد مناصب إضافية لهذا التصنيف";
-    }
-
-    function selectRank(rank, el) {
-        selectedRank = rank;
-        document.querySelectorAll('#ranksList .rank-item').forEach(r => r.classList.remove('selected'));
-        el.classList.add('selected');
-    }
-
-    function toggleAdd(add, el) {
-        el.classList.toggle('selected');
-        const idx = selectedAdds.indexOf(add);
-        if(idx > -1) selectedAdds.splice(idx, 1); else selectedAdds.push(add);
-    }
-
-    function goToStep(s) {
-        if(s === 2 && (!document.getElementById('fullName').value || !uploadedImg)) {
-            alert("يرجى إكمال البيانات ورفع صورة الهوية أولاً"); return;
-        }
-        if(s === 3 && !selectedDept) { alert("اختر التصنيف أولاً"); return; }
-        if(s === 4 && !selectedRank) { alert("اختر الرتبة أولاً"); return; }
-
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step' + s).classList.add('active');
-
-        if(s === 5) {
-            document.getElementById('finalSummary').innerHTML = `
-                <b>الاسم:</b> ${document.getElementById('fullName').value}<br>
-                <b>التصنيف:</b> ${DEPARTMENTS[selectedDept].name}<br>
-                <b>الرتبة:</b> ${selectedRank}<br>
-                <b>المناصب:</b> ${selectedAdds.join(' - ') || 'لا يوجد'}
-            `;
-        }
-    }
-
-    function getDeviceId() {
-        let id = localStorage.getItem('kr_id_device');
-        if(!id) { id = 'DEV-' + Math.random().toString(36).substr(2, 9); localStorage.setItem('kr_id_device', id); }
-        return id;
-    }
-
-    function submitToFirebase() {
-        const orderId = 'REQ-' + Date.now().toString().slice(-6);
-        const data = {
-            id: orderId,
-            deviceId: getDeviceId(),
-            fullName: document.getElementById('fullName').value,
-            age: document.getElementById('age').value,
-            gameId: document.getElementById('gameId').value,
-            gameUsername: document.getElementById('gameUsername').value,
-            discordUsername: document.getElementById('discordUsername').value,
-            departmentName: DEPARTMENTS[selectedDept].name,
-            rank: selectedRank,
-            additionals: selectedAdds,
-            nationalIdImage: uploadedImg,
-            status: 'pending',
-            date: new Date().toLocaleString('ar-SA')
-        };
-
-        db.ref('orders/' + orderId).set(data).then(() => {
-            document.getElementById('applicationForm').style.display = 'none';
-            document.getElementById('successMessage').classList.add('show');
-            startMonitoring(orderId);
-        });
-    }
-
-    function startMonitoring(orderId) {
-        db.ref('orders/' + orderId).on('value', (snap) => {
-            const val = snap.val();
-            if(!val) return;
-            if(val.status === 'accepted') {
-                window.location.href = 'kr-digital-platform.html';
-            } else if(val.status === 'rejected') {
-                alert("تم رفض طلبك، يرجى المحاولة مرة أخرى ببيانات صحيحة.");
-                db.ref('orders/' + orderId).remove();
-                location.reload();
+function startStatusMonitoring() {
+    statusCheckInterval = setInterval(function() {
+        const requests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
+        const deviceId = getDeviceId();
+        const userRequests = requests.filter(req => req.deviceId === deviceId);
+        if (userRequests.length > 0) {
+            const latestRequest = userRequests.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate))[0];
+            if (latestRequest.status === 'accepted') {
+                console.log('🎉 تم قبول الطلب! جاري التوجيه الفوري...');
+                clearInterval(statusCheckInterval);
+                redirectToActivatedPlatform(latestRequest);
             }
-        });
-    }
+        }
+    }, 2000);
+}
 
-    window.onload = () => {
-        const devId = getDeviceId();
-        db.ref('orders').once('value', (snap) => {
-            const data = snap.val();
-            for(let k in data) {
-                if(data[k].deviceId === devId) {
-                    document.getElementById('applicationForm').style.display = 'none';
-                    document.getElementById('successMessage').classList.add('show');
-                    startMonitoring(k);
-                    break;
-                }
-            }
+function checkExistingRequest() {
+    const requests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
+    const deviceId = getDeviceId();
+    const userRequests = requests.filter(req => req.deviceId === deviceId);
+    if (userRequests.length > 0) {
+        const latestRequest = userRequests.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate))[0];
+        existingRequestData = latestRequest;
+        hasExistingRequest = true;
+        if (latestRequest.status === 'accepted') {
+            console.log('✅ الحساب مفعّل! جاري التوجيه إلى المنصة الرقمية...');
+            redirectToActivatedPlatform(latestRequest);
+            return;
+        }
+        if (latestRequest.status === 'pending' || latestRequest.status === 'rejected') {
+            showExistingRequest(latestRequest);
             document.getElementById('loadingScreen').style.display = 'none';
+            return;
+        }
+    }
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('applicationForm').style.display = 'block';
+}
+
+function redirectToActivatedPlatform(userData) {
+    localStorage.setItem('activated_user_data', JSON.stringify(userData));
+    localStorage.setItem('user_activated', 'true');
+    document.getElementById('loadingScreen').style.display = 'flex';
+    document.getElementById('loadingScreen').innerHTML = `<div style="text-align: center;"><i class="fas fa-check-circle" style="font-size: 100px; color: #00c853; margin-bottom: 30px; animation: scaleIn 0.5s ease;"></i><div style="color: #00c853; font-size: 28px; font-weight: 800; margin-bottom: 15px;">تم تفعيل هويتك بنجاح! 🎉</div><div style="color: var(--accent); font-size: 18px; font-weight: 600; animation: pulse 1.5s ease-in-out infinite;">جاري التوجيه إلى المنصة الرقمية...</div><div style="margin-top: 30px;"><div class="loading-spinner"></div></div></div><style>@keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }</style>`;
+    setTimeout(() => { window.location.href = 'kr-digital-platform.html'; }, 1500);
+}
+
+function showExistingRequest(request) {
+    const messageDiv = document.getElementById('previousRequestMessage');
+    const formDiv = document.getElementById('applicationForm');
+    let statusText, statusClass, statusIcon, statusColor;
+    if (request.status === 'pending') { statusText = 'طلبك قيد المراجعة'; statusClass = 'warning'; statusIcon = 'clock'; statusColor = 'var(--warning)'; }
+    else if (request.status === 'accepted') { statusText = 'تم تفعيل هويتك بنجاح'; statusClass = 'success'; statusIcon = 'check-circle'; statusColor = 'var(--success)'; }
+    else { statusText = 'تم رفض طلبك'; statusClass = 'danger'; statusIcon = 'times-circle'; statusColor = 'var(--danger)'; }
+    messageDiv.innerHTML = `<i class="fas fa-${statusIcon}" style="font-size: 80px; margin-bottom: 30px; color: ${statusColor};"></i><h2 style="font-size: 32px; margin-bottom: 25px;">${statusText}</h2><div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 25px; margin: 30px 0;"><div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span><i class="fas fa-hashtag"></i> رقم الطلب:</span><strong>${request.id}</strong></div><div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span><i class="fas fa-calendar"></i> التاريخ:</span><span>${request.date}</span></div><div style="display: flex; justify-content: space-between; padding: 12px 0;"><span><i class="fas fa-info-circle"></i> الحالة:</span><span style="color: ${statusColor}; font-weight: 700;">${request.status === 'accepted' ? 'مقبول ✓' : request.status === 'pending' ? 'قيد المراجعة ⏱' : 'مرفوض ✗'}</span></div></div>${request.status === 'rejected' ? '<button class="btn" onclick="startNewRequest()"><i class="fas fa-redo"></i><span>تقديم طلب جديد</span></button>' : request.status === 'pending' ? '<p style="color: var(--gray-light); margin-top: 20px; font-size: 16px;"><i class="fas fa-sync-alt fa-spin" style="margin-left: 8px;"></i> جاري مراقبة حالة الطلب تلقائياً... سيتم توجيهك فور القبول</p>' : ''}`;
+    messageDiv.className = `status-message show ${statusClass}`;
+    messageDiv.style.background = 'var(--glass)';
+    messageDiv.style.backdropFilter = 'blur(20px)';
+    messageDiv.style.border = `2px solid ${statusColor}`;
+    formDiv.style.display = 'none';
+}
+
+function startNewRequest() {
+    clearInterval(statusCheckInterval);
+    document.getElementById('previousRequestMessage').style.display = 'none';
+    document.getElementById('applicationForm').style.display = 'block';
+    hasExistingRequest = false;
+    existingRequestData = null;
+    document.getElementById('fullName').value = '';
+    document.getElementById('age').value = '';
+    document.getElementById('gameUsername').value = '';
+    document.getElementById('discordUsername').value = '';
+    document.getElementById('gameId').value = '';
+    selectedDepartment = null;
+    selectedRank = null;
+    selectedAdditionals = [];
+    document.getElementById('step1').style.display = 'block';
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step3').style.display = 'none';
+    document.getElementById('step4').style.display = 'none';
+    document.getElementById('step5').style.display = 'none';
+    resetDepartmentSelection();
+    startStatusMonitoring();
+}
+
+function setupGameIdField() {
+    const gameIdInput = document.getElementById('gameId');
+    const counter = document.getElementById('gameIdCounter');
+    if (gameIdInput && counter) {
+        gameIdInput.addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, '').slice(0, 10);
+            this.value = value;
+            counter.textContent = `${value.length}/10`;
+            if (value.length === 10) { counter.style.color = 'var(--success)'; counter.style.background = 'rgba(0, 200, 83, 0.2)'; }
+            else { counter.style.color = 'rgba(255, 255, 255, 0.5)'; counter.style.background = 'rgba(0, 0, 0, 0.4)'; }
         });
+    }
+}
+
+function getDeviceId() {
+    let deviceId = localStorage.getItem('device_id');
+    if (!deviceId) { deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); localStorage.setItem('device_id', deviceId); }
+    return deviceId;
+}
+
+function validateStep1() {
+    const name = document.getElementById('fullName').value.trim();
+    const age = document.getElementById('age').value;
+    const gameUsername = document.getElementById('gameUsername').value.trim();
+    const discordUsername = document.getElementById('discordUsername').value.trim();
+    const gameId = document.getElementById('gameId').value.trim();
+    const arabicRegex = /^[\u0600-\u06FF\s]+$/;
+    const words = name.split(/\s+/);
+    if (!name || words.length < 3) { showAlert('يجب أن يكون الاسم ثلاثي بالكامل (الاسم الأول + اسم الأب + اسم العائلة)', false); return; }
+    if (!arabicRegex.test(name)) { showAlert('يجب أن يكون الاسم باللغة العربية فقط', false); return; }
+    if (!age || age < 18) { showAlert('العمر يجب أن يكون 18 سنة أو أكثر', false); return; }
+    if (!gameUsername) { showAlert('يرجى إدخال اسم المستخدم في اللعبة', false); return; }
+    if (!discordUsername) { showAlert('يرجى إدخال اسم المستخدم في الديسكورد', false); return; }
+    if (!gameId || gameId.length !== 10 || !/^\d+$/.test(gameId)) { showAlert('رقم الهوية يجب أن يكون 10 أرقام بالضبط', false); return; }
+    if (!uploadedNationalId) { showAlert('يرجى إرفاق صورة الهوية الوطنية داخل اللعبة', false); return; }
+    if (!uploadedCharacterImage) { showAlert('يرجى إرفاق صورة شخصيتك داخل اللعبة', false); return; }
+    showStep2();
+}
+
+function showStep2() { document.getElementById('step1').style.display = 'none'; document.getElementById('step2').style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function goBackToStep1() { document.getElementById('step2').style.display = 'none'; document.getElementById('step1').style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function selectDepartment(element, departmentId) { document.querySelectorAll('.department-card').forEach(card => { card.classList.remove('selected'); }); element.classList.add('selected'); selectedDepartment = departmentId; }
+function resetDepartmentSelection() { document.querySelectorAll('.department-card').forEach(card => { card.classList.remove('selected'); }); selectedDepartment = null; }
+
+function showStep3() {
+    if (!selectedDepartment) { showAlert('يرجى اختيار التصنيف أولاً', false); return; }
+    const container = document.getElementById('ranksContainer');
+    const department = DEPARTMENTS[selectedDepartment];
+    if (selectedDepartment === 'citizen') { selectedRank = 'مواطن'; showStep4(); return; }
+    container.innerHTML = `<h4 style="color: ${department.color}; margin-bottom: 30px; text-align: center; font-size: 22px; font-weight: 700;"><i class="fas fa-arrow-up" style="margin-left: 10px;"></i> اختر رتبتك في ${department.name}</h4><div class="ranks-grid">${department.ranks.map(rank => `<div class="rank-item" onclick="selectRank(this, '${rank}')">${rank}</div>`).join('')}</div>`;
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step3').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectRank(element, rank) { document.querySelectorAll('.rank-item').forEach(item => { item.classList.remove('selected'); }); element.classList.add('selected'); selectedRank = rank; }
+function goBackToStep2() { document.getElementById('step3').style.display = 'none'; document.getElementById('step2').style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function showStep4() {
+    if (!selectedRank) { showAlert('يرجى اختيار الرتبة أولاً', false); return; }
+    const container = document.getElementById('additionalContainer');
+    const department = DEPARTMENTS[selectedDepartment];
+    if (selectedDepartment === 'citizen') { selectedAdditionals = []; showStep5(); return; }
+    container.innerHTML = `<h4 style="color: ${department.color}; margin-bottom: 30px; text-align: center; font-size: 22px; font-weight: 700;"><i class="fas fa-layer-group" style="margin-left: 10px;"></i> اختر المناصب الإدارية (اختياري)</h4><p style="text-align: center; color: var(--gray-light); margin-bottom: 30px;"><i class="fas fa-info-circle"></i> يمكنك اختيار أكثر من منصب إداري أو تخطي هذه الخطوة</p><div class="additionals-grid">${department.additionals.map((additional, index) => `<div class="additional-item" onclick="toggleAdditionalPost(this, '${additional}')"><input type="checkbox" id="add_${index}"><label for="add_${index}"><i class="fas fa-briefcase"></i><span>${additional}</span></label></div>`).join('')}</div>`;
+    document.getElementById('step3').style.display = 'none';
+    document.getElementById('step4').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleAdditionalPost(element, post) { element.classList.toggle('selected'); const index = selectedAdditionals.indexOf(post); if (index === -1) { selectedAdditionals.push(post); } else { selectedAdditionals.splice(index, 1); } }
+function goBackToStep3() { document.getElementById('step4').style.display = 'none'; document.getElementById('step3').style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function showStep5() {
+    const summaryContainer = document.getElementById('requestSummary');
+    const department = DEPARTMENTS[selectedDepartment];
+    let summaryHTML = `<div class="summary-item"><div class="label"><i class="fas fa-user"></i> الاسم الكامل</div><div class="value">${document.getElementById('fullName').value}</div></div><div class="summary-item"><div class="label"><i class="fas fa-calendar-alt"></i> العمر</div><div class="value">${document.getElementById('age').value} سنة</div></div><div class="summary-item"><div class="label"><i class="fas fa-gamepad"></i> اسم المستخدم (اللعبة)</div><div class="value">${document.getElementById('gameUsername').value}</div></div><div class="summary-item"><div class="label"><i class="fab fa-discord"></i> اسم المستخدم (ديسكورد)</div><div class="value">${document.getElementById('discordUsername').value}</div></div><div class="summary-item"><div class="label"><i class="fas fa-fingerprint"></i> رقم الهوية</div><div class="value">${document.getElementById('gameId').value}</div></div><div class="summary-item"><div class="label"><i class="fas fa-id-badge"></i> التصنيف</div><div class="value">${department.name}</div></div>`;
+    if (selectedDepartment !== 'citizen') { summaryHTML += `<div class="summary-item"><div class="label"><i class="fas fa-medal"></i> الرتبة</div><div class="value">${selectedRank}</div></div>`; }
+    if (selectedAdditionals.length > 0) { summaryHTML += `<div class="summary-item" style="grid-column: 1 / -1;"><div class="label"><i class="fas fa-briefcase"></i> المناصب الإدارية</div><div class="value">${selectedAdditionals.join(' • ')}</div></div>`; }
+    summaryContainer.innerHTML = summaryHTML;
+    document.getElementById('step4').style.display = 'none';
+    document.getElementById('step5').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBackToStep4() { document.getElementById('step5').style.display = 'none'; document.getElementById('step4').style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function submitRequest() {
+    const terms1 = document.getElementById('agreeTerms1');
+    const terms2 = document.getElementById('agreeTerms2');
+    const terms3 = document.getElementById('agreeTerms3');
+    if (!terms1.checked || !terms2.checked || !terms3.checked) { showAlert('يجب الموافقة على جميع الشروط قبل إرسال الطلب', false); return; }
+    const requestData = {
+        id: 'KR-' + Date.now().toString().slice(-8) + Math.random().toString(36).substr(2, 4).toUpperCase(),
+        fullName: document.getElementById('fullName').value.trim(),
+        age: parseInt(document.getElementById('age').value),
+        gameUsername: document.getElementById('gameUsername').value.trim(),
+        discordUsername: document.getElementById('discordUsername').value.trim(),
+        gameId: document.getElementById('gameId').value.trim(),
+        department: selectedDepartment,
+        departmentName: DEPARTMENTS[selectedDepartment].name,
+        rank: selectedRank,
+        additionals: selectedAdditionals,
+        nationalIdImage: uploadedNationalId,
+        characterImage: uploadedCharacterImage,
+        date: new Date().toLocaleString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+        submissionDate: new Date().toISOString(),
+        status: 'pending',
+        deviceId: getDeviceId()
     };
+    let adminRequests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
+    adminRequests.unshift(requestData);
+    localStorage.setItem('admin_pending_requests', JSON.stringify(adminRequests));
+    hasExistingRequest = true;
+    existingRequestData = requestData;
+    showSuccessMessage(requestData);
+}
+
+function showSuccessMessage(requestData) {
+    const form = document.getElementById('applicationForm');
+    const successMessage = document.getElementById('successMessage');
+    const successDetails = document.getElementById('successDetails');
+    successDetails.innerHTML = `<div style="background: rgba(0,0,0,0.3); border-radius: 20px; padding: 35px; margin: 35px 0; border: 1px solid rgba(255,255,255,0.1);"><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="color: var(--gray-light);"><i class="fas fa-hashtag"></i> رقم الطلب:</span><span style="font-weight: 800; font-size: 20px; color: var(--accent);">${requestData.id}</span></div><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="color: var(--gray-light);"><i class="fas fa-calendar"></i> تاريخ التقديم:</span><span style="font-weight: 600;">${requestData.date}</span></div><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="color: var(--gray-light);"><i class="fas fa-building"></i> الوزارة:</span><span style="font-weight: 600;">${requestData.departmentName}</span></div><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0;"><span style="color: var(--gray-light);"><i class="fas fa-info-circle"></i> الحالة:</span><span style="color: var(--warning); font-weight: 700; font-size: 18px;"><i class="fas fa-clock"></i> قيد المراجعة</span></div></div><p style="color: var(--gray-light); font-size: 16px; text-align: center; margin-top: 20px;"><i class="fas fa-sync-alt fa-spin" style="margin-left: 8px;"></i> سيتم توجيهك تلقائياً للمنصة الرقمية فور قبول طلبك</p>`;
+    form.style.display = 'none';
+    successMessage.style.display = 'block';
+    successMessage.classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function checkRequestStatus() { console.log('🔄 تحديث حالة الطلب...'); location.reload(); }
+function goToHomePage() { window.location.href = 'index.html'; }
+function validateGameId(input) {
+    const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    let value = input.value;
+    arabicNumbers.forEach((arabicNum, index) => { value = value.split(arabicNum).join(englishNumbers[index]); });
+    value = value.replace(/[^0-9]/g, '');
+    input.value = value;
+}
+
+function handleImageUpload(input, previewId) {
+    const file = input.files[0];
+    const previewContainer = document.getElementById(previewId);
+    if (!file) return;
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) { showAlert('يرجى اختيار صورة بصيغة PNG أو JPG فقط', false); input.value = ''; return; }
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) { showAlert('حجم الصورة يجب أن يكون أقل من 5 ميجابايت', false); input.value = ''; return; }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const imageData = e.target.result;
+        if (previewId === 'nationalIdPreview') { uploadedNationalId = { name: file.name, size: file.size, type: file.type, data: imageData }; }
+        else if (previewId === 'characterPreview') { uploadedCharacterImage = { name: file.name, size: file.size, type: file.type, data: imageData }; }
+        previewContainer.innerHTML = `<img src="${imageData}" alt="معاينة الصورة"><div class="remove-image" onclick="removeImage('${previewId}', '${input.id}')"><i class="fas fa-times"></i></div><div class="image-info"><i class="fas fa-check-circle"></i><span>تم رفع الصورة بنجاح (${formatFileSize(file.size)})</span></div>`;
+        previewContainer.classList.add('show');
+    };
+    reader.readAsDataURL(file);
+}
+
+function removeImage(previewId, inputId) {
+    const previewContainer = document.getElementById(previewId);
+    const inputElement = document.getElementById(inputId);
+    previewContainer.innerHTML = '';
+    previewContainer.classList.remove('show');
+    inputElement.value = '';
+    if (previewId === 'nationalIdPreview') { uploadedNationalId = null; }
+    else if (previewId === 'characterPreview') { uploadedCharacterImage = null; }
+    showAlert('تم حذف الصورة', true);
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+}
+
+function showAlert(message, isSuccess) {
+    const alertBox = document.getElementById('alertBox');
+    alertBox.innerHTML = `<i class="fas fa-${isSuccess ? 'check-circle' : 'exclamation-triangle'}" style="font-size: 24px; margin-bottom: 10px;"></i><div>${message}</div>`;
+    alertBox.className = 'alert';
+    if (isSuccess) { alertBox.classList.add('success'); } else { alertBox.classList.add('warning'); }
+    alertBox.classList.add('show');
+    setTimeout(() => { alertBox.classList.remove('show'); }, 4000);
+}
+
+window.addEventListener('beforeunload', function() { if (statusCheckInterval) { clearInterval(statusCheckInterval); } });
 </script>
+
 </body>
 </html>
