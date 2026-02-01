@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المدير - نظام KR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: #0d1b48; color: white; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 15px; }
+        h1 { color: #c29a2d; margin-bottom: 10px; }
+        .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        select, input { padding: 10px; border-radius: 8px; border: 1px solid #c29a2d; background: rgba(0,0,0,0.3); color: white; }
+        table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; }
+        th, td { padding: 15px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { background: rgba(194, 154, 45, 0.2); }
+        .status { padding: 5px 10px; border-radius: 20px; font-size: 12px; }
+        .pending { background: rgba(255,152,0,0.2); color: #ff9800; }
+        .accepted { background: rgba(46,125,50,0.2); color: #2e7d32; }
+        .rejected { background: rgba(211,47,47,0.2); color: #d32f2f; }
+        .actions { display: flex; gap: 5px; }
+        button { padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        .accept { background: #2e7d32; color: white; }
+        .reject { background: #d32f2f; color: white; }
+        .view { background: #0288d1; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-shield-alt"></i> لوحة تحكم المدير - نظام KR</h1>
+            <p>إدارة طلبات تفعيل الهوية الرقمية</p>
+        </header>
+        
+        <div class="filters">
+            <select id="statusFilter">
+                <option value="all">جميع الحالات</option>
+                <option value="pending">معلق</option>
+                <option value="accepted">مقبول</option>
+                <option value="rejected">مرفوض</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="ابحث بالاسم...">
+            <button class="accept" onclick="loadRequests()"><i class="fas fa-sync-alt"></i> تحديث</button>
+        </div>
+        
+        <table id="requestsTable">
+            <thead>
+                <tr>
+                    <th>الاسم</th>
+                    <th>رقم الهوية</th>
+                    <th>التصنيف</th>
+                    <th>الرتبة</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="requestsBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // تكوين Firebase
+        const firebaseConfig = { databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        
+        let allRequests = [];
+        
+        function loadRequests() {
+            db.ref('kr_requests').once('value')
+                .then(snapshot => {
+                    allRequests = [];
+                    const data = snapshot.val();
+                    if (data) {
+                        Object.keys(data).forEach(key => {
+                            allRequests.push({ id: key, ...data[key] });
+                        });
+                    }
+                    displayRequests();
+                });
+        }
+        
+        function displayRequests() {
+            const tbody = document.getElementById('requestsBody');
+            tbody.innerHTML = '';
+            
+            const statusFilter = document.getElementById('statusFilter').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filtered = allRequests;
+            
+            if (statusFilter !== 'all') {
+                filtered = filtered.filter(r => r.status === statusFilter);
+            }
+            
+            if (search) {
+                filtered = filtered.filter(r => 
+                    (r.fullName && r.fullName.toLowerCase().includes(search)) || 
+                    (r.gameId && r.gameId.includes(search))
+                );
+            }
+            
+            filtered.forEach(request => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${request.fullName || 'غير محدد'}</td>
+                    <td>${request.gameId || 'غير محدد'}</td>
+                    <td>${request.department || 'غير محدد'}</td>
+                    <td>${request.rank || 'غير محدد'}</td>
+                    <td><span class="status ${request.status}">${getStatusText(request.status)}</span></td>
+                    <td>
+                        <div class="actions">
+                            <button class="view" onclick="viewRequest('${request.id}')"><i class="fas fa-eye"></i></button>
+                            ${request.status === 'pending' ? `
+                            <button class="accept" onclick="acceptRequest('${request.id}')"><i class="fas fa-check"></i></button>
+                            <button class="reject" onclick="rejectRequest('${request.id}')"><i class="fas fa-times"></i></button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function getStatusText(status) {
+            switch(status) {
+                case 'pending': return 'معلق';
+                case 'accepted': return 'مقبول';
+                case 'rejected': return 'مرفوض';
+                default: return 'غير محدد';
+            }
+        }
+        
+        function viewRequest(id) {
+            const request = allRequests.find(r => r.id === id);
+            if (request) {
+                alert(`تفاصيل الطلب:\n\nالاسم: ${request.fullName}\nرقم الهوية: ${request.gameId}\nالتصنيف: ${request.department}\nالرتبة: ${request.rank}\nالحالة: ${getStatusText(request.status)}`);
+            }
+        }
+        
+        function acceptRequest(id) {
+            if (confirm('هل تريد قبول هذا الطلب؟')) {
+                db.ref(`kr_requests/${id}`).update({ 
+                    status: 'accepted',
+                    reviewDate: new Date().toISOString()
+                })
+                    .then(() => {
+                        alert('تم قبول الطلب');
+                        loadRequests();
+                    });
+            }
+        }
+        
+        function rejectRequest(id) {
+            if (confirm('هل تريد رفض هذا الطلب؟')) {
+                db.ref(`kr_requests/${id}`).update({ 
+                    status: 'rejected',
+                    reviewDate: new Date().toISOString()
+                })
+                    .then(() => {
+                        alert('تم رفض الطلب');
+                        loadRequests();
+                    });
+            }
+        }
+        
+        // تحميل الطلبات عند فتح الصفحة
+        loadRequests();
+        
+        // تحديث التصفية عند التغيير
+        document.getElementById('statusFilter').addEventListener('change', displayRequests);
+        document.getElementById('searchInput').addEventListener('input', displayRequests);
+    </script>
+</body>
+</html>
