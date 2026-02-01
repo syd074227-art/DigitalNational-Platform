@@ -774,7 +774,7 @@
 </div>
 
 <!-- زر فتح القائمة للجوال -->
-<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
+<button class="menu-toggle" id="menuToggle" style="display: none;" onclick="toggleSidebar()">
     <i class="fas fa-bars"></i>
 </button>
 
@@ -1065,19 +1065,24 @@
 </div>
 
 <script>
-    // تهيئة Firebase بنفس إعدادات النظام السابق
+    // تكوين Firebase - استخدم التكوين الخاص بك
     const firebaseConfig = {
-        apiKey: "AIzaSyDUfRjBqJ0qjV0n6Q7Xq4Z4Qkz8q4Z4Qkz",
-        authDomain: "myproject-7439e.firebaseapp.com",
-        databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/",
-        projectId: "myproject-7439e",
-        storageBucket: "myproject-7439e.appspot.com",
-        messagingSenderId: "123456789012",
-        appId: "1:123456789012:web:abcdef1234567890"
+        apiKey: "AIzaSyAobTthAKj-0_my15XXl8VAGgJ9Z4SJtJo",
+        authDomain: "kr-digital-system.firebaseapp.com",
+        databaseURL: "https://kr-digital-system-default-rtdb.firebaseio.com",
+        projectId: "kr-digital-system",
+        storageBucket: "kr-digital-system.appspot.com",
+        messagingSenderId: "1234567890",
+        appId: "1:1234567890:web:abcdef1234567890"
     };
     
     // تهيئة Firebase
-    firebase.initializeApp(firebaseConfig);
+    try {
+        firebase.initializeApp(firebaseConfig);
+    } catch (error) {
+        console.log("Firebase already initialized");
+    }
+    
     const db = firebase.database();
     
     // المتغيرات العامة
@@ -1086,13 +1091,64 @@
     
     // تهيئة الصفحة
     window.onload = function() {
-        loadRequests();
+        // التحقق من صلاحيات المدير
+        checkAdminAccess();
+        
+        // إعداد مستمعي الأحداث
         setupEventListeners();
         
-        setTimeout(() => {
-            document.getElementById('loadingScreen').style.display = 'none';
-        }, 1500);
+        // تحميل البيانات
+        loadRequests();
+        loadSettings();
+        
+        // إظهار زر القائمة للجوال
+        if (window.innerWidth <= 768) {
+            document.getElementById('menuToggle').style.display = 'block';
+        }
+        
+        // تحديث حجم النافذة
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('menuToggle').style.display = 'block';
+            } else {
+                document.getElementById('menuToggle').style.display = 'none';
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        });
     };
+    
+    // التحقق من صلاحيات المدير
+    function checkAdminAccess() {
+        const adminKey = localStorage.getItem('kr_admin_key');
+        const adminToken = localStorage.getItem('kr_admin_token');
+        
+        if (!adminKey || !adminToken) {
+            // إذا لم يكن هناك صلاحيات، نعيد إلى صفحة الدخول
+            setTimeout(() => {
+                window.location.href = 'admin-login.html';
+            }, 1000);
+            return;
+        }
+        
+        // التحقق من صلاحية المفتاح
+        db.ref('admin_keys/' + adminKey).once('value')
+            .then(snapshot => {
+                const data = snapshot.val();
+                if (!data || data.token !== adminToken) {
+                    localStorage.removeItem('kr_admin_key');
+                    localStorage.removeItem('kr_admin_token');
+                    window.location.href = 'admin-login.html';
+                } else {
+                    // صلاحيات صحيحة، نكمل التحميل
+                    setTimeout(() => {
+                        document.getElementById('loadingScreen').style.display = 'none';
+                    }, 1000);
+                }
+            })
+            .catch(() => {
+                window.location.href = 'admin-login.html';
+            });
+    }
     
     // إعداد مستمعي الأحداث
     function setupEventListeners() {
@@ -1104,6 +1160,8 @@
     
     // تحميل الطلبات
     function loadRequests() {
+        showLoading(true);
+        
         db.ref('kr_requests').once('value')
             .then(snapshot => {
                 const data = snapshot.val();
@@ -1120,10 +1178,12 @@
                 
                 updateStats();
                 filterRequests();
+                showLoading(false);
                 showAlert('تم تحديث البيانات بنجاح', 'success');
             })
             .catch(error => {
                 console.error('Error loading requests:', error);
+                showLoading(false);
                 showAlert('حدث خطأ في تحميل البيانات', 'error');
             });
     }
@@ -1135,6 +1195,7 @@
         const accepted = allRequests.filter(req => req.status === 'accepted').length;
         const rejected = allRequests.filter(req => req.status === 'rejected').length;
         
+        // تحديث الأرقام في لوحة التحكم
         document.getElementById('totalRequests').textContent = total;
         document.getElementById('pendingRequests').textContent = pending;
         document.getElementById('acceptedRequests').textContent = accepted;
@@ -1150,6 +1211,11 @@
             
             updateDepartmentStats();
             updateMonthlyChart();
+        } else {
+            document.getElementById('chartTotal').textContent = '0';
+            document.getElementById('chartPending').textContent = '0%';
+            document.getElementById('chartAccepted').textContent = '0%';
+            document.getElementById('chartRejected').textContent = '0%';
         }
     }
     
@@ -1176,6 +1242,7 @@
         if (timeFilter !== 'all') {
             const now = new Date();
             filtered = filtered.filter(req => {
+                if (!req.submissionDate) return false;
                 const requestDate = new Date(req.submissionDate);
                 const diffTime = now - requestDate;
                 const diffDays = diffTime / (1000 * 60 * 60 * 24);
@@ -1192,10 +1259,10 @@
         // تصفية حسب البحث
         if (searchQuery) {
             filtered = filtered.filter(req => 
-                req.fullName?.toLowerCase().includes(searchQuery) ||
-                req.id?.toLowerCase().includes(searchQuery) ||
-                req.gameId?.includes(searchQuery) ||
-                req.discordUsername?.toLowerCase().includes(searchQuery)
+                (req.fullName && req.fullName.toLowerCase().includes(searchQuery)) ||
+                (req.id && req.id.toLowerCase().includes(searchQuery)) ||
+                (req.gameId && req.gameId.includes(searchQuery)) ||
+                (req.discordUsername && req.discordUsername.toLowerCase().includes(searchQuery))
             );
         }
         
@@ -1221,7 +1288,11 @@
         }
         
         // ترتيب الطلبات من الأحدث إلى الأقدم
-        requests.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
+        requests.sort((a, b) => {
+            const dateA = a.submissionDate ? new Date(a.submissionDate) : new Date(0);
+            const dateB = b.submissionDate ? new Date(b.submissionDate) : new Date(0);
+            return dateB - dateA;
+        });
         
         requests.forEach(request => {
             const statusClass = `status-${request.status}`;
@@ -1231,11 +1302,12 @@
                 case 'pending': statusText = 'معلق'; break;
                 case 'accepted': statusText = 'مقبول'; break;
                 case 'rejected': statusText = 'مرفوض'; break;
+                default: statusText = 'غير محدد';
             }
             
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td><strong>${request.id}</strong></td>
+                <td><strong>${request.id || 'غير محدد'}</strong></td>
                 <td>${request.fullName || 'غير محدد'}</td>
                 <td>${request.department || 'غير محدد'}</td>
                 <td>${request.rank || 'غير محدد'}</td>
@@ -1268,7 +1340,10 @@
     // عرض تفاصيل الطلب
     function viewRequestDetails(requestId) {
         const request = allRequests.find(req => req.id === requestId);
-        if (!request) return;
+        if (!request) {
+            showAlert('الطلب غير موجود', 'error');
+            return;
+        }
         
         currentRequestId = requestId;
         
@@ -1307,7 +1382,7 @@
             </div>
             <div class="detail-item">
                 <div class="detail-label">المناصب الإضافية</div>
-                <div class="detail-value">${request.additionalPositions?.join('، ') || 'لا يوجد'}</div>
+                <div class="detail-value">${request.additionalPositions ? request.additionalPositions.join('، ') : 'لا يوجد'}</div>
             </div>
             <div class="detail-item">
                 <div class="detail-label">تاريخ الطلب</div>
@@ -1333,7 +1408,7 @@
             idImageBox.className = 'image-box';
             idImageBox.innerHTML = `
                 <div class="image-title">صورة الهوية الوطنية</div>
-                <img src="${request.idImage}" alt="صورة الهوية" class="modal-image">
+                <img src="${request.idImage}" alt="صورة الهوية" class="modal-image" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiMwZDFiNDgiLz48cGF0aCBkPSJNNjAgNzBDNjAgODIuNzUgNzAuMjUgOTMgODMgOTNDOTUuNzUgOTMgMTA2IDgyLjc1IDEwNiA3MEMxMDYgNTcuMjUgOTUuNzUgNDcgODMgNDdDNzAuMjUgNDcgNjAgNTcuMjUgNjAgNzBaTTM3IDE0M0wzNyAxNjhIMTI5VjE0M0MxMjkgMTI4LjUgMTE3LjUgMTE3IDEwMyAxMTdINjNDNDguNSAxMTcgMzcgMTI4LjUgMzcgMTQzWiIgZmlsbD0iI2MyOWEyZCIvPjxwYXRoIGQ9Ik0xMzAgMTI2SDE1MEwxNjAgMTE2TDE3MCAxMjZIMTkwVjc2SDEzMFYxMjZaIiBmaWxsPSIjYzI5YTJkIi8+PC9zdmc+'">
             `;
             imagesContainer.appendChild(idImageBox);
         }
@@ -1343,7 +1418,7 @@
             avatarImageBox.className = 'image-box';
             avatarImageBox.innerHTML = `
                 <div class="image-title">صورة الشخصية</div>
-                <img src="${request.avatarImage}" alt="صورة الشخصية" class="modal-image">
+                <img src="${request.avatarImage}" alt="صورة الشخصية" class="modal-image" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiMwZDFiNDgiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSI4MCIgcj0iMzAiIGZpbGw9IiNjMjlhMmQiLz48cGF0aCBkPSJNNDAgMTYwSDE2MEMxNjAgMTQwIDE0MCAxMjAgMTAwIDEyMEM2MCAxMjAgNDAgMTQwIDQwIDE2MFoiIGZpbGw9IiNjMjlhMmQiLz48L3N2Zz4='">
             `;
             imagesContainer.appendChild(avatarImageBox);
         }
@@ -1380,10 +1455,13 @@
     function acceptRequest(requestId) {
         if (!confirm('هل أنت متأكد من قبول هذا الطلب؟')) return;
         
+        showLoading(true);
+        
         const updateData = {
             status: 'accepted',
             reviewDate: new Date().toISOString(),
-            reviewedBy: 'مدير النظام'
+            reviewedBy: 'مدير النظام',
+            reviewNotes: 'تم قبول الطلب بواسطة مدير النظام'
         };
         
         db.ref(`kr_requests/${requestId}`).update(updateData)
@@ -1391,10 +1469,12 @@
                 showAlert('تم قبول الطلب بنجاح', 'success');
                 closeModal();
                 loadRequests();
+                showLoading(false);
             })
             .catch(error => {
                 console.error('Error accepting request:', error);
                 showAlert('حدث خطأ في قبول الطلب', 'error');
+                showLoading(false);
             });
     }
     
@@ -1402,11 +1482,13 @@
     function rejectRequest(requestId) {
         if (!confirm('هل أنت متأكد من رفض هذا الطلب؟')) return;
         
+        showLoading(true);
+        
         const updateData = {
             status: 'rejected',
             reviewDate: new Date().toISOString(),
             reviewedBy: 'مدير النظام',
-            rejectionReason: document.getElementById('rejectMessage')?.value || 'تم رفض الطلب'
+            reviewNotes: document.getElementById('rejectMessage')?.value || 'تم رفض الطلب بواسطة مدير النظام'
         };
         
         db.ref(`kr_requests/${requestId}`).update(updateData)
@@ -1414,10 +1496,12 @@
                 showAlert('تم رفض الطلب بنجاح', 'success');
                 closeModal();
                 loadRequests();
+                showLoading(false);
             })
             .catch(error => {
                 console.error('Error rejecting request:', error);
                 showAlert('حدث خطأ في رفض الطلب', 'error');
+                showLoading(false);
             });
     }
     
@@ -1425,15 +1509,19 @@
     function deleteRequest(requestId) {
         if (!confirm('هل أنت متأكد من حذف هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.')) return;
         
+        showLoading(true);
+        
         db.ref(`kr_requests/${requestId}`).remove()
             .then(() => {
                 showAlert('تم حذف الطلب بنجاح', 'success');
                 closeModal();
                 loadRequests();
+                showLoading(false);
             })
             .catch(error => {
                 console.error('Error deleting request:', error);
                 showAlert('حدث خطأ في حذف الطلب', 'error');
+                showLoading(false);
             });
     }
     
@@ -1470,6 +1558,11 @@
         if (window.innerWidth <= 768) {
             toggleSidebar();
         }
+        
+        // إذا كان القسم هو التقارير، نقوم بتحديث الإحصائيات
+        if (sectionId === 'reports') {
+            updateStats();
+        }
     }
     
     // تحديث إحصائيات التصنيفات
@@ -1484,7 +1577,9 @@
             }
             
             departments[dept].total++;
-            departments[dept][request.status]++;
+            if (request.status) {
+                departments[dept][request.status]++;
+            }
         });
         
         let html = '';
@@ -1515,10 +1610,16 @@
         months.forEach(month => monthlyData[month] = 0);
         
         allRequests.forEach(request => {
-            const date = new Date(request.submissionDate);
-            const month = months[date.getMonth()];
-            if (monthlyData[month] !== undefined) {
-                monthlyData[month]++;
+            if (request.submissionDate) {
+                try {
+                    const date = new Date(request.submissionDate);
+                    const month = months[date.getMonth()];
+                    if (monthlyData[month] !== undefined) {
+                        monthlyData[month]++;
+                    }
+                } catch (e) {
+                    console.error('Error parsing date:', request.submissionDate);
+                }
             }
         });
         
@@ -1539,6 +1640,31 @@
         monthlyChart.innerHTML = html;
     }
     
+    // تحميل الإعدادات
+    function loadSettings() {
+        db.ref('kr_settings').once('value')
+            .then(snapshot => {
+                const settings = snapshot.val();
+                if (settings) {
+                    if (settings.reviewTime) {
+                        document.getElementById('reviewTime').value = settings.reviewTime;
+                    }
+                    if (settings.emailNotifications) {
+                        document.getElementById('emailNotifications').value = settings.emailNotifications;
+                    }
+                    if (settings.acceptMessage) {
+                        document.getElementById('acceptMessage').value = settings.acceptMessage;
+                    }
+                    if (settings.rejectMessage) {
+                        document.getElementById('rejectMessage').value = settings.rejectMessage;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error loading settings:', error);
+            });
+    }
+    
     // حفظ الإعدادات
     function saveSettings() {
         const settings = {
@@ -1549,20 +1675,26 @@
             lastUpdated: new Date().toISOString()
         };
         
+        showLoading(true);
+        
         db.ref('kr_settings').set(settings)
             .then(() => {
                 showAlert('تم حفظ الإعدادات بنجاح', 'success');
+                showLoading(false);
             })
             .catch(error => {
                 console.error('Error saving settings:', error);
                 showAlert('حدث خطأ في حفظ الإعدادات', 'error');
+                showLoading(false);
             });
     }
     
     // تسجيل الخروج
     function logout() {
         if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-            window.location.href = 'index.html';
+            localStorage.removeItem('kr_admin_key');
+            localStorage.removeItem('kr_admin_token');
+            window.location.href = 'admin-login.html';
         }
     }
     
@@ -1587,19 +1719,57 @@
         }, 3000);
     }
     
+    // عرض/إخفاء التحميل
+    function showLoading(show) {
+        if (show) {
+            document.getElementById('loadingScreen').style.display = 'flex';
+        } else {
+            document.getElementById('loadingScreen').style.display = 'none';
+        }
+    }
+    
     // تنسيق التاريخ
     function formatDate(dateString) {
         if (!dateString) return 'غير محدد';
         
-        const date = new Date(dateString);
-        return date.toLocaleDateString('ar-SA', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-SA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch (e) {
+            return 'غير محدد';
+        }
+    }
+    
+    // استماع للتحديثات في الوقت الحقيقي
+    function startRealtimeUpdates() {
+        db.ref('kr_requests').on('value', (snapshot) => {
+            const data = snapshot.val();
+            allRequests = [];
+            
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    allRequests.push({
+                        id: key,
+                        ...data[key]
+                    });
+                });
+            }
+            
+            updateStats();
+            filterRequests();
         });
     }
+    
+    // بدء التحديثات في الوقت الحقيقي
+    setTimeout(() => {
+        startRealtimeUpdates();
+    }, 2000);
 </script>
 </body>
 </html>
