@@ -783,13 +783,22 @@
             console.log('لا توجد بيانات مستخدم - إعادة التوجيه...');
             setTimeout(() => {
                 window.location.href = 'apply.html';
-            }, 2000);
+            }, 1000);
             return;
         }
         
         try {
             userData = JSON.parse(storedUserData);
             console.log('تم تحميل بيانات المستخدم:', userData);
+            
+            // ✅ التحقق من أن الحالة "accepted" فقط
+            if (userData.status !== 'accepted') {
+                console.log('الحساب غير مفعّل - الحالة:', userData.status);
+                localStorage.removeItem('kr_activated_user');
+                alert('لم يتم تفعيل حسابك بعد. يرجى انتظار الموافقة من الإدارة.');
+                window.location.href = 'apply.html';
+                return;
+            }
             
             // تحديث واجهة المستخدم
             updateUserInterface();
@@ -807,6 +816,7 @@
         } catch (error) {
             console.error('خطأ في تحميل بيانات المستخدم:', error);
             alert('حدث خطأ في تحميل البيانات. سيتم إعادة التوجيه...');
+            localStorage.removeItem('kr_activated_user');
             window.location.href = 'apply.html';
         }
     }
@@ -883,20 +893,35 @@
                     console.log('حالة الطلب:', requestData.status);
                     
                     if (requestData.status === 'accepted') {
-                        // تحديث بيانات المستخدم من قاعدة البيانات
+                        // ✅ الحساب مفعّل - تحديث البيانات
                         Object.assign(userData, requestData);
                         localStorage.setItem('kr_activated_user', JSON.stringify(userData));
                         updateUserInterface();
                     } else if (requestData.status === 'rejected') {
-                        // إذا تم رفض الطلب، نعيد إلى الصفحة الرئيسية
-                        console.log('تم رفض الطلب - إعادة التوجيه...');
+                        // ❌ تم رفض الطلب
+                        console.log('تم رفض الطلب');
                         localStorage.removeItem('kr_activated_user');
+                        localStorage.removeItem('kr_device_id');
+                        alert('عذراً، تم رفض طلبك. يرجى التواصل مع الدعم.');
+                        window.location.href = 'apply.html';
+                    } else if (requestData.status === 'pending') {
+                        // ⏳ الطلب قيد المراجعة - عدم السماح بالدخول
+                        console.log('الطلب لا زال قيد المراجعة');
+                        localStorage.removeItem('kr_activated_user'); // حذف البيانات المؤقتة
+                        alert('طلبك لا يزال قيد المراجعة. سيتم إشعارك عند الموافقة.');
                         window.location.href = 'apply.html';
                     }
+                } else {
+                    // لا يوجد طلب بهذا الجهاز
+                    console.log('لا يوجد طلب مسجل');
+                    localStorage.removeItem('kr_activated_user');
+                    localStorage.removeItem('kr_device_id');
+                    window.location.href = 'apply.html';
                 }
             })
             .catch(error => {
                 console.error('خطأ في التحقق من حالة المستخدم:', error);
+                alert('حدث خطأ في التحقق من البيانات. يرجى المحاولة لاحقاً.');
             });
     }
     
