@@ -6,22 +6,28 @@
     <title>هيئة KR الرقمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ===== متغيرات التصميم الفاخر ===== */
+        /* ===== متغيرات التصميم الفاخر المحدثة ===== */
         :root {
-            --primary: #2d68c4;
-            --primary-dark: #1e3a8a;
-            --primary-light: #4a90e2;
-            --secondary: #00a86b;
-            --accent: #ff6b6b;
-            --gold: #ffd700;
-            --silver: #c0c0c0;
-            --dark: #0f172a;
-            --darker: #1e293b;
-            --light: #f8fafc;
-            --gradient: linear-gradient(135deg, #2d68c4 0%, #1e3a8a 50%, #0f172a 100%);
-            --gradient-gold: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            --shadow: 0 10px 40px rgba(0,0,0,0.2);
-            --glow: 0 0 30px rgba(45, 104, 196, 0.3);
+            --primary: #1a237e;           /* أزرق داكن حكومي */
+            --primary-dark: #0d1b48;      /* أزرق داكن جداً */
+            --primary-light: #3949ab;     /* أزرق متوسط */
+            --accent: #ffab00;            /* ذهبي مائل للبرتقالي */
+            --accent-dark: #ff8f00;       /* ذهبي داكن */
+            --gold: #ffd700;              /* ذهبي ناصع */
+            --silver: #c0c0c0;            /* فضي */
+            --success: #00c853;           /* أخضر نجاح */
+            --danger: #ff1744;            /* أحمر خطر */
+            --dark: #0a0e1a;              /* داكن جداً */
+            --darker: #121827;            /* داكن */
+            --light: #f8fafc;             /* فاتح */
+            --gradient: linear-gradient(135deg, #1a237e 0%, #3949ab 50%, #1a237e 100%);
+            --gradient-gold: linear-gradient(135deg, #ffab00 0%, #ffd700 50%, #ffab00 100%);
+            --gradient-admin: linear-gradient(135deg, #d32f2f 0%, #f44336 50%, #d32f2f 100%);
+            --shadow: 0 15px 50px rgba(0,0,0,0.3);
+            --glow: 0 0 40px rgba(26, 35, 126, 0.4);
+            --glow-gold: 0 0 40px rgba(255, 171, 0, 0.4);
+            --border-radius: 20px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ===== إعادة التعيين والإعدادات العامة ===== */
@@ -29,8 +35,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Cairo', 'Segoe UI', 'Arial', sans-serif;
         }
+
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
 
         body {
             background: var(--dark);
@@ -38,6 +46,7 @@
             overflow-x: hidden;
             position: relative;
             min-height: 100vh;
+            line-height: 1.6;
         }
 
         /* ===== خلفية الجسيمات المتحركة ===== */
@@ -53,13 +62,14 @@
 
         .particle {
             position: absolute;
-            background: var(--primary-light);
+            background: linear-gradient(135deg, var(--accent), var(--gold));
             border-radius: 50%;
-            animation: float 20s infinite linear;
-            opacity: 0.3;
+            animation: float 25s infinite linear;
+            opacity: 0.15;
+            filter: blur(1px);
         }
 
-        /* ===== خلفية شبكة ثلاثية الأبعاد ===== */
+        /* ===== خلفية شبكة ثلاثية الأبعاد محسنة ===== */
         .grid-bg {
             position: fixed;
             top: 0;
@@ -67,101 +77,220 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: perspective(500px) rotateX(60deg);
-            animation: gridMove 40s linear infinite;
+                linear-gradient(rgba(255, 171, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 171, 0, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: perspective(800px) rotateX(75deg);
+            animation: gridMove 50s linear infinite;
             z-index: 1;
+            opacity: 0.3;
         }
 
-        /* ===== الهيدر الفاخر ===== */
+        /* ===== الهيدر الفاخر المحدث ===== */
         .header {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(to bottom, rgba(10, 14, 26, 0.98), rgba(10, 14, 26, 0.9));
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(255, 171, 0, 0.2);
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            padding: 15px 20px;
+            padding: 18px 30px;
             animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
-        /* ===== الشعار الفاخر ===== */
+        /* ===== الشعار الفاخر المحدث ===== */
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             position: relative;
         }
 
         .logo-icon {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background: var(--gradient);
-            border-radius: 15px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            animation: logoFloat 6s ease-in-out infinite;
-            box-shadow: var(--glow);
+            animation: logoFloat 8s ease-in-out infinite;
+            box-shadow: var(--glow), inset 0 0 20px rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 0 50px rgba(26, 35, 126, 0.6), inset 0 0 30px rgba(255, 255, 255, 0.2);
         }
 
         .logo-icon::before {
             content: '';
             position: absolute;
-            inset: -2px;
-            background: var(--gradient);
-            border-radius: 17px;
+            inset: -3px;
+            background: var(--gradient-gold);
+            border-radius: 21px;
             z-index: -1;
-            opacity: 0.5;
-            animation: logoPulse 4s ease-in-out infinite;
+            opacity: 0.3;
+            animation: logoPulse 6s ease-in-out infinite;
         }
 
         .logo-icon i {
-            font-size: 24px;
+            font-size: 28px;
             color: white;
-            animation: logoSpin 20s linear infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
         }
 
         .logo-text h1 {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, white, var(--primary-light));
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, white, var(--accent), var(--gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         .logo-text p {
-            font-size: 12px;
+            font-size: 13px;
             color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            margin-top: 5px;
+            font-weight: 300;
         }
 
-        /* ===== البانر الرئيسي الفاخر ===== */
+        /* ===== قائمة التنقل المحدثة ===== */
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 171, 0, 0.1), transparent);
+            transition: left 0.7s;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+            background: rgba(255, 171, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link i {
+            font-size: 18px;
+        }
+
+        /* ===== زر الإدارة الفاخر ===== */
+        .admin-btn {
+            background: var(--gradient-admin);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(211, 47, 47, 0.3);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            animation: adminPulse 3s infinite;
+        }
+
+        .admin-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: left 0.7s;
+        }
+
+        .admin-btn:hover::before {
+            left: 100%;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(211, 47, 47, 0.4);
+            animation: none;
+        }
+
+        .admin-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .admin-btn i {
+            font-size: 20px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+        }
+
+        /* ===== البانر الرئيسي الفاخر المحدث ===== */
         .banner {
-            background: var(--gradient);
+            background: linear-gradient(135deg, 
+                rgba(26, 35, 126, 0.95), 
+                rgba(57, 73, 171, 0.85),
+                rgba(13, 27, 72, 0.95));
             border-radius: 30px;
-            padding: 60px 40px;
-            margin: 100px 20px 40px;
+            padding: 80px 60px;
+            margin: 120px 30px 50px;
             position: relative;
             overflow: hidden;
             animation: bannerAppear 1s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: var(--shadow), var(--glow);
+            border: 1px solid rgba(255, 171, 0, 0.2);
         }
 
         .banner::before {
@@ -174,65 +303,76 @@
             background: linear-gradient(
                 45deg,
                 transparent 30%,
-                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 171, 0, 0.15) 50%,
                 transparent 70%
             );
-            animation: shine 3s infinite;
+            animation: shine 4s infinite;
+            pointer-events: none;
         }
 
         .banner-content {
             position: relative;
             z-index: 2;
             text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         .banner-icon {
-            font-size: 80px;
-            color: white;
-            margin-bottom: 25px;
+            font-size: 100px;
+            background: linear-gradient(135deg, var(--gold), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
             display: inline-block;
-            animation: iconFloat 4s ease-in-out infinite;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+            animation: iconFloat 5s ease-in-out infinite;
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.4));
         }
 
         .banner h2 {
-            font-size: 42px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, white, var(--gold));
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, white, var(--gold), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .banner p {
-            font-size: 18px;
+            font-size: 20px;
             opacity: 0.9;
-            margin-bottom: 35px;
-            max-width: 600px;
+            margin-bottom: 40px;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
-            line-height: 1.6;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 300;
         }
 
-        /* ===== زر البانر الفاخر ===== */
+        /* ===== زر البانر الفاخر المحدث ===== */
         .banner-btn {
-            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            background: linear-gradient(135deg, var(--accent), var(--gold), var(--accent-dark));
             color: var(--dark);
             border: none;
-            padding: 18px 45px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 18px;
+            padding: 20px 50px;
+            border-radius: 18px;
+            font-weight: 800;
+            font-size: 20px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s;
-            animation: btnPulse 2s infinite;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            transition: var(--transition);
+            animation: btnPulse 2.5s infinite;
+            box-shadow: 0 12px 35px rgba(255, 171, 0, 0.4);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .banner-btn::before {
@@ -245,10 +385,10 @@
             background: linear-gradient(
                 90deg,
                 transparent,
-                rgba(255, 255, 255, 0.3),
+                rgba(255, 255, 255, 0.4),
                 transparent
             );
-            transition: left 0.7s;
+            transition: left 0.8s;
         }
 
         .banner-btn:hover::before {
@@ -257,88 +397,105 @@
 
         .banner-btn:hover {
             transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 20px 45px rgba(255, 171, 0, 0.5);
             animation: none;
         }
 
+        .banner-btn:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
         .banner-btn i {
-            font-size: 20px;
+            font-size: 22px;
             transition: transform 0.3s;
         }
 
         .banner-btn:hover i {
-            transform: translateX(5px);
+            transform: translateX(5px) rotate(10deg);
         }
 
-        /* ===== قسم الخدمات الفاخر ===== */
+        /* ===== قسم الخدمات الفاخر المحدث ===== */
         .services-section {
-            padding: 40px 20px;
-            max-width: 1400px;
+            padding: 60px 30px;
+            max-width: 1600px;
             margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 70px;
         }
 
         .section-title h3 {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, white, var(--primary-light));
+            font-size: 40px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, white, var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             position: relative;
             display: inline-block;
+            letter-spacing: 0.5px;
         }
 
         .section-title h3::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -15px;
             right: 0;
             width: 100%;
-            height: 3px;
+            height: 4px;
             background: var(--gradient-gold);
             border-radius: 2px;
-            animation: lineWidth 3s infinite;
+            animation: lineWidth 3.5s infinite;
         }
 
         .section-title p {
             color: rgba(255, 255, 255, 0.7);
-            font-size: 16px;
-            max-width: 600px;
-            margin: 0 auto;
+            font-size: 18px;
+            max-width: 700px;
+            margin: 25px auto 0;
+            font-weight: 300;
+            line-height: 1.6;
         }
 
-        /* ===== شبكة الخدمات الفاخرة ===== */
+        /* ===== شبكة الخدمات الفاخرة المحدثة ===== */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            perspective: 1000px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            perspective: 1200px;
         }
 
         .service-card {
-            background: rgba(30, 41, 59, 0.7);
+            background: linear-gradient(135deg, 
+                rgba(18, 24, 39, 0.9), 
+                rgba(26, 35, 126, 0.3));
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            padding: 35px 25px;
+            border: 1px solid rgba(255, 171, 0, 0.15);
+            border-radius: var(--border-radius);
+            padding: 45px 35px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
-            animation: cardAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: cardAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(40px);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .service-card:nth-child(1) { animation-delay: 0.1s; }
         .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
 
         .service-card::before {
             content: '';
@@ -347,15 +504,16 @@
             left: 0;
             right: 0;
             height: 100%;
-            background: linear-gradient(135deg, rgba(45, 104, 196, 0.1), transparent);
+            background: linear-gradient(135deg, rgba(255, 171, 0, 0.1), transparent);
             transform: translateY(100%);
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
         }
 
         .service-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: var(--shadow), var(--glow);
+            transform: translateY(-15px) scale(1.03);
+            border-color: rgba(255, 171, 0, 0.4);
+            box-shadow: var(--shadow), var(--glow-gold);
         }
 
         .service-card:hover::before {
@@ -363,61 +521,83 @@
         }
 
         .service-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 25px;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
             background: var(--gradient);
-            border-radius: 20px;
+            border-radius: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            transition: all 0.3s;
-            animation: iconPulse 3s infinite;
+            transition: var(--transition);
+            animation: iconPulse 4s infinite;
+            z-index: 2;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
         }
 
         .service-card:hover .service-icon {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.15) rotate(8deg);
             animation: none;
+            background: var(--gradient-gold);
+            box-shadow: 0 0 40px rgba(255, 171, 0, 0.4);
         }
 
         .service-icon i {
-            font-size: 36px;
+            font-size: 42px;
             color: white;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
         }
 
         .service-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 12px;
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 15px;
             color: white;
             position: relative;
             z-index: 2;
+            letter-spacing: 0.5px;
         }
 
         .service-desc {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.6;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.8;
             position: relative;
             z-index: 2;
+            font-weight: 300;
+            max-width: 280px;
+            margin: 0 auto;
         }
 
-        /* ===== الأنيميشن ===== */
+        .service-card::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 171, 0, 0.1);
+            z-index: 1;
+        }
+
+        /* ===== الأنيميشن المحدثة ===== */
         @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            50% { transform: translateY(-20px) translateX(10px); }
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+            33% { transform: translateY(-30px) translateX(20px) rotate(120deg); }
+            66% { transform: translateY(20px) translateX(-20px) rotate(240deg); }
         }
 
         @keyframes gridMove {
-            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+            0% { transform: perspective(800px) rotateX(75deg) translateY(0); }
+            100% { transform: perspective(800px) rotateX(75deg) translateY(100px); }
         }
 
         @keyframes slideDown {
             from {
                 opacity: 0;
-                transform: translateY(-100%);
+                transform: translateY(-100px);
             }
             to {
                 opacity: 1;
@@ -426,13 +606,15 @@
         }
 
         @keyframes logoFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            25% { transform: translateY(-15px) rotate(2deg) scale(1.05); }
+            50% { transform: translateY(0) rotate(0deg) scale(1); }
+            75% { transform: translateY(-10px) rotate(-1deg) scale(1.03); }
         }
 
         @keyframes logoPulse {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.08); }
         }
 
         @keyframes logoSpin {
@@ -440,15 +622,19 @@
             to { transform: rotate(360deg); }
         }
 
-        @keyframes badgePulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 10px var(--accent); }
-            50% { transform: scale(1.1); box-shadow: 0 0 20px var(--accent); }
+        @keyframes adminPulse {
+            0%, 100% { 
+                box-shadow: 0 8px 25px rgba(211, 47, 47, 0.3);
+            }
+            50% { 
+                box-shadow: 0 8px 35px rgba(211, 47, 47, 0.5);
+            }
         }
 
         @keyframes bannerAppear {
             from {
                 opacity: 0;
-                transform: translateY(50px) scale(0.9);
+                transform: translateY(80px) scale(0.95);
             }
             to {
                 opacity: 1;
@@ -457,27 +643,27 @@
         }
 
         @keyframes shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            0% { transform: translateX(-100%) skewX(-15deg); }
+            100% { transform: translateX(200%) skewX(-15deg); }
         }
 
         @keyframes iconFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
 
         @keyframes btnPulse {
             0%, 100% { 
-                box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+                box-shadow: 0 12px 35px rgba(255, 171, 0, 0.4);
             }
             50% { 
-                box-shadow: 0 10px 40px rgba(255, 215, 0, 0.5);
+                box-shadow: 0 12px 45px rgba(255, 171, 0, 0.6);
             }
         }
 
         @keyframes lineWidth {
             0%, 100% { width: 100%; }
-            50% { width: 60%; }
+            50% { width: 50%; }
         }
 
         @keyframes cardAppear {
@@ -488,14 +674,113 @@
         }
 
         @keyframes iconPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(26, 35, 126, 0.3); }
+            50% { transform: scale(1.08); box-shadow: 0 15px 40px rgba(26, 35, 126, 0.4); }
         }
 
-        /* ===== تصميم متجاوب ===== */
-        @media (max-width: 768px) {
+        /* ===== تصميم متجاوب محسن ===== */
+        @media (max-width: 1200px) {
+            .header-content {
+                padding: 0 20px;
+            }
+            
             .banner {
-                padding: 40px 25px;
+                padding: 60px 40px;
+                margin: 120px 20px 40px;
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .nav-link {
+                padding: 8px 16px;
+                font-size: 15px;
+            }
+            
+            .banner h2 {
+                font-size: 40px;
+            }
+            
+            .banner p {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .logo-text h1 {
+                font-size: 24px;
+            }
+            
+            .logo-text p {
+                font-size: 11px;
+                letter-spacing: 2px;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                position: fixed;
+                top: 80px;
+                right: 0;
+                background: rgba(10, 14, 26, 0.95);
+                width: 100%;
+                padding: 20px;
+                transform: translateY(-100%);
+                opacity: 0;
+                transition: var(--transition);
+                border-bottom: 1px solid rgba(255, 171, 0, 0.2);
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            
+            .nav-link {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                cursor: pointer;
+                z-index: 1001;
+            }
+            
+            .mobile-menu-btn span {
+                width: 30px;
+                height: 3px;
+                background: var(--accent);
+                border-radius: 3px;
+                transition: var(--transition);
+            }
+            
+            .mobile-menu-btn.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+            
+            .mobile-menu-btn.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .mobile-menu-btn.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+            
+            .banner {
+                padding: 40px 30px;
                 margin: 100px 15px 30px;
                 border-radius: 25px;
             }
@@ -508,8 +793,18 @@
                 font-size: 16px;
             }
             
+            .banner-btn {
+                padding: 16px 35px;
+                font-size: 18px;
+            }
+            
             .services-grid {
                 grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .section-title h3 {
+                font-size: 32px;
             }
         }
 
@@ -520,6 +815,7 @@
             
             .banner {
                 padding: 30px 20px;
+                margin: 80px 10px 20px;
             }
             
             .banner h2 {
@@ -527,55 +823,224 @@
             }
             
             .banner-btn {
-                padding: 15px 30px;
+                padding: 14px 25px;
                 font-size: 16px;
+                width: 100%;
+                justify-content: center;
             }
+            
+            .admin-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .service-card {
+                padding: 35px 25px;
+            }
+            
+            .service-icon {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .service-icon i {
+                font-size: 36px;
+            }
+        }
+
+        /* ===== تحسينات إضافية ===== */
+        ::selection {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient);
+            border-radius: 6px;
+            border: 3px solid var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-gold);
+        }
+
+        /* ===== تأثيرات الدخول للصفحة ===== */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient);
+            z-index: 9999;
+            animation: pageTransition 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes pageTransition {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            80% {
+                opacity: 0.3;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.2);
+                display: none;
+            }
+        }
+
+        /* ===== رسالة الترحيب ===== */
+        .welcome-message {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--gradient));
+            color: white;
+            padding: 20px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            z-index: 999;
+            animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            display: none;
+            max-width: 350px;
+            border-left: 5px solid var(--accent);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .welcome-message i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .welcome-message h4 {
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .welcome-message p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .welcome-message .close-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .welcome-message .close-btn:hover {
+            color: var(--accent);
         }
     </style>
 </head>
 <body>
+    <!-- انتقال الصفحة -->
+    <div class="page-transition"></div>
+    
     <!-- خلفية شبكة ثلاثية الأبعاد -->
     <div class="grid-bg"></div>
     
     <!-- جسيمات متحركة -->
     <div class="particles-container" id="particles"></div>
     
-    <!-- الهيدر الفاخر -->
+    <!-- الهيدر الفاخر المحدث -->
     <header class="header">
         <div class="header-content">
             <div class="logo">
                 <div class="logo-icon">
-                    <i class="fas fa-id-card"></i>
+                    <i class="fas fa-shield-alt"></i>
                 </div>
                 <div class="logo-text">
                     <h1>هيئة KR الرقمية</h1>
-                    <p>تميز في كل تفاصيلنا</p>
+                    <p>النظام الرقمي الموحد</p>
                 </div>
             </div>
+            
+            <!-- زر القائمة للجوال -->
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <!-- قائمة التنقل -->
+            <nav class="nav-links" id="navLinks">
+                <a href="#" class="nav-link" onclick="showWelcomeMessage()">
+                    <i class="fas fa-home"></i>
+                    الرئيسية
+                </a>
+                <a href="#" class="nav-link" onclick="navigateTo('apply.html')">
+                    <i class="fas fa-id-card"></i>
+                    التفعيل الرقمي
+                </a>
+                <a href="#" class="nav-link" onclick="navigateTo('#')">
+                    <i class="fas fa-info-circle"></i>
+                    عن النظام
+                </a>
+                <a href="#" class="nav-link" onclick="navigateTo('#')">
+                    <i class="fas fa-headset"></i>
+                    الدعم الفني
+                </a>
+                <!-- زر الإدارة المميز -->
+                <button class="admin-btn" onclick="navigateToAdmin()">
+                    <i class="fas fa-user-shield"></i>
+                    لوحة الإدارة
+                </button>
+            </nav>
         </div>
     </header>
     
     <!-- المحتوى الرئيسي -->
     <main class="main">
-        <!-- البانر الفاخر -->
+        <!-- البانر الفاخر المحدث -->
         <section class="banner">
             <div class="banner-content">
                 <div class="banner-icon">
                     <i class="fas fa-id-card-alt"></i>
                 </div>
                 <h2>نظام تفعيل الهوية المتقدم</h2>
-                <p>تجربة فاخرة لتقديم طلبات التفعيل بأعلى معايير الأمان والكفاءة.<br>نظام تفعيل الهوية الرسمي لهيئة KR الرقمية.</p>
+                <p>تقدم هيئة KR الرقمية نظاماً متكاملاً لتقديم طلبات تفعيل الهوية الرقمية<br>بأعلى معايير الأمان والكفاءة والحماية.</p>
                 <button class="banner-btn" onclick="navigateTo('apply.html')">
                     <i class="fas fa-rocket"></i> بدء طلب التفعيل
                 </button>
             </div>
         </section>
         
-        <!-- قسم الخدمات الفاخر -->
+        <!-- قسم الخدمات الفاخر المحدث -->
         <section class="services-section">
             <div class="section-title">
                 <h3>خدماتنا المميزة</h3>
-                <p>نقدم لكم مجموعة من الخدمات الرقمية المتطورة بأعلى معايير الجودة</p>
+                <p>نقدم مجموعة من الخدمات الرقمية المتطورة التي تلبي احتياجاتكم بأعلى مستويات الجودة والأمان</p>
             </div>
             
             <div class="services-grid">
@@ -585,44 +1050,64 @@
                         <i class="fas fa-id-card"></i>
                     </div>
                     <h3 class="service-title">طلب تفعيل الهوية</h3>
-                    <p class="service-desc">تقديم طلب تفعيل جديد بخطوات سهلة وآمنة مع متابعة فورية</p>
+                    <p class="service-desc">تقديم طلب تفعيل جديد بخطوات سهلة وآمنة مع متابعة فورية للحالة</p>
                 </div>
                 
                 <!-- خدمة النظام الإداري -->
-                <div class="service-card" onclick="navigateTo('admin/login.html')">
+                <div class="service-card" onclick="navigateToAdmin()">
                     <div class="service-icon">
                         <i class="fas fa-user-shield"></i>
                     </div>
                     <h3 class="service-title">النظام الإداري</h3>
                     <p class="service-desc">منصة متطورة لإدارة الطلبات والتحكم الكامل في النظام</p>
                 </div>
+                
+                <!-- خدمة المنصة الرقمية -->
+                <div class="service-card" onclick="navigateTo('kr-digital-platform.html')">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="service-title">المنصة الرقمية</h3>
+                    <p class="service-desc">منصة الخدمات الرقمية للمستخدمين المفعّلين</p>
+                </div>
             </div>
         </section>
     </main>
+
+    <!-- رسالة الترحيب -->
+    <div class="welcome-message" id="welcomeMessage">
+        <button class="close-btn" onclick="closeWelcomeMessage()">
+            <i class="fas fa-times"></i>
+        </button>
+        <i class="fas fa-star"></i>
+        <h4>مرحباً بك في هيئة KR الرقمية</h4>
+        <p>نظام تفعيل الهوية المتقدم بأعلى معايير الأمان والجودة</p>
+    </div>
 
     <script>
         // ====== إنشاء الجسيمات المتحركة ======
         function createParticles() {
             const container = document.getElementById('particles');
-            const particleCount = 50;
+            const particleCount = 80;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 
                 // أحجام وألوان عشوائية
-                const size = Math.random() * 15 + 5;
-                const color = i % 3 === 0 ? 'var(--primary)' : 
-                             i % 3 === 1 ? 'var(--primary-light)' : 'var(--gold)';
+                const size = Math.random() * 20 + 5;
+                const color = i % 4 === 0 ? 'var(--accent)' : 
+                             i % 4 === 1 ? 'var(--primary-light)' : 
+                             i % 4 === 2 ? 'var(--gold)' : 'var(--success)';
                 
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
-                particle.style.background = color;
+                particle.style.background = `radial-gradient(circle, ${color}, transparent 70%)`;
                 particle.style.left = `${Math.random() * 100}%`;
                 particle.style.top = `${Math.random() * 100}%`;
-                particle.style.animationDelay = `${Math.random() * 20}s`;
-                particle.style.animationDuration = `${Math.random() * 15 + 15}s`;
-                particle.style.opacity = Math.random() * 0.2 + 0.1;
+                particle.style.animationDelay = `${Math.random() * 30}s`;
+                particle.style.animationDuration = `${Math.random() * 20 + 20}s`;
+                particle.style.opacity = Math.random() * 0.15 + 0.05;
                 
                 container.appendChild(particle);
             }
@@ -631,12 +1116,117 @@
         // ====== التنقل المباشر بين الصفحات ======
         function navigateTo(url) {
             // تأثير انتقالي قبل الانتقال
-            document.body.style.opacity = '0.7';
-            document.body.style.transition = 'opacity 0.3s';
+            document.body.style.opacity = '0.8';
+            document.body.style.transform = 'scale(0.98)';
+            document.body.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
             
             setTimeout(() => {
                 window.location.href = url;
-            }, 300);
+            }, 400);
+        }
+
+        // ====== التنقل إلى لوحة الإدارة ======
+        function navigateToAdmin() {
+            // تحقق من وجود بيانات المدير
+            const adminKey = localStorage.getItem('kr_admin_key');
+            const adminToken = localStorage.getItem('kr_admin_token');
+            
+            if (adminKey && adminToken) {
+                // إذا كان هناك بيانات تسجيل دخول، نذهب مباشرة للوحة التحكم
+                navigateTo('admin-dashboard.html');
+            } else {
+                // إذا لم يكن هناك بيانات، نذهب لصفحة تسجيل دخول المدير
+                navigateTo('admin-login.html');
+            }
+        }
+
+        // ====== إظهار/إخفاء رسالة الترحيب ======
+        function showWelcomeMessage() {
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            welcomeMsg.style.display = 'block';
+            
+            // إخفاء الرسالة بعد 8 ثواني
+            setTimeout(() => {
+                closeWelcomeMessage();
+            }, 8000);
+        }
+
+        function closeWelcomeMessage() {
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            welcomeMsg.style.animation = 'slideInRight 0.5s reverse forwards';
+            setTimeout(() => {
+                welcomeMsg.style.display = 'none';
+                welcomeMsg.style.animation = '';
+            }, 500);
+        }
+
+        // ====== القائمة المتنقلة للجوال ======
+        function setupMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+            });
+            
+            // إغلاق القائمة عند النقر على رابط
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenuBtn.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+            
+            // إغلاق القائمة عند النقر خارجها
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.nav-links') && !event.target.closest('.mobile-menu-btn')) {
+                    mobileMenuBtn.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        // ====== تأثيرات التمرير ======
+        function setupScrollEffects() {
+            let lastScroll = 0;
+            const header = document.querySelector('.header');
+            
+            window.addEventListener('scroll', function() {
+                const currentScroll = window.pageYOffset;
+                
+                // إخفاء/إظهار الهيدر
+                if (currentScroll > lastScroll && currentScroll > 150) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+                
+                lastScroll = currentScroll;
+                
+                // تأثيرات على البطاقات عند التمرير
+                const cards = document.querySelectorAll('.service-card');
+                cards.forEach(card => {
+                    const cardTop = card.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (cardTop < windowHeight * 0.85) {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }
+                });
+                
+                // تأثير على البانر عند التمرير
+                const banner = document.querySelector('.banner');
+                if (banner) {
+                    const scrolled = window.pageYOffset;
+                    const rate = scrolled * -0.5;
+                    banner.style.transform = `translateY(${rate}px)`;
+                }
+            });
         }
 
         // ====== عند تحميل الصفحة ======
@@ -646,41 +1236,92 @@
             // إنشاء الجسيمات
             createParticles();
             
-            // تأثير تحميل الصفحة
-            document.body.style.opacity = '0';
-            document.body.style.transition = 'opacity 0.8s';
+            // إعداد القائمة المتنقلة
+            setupMobileMenu();
             
+            // إعداد تأثيرات التمرير
+            setupScrollEffects();
+            
+            // تأثير تحميل الصفحة
             setTimeout(() => {
                 document.body.style.opacity = '1';
+                document.body.style.transform = 'scale(1)';
             }, 100);
+            
+            // إظهار رسالة الترحيب بعد 2 ثانية
+            setTimeout(() => {
+                showWelcomeMessage();
+            }, 2000);
+            
+            // إضافة تأثيرات تفاعلية للأزرار
+            document.querySelectorAll('.banner-btn, .admin-btn, .service-card').forEach(btn => {
+                btn.addEventListener('mousedown', function() {
+                    this.style.transform = 'scale(0.95)';
+                });
+                
+                btn.addEventListener('mouseup', function() {
+                    this.style.transform = '';
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                });
+            });
+            
+            // تأثير تحميل الصفحة التقدمي
+            let progress = 0;
+            const loadingBar = document.createElement('div');
+            loadingBar.style.position = 'fixed';
+            loadingBar.style.top = '0';
+            loadingBar.style.left = '0';
+            loadingBar.style.height = '3px';
+            loadingBar.style.background = 'var(--gradient-gold)';
+            loadingBar.style.zIndex = '10000';
+            loadingBar.style.transition = 'width 0.3s';
+            loadingBar.style.width = '0%';
+            document.body.appendChild(loadingBar);
+            
+            const loadingInterval = setInterval(() => {
+                progress += Math.random() * 20;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(loadingInterval);
+                    setTimeout(() => {
+                        loadingBar.style.opacity = '0';
+                        setTimeout(() => {
+                            document.body.removeChild(loadingBar);
+                        }, 300);
+                    }, 300);
+                }
+                loadingBar.style.width = `${progress}%`;
+            }, 100);
+            
+            // إضافة تأثير اهتزاز لزر الإدارة
+            setInterval(() => {
+                const adminBtn = document.querySelector('.admin-btn');
+                if (adminBtn && Math.random() > 0.7) {
+                    adminBtn.style.animation = 'adminPulse 0.5s';
+                    setTimeout(() => {
+                        adminBtn.style.animation = 'adminPulse 3s infinite';
+                    }, 500);
+                }
+            }, 5000);
         });
 
-        // ====== تأثيرات إضافية عند التمرير ======
-        let lastScroll = 0;
-        window.addEventListener('scroll', function() {
-            const currentScroll = window.pageYOffset;
-            const header = document.querySelector('.header');
-            
-            if (currentScroll > lastScroll && currentScroll > 100) {
-                header.style.transform = 'translateY(-100%)';
-            } else {
-                header.style.transform = 'translateY(0)';
+        // ====== منع التحديث عند الضغط على زر الإدارة ======
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+                e.preventDefault();
+                return false;
             }
-            
-            lastScroll = currentScroll;
-            
-            // تأثيرات على البطاقات عند التمرير
-            const cards = document.querySelectorAll('.service-card');
-            cards.forEach(card => {
-                const cardTop = card.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (cardTop < windowHeight * 0.8) {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }
-            });
         });
+
+        // ====== تأثيرات الطباعة في الكونسول ======
+        console.log('%c🚀 %cهيئة KR الرقمية %c\nنظام تفعيل الهوية المتقدم\nVersion 2.0.0', 
+            'font-size: 30px; color: var(--accent);', 
+            'font-size: 20px; font-weight: bold; color: var(--primary-light);', 
+            'font-size: 14px; color: var(--light);'
+        );
     </script>
 </body>
 </html>
