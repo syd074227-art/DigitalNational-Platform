@@ -962,13 +962,7 @@
 <script>
     // تكوين Firebase
     const firebaseConfig = { 
-        apiKey: "AIzaSyDUfRjBqJ0qjV0n6Q7Xq4Z4Qkz8q4Z4Qkz",
-        authDomain: "myproject-7439e.firebaseapp.com",
-        databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/",
-        projectId: "myproject-7439e",
-        storageBucket: "myproject-7439e.appspot.com",
-        messagingSenderId: "123456789012",
-        appId: "1:123456789012:web:abcdef1234567890"
+        databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/" 
     };
     
     // تهيئة Firebase
@@ -1035,12 +1029,30 @@
     let uploadedIdImg = "";
     let uploadedAvatarImg = "";
     
+    // الحصول على معرف الجهاز
+    function getDeviceId() {
+        let id = localStorage.getItem('kr_device_id');
+        if (!id) {
+            id = 'DEV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('kr_device_id', id);
+        }
+        return id;
+    }
+    
     // تهيئة الصفحة
     window.onload = function() {
+        // أولاً: التحقق من وجود مستخدم مفعل في localStorage
+        const activatedUser = localStorage.getItem('kr_activated_user');
+        if (activatedUser) {
+            // إذا كان هناك مستخدم مفعل، توجيه مباشرة إلى المنصة الرقمية
+            window.location.href = 'kr-digital-platform.html';
+            return;
+        }
+        
         updateProgressBar();
         setupInputValidation();
         
-        // التحقق من وجود طلب سابق
+        // التحقق من وجود طلب سابق لهذا الجهاز
         const deviceId = getDeviceId();
         checkExistingRequest(deviceId);
         
@@ -1048,6 +1060,56 @@
             document.getElementById('loadingScreen').style.display = 'none';
         }, 1500);
     };
+    
+    // التحقق من وجود طلب سابق
+    function checkExistingRequest(deviceId) {
+        db.ref('kr_requests').orderByChild('deviceId').equalTo(deviceId).once('value')
+            .then(snapshot => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const requestId = Object.keys(data)[0];
+                    const requestData = data[requestId];
+                    
+                    if (requestData.status === 'pending') {
+                        // إذا كان هناك طلب قيد الانتظار، نعرض حالة الانتظار
+                        showPendingStatus(requestId);
+                    } else if (requestData.status === 'accepted') {
+                        // إذا كان الطلب مقبولاً، نحفظ بيانات المستخدم ونوجه إلى المنصة
+                        activateUser(requestData);
+                    }
+                }
+            });
+    }
+    
+    // تفعيل المستخدم وتوجيهه إلى المنصة
+    function activateUser(userData) {
+        const activatedUser = {
+            fullName: userData.fullName,
+            gameId: userData.gameId,
+            age: userData.age,
+            department: userData.department,
+            rank: userData.rank,
+            additionalPositions: userData.additionalPositions,
+            gameUsername: userData.gameUsername,
+            discordUsername: userData.discordUsername,
+            idImage: userData.idImage,
+            avatarImage: userData.avatarImage,
+            activatedDate: new Date().toISOString()
+        };
+        
+        localStorage.setItem('kr_activated_user', JSON.stringify(activatedUser));
+        window.location.href = 'kr-digital-platform.html';
+    }
+    
+    // عرض حالة الانتظار
+    function showPendingStatus(requestId) {
+        document.getElementById('applicationForm').style.display = 'none';
+        document.getElementById('requestNumber').textContent = requestId;
+        document.getElementById('successMessage').classList.add('show');
+        
+        // مراقبة حالة الطلب
+        monitorRequestStatus(requestId);
+    }
     
     // تحديث شريط التقدم
     function updateProgressBar() {
@@ -1292,34 +1354,6 @@
         `;
     }
     
-    // الحصول على معرف الجهاز
-    function getDeviceId() {
-        let id = localStorage.getItem('kr_device_id');
-        if (!id) {
-            id = 'KR-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('kr_device_id', id);
-        }
-        return id;
-    }
-    
-    // التحقق من الطلبات السابقة
-    function checkExistingRequest(deviceId) {
-        db.ref('kr_requests').orderByChild('deviceId').equalTo(deviceId).once('value')
-            .then(snapshot => {
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    const requestId = Object.keys(data)[0];
-                    const requestData = data[requestId];
-                    
-                    if (requestData.status === 'pending') {
-                        showPendingStatus(requestId);
-                    } else if (requestData.status === 'accepted') {
-                        window.location.href = 'kr-digital-platform.html';
-                    }
-                }
-            });
-    }
-    
     // إرسال الطلب إلى Firebase
     function submitToFirebase() {
         const requestId = 'KR-' + Date.now().toString().slice(-8);
@@ -1369,22 +1403,13 @@
             if (!data) return;
             
             if (data.status === 'accepted') {
-                // توجيه المستخدم إلى المنصة
-                window.location.href = 'kr-digital-platform.html';
+                // تفعيل المستخدم وتوجيهه إلى المنصة
+                activateUser(data);
             } else if (data.status === 'rejected') {
-                // إعادة تحميل الصفحة للبدء من جديد
                 alertWithAnimation('تم رفض طلبك. يرجى مراجعة البيانات والمحاولة مرة أخرى.');
                 setTimeout(() => location.reload(), 3000);
             }
         });
-    }
-    
-    // عرض حالة الانتظار
-    function showPendingStatus(requestId) {
-        document.getElementById('applicationForm').style.display = 'none';
-        document.getElementById('requestNumber').textContent = requestId;
-        document.getElementById('successMessage').classList.add('show');
-        monitorRequestStatus(requestId);
     }
     
     // عرض خطأ مع تأثير
