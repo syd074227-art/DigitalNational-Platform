@@ -5,258 +5,278 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام تفعيل الهوية الرقمي - KR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
     <style>
         :root {
-            --primary: #1a237e;
-            --primary-dark: #0d1557;
-            --primary-light: #3f51b5;
-            --accent: #ff6f00;
-            --accent-dark: #e65100;
-            --accent-light: #ff9800;
-            --health: #2196f3;
-            --health-dark: #1976d2;
-            --interior: #f44336;
-            --interior-dark: #d32f2f;
-            --justice: #4caf50;
-            --justice-dark: #388e3c;
-            --success: #00c853;
-            --warning: #ffd600;
-            --danger: #d50000;
-            --info: #2196f3;
-            --dark: #0d1117;
-            --dark-card: #161b22;
-            --light: #ffffff;
-            --gray: #8b949e;
-            --gray-light: #c9d1d9;
-            --border: rgba(255, 255, 255, 0.1);
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-dark: rgba(0, 0, 0, 0.3);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.4);
-            --gradient-primary: linear-gradient(135deg, #1a237e 0%, #3f51b5 100%);
-            --gradient-accent: linear-gradient(135deg, #ff6f00 0%, #ff9800 100%);
-            --gradient-health: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
-            --gradient-interior: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-            --gradient-justice: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+            --primary: #1a237e; --primary-dark: #0d1557; --primary-light: #3f51b5;
+            --accent: #ff6f00; --accent-dark: #e65100; --accent-light: #ff9800;
+            --health: #2196f3; --interior: #f44336; --justice: #4caf50;
+            --success: #00c853; --warning: #ffd600; --danger: #d50000;
+            --dark: #0d1117; --light: #ffffff; --gray: #8b949e;
+            --border: rgba(255, 255, 255, 0.1); --glass-dark: rgba(0, 0, 0, 0.3);
             --gradient-dark: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Cairo', 'Tajawal', sans-serif; }
-        body { background: var(--gradient-dark); min-height: 100vh; color: var(--light); display: flex; justify-content: center; align-items: center; padding: 20px; overflow-x: hidden; position: relative; }
-        body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 80%, rgba(33, 150, 243, 0.08) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(244, 67, 54, 0.08) 0%, transparent 50%), radial-gradient(circle at 40% 40%, rgba(76, 175, 80, 0.08) 0%, transparent 50%); pointer-events: none; z-index: 0; }
-        .loading-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--gradient-dark); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
-        .loading-spinner { width: 80px; height: 80px; border: 5px solid rgba(255, 111, 0, 0.2); border-top: 5px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { color: var(--accent); font-size: 18px; font-weight: 700; animation: pulse 1.5s ease-in-out infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .container { width: 100%; max-width: 1200px; background: var(--glass-dark); backdrop-filter: blur(20px); border-radius: 24px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-lg); animation: containerAppear 1s cubic-bezier(0.4, 0, 0.2, 1); position: relative; z-index: 1; }
-        @keyframes containerAppear { from { opacity: 0; transform: translateY(50px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .header { background: var(--gradient-primary); color: white; padding: 50px 30px; text-align: center; position: relative; overflow: hidden; border-bottom: 4px solid var(--accent); }
-        .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(45deg, transparent 30%, rgba(255, 111, 0, 0.1) 50%, transparent 70%); animation: headerShine 8s infinite linear; }
-        @keyframes headerShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-        .logo-container { position: relative; z-index: 1; }
-        .logo-icon { width: 100px; height: 100px; margin: 0 auto 25px; background: var(--gradient-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: logoFloat 6s ease-in-out infinite; box-shadow: 0 15px 40px rgba(255, 111, 0, 0.4); }
-        .logo-icon i { font-size: 48px; color: white; }
-        @keyframes logoFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
-        .logo h1 { font-size: 38px; font-weight: 800; margin: 0 0 15px 0; background: linear-gradient(135deg, #fff 0%, var(--accent-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); }
-        .logo p { font-size: 16px; color: rgba(255, 255, 255, 0.9); font-weight: 500; }
-        .kr-badge { position: absolute; top: 25px; left: 25px; background: var(--gradient-accent); color: white; padding: 10px 24px; border-radius: 50px; font-weight: 700; font-size: 14px; animation: badgePulse 3s infinite; box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3); letter-spacing: 1px; }
-        @keyframes badgePulse { 0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3); } 50% { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255, 111, 0, 0.5); } }
-        .content { padding: 50px 40px; }
-        .step { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 24px; padding: 45px; margin-bottom: 30px; animation: stepAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; opacity: 0; transform: translateY(30px); }
-        .step:nth-child(1) { animation-delay: 0.1s; }
-        .step:nth-child(2) { animation-delay: 0.2s; }
-        .step:nth-child(3) { animation-delay: 0.3s; }
-        .step:nth-child(4) { animation-delay: 0.4s; }
-        .step:nth-child(5) { animation-delay: 0.5s; }
-        @keyframes stepAppear { to { opacity: 1; transform: translateY(0); } }
-        .step-title { color: var(--accent-light); margin-bottom: 40px; display: flex; align-items: center; gap: 20px; font-size: 28px; font-weight: 700; }
-        .step-number { width: 65px; height: 65px; background: var(--gradient-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 26px; color: white; animation: numberGlow 3s infinite; box-shadow: 0 8px 25px rgba(255, 111, 0, 0.4); }
-        @keyframes numberGlow { 0%, 100% { box-shadow: 0 8px 25px rgba(255, 111, 0, 0.3); } 50% { box-shadow: 0 12px 35px rgba(255, 111, 0, 0.5); } }
-        .input-group { margin-bottom: 30px; position: relative; }
-        .input-group label { display: block; margin-bottom: 14px; color: rgba(255, 255, 255, 0.95); font-weight: 600; font-size: 17px; display: flex; align-items: center; gap: 12px; }
-        .input-group label i { color: var(--accent); font-size: 20px; width: 24px; text-align: center; }
-        .input-group input { width: 100%; padding: 20px 24px; background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 14px; color: white; font-size: 17px; transition: all 0.3s ease; outline: none; }
-        .input-group input::placeholder { color: rgba(255, 255, 255, 0.4); }
-        .input-group input:focus { border-color: var(--accent); background: rgba(0, 0, 0, 0.4); box-shadow: 0 0 0 4px rgba(255, 111, 0, 0.15); transform: translateY(-2px); }
-        .char-counter { position: absolute; left: 20px; bottom: 24px; font-size: 13px; color: rgba(255, 255, 255, 0.5); background: rgba(0, 0, 0, 0.4); padding: 6px 14px; border-radius: 20px; font-weight: 600; transition: all 0.3s; }
-        .departments-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin: 35px 0; max-width: 800px; margin-left: auto; margin-right: auto; }
-        .department-card { background: rgba(255, 255, 255, 0.03); border: 2px solid rgba(255, 255, 255, 0.08); border-radius: 18px; padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; backdrop-filter: blur(10px); }
-        .department-card.selected { border-color: var(--accent); background: rgba(255, 111, 0, 0.08); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(255, 111, 0, 0.25); }
-        .department-icon { width: 75px; height: 75px; margin: 0 auto 20px; border-radius: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); transition: all 0.3s ease; }
-        .department-icon i { font-size: 36px; color: white; }
-        .health .department-icon { background: var(--gradient-health); }
-        .interior .department-icon { background: var(--gradient-interior); }
-        .justice .department-icon { background: var(--gradient-justice); }
-        .citizen .department-icon { background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%); }
-        .ranks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; margin-top: 30px; max-height: 550px; overflow-y: auto; padding: 15px; }
-        .rank-item { background: rgba(0, 0, 0, 0.3); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 22px 18px; text-align: center; cursor: pointer; transition: all 0.3s ease; color: rgba(255, 255, 255, 0.9); font-weight: 600; }
-        .rank-item.selected { background: linear-gradient(135deg, rgba(255, 111, 0, 0.25), rgba(26, 35, 126, 0.3)); border-color: var(--accent); color: white; transform: translateY(-4px); }
-        .additionals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; margin: 35px 0; }
-        .additional-item { background: rgba(0, 0, 0, 0.25); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 28px 24px; cursor: pointer; transition: all 0.3s ease; }
-        .additional-item.selected { background: linear-gradient(135deg, rgba(255, 111, 0, 0.15), rgba(26, 35, 126, 0.25)); border-color: var(--accent); }
-        .btn { background: var(--gradient-accent); color: white; border: none; padding: 22px 45px; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.4s ease; display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%; margin-top: 35px; box-shadow: 0 10px 35px rgba(255, 111, 0, 0.35); }
-        .btn-secondary { background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.2); box-shadow: none; }
-        .btn-group { display: flex; gap: 25px; margin-top: 40px; }
-        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin: 35px 0; }
-        .summary-item { background: rgba(0, 0, 0, 0.3); padding: 25px; border-radius: 18px; border-left: 5px solid var(--accent); }
-        .terms-container { background: rgba(255, 111, 0, 0.06); border-radius: 18px; padding: 30px; margin: 35px 0; border: 1px solid rgba(255, 111, 0, 0.2); }
-        .term-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 18px; padding: 18px; background: rgba(0, 0, 0, 0.25); border-radius: 12px; }
-        .file-upload-label { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 30px; background: rgba(0, 0, 0, 0.2); border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 16px; cursor: pointer; }
-        .image-preview img { width: 100%; max-width: 500px; border-radius: 16px; border: 3px solid var(--accent); margin-top: 20px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--gradient-dark); min-height: 100vh; color: var(--light); display: flex; justify-content: center; align-items: center; padding: 20px; overflow-x: hidden; }
+        
+        /* شاشة التحميل */
+        .loading-screen { position: fixed; inset: 0; background: var(--gradient-dark); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
+        .loading-spinner { width: 60px; height: 60px; border: 5px solid rgba(255, 111, 0, 0.2); border-top: 5px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .container { width: 100%; max-width: 1100px; background: var(--glass-dark); backdrop-filter: blur(20px); border-radius: 24px; overflow: hidden; border: 1px solid var(--border); position: relative; }
+        .header { background: linear-gradient(135deg, #1a237e 0%, #3f51b5 100%); padding: 40px; text-align: center; border-bottom: 4px solid var(--accent); }
+        .kr-badge { position: absolute; top: 20px; left: 20px; background: var(--accent); padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; }
+        
+        .content { padding: 40px; }
+        .step { background: rgba(255,255,255,0.03); padding: 30px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 20px; display: none; }
+        .step.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 10px; color: var(--accent-light); font-weight: 600; }
+        .input-group input { width: 100%; padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: white; outline: none; transition: 0.3s; }
+        .input-group input:focus { border-color: var(--accent); background: rgba(0,0,0,0.5); }
+
+        .departments-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
+        .department-card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
+        .department-card.selected { border-color: var(--accent); background: rgba(255, 111, 0, 0.2); transform: translateY(-5px); }
+        
+        .btn { padding: 15px 30px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; width: 100%; margin-top: 10px; font-size: 16px; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: var(--accent-dark); transform: scale(1.02); }
+        .btn-secondary { background: #333; color: white; }
+        
+        .status-message { padding: 30px; border-radius: 20px; text-align: center; display: none; }
+        .status-message.show { display: block; animation: fadeIn 0.5s ease; }
+
+        .file-upload-label { display: flex; flex-direction: column; align-items: center; padding: 25px; background: rgba(0,0,0,0.2); border: 2px dashed var(--border); border-radius: 15px; cursor: pointer; transition: 0.3s; }
+        .file-upload-label:hover { border-color: var(--accent); background: rgba(255,111,0,0.05); }
+        .image-preview img { width: 120px; height: 120px; object-fit: cover; border-radius: 10px; margin-top: 15px; border: 2px solid var(--accent); }
     </style>
 </head>
 <body>
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">جاري التحقق...</div>
+
+<div class="loading-screen" id="loadingScreen">
+    <div class="loading-spinner"></div>
+    <div style="margin-top: 20px; color: var(--accent); font-weight: bold;">جاري فحص حالة هويتك الرقمية...</div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div class="kr-badge">KR OFFICIAL</div>
+        <h1 id="mainTitle">نظام تفعيل الهوية الرقمي</h1>
+        <p style="opacity: 0.8;">الجهة الرقمية المسؤولة - KR</p>
     </div>
 
-    <div class="container">
-        <div class="header">
-            <div class="kr-badge"><i class="fas fa-crown"></i> KR OFFICIAL</div>
-            <div class="logo-container">
-                <div class="logo">
-                    <div class="logo-icon"><i class="fas fa-id-card"></i></div>
-                    <h1>نظام تفعيل الهوية الرقمي</h1>
-                    <p><i class="fas fa-shield-alt"></i> الجهة الرقمية المسؤولة - KR</p>
+    <div class="content">
+        <div id="previousRequestMessage"></div>
+
+        <div id="applicationForm">
+            <div class="step active" id="step1">
+                <h3 style="margin-bottom:20px; color: var(--accent);"><i class="fas fa-user-edit"></i> البيانات الشخصية</h3>
+                <div class="input-group">
+                    <label>الاسم الكامل (ثلاثي)</label>
+                    <input type="text" id="fullName" placeholder="ادخل اسمك الثلاثي الصحيح">
                 </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="input-group">
+                        <label>العمر</label>
+                        <input type="number" id="age" placeholder="18+">
+                    </div>
+                    <div class="input-group">
+                        <label>رقم الهوية (الآيدي)</label>
+                        <input type="text" id="gameId" maxlength="10" placeholder="10 أرقام">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>اسم المستخدم في اللعبة</label>
+                    <input type="text" id="gameUsername" placeholder="In-game Name">
+                </div>
+                <div class="input-group">
+                    <label>اسم المستخدم في ديسكورد</label>
+                    <input type="text" id="discordUsername" placeholder="Discord User">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="input-group">
+                        <label>صورة الهوية</label>
+                        <label for="nationalIdImage" class="file-upload-label">
+                            <i class="fas fa-id-card"></i>
+                            <input type="file" id="nationalIdImage" hidden accept="image/*" onchange="previewImg(this, 'p1')">
+                            <div id="p1" class="image-preview"></div>
+                        </label>
+                    </div>
+                    <div class="input-group">
+                        <label>صورة الشخصية</label>
+                        <label for="characterImage" class="file-upload-label">
+                            <i class="fas fa-user-circle"></i>
+                            <input type="file" id="characterImage" hidden accept="image/*" onchange="previewImg(this, 'p2')">
+                            <div id="p2" class="image-preview"></div>
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="nextStep(2)">الاستمرار للتصنيف <i class="fas fa-arrow-left"></i></button>
+            </div>
+
+            <div class="step" id="step2">
+                <h3 style="margin-bottom:20px; color: var(--accent);"><i class="fas fa-shield-alt"></i> اختيار قطاع العمل</h3>
+                <div class="departments-grid">
+                    <div class="department-card" onclick="selectDept('وزارة الصحة', this)"><i class="fas fa-heartbeat"></i><br>وزارة الصحة</div>
+                    <div class="department-card" onclick="selectDept('وزارة الداخلية', this)"><i class="fas fa-shield-alt"></i><br>وزارة الداخلية</div>
+                    <div class="department-card" onclick="selectDept('وزارة العدل', this)"><i class="fas fa-gavel"></i><br>وزارة العدل</div>
+                    <div class="department-card" onclick="selectDept('مواطن', this)"><i class="fas fa-user"></i><br>مواطن</div>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button class="btn btn-secondary" onclick="nextStep(1)">رجوع</button>
+                    <button class="btn btn-primary" onclick="nextStep(3)">تأكيد الطلب</button>
+                </div>
+            </div>
+
+            <div class="step" id="step3">
+                <h3 style="text-align:center; color: var(--success);"><i class="fas fa-file-signature"></i> مراجعة نهائية</h3>
+                <div id="summaryText" style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 15px; margin: 20px 0; line-height: 2;"></div>
+                <button class="btn btn-primary" onclick="submitToFirebase()" style="background: var(--success);">إرسال لمدير النظام</button>
+                <button class="btn btn-secondary" onclick="nextStep(2)">تعديل</button>
             </div>
         </div>
 
-        <div class="content">
-            <div id="applicationForm" style="display: none;">
-                <div class="step" id="step1">
-                    <div class="step-title"><div class="step-number">1</div><span>البيانات الأساسية</span></div>
-                    <div class="input-group">
-                        <label><i class="fas fa-user"></i><span>الاسم الكامل ثلاثي</span></label>
-                        <input type="text" id="fullName" placeholder="الاسم بالعربي">
-                    </div>
-                    <div class="input-group">
-                        <label><i class="fas fa-gamepad"></i><span>اسم المستخدم في اللعبة</span></label>
-                        <input type="text" id="gameUsername" placeholder="Ahmed_KR">
-                    </div>
-                    <div class="input-group">
-                        <label><i class="fas fa-fingerprint"></i><span>رقم الهوية في اللعبة</span></label>
-                        <input type="text" id="gameId" maxlength="10">
-                    </div>
-                    <div class="input-group">
-                        <label><i class="fas fa-id-card"></i><span>صورة الهوية الوطنية في اللعبة</span></label>
-                        <input type="file" id="nationalIdImage" accept="image/*" onchange="handleImageUpload(this, 'nationalIdPreview')" style="display:none">
-                        <label for="nationalIdImage" class="file-upload-label"><i class="fas fa-cloud-upload-alt"></i><span>اضغط لاختيار الصورة</span></label>
-                        <div id="nationalIdPreview" class="image-preview"></div>
-                    </div>
-                    <button class="btn" onclick="showStep2()">التالي</button>
-                </div>
-
-                <div class="step" id="step2" style="display: none;">
-                    <div class="step-title"><div class="step-number">2</div><span>اختر التصنيف</span></div>
-                    <div class="departments-grid">
-                        <div class="department-card health" onclick="selectDepartment(this, 'health')"><div class="department-icon"><i class="fas fa-heartbeat"></i></div><h4>وزارة الصحة</h4></div>
-                        <div class="department-card interior" onclick="selectDepartment(this, 'interior')"><div class="department-icon"><i class="fas fa-shield-alt"></i></div><h4>وزارة الداخلية</h4></div>
-                        <div class="department-card justice" onclick="selectDepartment(this, 'justice')"><div class="department-icon"><i class="fas fa-gavel"></i></div><h4>وزارة العدل</h4></div>
-                        <div class="department-card citizen" onclick="selectDepartment(this, 'citizen')"><div class="department-icon"><i class="fas fa-user"></i></div><h4>مواطن</h4></div>
-                    </div>
-                    <button class="btn" onclick="showStep3()">التالي</button>
-                </div>
-
-                <div class="step" id="step3" style="display: none;">
-                    <div class="step-title"><div class="step-number">3</div><span>اختر الرتبة</span></div>
-                    <div id="ranksContainer"></div>
-                    <button class="btn" onclick="showStep5()">التالي</button>
-                </div>
-
-                <div class="step" id="step5" style="display: none;">
-                    <div class="step-title"><div class="step-number">5</div><span>تأكيد وإرسال</span></div>
-                    <div class="terms-container">
-                        <div class="term-item"><input type="checkbox" id="agreeTerms1"><label for="agreeTerms1">أوافق على صحة المعلومات</label></div>
-                    </div>
-                    <button class="btn" onclick="submitRequest()">إرسال الطلب</button>
-                </div>
-            </div>
-
-            <div class="success-message" id="successMessage" style="display: none; text-align: center;">
-                <i class="fas fa-check-circle" style="font-size: 80px; color: var(--success);"></i>
-                <h2>تم إرسال طلبك بنجاح!</h2>
-                <p>سيتم المراجعة من قبل الإدارة</p>
-            </div>
+        <div id="successMessage" class="status-message">
+            <i class="fas fa-hourglass-half" style="font-size:70px; color:var(--warning); margin-bottom: 20px;"></i>
+            <h2 id="statusTitle">طلبك قيد المراجعة الفنية</h2>
+            <p id="dynamicStatusMsg" style="margin-top: 15px; opacity: 0.8;">سيقوم أحد مسؤولي الهيئة بمراجعة بياناتك وصور الهوية المرفقة قريباً.</p>
         </div>
     </div>
+</div>
 
 <script>
-// --- إعدادات Firebase لربطها بلوحة التحكم ---
-const firebaseConfig = {
-    databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/"
-};
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+    // --- الربط بـ Firebase ---
+    const firebaseConfig = { databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/" };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-const DEPARTMENTS = {
-    health: { name: 'وزارة الصحة', ranks: ['مسعف', 'ممرض', 'دكتور', 'وزير الصحة'] },
-    interior: { name: 'وزارة الداخلية', ranks: ['جندي', 'رقيب', 'ملازم', 'وزير الداخلية'] },
-    justice: { name: 'وزارة العدل', ranks: ['محامي', 'قاضي', 'وزير العدل'] },
-    citizen: { name: 'مواطن', ranks: ['مواطن'] }
-};
+    let selectedDeptName = "";
+    let uploadedImg1 = "", uploadedImg2 = "";
 
-let selectedDept = null, selectedRank = null, uploadedImg = "";
+    function previewImg(input, pId) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById(pId).innerHTML = `<img src="${e.target.result}">`;
+                if(pId === 'p1') uploadedImg1 = e.target.result;
+                else uploadedImg2 = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
-function handleImageUpload(input, previewId) {
-    const file = input.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        uploadedImg = e.target.result;
-        document.getElementById(previewId).innerHTML = `<img src="${uploadedImg}">`;
+    function nextStep(s) {
+        if(s === 2 && (!document.getElementById('fullName').value || !uploadedImg1)) {
+            alert("يرجى تعبئة الاسم وإرفاق صورة الهوية أولاً"); return;
+        }
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById('step' + s).classList.add('active');
+        if(s === 3) {
+            document.getElementById('summaryText').innerHTML = `
+                <b>الاسم:</b> ${document.getElementById('fullName').value}<br>
+                <b>الآيدي:</b> ${document.getElementById('gameId').value}<br>
+                <b>القطاع:</b> ${selectedDeptName}
+            `;
+        }
+    }
+
+    function selectDept(name, el) {
+        selectedDeptName = name;
+        document.querySelectorAll('.department-card').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function getDeviceId() {
+        let id = localStorage.getItem('kr_device_id');
+        if(!id) { id = 'DEV-' + Math.random().toString(36).substr(2, 9); localStorage.setItem('kr_device_id', id); }
+        return id;
+    }
+
+    function submitToFirebase() {
+        const data = {
+            id: 'KR-' + Date.now().toString().slice(-6),
+            deviceId: getDeviceId(),
+            fullName: document.getElementById('fullName').value,
+            age: document.getElementById('age').value,
+            gameUsername: document.getElementById('gameUsername').value,
+            discordUsername: document.getElementById('discordUsername').value,
+            gameId: document.getElementById('gameId').value,
+            departmentName: selectedDeptName,
+            nationalIdImage: uploadedImg1,
+            characterImage: uploadedImg2,
+            status: 'pending',
+            date: new Date().toLocaleString('ar-SA')
+        };
+
+        db.ref('orders/' + data.id).set(data).then(() => {
+            document.getElementById('applicationForm').style.display = 'none';
+            document.getElementById('successMessage').classList.add('show');
+            startMonitoring();
+        });
+    }
+
+    function startMonitoring() {
+        const devId = getDeviceId();
+        db.ref('orders').on('value', (snapshot) => {
+            const orders = snapshot.val();
+            for(let key in orders) {
+                if(orders[key].deviceId === devId) {
+                    const status = orders[key].status;
+                    
+                    if(status === 'accepted') {
+                        window.location.href = 'kr-digital-platform.html';
+                    } 
+                    else if(status === 'extended') {
+                        document.getElementById('statusTitle').innerText = "تم تمديد فترة المراجعة";
+                        document.getElementById('dynamicStatusMsg').innerHTML = 
+                            "<b style='color:var(--warning)'>لقد تم تمديد مهلة المراجعة لمراجعة معلوماتك بشكل صحيح، يرجى الانتظار.</b>";
+                    }
+                    else if(status === 'rejected') {
+                        handleReject(key);
+                    }
+                }
+            }
+        });
+    }
+
+    function handleReject(key) {
+        db.ref('orders/' + key).remove();
+        document.getElementById('successMessage').style.display = 'none';
+        const msgZone = document.getElementById('previousRequestMessage');
+        msgZone.innerHTML = `
+            <div style="background:var(--danger); padding:30px; border-radius:20px; text-align:center; margin-bottom:20px;">
+                <i class="fas fa-user-times" style="font-size:50px;"></i>
+                <h2>لقد تم رفض تقديمك من قبل إدارة النظام</h2>
+                <p>قم بالتقديم مرة أخرى وكتابة المعلومات بشكل صحيح.</p>
+            </div>`;
+        
+        setTimeout(() => { location.reload(); }, 10000);
+    }
+
+    window.onload = () => {
+        const devId = getDeviceId();
+        db.ref('orders').once('value', (snap) => {
+            const data = snap.val();
+            let hasOrder = false;
+            for(let k in data) {
+                if(data[k].deviceId === devId) {
+                    hasOrder = true;
+                    document.getElementById('applicationForm').style.display = 'none';
+                    document.getElementById('successMessage').classList.add('show');
+                    startMonitoring();
+                }
+            }
+            document.getElementById('loadingScreen').style.fadeOut = "slow";
+            setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; }, 1000);
+        });
     };
-    reader.readAsDataURL(file);
-}
-
-function selectDepartment(el, dep) {
-    document.querySelectorAll('.department-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedDept = dep;
-}
-
-function showStep2() { document.getElementById('step1').style.display='none'; document.getElementById('step2').style.display='block'; }
-function showStep3() {
-    if(!selectedDept) return alert('اختر التصنيف');
-    const container = document.getElementById('ranksContainer');
-    container.innerHTML = `<div class="ranks-grid">${DEPARTMENTS[selectedDept].ranks.map(r => `<div class="rank-item" onclick="selectRank(this, '${r}')">${r}</div>`).join('')}</div>`;
-    document.getElementById('step2').style.display='none'; document.getElementById('step3').style.display='block';
-}
-function selectRank(el, r) {
-    document.querySelectorAll('.rank-item').forEach(i => i.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedRank = r;
-}
-function showStep5() { document.getElementById('step3').style.display='none'; document.getElementById('step5').style.display='block'; }
-
-// الدالة الأهم لإرسال البيانات للوحة التحكم
-function submitRequest() {
-    if(!document.getElementById('agreeTerms1').checked) return alert('يجب الموافقة على الشروط');
-    
-    document.getElementById('loadingScreen').style.display = 'flex';
-
-    const orderData = {
-        name: document.getElementById('fullName').value,
-        gameUser: document.getElementById('gameUsername').value,
-        idInGame: document.getElementById('gameId').value,
-        dept: selectedDept,
-        rank: selectedRank,
-        time: new Date().toLocaleString('ar-SA')
-    };
-
-    const newRef = database.ref('orders').push();
-    newRef.set(orderData).then(() => {
-        document.getElementById('applicationForm').style.display = 'none';
-        document.getElementById('successMessage').style.display = 'block';
-        document.getElementById('loadingScreen').style.display = 'none';
-    });
-}
-
-window.onload = () => { document.getElementById('loadingScreen').style.display = 'none'; document.getElementById('applicationForm').style.display = 'block'; };
 </script>
 </body>
 </html>
