@@ -1,49 +1,161 @@
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام تفعيل الهوية الرقمي - KR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <style>
+        /* سأبقي على تصميمك الرهيب كما هو */
+        :root {
+            --primary: #1a237e; --primary-dark: #0d1557; --primary-light: #3f51b5;
+            --accent: #ff6f00; --accent-dark: #e65100; --accent-light: #ff9800;
+            --health: #2196f3; --interior: #f44336; --justice: #4caf50;
+            --success: #00c853; --warning: #ffd600; --danger: #d50000;
+            --dark: #0d1117; --light: #ffffff; --gray: #8b949e;
+            --border: rgba(255, 255, 255, 0.1); --glass-dark: rgba(0, 0, 0, 0.3);
+            --gradient-dark: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%);
+        }
+        /* ... هنا تضع باقي الـ CSS الخاص بك ... */
+        /* (للاختصار سأنتقل مباشرة لجزء الـ Body والـ Script لتعرف أين تضع الأكواد الضرورية) */
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">جاري التحقق من الأنظمة...</div>
+    </div>
+
+    <div class="container">
+        </div>
 
 <script>
-// 1. إعداد الاتصال (تأكد أن هذا الكود هو نفس الموجود في لوحة التحكم)
-const firebaseConfig = {
+// ==========================================
+// 1. الأكواد الضرورية جداً (الربط والتشغيل)
+// ==========================================
+
+// رابط الويب هوك الخاص بك (ضعه هنا)
+const DISCORD_WEBHOOK = "ضع_رابط_الويب_هوك_هنا";
+
+// إعداد Firebase (استخدم نفس مشروعك)
+const firebaseConfig = { 
     databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/" 
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// 2. دالة إرسال الطلب (المعدلة للعمل مع التصميم الجديد)
-function processSubmission() {
-    // جلب البيانات من الحقول
-    const name = document.getElementById('fullName').value;
-    const gId = document.getElementById('gameId').value;
-    const age = document.getElementById('age').value;
-    const dept = document.getElementById('deptSelect').value;
+// متغيرات النظام
+let selectedDepartment = null, selectedRank = null, selectedAdditionals = [], 
+    uploadedNationalId = null, uploadedCharacterImage = null;
 
-    if(!name || !gId) {
-        alert("يرجى تعبئة الحقول الأساسية");
+// دالة جلب معرف الجهاز (لمنع التكرار)
+function getDeviceId() {
+    let id = localStorage.getItem('kr_device_token');
+    if (!id) {
+        id = 'KR-' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('kr_device_token', id);
+    }
+    return id;
+}
+
+// دالة إرسال الطلب (الزبدة)
+async function submitRequest() {
+    // التأكد من الشروط
+    if (!document.getElementById('agreeTerms1').checked) {
+        showAlert('يجب الموافقة على الشروط أولاً', false);
         return;
     }
 
-    const orderId = 'KR-' + Math.floor(Math.random() * 100000);
-    
-    // البيانات التي ستصل للوحة التحكم
     const requestData = {
-        id: orderId,
-        fullName: name,
-        gameId: gId,
-        age: age,
-        departmentName: dept, // هذا هو الحقل الذي تقرأه لوحة التحكم عادة
-        status: 'pending',    // الحالة الافتراضية لتظهر في "الطلبات الجديدة"
+        id: 'REQ-' + Date.now().toString().slice(-6),
+        deviceId: getDeviceId(),
+        fullName: document.getElementById('fullName').value,
+        age: document.getElementById('age').value,
+        gameId: document.getElementById('gameId').value,
+        gameUsername: document.getElementById('gameUsername').value,
+        discordUsername: document.getElementById('discordUsername').value,
+        departmentName: DEPARTMENTS[selectedDepartment].name,
+        rank: selectedRank,
+        additionals: selectedAdditionals,
+        nationalIdImage: uploadedNationalId, // الصورة مرفوعة
+        characterImage: uploadedCharacterImage,
+        status: 'pending',
         date: new Date().toLocaleString('ar-SA')
     };
 
-    // الإرسال الفعلي
-    db.ref('orders/' + orderId).set(requestData)
-    .then(() => {
-        alert("تم إرسال طلبك بنجاح! رقم الطلب: " + orderId);
-        // يمكنك هنا توجيه المستخدم لصفحة الانتظار
-    })
-    .catch((error) => {
-        console.error("خطأ في الإرسال:", error);
-        alert("فشل الإرسال، تأكد من إعدادات Firebase");
+    // 1. حفظ في Firebase للمراجعة
+    await db.ref('orders/' + requestData.id).set(requestData);
+
+    // 2. إرسال للديسكورد فوراً
+    sendToDiscord(requestData);
+
+    // 3. عرض رسالة النجاح وبدء المراقبة
+    showSuccessMessage(requestData);
+    startMonitoring(requestData.id);
+}
+
+// دالة إرسال للديسكورد (Webhook)
+function sendToDiscord(data) {
+    if (DISCORD_WEBHOOK === "ضع_رابط_الويب_هوك_هنا") return;
+
+    const payload = {
+        username: "نظام تفعيل KR",
+        embeds: [{
+            title: "🔔 طلب تفعيل جديد",
+            color: 16743168,
+            fields: [
+                { name: "👤 الاسم", value: data.fullName, inline: true },
+                { name: "🆔 الآيدي", value: data.gameId, inline: true },
+                { name: "🏢 الجهة", value: data.departmentName, inline: true },
+                { name: "🏅 الرتبة", value: data.rank, inline: true }
+            ],
+            footer: { text: "ID الجهاز: " + data.deviceId }
+        }]
+    };
+
+    fetch(DISCORD_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
     });
 }
+
+// دالة المراقبة (لو تم قبولك من الآدمن الصفحة تفتح تلقائياً)
+function startMonitoring(orderId) {
+    db.ref('orders/' + orderId).on('value', (snap) => {
+        const val = snap.val();
+        if (val && val.status === 'accepted') {
+            // تحويل المستخدم فوراً للمنصة
+            window.location.href = 'kr-digital-platform.html';
+        } else if (val && val.status === 'rejected') {
+            alert("للأسف تم رفض طلبك، يرجى مراجعة الإدارة");
+            location.reload();
+        }
+    });
+}
+
+// عند تشغيل الصفحة: تحقق هل الجهاز عنده طلب قديم؟
+window.onload = () => {
+    const myId = getDeviceId();
+    db.ref('orders').once('value', (snap) => {
+        const allOrders = snap.val();
+        for (let key in allOrders) {
+            if (allOrders[key].deviceId === myId) {
+                // إذا وجدنا طلب سابق لنفس الجهاز
+                showSuccessMessage(allOrders[key]);
+                startMonitoring(key);
+                break;
+            }
+        }
+        document.getElementById('loadingScreen').style.display = 'none';
+        document.getElementById('applicationForm').style.display = 'block';
+    });
+};
+
+// ... (باقي دوال الـ Navigation والـ Image Upload التي في كودك) ...
 </script>
+</body>
+</html>
