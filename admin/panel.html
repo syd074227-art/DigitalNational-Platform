@@ -1,87 +1,639 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم التفعيل</title>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <title>لوحة تحكم الإدارة - KR System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+```
+    body {
+        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        min-height: 100vh;
+        color: #fff;
+        padding: 20px;
+    }
+    
+    .header {
+        background: linear-gradient(135deg, rgba(255, 111, 0, 0.9) 0%, rgba(230, 81, 0, 0.9) 100%);
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 40px rgba(255, 111, 0, 0.3);
+    }
+    
+    .header h1 {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+    
+    .header .subtitle {
+        opacity: 0.9;
+        font-size: 16px;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 25px;
+        transition: all 0.3s;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+    
+    .stat-card .icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+    
+    .stat-card.pending .icon { background: linear-gradient(135deg, #FFD600 0%, #FFA000 100%); }
+    .stat-card.accepted .icon { background: linear-gradient(135deg, #00C853 0%, #009624 100%); }
+    .stat-card.rejected .icon { background: linear-gradient(135deg, #D50000 0%, #B71C1C 100%); }
+    .stat-card.total .icon { background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); }
+    
+    .stat-card .number {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+    
+    .stat-card .label {
+        font-size: 14px;
+        opacity: 0.7;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .filters {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+        padding: 12px 24px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    .filter-btn:hover {
+        background: rgba(255, 111, 0, 0.2);
+        border-color: #ff6f00;
+    }
+    
+    .filter-btn.active {
+        background: linear-gradient(135deg, #ff6f00 0%, #ff9800 100%);
+        border-color: #ff6f00;
+    }
+    
+    .requests-container {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 20px;
+    }
+    
+    .request-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 20px;
+        transition: all 0.3s;
+    }
+    
+    .request-card:hover {
+        transform: translateX(-5px);
+        box-shadow: 0 10px 30px rgba(255, 111, 0, 0.2);
+    }
+    
+    .request-card.pending { border-left: 5px solid #FFD600; }
+    .request-card.accepted { border-left: 5px solid #00C853; }
+    .request-card.rejected { border-left: 5px solid #D50000; }
+    
+    .request-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .request-id {
+        font-size: 20px;
+        font-weight: 700;
+        color: #ff6f00;
+    }
+    
+    .request-status {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    
+    .request-status.pending { background: rgba(255, 214, 0, 0.2); color: #FFD600; }
+    .request-status.accepted { background: rgba(0, 200, 83, 0.2); color: #00C853; }
+    .request-status.rejected { background: rgba(213, 0, 0, 0.2); color: #D50000; }
+    
+    .request-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .info-item {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 12px;
+        border-radius: 10px;
+    }
+    
+    .info-label {
+        font-size: 12px;
+        opacity: 0.7;
+        margin-bottom: 5px;
+    }
+    
+    .info-value {
+        font-size: 15px;
+        font-weight: 600;
+    }
+    
+    .request-images {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .image-box {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.3);
+    }
+    
+    .image-box img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+    
+    .image-box:hover img {
+        transform: scale(1.05);
+    }
+    
+    .image-label {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+    }
+    
+    .request-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .action-btn {
+        flex: 1;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .action-btn.accept {
+        background: linear-gradient(135deg, #00C853 0%, #009624 100%);
+        color: #fff;
+    }
+    
+    .action-btn.accept:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 200, 83, 0.4);
+    }
+    
+    .action-btn.reject {
+        background: linear-gradient(135deg, #D50000 0%, #B71C1C 100%);
+        color: #fff;
+    }
+    
+    .action-btn.reject:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(213, 0, 0, 0.4);
+    }
+    
+    .action-btn.delete {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        flex: 0.3;
+    }
+    
+    .action-btn.delete:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .notes-input {
+        width: 100%;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        color: #fff;
+        font-size: 14px;
+        margin-top: 15px;
+        resize: vertical;
+        min-height: 80px;
+    }
+    
+    .notes-input:focus {
+        outline: none;
+        border-color: #ff6f00;
+        background: rgba(0, 0, 0, 0.4);
+    }
+    
+    .loading {
+        text-align: center;
+        padding: 50px;
+        font-size: 18px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+    }
+    
+    .empty-state i {
+        font-size: 80px;
+        opacity: 0.3;
+        margin-bottom: 20px;
+    }
+    
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .modal.show {
+        display: flex;
+    }
+    
+    .modal img {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 12px;
+    }
+    
+    .modal-close {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: #ff6f00;
+        color: #fff;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+    }
+    
+    @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .request-info {
+            grid-template-columns: 1fr;
+        }
+        
+        .request-actions {
+            flex-direction: column;
+        }
+        
+        .action-btn.delete {
+            flex: 1;
+        }
+    }
+</style>
+```
+
 </head>
 <body>
-    <h2>طلبات تفعيل الهوية</h2>
-    <div id="requestsContainer"></div>
+    <div class="header">
+        <h1><i class="fas fa-crown"></i> لوحة تحكم الإدارة</h1>
+        <div class="subtitle">نظام تفعيل الهوية الرقمي - KR Official</div>
+    </div>
 
-    <script>
-      // 🟢 Firebase config
-      const firebaseConfig = {
-        apiKey: "AIzaSyCuP4NMBR-hDYZjI88hrnP-maWRs9wDK_I",
-        authDomain: "myproject-7439e.firebaseapp.com",
-        projectId: "myproject-7439e",
-        storageBucket: "myproject-7439e.appspot.com",
-        messagingSenderId: "469567490419",
-        appId: "1:469567490419:web:ce6453c7f74d1863c61d06"
-      };
+```
+<div class="stats-grid">
+    <div class="stat-card pending">
+        <div class="icon"><i class="fas fa-clock"></i></div>
+        <div class="number" id="pendingCount">0</div>
+        <div class="label">قيد المراجعة</div>
+    </div>
+    
+    <div class="stat-card accepted">
+        <div class="icon"><i class="fas fa-check-circle"></i></div>
+        <div class="number" id="acceptedCount">0</div>
+        <div class="label">مقبول</div>
+    </div>
+    
+    <div class="stat-card rejected">
+        <div class="icon"><i class="fas fa-times-circle"></i></div>
+        <div class="number" id="rejectedCount">0</div>
+        <div class="label">مرفوض</div>
+    </div>
+    
+    <div class="stat-card total">
+        <div class="icon"><i class="fas fa-database"></i></div>
+        <div class="number" id="totalCount">0</div>
+        <div class="label">إجمالي الطلبات</div>
+    </div>
+</div>
 
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
+<div class="filters">
+    <button class="filter-btn active" onclick="filterRequests('all')">الكل</button>
+    <button class="filter-btn" onclick="filterRequests('pending')">قيد المراجعة</button>
+    <button class="filter-btn" onclick="filterRequests('accepted')">مقبول</button>
+    <button class="filter-btn" onclick="filterRequests('rejected')">مرفوض</button>
+</div>
 
-      const requestsContainer = document.getElementById("requestsContainer");
+<div class="requests-container" id="requestsContainer">
+    <div class="loading"><i class="fas fa-spinner fa-spin"></i> جاري تحميل الطلبات...</div>
+</div>
 
-      // 🟢 تحميل الطلبات pending
-      async function loadRequests() {
-        const snapshot = await db.collection("activation_requests")
-                                 .where("status", "==", "pending")
-                                 .orderBy("createdAt", "desc")
-                                 .get();
+<div class="modal" id="imageModal">
+    <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <img id="modalImage" src="" alt="صورة">
+</div>
 
-        requestsContainer.innerHTML = "";
-
-        if (snapshot.empty) {
-          requestsContainer.innerHTML = "<p>لا توجد طلبات حالياً.</p>";
-          return;
-        }
-
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const div = document.createElement("div");
-          div.style.border = "1px solid #ccc";
-          div.style.padding = "15px";
-          div.style.margin = "10px 0";
-          div.innerHTML = `
-            <p><strong>الاسم:</strong> ${data.fullName}</p>
-            <p><strong>رقم الهوية/اللعبة:</strong> ${data.gameId}</p>
-            <p><img src="${data.identityImage}" width="150"></p>
-            <button onclick="activateUser('${doc.id}', '${data.fullName}', '${data.gameId}', '${data.identityImage}')">تفعيل</button>
-          `;
-          requestsContainer.appendChild(div);
+<script type="module">
+    // Firebase Configuration
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getFirestore, collection, getDocs, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY_HERE",
+        authDomain: "your-project.firebaseapp.com",
+        projectId: "your-project-id",
+        storageBucket: "your-project.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "your-app-id"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    let allRequests = [];
+    let currentFilter = 'all';
+    
+    // الاستماع للتحديثات الفورية
+    const q = query(collection(db, "requests"), orderBy("createdAt", "desc"));
+    
+    onSnapshot(q, (querySnapshot) => {
+        allRequests = [];
+        querySnapshot.forEach((doc) => {
+            allRequests.push({ firestoreId: doc.id, ...doc.data() });
         });
-      }
-
-      // 🟢 تفعيل المستخدم
-      async function activateUser(docId, fullName, gameId, identityImage) {
-        try {
-          // تحديث حالة الطلب
-          await db.collection("activation_requests").doc(docId).update({
-            status: "active"
-          });
-
-          // حفظ بيانات مفعلة لتخزينها في LocalStorage عند دخول المستخدم
-          await db.collection("activated_users").doc(gameId).set({
-            fullName: fullName,
-            gameId: gameId,
-            characterImage: { data: identityImage },
-            activatedAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-
-          alert("تم تفعيل الطلب ✅");
-          loadRequests(); // إعادة تحميل الطلبات
-        } catch (err) {
-          alert("حدث خطأ: " + err.message);
+        
+        updateStats();
+        displayRequests();
+    });
+    
+    function updateStats() {
+        const pending = allRequests.filter(r => r.status === 'pending').length;
+        const accepted = allRequests.filter(r => r.status === 'accepted').length;
+        const rejected = allRequests.filter(r => r.status === 'rejected').length;
+        
+        document.getElementById('pendingCount').textContent = pending;
+        document.getElementById('acceptedCount').textContent = accepted;
+        document.getElementById('rejectedCount').textContent = rejected;
+        document.getElementById('totalCount').textContent = allRequests.length;
+    }
+    
+    window.filterRequests = function(filter) {
+        currentFilter = filter;
+        
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        displayRequests();
+    };
+    
+    function displayRequests() {
+        const container = document.getElementById('requestsContainer');
+        
+        let filtered = allRequests;
+        if (currentFilter !== 'all') {
+            filtered = allRequests.filter(r => r.status === currentFilter);
         }
-      }
+        
+        if (filtered.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><h3>لا توجد طلبات</h3></div>';
+            return;
+        }
+        
+        container.innerHTML = filtered.map(req => `
+            <div class="request-card ${req.status}">
+                <div class="request-header">
+                    <div class="request-id">#${req.id}</div>
+                    <span class="request-status ${req.status}">${getStatusText(req.status)}</span>
+                </div>
+                
+                <div class="request-info">
+                    <div class="info-item">
+                        <div class="info-label">الاسم</div>
+                        <div class="info-value">${req.fullName}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">العمر</div>
+                        <div class="info-value">${req.age} سنة</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">اسم المستخدم</div>
+                        <div class="info-value">${req.gameUsername}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">الديسكورد</div>
+                        <div class="info-value">${req.discordUsername}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">رقم الهوية</div>
+                        <div class="info-value">${req.gameId}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">الوزارة</div>
+                        <div class="info-value">${req.departmentName}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">الرتبة</div>
+                        <div class="info-value">${req.rank}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">التاريخ</div>
+                        <div class="info-value">${req.date}</div>
+                    </div>
+                </div>
+                
+                ${req.additionals && req.additionals.length > 0 ? `
+                <div class="info-item" style="margin-bottom: 20px;">
+                    <div class="info-label">المناصب الإدارية</div>
+                    <div class="info-value">${req.additionals.join(' • ')}</div>
+                </div>
+                ` : ''}
+                
+                <div class="request-images">
+                    <div class="image-box">
+                        <div class="image-label">الهوية الوطنية</div>
+                        <img src="${req.nationalIdImageURL}" alt="الهوية" onclick="showImage('${req.nationalIdImageURL}')">
+                    </div>
+                    <div class="image-box">
+                        <div class="image-label">صورة الشخصية</div>
+                        <img src="${req.characterImageURL}" alt="الشخصية" onclick="showImage('${req.characterImageURL}')">
+                    </div>
+                </div>
+                
+                ${req.adminNotes ? `
+                <div class="info-item" style="margin-bottom: 15px;">
+                    <div class="info-label">ملاحظات الإدارة</div>
+                    <div class="info-value">${req.adminNotes}</div>
+                </div>
+                ` : ''}
+                
+                ${req.status === 'pending' ? `
+                <textarea class="notes-input" id="notes-${req.firestoreId}" placeholder="ملاحظات الإدارة (اختياري)..."></textarea>
+                
+                <div class="request-actions">
+                    <button class="action-btn accept" onclick="handleAction('${req.firestoreId}', 'accepted')">
+                        <i class="fas fa-check"></i> قبول الطلب
+                    </button>
+                    <button class="action-btn reject" onclick="handleAction('${req.firestoreId}', 'rejected')">
+                        <i class="fas fa-times"></i> رفض الطلب
+                    </button>
+                    <button class="action-btn delete" onclick="deleteRequest('${req.firestoreId}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                ` : `
+                <div class="request-actions">
+                    <button class="action-btn delete" onclick="deleteRequest('${req.firestoreId}')" style="flex: 1;">
+                        <i class="fas fa-trash"></i> حذف الطلب
+                    </button>
+                </div>
+                `}
+            </div>
+        `).join('');
+    }
+    
+    function getStatusText(status) {
+        if (status === 'pending') return 'قيد المراجعة';
+        if (status === 'accepted') return 'مقبول';
+        if (status === 'rejected') return 'مرفوض';
+        return status;
+    }
+    
+    window.handleAction = async function(firestoreId, newStatus) {
+        const notes = document.getElementById(`notes-${firestoreId}`).value.trim();
+        
+        try {
+            const requestRef = doc(db, "requests", firestoreId);
+            await updateDoc(requestRef, {
+                status: newStatus,
+                adminNotes: notes,
+                updatedAt: new Date().toISOString(),
+                reviewedAt: new Date().toISOString()
+            });
+            
+            alert(`✅ تم ${newStatus === 'accepted' ? 'قبول' : 'رفض'} الطلب بنجاح!`);
+        } catch (error) {
+            console.error('خطأ:', error);
+            alert('❌ حدث خطأ: ' + error.message);
+        }
+    };
+    
+    window.deleteRequest = async function(firestoreId) {
+        if (!confirm('هل أنت متأكد من حذف هذا الطلب؟')) return;
+        
+        try {
+            await deleteDoc(doc(db, "requests", firestoreId));
+            alert('✅ تم حذف الطلب بنجاح!');
+        } catch (error) {
+            console.error('خطأ:', error);
+            alert('❌ حدث خطأ: ' + error.message);
+        }
+    };
+    
+    window.showImage = function(url) {
+        document.getElementById('modalImage').src = url;
+        document.getElementById('imageModal').classList.add('show');
+    };
+    
+    window.closeModal = function() {
+        document.getElementById('imageModal').classList.remove('show');
+    };
+</script>
+```
 
-      loadRequests();
-    </script>
 </body>
 </html>
