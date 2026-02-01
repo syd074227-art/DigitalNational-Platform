@@ -1,202 +1,49 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة التقديم | KR Digital ID</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-
-    <style>
-        :root {
-            --primary: #1a237e;
-            --accent: #ff6f00;
-            --dark: #0d1117;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-
-        body {
-            background: radial-gradient(circle at center, #1a237e 0%, #0d1117 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            padding: 20px;
-        }
-
-        .apply-card {
-            width: 100%;
-            max-width: 900px;
-            background: rgba(13, 17, 23, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-        }
-
-        /* الجزء الجانبي (المعلومات) */
-        .sidebar {
-            background: linear-gradient(180deg, var(--primary), #000);
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            border-left: 1px solid var(--border);
-        }
-
-        .sidebar h2 { color: var(--accent); font-size: 28px; margin-bottom: 15px; }
-        .sidebar p { font-size: 14px; line-height: 1.6; color: #ccc; }
-
-        /* الجزء الرئيسي (النموذج) */
-        .main-form { padding: 40px; max-height: 80vh; overflow-y: auto; }
-
-        .step-indicator { display: flex; gap: 10px; margin-bottom: 30px; }
-        .dot { height: 6px; flex: 1; background: var(--glass); border-radius: 10px; }
-        .dot.active { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
-
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--accent); }
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: white;
-            outline: none;
-            transition: 0.3s;
-        }
-        .input-group input:focus { border-color: var(--accent); background: rgba(255,255,255,0.1); }
-
-        .upload-area {
-            border: 2px dashed var(--border);
-            padding: 20px;
-            text-align: center;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .upload-area:hover { border-color: var(--accent); background: rgba(255, 111, 0, 0.05); }
-        .upload-area i { font-size: 30px; color: var(--accent); margin-bottom: 10px; }
-
-        .btn-submit {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 15px;
-            width: 100%;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
-            margin-top: 20px;
-        }
-        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 111, 0, 0.3); }
-
-        /* تحسين السكرول بار */
-        .main-form::-webkit-scrollbar { width: 5px; }
-        .main-form::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-
-        @media (max-width: 768px) {
-            .apply-card { grid-template-columns: 1fr; }
-            .sidebar { display: none; }
-        }
-    </style>
-</head>
-<body>
-
-<div class="apply-card">
-    <div class="sidebar">
-        <i class="fas fa-shield-alt" style="font-size: 50px; color: var(--accent); margin-bottom: 20px;"></i>
-        <h2>نظام KR</h2>
-        <p>مرحباً بك في بوابة التفعيل الرقمية. يرجى إدخال بياناتك بدقة لضمان سرعة قبول طلبك من قبل الإدارة الفنية.</p>
-        <div style="margin-top: 30px; font-size: 12px; color: #888;">
-            <i class="fas fa-lock"></i> تشفير البيانات 256-bit نشط
-        </div>
-    </div>
-
-    <div class="main-form">
-        <div class="step-indicator">
-            <div class="dot active"></div>
-            <div class="dot active"></div>
-            <div class="dot active"></div>
-        </div>
-
-        <h3 style="margin-bottom: 25px;">طلب تفعيل هوية جديد</h3>
-
-        <div class="input-group">
-            <label>الاسم الكامل</label>
-            <input type="text" id="fullName" placeholder="الاسم ثلاثي كما في اللعبة">
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div class="input-group">
-                <label>رقم الآيدي (ID)</label>
-                <input type="number" id="gameId" placeholder="10293">
-            </div>
-            <div class="input-group">
-                <label>العمر</label>
-                <input type="number" id="age" placeholder="18">
-            </div>
-        </div>
-
-        <div class="input-group">
-            <label>التصنيف الوظيفي</label>
-            <select id="deptSelect">
-                <option value="citizen">مواطن</option>
-                <option value="interior">وزارة الداخلية</option>
-                <option value="health">وزارة الصحة</option>
-                <option value="justice">وزارة العدل</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label>صورة الهوية الوطنية (داخل اللعبة)</label>
-            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                <i class="fas fa-id-card"></i>
-                <p id="fileName">اضغط لرفع الصورة</p>
-                <input type="file" id="fileInput" hidden onchange="updateFileName(this)">
-            </div>
-        </div>
-
-        <button class="btn-submit" onclick="processSubmission()">
-            <i class="fas fa-paper-plane"></i> إرسال الطلب للمراجعة
-        </button>
-    </div>
-</div>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
-    function updateFileName(input) {
-        const name = input.files[0] ? input.files[0].name : "اضغط لرفع الصورة";
-        document.getElementById('fileName').innerText = name;
-        document.getElementById('fileName').style.color = "#ff6f00";
+// 1. إعداد الاتصال (تأكد أن هذا الكود هو نفس الموجود في لوحة التحكم)
+const firebaseConfig = {
+    databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/" 
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// 2. دالة إرسال الطلب (المعدلة للعمل مع التصميم الجديد)
+function processSubmission() {
+    // جلب البيانات من الحقول
+    const name = document.getElementById('fullName').value;
+    const gId = document.getElementById('gameId').value;
+    const age = document.getElementById('age').value;
+    const dept = document.getElementById('deptSelect').value;
+
+    if(!name || !gId) {
+        alert("يرجى تعبئة الحقول الأساسية");
+        return;
     }
 
-    function processSubmission() {
-        // هنا نربط الكود مع دالة Firebase اللي ضبطناها قبل
-        const btn = document.querySelector('.btn-submit');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التشفير والإرسال...';
-        
-        // استدعاء دالة الإرسال الأصلية (الموجودة في الكود السابق)
-        if (typeof submitRequest === "function") {
-            submitRequest();
-        } else {
-            setTimeout(() => {
-                alert("تم الإرسال بنجاح (تأكد من دمج السكريبت الخاص بـ Firebase)");
-                btn.innerHTML = '<i class="fas fa-check"></i> تم الإرسال';
-            }, 2000);
-        }
-    }
+    const orderId = 'KR-' + Math.floor(Math.random() * 100000);
+    
+    // البيانات التي ستصل للوحة التحكم
+    const requestData = {
+        id: orderId,
+        fullName: name,
+        gameId: gId,
+        age: age,
+        departmentName: dept, // هذا هو الحقل الذي تقرأه لوحة التحكم عادة
+        status: 'pending',    // الحالة الافتراضية لتظهر في "الطلبات الجديدة"
+        date: new Date().toLocaleString('ar-SA')
+    };
+
+    // الإرسال الفعلي
+    db.ref('orders/' + orderId).set(requestData)
+    .then(() => {
+        alert("تم إرسال طلبك بنجاح! رقم الطلب: " + orderId);
+        // يمكنك هنا توجيه المستخدم لصفحة الانتظار
+    })
+    .catch((error) => {
+        console.error("خطأ في الإرسال:", error);
+        alert("فشل الإرسال، تأكد من إعدادات Firebase");
+    });
+}
 </script>
-
-</body>
-</html>
