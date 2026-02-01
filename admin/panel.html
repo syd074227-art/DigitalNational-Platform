@@ -3,219 +3,1601 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إدارة نظام الهيئة الرقمية KR</title>
+    <title>لوحة تحكم الإدارة - نظام تفعيل الهوية الرقمية KR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-
+    
     <style>
         :root {
-            --primary: #1a237e;
-            --accent: #ff6f00;
-            --success: #00c853;
-            --danger: #d50000;
-            --warning: #ffd600;
-            --dark-card: rgba(13, 17, 23, 0.95);
-            --border: rgba(255, 255, 255, 0.1);
-            --gradient-dark: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%);
+            --primary: #0d1b48;
+            --primary-dark: #091530;
+            --primary-light: #1c2e5a;
+            --accent: #c29a2d;
+            --accent-dark: #a8831a;
+            --accent-light: #d6b048;
+            --success: #2e7d32;
+            --warning: #ff9800;
+            --danger: #d32f2f;
+            --info: #0288d1;
+            --light: #ffffff;
+            --gray: #e0e0e0;
+            --dark-gray: #333333;
+            --border: rgba(194, 154, 45, 0.3);
+            --gradient: linear-gradient(135deg, #0d1b48 0%, #1c2e5a 50%, #0d1b48 100%);
+            --glass: rgba(255, 255, 255, 0.05);
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Cairo', sans-serif; }
-        body { background: var(--gradient-dark); color: white; min-height: 100vh; padding: 20px; }
-
-        .admin-header {
-            max-width: 1300px; margin: 0 auto 30px;
-            background: var(--dark-card); padding: 30px; border-radius: 24px;
-            border: 1px solid var(--border); border-bottom: 4px solid var(--accent);
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', 'Segoe UI', 'Arial', sans-serif;
         }
-
-        .search-section { display: flex; gap: 10px; flex-grow: 1; max-width: 700px; }
+        
+        body {
+            background: var(--gradient);
+            min-height: 100vh;
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        /* شاشة التحميل */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--gradient);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .loading-spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(194, 154, 45, 0.2);
+            border-top: 5px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* الحاوية الرئيسية */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* الشريط الجانبي */
+        .sidebar {
+            width: 280px;
+            background: rgba(13, 27, 72, 0.95);
+            backdrop-filter: blur(20px);
+            border-left: 3px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+        
+        .sidebar-header {
+            padding: 30px 25px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .admin-logo i {
+            font-size: 35px;
+            color: var(--accent);
+        }
+        
+        .admin-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        
+        .admin-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .sidebar-menu {
+            padding: 25px 0;
+            flex: 1;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-right: 3px solid transparent;
+        }
+        
+        .menu-item:hover {
+            background: rgba(194, 154, 45, 0.1);
+            color: var(--light);
+            border-right-color: var(--accent);
+        }
+        
+        .menu-item.active {
+            background: rgba(194, 154, 45, 0.15);
+            color: var(--accent);
+            border-right-color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .menu-item i {
+            margin-left: 15px;
+            font-size: 20px;
+            width: 25px;
+            text-align: center;
+        }
+        
+        .menu-badge {
+            background: var(--accent);
+            color: var(--primary-dark);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: auto;
+        }
+        
+        .sidebar-footer {
+            padding: 25px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .admin-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(194, 154, 45, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+        
+        .admin-name {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .admin-role {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(211, 47, 47, 0.2);
+            color: var(--light);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .logout-btn:hover {
+            background: var(--danger);
+        }
+        
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            margin-right: 280px;
+            padding: 20px;
+        }
+        
+        /* الهيدر العلوي */
+        .top-header {
+            background: rgba(13, 27, 72, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 20px 30px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title h1 {
+            color: var(--accent);
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header-title p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            text-align: center;
+            min-width: 150px;
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* فلتر الطلبات */
+        .filters-container {
+            background: rgba(13, 27, 72, 0.8);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+        
+        .filters-title {
+            color: var(--accent);
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .filter-label {
+            color: var(--accent-light);
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .filter-select {
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .filter-select:focus {
+            border-color: var(--accent);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
         .search-input {
-            flex-grow: 1; padding: 12px 20px; border-radius: 12px;
-            border: 1px solid var(--border); background: rgba(0,0,0,0.3);
-            color: white; outline: none; transition: 0.3s;
+            width: 100%;
+            padding: 12px 45px 12px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            outline: none;
         }
-        .search-input:focus { border-color: var(--accent); }
-
-        .orders-grid { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 25px; }
-
-        .order-card {
-            background: var(--dark-card); border-radius: 24px; border: 1px solid var(--border);
-            overflow: hidden; animation: slideUp 0.5s ease; position: relative;
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
         }
-
-        .card-header {
-            background: rgba(255,255,255,0.05); padding: 20px;
-            display: flex; justify-content: space-between; align-items: center;
+        
+        /* جدول الطلبات */
+        .requests-table-container {
+            background: rgba(13, 27, 72, 0.8);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+            overflow-x: auto;
         }
-
-        .card-body { padding: 25px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-
-        /* تفاصيل البيانات */
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .data-item { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid var(--border); }
-        .data-item label { display: block; color: var(--accent); font-size: 12px; font-weight: bold; margin-bottom: 5px; }
-        .data-item span { font-size: 15px; word-break: break-all; }
-
-        /* مراجعة الصور */
-        .photos-review { display: flex; flex-direction: column; gap: 15px; }
-        .photo-box { border: 2px solid var(--border); border-radius: 15px; overflow: hidden; position: relative; }
-        .photo-box img { width: 100%; height: 160px; object-fit: cover; cursor: pointer; transition: 0.3s; }
-        .photo-box img:hover { transform: scale(1.05); }
-        .photo-tag { position: absolute; bottom: 0; background: rgba(0,0,0,0.8); width: 100%; text-align: center; padding: 5px; font-size: 11px; color: var(--accent-light); }
-
-        /* أزرار التحكم الثلاثية */
-        .card-actions {
-            padding: 20px; background: rgba(0,0,0,0.2);
-            display: grid; grid-template-columns: 1.5fr 1.5fr 1.5fr 0.5fr; gap: 12px;
+        
+        .table-title {
+            color: var(--accent);
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-
-        .btn { 
-            padding: 14px; border-radius: 12px; border: none; cursor: pointer; 
-            font-weight: 800; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px;
+        
+        .refresh-btn {
+            background: var(--accent);
+            color: var(--primary-dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            transition: all 0.3s;
         }
-        .btn-extend { background: var(--warning); color: #000; }
-        .btn-accept { background: var(--success); color: #fff; }
-        .btn-reject { background: var(--danger); color: #fff; }
-        .btn-delete { background: #333; color: #fff; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-
-        .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: bold; }
-        .status-pending { background: #555; }
-        .status-extended { background: var(--warning); color: #000; }
-        .status-accepted { background: var(--success); }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .card-body { grid-template-columns: 1fr; } .card-actions { grid-template-columns: 1fr; } }
+        
+        .refresh-btn:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: var(--light);
+        }
+        
+        thead {
+            background: rgba(194, 154, 45, 0.1);
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        th {
+            padding: 18px 15px;
+            text-align: right;
+            color: var(--accent);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        td {
+            padding: 18px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .status-pending {
+            background: rgba(255, 152, 0, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+        
+        .status-accepted {
+            background: rgba(46, 125, 50, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        
+        .status-rejected {
+            background: rgba(211, 47, 47, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-view {
+            background: rgba(2, 136, 209, 0.2);
+            color: var(--info);
+            border: 1px solid var(--info);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-view:hover {
+            background: var(--info);
+            color: white;
+        }
+        
+        .btn-accept {
+            background: rgba(46, 125, 50, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-accept:hover {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-reject {
+            background: rgba(211, 47, 47, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-reject:hover {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-delete {
+            background: rgba(211, 47, 47, 0.1);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+        
+        /* نافذة عرض التفاصيل */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            display: none;
+        }
+        
+        .modal-container {
+            background: rgba(13, 27, 72, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 2px solid var(--accent);
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            color: var(--accent);
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .modal-close:hover {
+            background: rgba(194, 154, 45, 0.2);
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        
+        .detail-label {
+            color: var(--accent-light);
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .detail-value {
+            color: var(--light);
+            font-size: 18px;
+        }
+        
+        .images-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .image-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        .image-title {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .modal-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 2px solid var(--accent);
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+        }
+        
+        /* رسالة الحالة */
+        .alert-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 20px 25px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1001;
+            animation: slideIn 0.5s;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-right: 5px solid;
+        }
+        
+        .alert-success {
+            background: rgba(46, 125, 50, 0.9);
+            color: white;
+            border-right-color: var(--success);
+        }
+        
+        .alert-error {
+            background: rgba(211, 47, 47, 0.9);
+            color: white;
+            border-right-color: var(--danger);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        /* للجوال */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 250px;
+            }
+            
+            .main-content {
+                margin-right: 250px;
+            }
+            
+            .header-stats {
+                flex-wrap: wrap;
+            }
+            
+            .stat-card {
+                min-width: 120px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-right: 0;
+            }
+            
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 99;
+                background: var(--accent);
+                color: var(--primary-dark);
+                border: none;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                font-size: 20px;
+                cursor: pointer;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            }
+            
+            .details-grid,
+            .images-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        /* شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-light);
+        }
     </style>
 </head>
 <body>
 
-    <div class="admin-header">
-        <div>
-            <h1><i class="fas fa-id-card-alt"></i> إدارة النظام الهيئة الرقميه KR</h1>
-            <p style="color: var(--accent-light);">نظام التدقيق والمراجعة الشاملة للمتقدمين</p>
-        </div>
-        <div class="search-section">
-            <input type="text" id="searchInput" class="search-input" placeholder="ابحث بالاسم، الآيدي، اليوزر..." onkeyup="filterOrders()">
-            <select id="filterDept" class="search-input" style="max-width: 160px;" onchange="filterOrders()">
-                <option value="">كل القطاعات</option>
-                <option value="وزارة الصحة">وزارة الصحة</option>
-                <option value="وزارة الداخلية">وزارة الداخلية</option>
-                <option value="وزارة العدل">وزارة العدل</option>
-                <option value="مواطن">مواطن</option>
-            </select>
+<div class="loading-screen" id="loadingScreen">
+    <div class="loading-spinner"></div>
+    <div style="margin-top: 20px; color: var(--accent); font-weight: bold;">جاري تحميل لوحة التحكم...</div>
+</div>
+
+<!-- زر فتح القائمة للجوال -->
+<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- الشريط الجانبي -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="admin-logo">
+            <i class="fas fa-shield-alt"></i>
+            <div>
+                <div class="admin-title">لوحة تحكم KR</div>
+                <div class="admin-subtitle">نظام إدارة الهويات الرقمية</div>
+            </div>
         </div>
     </div>
-
-    <div id="ordersList" class="orders-grid">
+    
+    <div class="sidebar-menu">
+        <a href="#" class="menu-item active" onclick="showSection('dashboard')">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>لوحة التحكم</span>
+            <span class="menu-badge" id="pendingBadge">0</span>
+        </a>
+        <a href="#" class="menu-item" onclick="showSection('requests')">
+            <i class="fas fa-list-alt"></i>
+            <span>جميع الطلبات</span>
+        </a>
+        <a href="#" class="menu-item" onclick="showSection('pending')">
+            <i class="fas fa-clock"></i>
+            <span>الطلبات المعلقة</span>
+        </a>
+        <a href="#" class="menu-item" onclick="showSection('accepted')">
+            <i class="fas fa-check-circle"></i>
+            <span>الطلبات المقبولة</span>
+        </a>
+        <a href="#" class="menu-item" onclick="showSection('rejected')">
+            <i class="fas fa-times-circle"></i>
+            <span>الطلبات المرفوضة</span>
+        </a>
+        <a href="#" class="menu-item" onclick="showSection('reports')">
+            <i class="fas fa-chart-bar"></i>
+            <span>التقارير والإحصائيات</span>
+        </a>
+        <a href="#" class="menu-item" onclick="showSection('settings')">
+            <i class="fas fa-cog"></i>
+            <span>الإعدادات</span>
+        </a>
+    </div>
+    
+    <div class="sidebar-footer">
+        <div class="admin-info">
+            <div class="admin-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div>
+                <div class="admin-name">مدير النظام</div>
+                <div class="admin-role">المسؤول الرئيسي</div>
+            </div>
         </div>
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            تسجيل الخروج
+        </button>
+    </div>
+</div>
+
+<!-- المحتوى الرئيسي -->
+<div class="main-content">
+    <!-- قسم لوحة التحكم -->
+    <div class="dashboard-section" id="dashboardSection">
+        <div class="top-header">
+            <div class="header-title">
+                <h1>مرحباً بك في لوحة التحكم</h1>
+                <p>نظام إدارة طلبات تفعيل الهوية الرقمية</p>
+            </div>
+            <div class="header-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalRequests">0</div>
+                    <div class="stat-label">إجمالي الطلبات</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingRequests">0</div>
+                    <div class="stat-label">طلبات معلقة</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="acceptedRequests">0</div>
+                    <div class="stat-label">طلبات مقبولة</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="rejectedRequests">0</div>
+                    <div class="stat-label">طلبات مرفوضة</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="filters-container">
+            <div class="filters-title">
+                <i class="fas fa-filter"></i>
+                فلتر الطلبات
+            </div>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">حالة الطلب</label>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="all">جميع الحالات</option>
+                        <option value="pending">معلق</option>
+                        <option value="accepted">مقبول</option>
+                        <option value="rejected">مرفوض</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">التصنيف</label>
+                    <select class="filter-select" id="departmentFilter">
+                        <option value="all">جميع التصنيفات</option>
+                        <option value="مواطن">مواطن</option>
+                        <option value="وزارة الداخلية">وزارة الداخلية</option>
+                        <option value="وزارة العدل">وزارة العدل</option>
+                        <option value="وزارة الصحة">وزارة الصحة</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">الفترة الزمنية</label>
+                    <select class="filter-select" id="timeFilter">
+                        <option value="all">جميع الأوقات</option>
+                        <option value="today">اليوم</option>
+                        <option value="week">أسبوع</option>
+                        <option value="month">شهر</option>
+                    </select>
+                </div>
+                <div class="filter-group search-box">
+                    <label class="filter-label">بحث</label>
+                    <input type="text" class="search-input" id="searchInput" placeholder="ابحث بالاسم أو رقم الطلب...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="requests-table-container">
+            <div class="table-title">
+                <span>الطلبات الأخيرة</span>
+                <button class="refresh-btn" onclick="loadRequests()">
+                    <i class="fas fa-sync-alt"></i>
+                    تحديث البيانات
+                </button>
+            </div>
+            
+            <table id="requestsTable">
+                <thead>
+                    <tr>
+                        <th>رقم الطلب</th>
+                        <th>الاسم الكامل</th>
+                        <th>التصنيف</th>
+                        <th>الرتبة</th>
+                        <th>تاريخ الطلب</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="requestsTableBody">
+                    <!-- سيتم ملؤها بواسطة JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- قسم التقارير -->
+    <div class="dashboard-section" id="reportsSection" style="display: none;">
+        <div class="top-header">
+            <div class="header-title">
+                <h1>التقارير والإحصائيات</h1>
+                <p>تحليلات وإحصائيات مفصلة عن الطلبات</p>
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            <div class="stat-card">
+                <div class="stat-number" id="chartTotal">0</div>
+                <div class="stat-label">إجمالي الطلبات</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="chartPending">0</div>
+                <div class="stat-label">نسبة المعلقة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="chartAccepted">0</div>
+                <div class="stat-label">نسبة المقبولة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="chartRejected">0</div>
+                <div class="stat-label">نسبة المرفوضة</div>
+            </div>
+        </div>
+        
+        <div style="background: rgba(13, 27, 72, 0.8); padding: 25px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 30px;">
+            <h3 style="color: var(--accent); margin-bottom: 20px;">توزيع الطلبات حسب التصنيف</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;" id="departmentStats">
+                <!-- سيتم ملؤها بواسطة JavaScript -->
+            </div>
+        </div>
+        
+        <div style="background: rgba(13, 27, 72, 0.8); padding: 25px; border-radius: 15px; border: 1px solid var(--border);">
+            <h3 style="color: var(--accent); margin-bottom: 20px;">توزيع الطلبات حسب الشهر</h3>
+            <div style="height: 300px; display: flex; align-items: flex-end; gap: 20px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 10px;" id="monthlyChart">
+                <!-- سيتم ملؤها بواسطة JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- قسم الإعدادات -->
+    <div class="dashboard-section" id="settingsSection" style="display: none;">
+        <div class="top-header">
+            <div class="header-title">
+                <h1>إعدادات النظام</h1>
+                <p>إدارة إعدادات وتكوينات النظام</p>
+            </div>
+        </div>
+        
+        <div style="background: rgba(13, 27, 72, 0.8); padding: 25px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 30px;">
+            <h3 style="color: var(--accent); margin-bottom: 20px;">إعدادات عامة</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div class="filter-group">
+                    <label class="filter-label">وقت المراجعة الافتراضي</label>
+                    <select class="filter-select" id="reviewTime">
+                        <option value="24">24 ساعة</option>
+                        <option value="48">48 ساعة</option>
+                        <option value="72">72 ساعة</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">إشعارات البريد الإلكتروني</label>
+                    <select class="filter-select" id="emailNotifications">
+                        <option value="enabled">مفعلة</option>
+                        <option value="disabled">معطلة</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border);">
+                <h4 style="color: var(--accent-light); margin-bottom: 15px;">رسالة القبول الافتراضية</h4>
+                <textarea id="acceptMessage" style="width: 100%; min-height: 100px; padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: white; resize: vertical;">تم قبول طلب تفعيل هويتك الرقمية بنجاح. يمكنك الآن الوصول إلى المنصة الرقمية باستخدام بيانات الدخول الخاصة بك.</textarea>
+            </div>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border);">
+                <h4 style="color: var(--accent-light); margin-bottom: 15px;">رسالة الرفض الافتراضية</h4>
+                <textarea id="rejectMessage" style="width: 100%; min-height: 100px; padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: white; resize: vertical;">نأسف لإبلاغك بأن طلب تفعيل هويتك الرقمية قد تم رفضه. يرجى مراجعة البيانات المقدمة والتأكد من مطابقتها للشروط والمتطلبات.</textarea>
+            </div>
+            
+            <button class="refresh-btn" style="margin-top: 30px; width: 100%;" onclick="saveSettings()">
+                <i class="fas fa-save"></i>
+                حفظ الإعدادات
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة عرض التفاصيل -->
+<div class="modal-overlay" id="detailsModal">
+    <div class="modal-container">
+        <div class="modal-header">
+            <div class="modal-title">
+                <i class="fas fa-info-circle"></i>
+                <span id="modalTitle">تفاصيل الطلب</span>
+            </div>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="details-grid" id="requestDetails">
+                <!-- سيتم ملؤها بواسطة JavaScript -->
+            </div>
+            
+            <h3 style="color: var(--accent); margin-bottom: 20px; margin-top: 30px;">الصور المرفوعة</h3>
+            <div class="images-container" id="requestImages">
+                <!-- سيتم ملؤها بواسطة JavaScript -->
+            </div>
+            
+            <div class="modal-actions" id="modalActions">
+                <!-- سيتم ملؤها بواسطة JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- رسالة الحالة -->
+<div class="alert-message" id="alertMessage" style="display: none;">
+    <i class="fas fa-check-circle" id="alertIcon"></i>
+    <span id="alertText"></span>
+</div>
 
 <script>
-    // --- إعدادات Firebase ---
-    const firebaseConfig = { databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/" };
+    // تهيئة Firebase بنفس إعدادات النظام السابق
+    const firebaseConfig = {
+        apiKey: "AIzaSyDUfRjBqJ0qjV0n6Q7Xq4Z4Qkz8q4Z4Qkz",
+        authDomain: "myproject-7439e.firebaseapp.com",
+        databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/",
+        projectId: "myproject-7439e",
+        storageBucket: "myproject-7439e.appspot.com",
+        messagingSenderId: "123456789012",
+        appId: "1:123456789012:web:abcdef1234567890"
+    };
+    
+    // تهيئة Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-
-    // جلب البيانات لحظياً
-    db.ref('orders').on('value', (snapshot) => {
-        const data = snapshot.val();
-        renderDashboard(data);
-    });
-
-    function renderDashboard(data) {
-        const container = document.getElementById('ordersList');
-        container.innerHTML = '';
-        if (!data) { container.innerHTML = '<div style="text-align:center; padding:100px; opacity:0.5;">لا توجد طلبات معلقة</div>'; return; }
-
-        Object.keys(data).reverse().forEach(key => {
-            const order = data[key];
-            const sClass = order.status === 'accepted' ? 'status-accepted' : (order.status === 'extended' ? 'status-extended' : 'status-pending');
-            const sText = order.status === 'accepted' ? 'مقبول' : (order.status === 'extended' ? 'تم التمديد' : 'قيد المراجعة');
-
-            const card = `
-                <div class="order-card" data-info="${order.fullName} ${order.gameId} ${order.gameUsername} ${order.departmentName}">
-                    <div class="card-header">
-                        <span>معرف الطلب: <b style="color:var(--accent)">${order.id}</b></span>
-                        <span class="status-badge ${sClass}">${sText}</span>
+    
+    // المتغيرات العامة
+    let allRequests = [];
+    let currentRequestId = null;
+    
+    // تهيئة الصفحة
+    window.onload = function() {
+        loadRequests();
+        setupEventListeners();
+        
+        setTimeout(() => {
+            document.getElementById('loadingScreen').style.display = 'none';
+        }, 1500);
+    };
+    
+    // إعداد مستمعي الأحداث
+    function setupEventListeners() {
+        document.getElementById('statusFilter').addEventListener('change', filterRequests);
+        document.getElementById('departmentFilter').addEventListener('change', filterRequests);
+        document.getElementById('timeFilter').addEventListener('change', filterRequests);
+        document.getElementById('searchInput').addEventListener('input', filterRequests);
+    }
+    
+    // تحميل الطلبات
+    function loadRequests() {
+        db.ref('kr_requests').once('value')
+            .then(snapshot => {
+                const data = snapshot.val();
+                allRequests = [];
+                
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        allRequests.push({
+                            id: key,
+                            ...data[key]
+                        });
+                    });
+                }
+                
+                updateStats();
+                filterRequests();
+                showAlert('تم تحديث البيانات بنجاح', 'success');
+            })
+            .catch(error => {
+                console.error('Error loading requests:', error);
+                showAlert('حدث خطأ في تحميل البيانات', 'error');
+            });
+    }
+    
+    // تحديث الإحصائيات
+    function updateStats() {
+        const total = allRequests.length;
+        const pending = allRequests.filter(req => req.status === 'pending').length;
+        const accepted = allRequests.filter(req => req.status === 'accepted').length;
+        const rejected = allRequests.filter(req => req.status === 'rejected').length;
+        
+        document.getElementById('totalRequests').textContent = total;
+        document.getElementById('pendingRequests').textContent = pending;
+        document.getElementById('acceptedRequests').textContent = accepted;
+        document.getElementById('rejectedRequests').textContent = rejected;
+        document.getElementById('pendingBadge').textContent = pending;
+        
+        // تحديث قسم التقارير
+        if (total > 0) {
+            document.getElementById('chartTotal').textContent = total;
+            document.getElementById('chartPending').textContent = Math.round((pending / total) * 100) + '%';
+            document.getElementById('chartAccepted').textContent = Math.round((accepted / total) * 100) + '%';
+            document.getElementById('chartRejected').textContent = Math.round((rejected / total) * 100) + '%';
+            
+            updateDepartmentStats();
+            updateMonthlyChart();
+        }
+    }
+    
+    // تصفية الطلبات
+    function filterRequests() {
+        const statusFilter = document.getElementById('statusFilter').value;
+        const departmentFilter = document.getElementById('departmentFilter').value;
+        const timeFilter = document.getElementById('timeFilter').value;
+        const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+        
+        let filtered = allRequests;
+        
+        // تصفية حسب الحالة
+        if (statusFilter !== 'all') {
+            filtered = filtered.filter(req => req.status === statusFilter);
+        }
+        
+        // تصفية حسب التصنيف
+        if (departmentFilter !== 'all') {
+            filtered = filtered.filter(req => req.department === departmentFilter);
+        }
+        
+        // تصفية حسب الوقت
+        if (timeFilter !== 'all') {
+            const now = new Date();
+            filtered = filtered.filter(req => {
+                const requestDate = new Date(req.submissionDate);
+                const diffTime = now - requestDate;
+                const diffDays = diffTime / (1000 * 60 * 60 * 24);
+                
+                switch (timeFilter) {
+                    case 'today': return diffDays < 1;
+                    case 'week': return diffDays < 7;
+                    case 'month': return diffDays < 30;
+                    default: return true;
+                }
+            });
+        }
+        
+        // تصفية حسب البحث
+        if (searchQuery) {
+            filtered = filtered.filter(req => 
+                req.fullName?.toLowerCase().includes(searchQuery) ||
+                req.id?.toLowerCase().includes(searchQuery) ||
+                req.gameId?.includes(searchQuery) ||
+                req.discordUsername?.toLowerCase().includes(searchQuery)
+            );
+        }
+        
+        // عرض الطلبات المصفاة
+        displayRequests(filtered);
+    }
+    
+    // عرض الطلبات في الجدول
+    function displayRequests(requests) {
+        const tbody = document.getElementById('requestsTableBody');
+        tbody.innerHTML = '';
+        
+        if (requests.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-inbox" style="font-size: 50px; margin-bottom: 15px; display: block;"></i>
+                        لا توجد طلبات تطابق معايير البحث
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        // ترتيب الطلبات من الأحدث إلى الأقدم
+        requests.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
+        
+        requests.forEach(request => {
+            const statusClass = `status-${request.status}`;
+            let statusText = '';
+            
+            switch (request.status) {
+                case 'pending': statusText = 'معلق'; break;
+                case 'accepted': statusText = 'مقبول'; break;
+                case 'rejected': statusText = 'مرفوض'; break;
+            }
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><strong>${request.id}</strong></td>
+                <td>${request.fullName || 'غير محدد'}</td>
+                <td>${request.department || 'غير محدد'}</td>
+                <td>${request.rank || 'غير محدد'}</td>
+                <td>${formatDate(request.submissionDate)}</td>
+                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn-view" onclick="viewRequestDetails('${request.id}')">
+                            <i class="fas fa-eye"></i> عرض
+                        </button>
+                        ${request.status === 'pending' ? `
+                        <button class="btn-accept" onclick="acceptRequest('${request.id}')">
+                            <i class="fas fa-check"></i> قبول
+                        </button>
+                        <button class="btn-reject" onclick="rejectRequest('${request.id}')">
+                            <i class="fas fa-times"></i> رفض
+                        </button>
+                        ` : ''}
+                        <button class="btn-delete" onclick="deleteRequest('${request.id}')">
+                            <i class="fas fa-trash"></i> حذف
+                        </button>
                     </div>
-
-                    <div class="card-body">
-                        <div class="info-grid">
-                            <div class="data-item"><label>الاسم الثلاثي</label><span>${order.fullName}</span></div>
-                            <div class="data-item"><label>العمر</label><span>${order.age} سنة</span></div>
-                            <div class="data-item"><label>يوزر اللعبة</label><span>${order.gameUsername}</span></div>
-                            <div class="data-item"><label>يوزر الديسكورد</label><span>${order.discordUsername}</span></div>
-                            <div class="data-item"><label>الآيدي (ID)</label><span>${order.gameId}</span></div>
-                            <div class="data-item"><label>القطاع المستهدف</label><span>${order.departmentName}</span></div>
-                            <div class="data-item" style="grid-column: 1 / -1;">
-                                <label>الرتب والمناصب (إن وجد)</label>
-                                <span>${order.additionals ? order.additionals.join(' • ') : 'لا يوجد رتب إضافية'}</span>
-                            </div>
-                        </div>
-
-                        <div class="photos-review">
-                            <div class="photo-box">
-                                <img src="${order.nationalIdImage}" onclick="window.open(this.src)">
-                                <div class="photo-tag">بطاقة الهوية</div>
-                            </div>
-                            <div class="photo-box">
-                                <img src="${order.characterImage}" onclick="window.open(this.src)">
-                                <div class="photo-tag">صورة الشخصية</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-actions">
-                        <button class="btn btn-extend" onclick="setAction('${key}', 'extended')">
-                            <i class="fas fa-clock"></i> تمديد المراجعة
-                        </button>
-                        <button class="btn btn-accept" onclick="setAction('${key}', 'accepted')">
-                            <i class="fas fa-check-circle"></i> قبول الطلب
-                        </button>
-                        <button class="btn btn-reject" onclick="setAction('${key}', 'rejected')">
-                            <i class="fas fa-times-circle"></i> رفض الطلب
-                        </button>
-                        <button class="btn btn-delete" onclick="deleteEntry('${key}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                </td>
+            `;
+            
+            tbody.appendChild(row);
+        });
+    }
+    
+    // عرض تفاصيل الطلب
+    function viewRequestDetails(requestId) {
+        const request = allRequests.find(req => req.id === requestId);
+        if (!request) return;
+        
+        currentRequestId = requestId;
+        
+        document.getElementById('modalTitle').textContent = `تفاصيل الطلب: ${requestId}`;
+        
+        // تفاصيل الطلب
+        const detailsGrid = document.getElementById('requestDetails');
+        detailsGrid.innerHTML = `
+            <div class="detail-item">
+                <div class="detail-label">الاسم الكامل</div>
+                <div class="detail-value">${request.fullName || 'غير محدد'}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">العمر</div>
+                <div class="detail-value">${request.age || 'غير محدد'} سنة</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">رقم الهوية</div>
+                <div class="detail-value">${request.gameId || 'غير محدد'}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">اسم المستخدم في اللعبة</div>
+                <div class="detail-value">${request.gameUsername || 'غير محدد'}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">اسم المستخدم في ديسكورد</div>
+                <div class="detail-value">${request.discordUsername || 'غير محدد'}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">التصنيف</div>
+                <div class="detail-value">${request.department || 'غير محدد'}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">الرتبة</div>
+                <div class="detail-value">${request.rank || 'غير محدد'}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">المناصب الإضافية</div>
+                <div class="detail-value">${request.additionalPositions?.join('، ') || 'لا يوجد'}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">تاريخ الطلب</div>
+                <div class="detail-value">${formatDate(request.submissionDate)}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">الحالة</div>
+                <div class="detail-value">
+                    <span class="status-badge status-${request.status}">
+                        ${request.status === 'pending' ? 'معلق' : 
+                          request.status === 'accepted' ? 'مقبول' : 'مرفوض'}
+                    </span>
+                </div>
+            </div>
+        `;
+        
+        // الصور المرفوعة
+        const imagesContainer = document.getElementById('requestImages');
+        imagesContainer.innerHTML = '';
+        
+        if (request.idImage) {
+            const idImageBox = document.createElement('div');
+            idImageBox.className = 'image-box';
+            idImageBox.innerHTML = `
+                <div class="image-title">صورة الهوية الوطنية</div>
+                <img src="${request.idImage}" alt="صورة الهوية" class="modal-image">
+            `;
+            imagesContainer.appendChild(idImageBox);
+        }
+        
+        if (request.avatarImage) {
+            const avatarImageBox = document.createElement('div');
+            avatarImageBox.className = 'image-box';
+            avatarImageBox.innerHTML = `
+                <div class="image-title">صورة الشخصية</div>
+                <img src="${request.avatarImage}" alt="صورة الشخصية" class="modal-image">
+            `;
+            imagesContainer.appendChild(avatarImageBox);
+        }
+        
+        // أزرار الإجراءات
+        const modalActions = document.getElementById('modalActions');
+        modalActions.innerHTML = '';
+        
+        if (request.status === 'pending') {
+            modalActions.innerHTML = `
+                <button class="btn-accept" style="padding: 12px 30px; font-size: 16px;" onclick="acceptRequest('${requestId}')">
+                    <i class="fas fa-check"></i> قبول الطلب
+                </button>
+                <button class="btn-reject" style="padding: 12px 30px; font-size: 16px;" onclick="rejectRequest('${requestId}')">
+                    <i class="fas fa-times"></i> رفض الطلب
+                </button>
+                <button class="btn-delete" style="padding: 12px 30px; font-size: 16px;" onclick="deleteRequest('${requestId}')">
+                    <i class="fas fa-trash"></i> حذف الطلب
+                </button>
+            `;
+        } else {
+            modalActions.innerHTML = `
+                <button class="btn-delete" style="padding: 12px 30px; font-size: 16px;" onclick="deleteRequest('${requestId}')">
+                    <i class="fas fa-trash"></i> حذف الطلب
+                </button>
+            `;
+        }
+        
+        // عرض النافذة
+        document.getElementById('detailsModal').style.display = 'flex';
+    }
+    
+    // قبول الطلب
+    function acceptRequest(requestId) {
+        if (!confirm('هل أنت متأكد من قبول هذا الطلب؟')) return;
+        
+        const updateData = {
+            status: 'accepted',
+            reviewDate: new Date().toISOString(),
+            reviewedBy: 'مدير النظام'
+        };
+        
+        db.ref(`kr_requests/${requestId}`).update(updateData)
+            .then(() => {
+                showAlert('تم قبول الطلب بنجاح', 'success');
+                closeModal();
+                loadRequests();
+            })
+            .catch(error => {
+                console.error('Error accepting request:', error);
+                showAlert('حدث خطأ في قبول الطلب', 'error');
+            });
+    }
+    
+    // رفض الطلب
+    function rejectRequest(requestId) {
+        if (!confirm('هل أنت متأكد من رفض هذا الطلب؟')) return;
+        
+        const updateData = {
+            status: 'rejected',
+            reviewDate: new Date().toISOString(),
+            reviewedBy: 'مدير النظام',
+            rejectionReason: document.getElementById('rejectMessage')?.value || 'تم رفض الطلب'
+        };
+        
+        db.ref(`kr_requests/${requestId}`).update(updateData)
+            .then(() => {
+                showAlert('تم رفض الطلب بنجاح', 'success');
+                closeModal();
+                loadRequests();
+            })
+            .catch(error => {
+                console.error('Error rejecting request:', error);
+                showAlert('حدث خطأ في رفض الطلب', 'error');
+            });
+    }
+    
+    // حذف الطلب
+    function deleteRequest(requestId) {
+        if (!confirm('هل أنت متأكد من حذف هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.')) return;
+        
+        db.ref(`kr_requests/${requestId}`).remove()
+            .then(() => {
+                showAlert('تم حذف الطلب بنجاح', 'success');
+                closeModal();
+                loadRequests();
+            })
+            .catch(error => {
+                console.error('Error deleting request:', error);
+                showAlert('حدث خطأ في حذف الطلب', 'error');
+            });
+    }
+    
+    // إغلاق النافذة
+    function closeModal() {
+        document.getElementById('detailsModal').style.display = 'none';
+        currentRequestId = null;
+    }
+    
+    // تبديل القوائم للجوال
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('open');
+    }
+    
+    // إظهار قسم معين
+    function showSection(sectionId) {
+        // إخفاء جميع الأقسام
+        document.querySelectorAll('.dashboard-section').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        // إظهار القسم المطلوب
+        document.getElementById(sectionId + 'Section').style.display = 'block';
+        
+        // تحديث القائمة النشطة
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        
+        event.currentTarget.classList.add('active');
+        
+        // إغلاق القائمة في الجوال
+        if (window.innerWidth <= 768) {
+            toggleSidebar();
+        }
+    }
+    
+    // تحديث إحصائيات التصنيفات
+    function updateDepartmentStats() {
+        const departmentStats = document.getElementById('departmentStats');
+        const departments = {};
+        
+        allRequests.forEach(request => {
+            const dept = request.department || 'غير محدد';
+            if (!departments[dept]) {
+                departments[dept] = { total: 0, pending: 0, accepted: 0, rejected: 0 };
+            }
+            
+            departments[dept].total++;
+            departments[dept][request.status]++;
+        });
+        
+        let html = '';
+        for (const [dept, stats] of Object.entries(departments)) {
+            html += `
+                <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; border: 1px solid var(--border);">
+                    <div style="color: var(--accent); font-weight: bold; margin-bottom: 10px;">${dept}</div>
+                    <div style="font-size: 14px;">
+                        <div>الإجمالي: <strong>${stats.total}</strong></div>
+                        <div>المعلقة: <span style="color: var(--warning);">${stats.pending}</span></div>
+                        <div>المقبولة: <span style="color: var(--success);">${stats.accepted}</span></div>
+                        <div>المرفوضة: <span style="color: var(--danger);">${stats.rejected}</span></div>
                     </div>
                 </div>
             `;
-            container.innerHTML += card;
-        });
+        }
+        
+        departmentStats.innerHTML = html;
     }
-
-    // تنفيذ الإجراءات
-    function setAction(key, status) {
-        let msg = status === 'accepted' ? 'هل أنت متأكد من قبول هذا الشخص في النظام؟' : 
-                  status === 'extended' ? 'سيتم إشعار الشخص بتمديد مهلة التدقيق، استمرار؟' : 
-                  'سيتم رفض الشخص وإعادته لصفحة التقديم، هل أنت متأكد؟';
-
-        if(confirm(msg)) {
-            db.ref('orders/' + key).update({ status: status })
+    
+    // تحديث مخطط الشهر
+    function updateMonthlyChart() {
+        const monthlyChart = document.getElementById('monthlyChart');
+        const months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 
+                       'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+        
+        const monthlyData = {};
+        months.forEach(month => monthlyData[month] = 0);
+        
+        allRequests.forEach(request => {
+            const date = new Date(request.submissionDate);
+            const month = months[date.getMonth()];
+            if (monthlyData[month] !== undefined) {
+                monthlyData[month]++;
+            }
+        });
+        
+        let html = '';
+        const maxRequests = Math.max(...Object.values(monthlyData));
+        
+        for (const [month, count] of Object.entries(monthlyData)) {
+            const height = maxRequests > 0 ? (count / maxRequests) * 200 : 0;
+            html += `
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div style="width: 40px; height: ${height}px; background: var(--accent); border-radius: 5px 5px 0 0;"></div>
+                    <div style="margin-top: 10px; font-size: 12px; color: var(--gray);">${month}</div>
+                    <div style="margin-top: 5px; font-weight: bold; color: var(--accent);">${count}</div>
+                </div>
+            `;
+        }
+        
+        monthlyChart.innerHTML = html;
+    }
+    
+    // حفظ الإعدادات
+    function saveSettings() {
+        const settings = {
+            reviewTime: document.getElementById('reviewTime').value,
+            emailNotifications: document.getElementById('emailNotifications').value,
+            acceptMessage: document.getElementById('acceptMessage').value,
+            rejectMessage: document.getElementById('rejectMessage').value,
+            lastUpdated: new Date().toISOString()
+        };
+        
+        db.ref('kr_settings').set(settings)
             .then(() => {
-                if(status === 'rejected') alert('تم رفض الطلب بنجاح');
+                showAlert('تم حفظ الإعدادات بنجاح', 'success');
+            })
+            .catch(error => {
+                console.error('Error saving settings:', error);
+                showAlert('حدث خطأ في حفظ الإعدادات', 'error');
             });
+    }
+    
+    // تسجيل الخروج
+    function logout() {
+        if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+            window.location.href = 'index.html';
         }
     }
-
-    function deleteEntry(key) {
-        if(confirm('سيتم حذف السجل نهائياً، موافق؟')) db.ref('orders/' + key).remove();
+    
+    // عرض رسالة الحالة
+    function showAlert(message, type) {
+        const alert = document.getElementById('alertMessage');
+        const alertIcon = document.getElementById('alertIcon');
+        const alertText = document.getElementById('alertText');
+        
+        alert.className = `alert-message alert-${type}`;
+        alertIcon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+        alertText.textContent = message;
+        
+        alert.style.display = 'flex';
+        
+        setTimeout(() => {
+            alert.style.animation = 'slideOut 0.5s';
+            setTimeout(() => {
+                alert.style.display = 'none';
+                alert.style.animation = '';
+            }, 500);
+        }, 3000);
     }
-
-    // البحث المتقدم
-    function filterOrders() {
-        const term = document.getElementById('searchInput').value.toLowerCase();
-        const dept = document.getElementById('filterDept').value;
-        const cards = document.querySelectorAll('.order-card');
-
-        cards.forEach(card => {
-            const text = card.getAttribute('data-info').toLowerCase();
-            const matchSearch = text.includes(term);
-            const matchDept = dept === "" || text.includes(dept.toLowerCase());
-            card.style.display = (matchSearch && matchDept) ? "block" : "none";
+    
+    // تنسيق التاريخ
+    function formatDate(dateString) {
+        if (!dateString) return 'غير محدد';
+        
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ar-SA', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
         });
     }
 </script>
