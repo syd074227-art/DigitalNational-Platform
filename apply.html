@@ -15,266 +15,277 @@
             --health: #2196f3; --interior: #f44336; --justice: #4caf50;
             --success: #00c853; --warning: #ffd600; --danger: #d50000;
             --dark: #0d1117; --light: #ffffff; --gray: #8b949e;
-            --border: rgba(255, 255, 255, 0.1); --glass-dark: rgba(0, 0, 0, 0.3);
+            --gray-light: #c9d1d9; --border: rgba(255, 255, 255, 0.1);
+            --glass-dark: rgba(0, 0, 0, 0.3);
             --gradient-dark: linear-gradient(135deg, #0d1117 0%, #1a237e 50%, #0d1117 100%);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Cairo', sans-serif; }
         body { background: var(--gradient-dark); min-height: 100vh; color: var(--light); display: flex; justify-content: center; align-items: center; padding: 20px; overflow-x: hidden; }
         
-        /* شاشة التحميل */
         .loading-screen { position: fixed; inset: 0; background: var(--gradient-dark); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
         .loading-spinner { width: 60px; height: 60px; border: 5px solid rgba(255, 111, 0, 0.2); border-top: 5px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .container { width: 100%; max-width: 1100px; background: var(--glass-dark); backdrop-filter: blur(20px); border-radius: 24px; overflow: hidden; border: 1px solid var(--border); position: relative; }
+        .container { width: 100%; max-width: 1100px; background: var(--glass-dark); backdrop-filter: blur(20px); border-radius: 24px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.4); position: relative; }
         .header { background: linear-gradient(135deg, #1a237e 0%, #3f51b5 100%); padding: 40px; text-align: center; border-bottom: 4px solid var(--accent); }
-        .kr-badge { position: absolute; top: 20px; left: 20px; background: var(--accent); padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; }
+        .kr-badge { position: absolute; top: 20px; left: 20px; background: var(--accent); padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: bold; }
         
         .content { padding: 40px; }
-        .step { background: rgba(255,255,255,0.03); padding: 30px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 20px; display: none; }
+        .step { background: rgba(255,255,255,0.03); padding: 35px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 25px; display: none; }
         .step.active { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; margin-bottom: 10px; color: var(--accent-light); font-weight: 600; }
-        .input-group input { width: 100%; padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: white; outline: none; transition: 0.3s; }
-        .input-group input:focus { border-color: var(--accent); background: rgba(0,0,0,0.5); }
+        .input-group { margin-bottom: 25px; }
+        .input-group label { display: block; margin-bottom: 12px; color: var(--accent-light); font-weight: 600; font-size: 16px; }
+        .input-group input { width: 100%; padding: 18px; background: rgba(0,0,0,0.3); border: 2px solid var(--border); border-radius: 12px; color: white; outline: none; transition: 0.3s; }
+        .input-group input:focus { border-color: var(--accent); }
 
-        .departments-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
-        .department-card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
+        /* التصنيفات */
+        .departments-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .department-card { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 15px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
+        .department-card i { font-size: 35px; margin-bottom: 15px; color: var(--accent); }
         .department-card.selected { border-color: var(--accent); background: rgba(255, 111, 0, 0.2); transform: translateY(-5px); }
-        
-        .btn { padding: 15px 30px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; width: 100%; margin-top: 10px; font-size: 16px; }
+
+        /* الرتب */
+        .ranks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-top: 20px; max-height: 400px; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px; }
+        .rank-item { padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; text-align: center; cursor: pointer; border: 1px solid var(--border); transition: 0.2s; }
+        .rank-item.selected { background: var(--accent); color: white; border-color: white; }
+
+        .btn { padding: 18px 30px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; width: 100%; margin-top: 15px; font-size: 17px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-primary { background: var(--accent); color: white; }
-        .btn-primary:hover { background: var(--accent-dark); transform: scale(1.02); }
         .btn-secondary { background: #333; color: white; }
         
-        .status-message { padding: 30px; border-radius: 20px; text-align: center; display: none; }
-        .status-message.show { display: block; animation: fadeIn 0.5s ease; }
+        .example-box { margin-top: 15px; padding: 15px; background: rgba(33, 150, 243, 0.1); border-radius: 12px; border: 1px solid rgba(33, 150, 243, 0.2); }
+        .example-box img { width: 100%; max-width: 350px; border-radius: 8px; margin-top: 10px; border: 2px solid rgba(255,255,255,0.1); }
 
-        .file-upload-label { display: flex; flex-direction: column; align-items: center; padding: 25px; background: rgba(0,0,0,0.2); border: 2px dashed var(--border); border-radius: 15px; cursor: pointer; transition: 0.3s; }
-        .file-upload-label:hover { border-color: var(--accent); background: rgba(255,111,0,0.05); }
-        .image-preview img { width: 120px; height: 120px; object-fit: cover; border-radius: 10px; margin-top: 15px; border: 2px solid var(--accent); }
+        .file-upload-label { display: flex; flex-direction: column; align-items: center; padding: 30px; background: rgba(0,0,0,0.2); border: 2px dashed var(--border); border-radius: 15px; cursor: pointer; }
+        .image-preview img { width: 100%; max-height: 250px; object-fit: contain; border-radius: 10px; margin-top: 15px; border: 2px solid var(--accent); }
+        
+        .status-message { padding: 40px; text-align: center; display: none; }
+        .status-message.show { display: block; }
     </style>
 </head>
 <body>
 
 <div class="loading-screen" id="loadingScreen">
     <div class="loading-spinner"></div>
-    <div style="margin-top: 20px; color: var(--accent); font-weight: bold;">جاري فحص حالة هويتك الرقمية...</div>
+    <div style="margin-top: 20px; color: var(--accent); font-weight: bold;">جاري التحقق من الأنظمة...</div>
 </div>
 
 <div class="container">
     <div class="header">
         <div class="kr-badge">KR OFFICIAL</div>
-        <h1 id="mainTitle">نظام تفعيل الهوية الرقمي</h1>
-        <p style="opacity: 0.8;">الجهة الرقمية المسؤولة - KR</p>
+        <h1>نظام تفعيل الهوية الرقمي</h1>
+        <p>الجهة الرقمية المسؤولة - KR</p>
     </div>
 
     <div class="content">
-        <div id="previousRequestMessage"></div>
-
         <div id="applicationForm">
             <div class="step active" id="step1">
-                <h3 style="margin-bottom:20px; color: var(--accent);"><i class="fas fa-user-edit"></i> البيانات الشخصية</h3>
+                <h3 class="step-title"><i class="fas fa-user-edit"></i> الخطوة 1: البيانات الشخصية</h3>
                 <div class="input-group">
-                    <label>الاسم الكامل (ثلاثي)</label>
-                    <input type="text" id="fullName" placeholder="ادخل اسمك الثلاثي الصحيح">
+                    <label>الاسم الكامل (ثلاثي باللغة العربية)</label>
+                    <input type="text" id="fullName" placeholder="محمد بن فهد الحربي">
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="input-group">
-                        <label>العمر</label>
-                        <input type="number" id="age" placeholder="18+">
-                    </div>
-                    <div class="input-group">
-                        <label>رقم الهوية (الآيدي)</label>
-                        <input type="text" id="gameId" maxlength="10" placeholder="10 أرقام">
-                    </div>
+                    <div class="input-group"><label>العمر</label><input type="number" id="age" placeholder="18+"></div>
+                    <div class="input-group"><label>رقم الهوية (الآيدي)</label><input type="text" id="gameId" maxlength="10" placeholder="10 أرقام"></div>
                 </div>
-                <div class="input-group">
-                    <label>اسم المستخدم في اللعبة</label>
-                    <input type="text" id="gameUsername" placeholder="In-game Name">
-                </div>
-                <div class="input-group">
-                    <label>اسم المستخدم في ديسكورد</label>
-                    <input type="text" id="discordUsername" placeholder="Discord User">
-                </div>
+                <div class="input-group"><label>اسم المستخدم في اللعبة</label><input type="text" id="gameUsername" placeholder="مثال: Ahmed_KR"></div>
+                <div class="input-group"><label>اسم المستخدم في ديسكورد</label><input type="text" id="discordUsername" placeholder="مثال: Ahmed#1234"></div>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="input-group">
-                        <label>صورة الهوية</label>
-                        <label for="nationalIdImage" class="file-upload-label">
-                            <i class="fas fa-id-card"></i>
-                            <input type="file" id="nationalIdImage" hidden accept="image/*" onchange="previewImg(this, 'p1')">
-                            <div id="p1" class="image-preview"></div>
-                        </label>
-                    </div>
-                    <div class="input-group">
-                        <label>صورة الشخصية</label>
-                        <label for="characterImage" class="file-upload-label">
-                            <i class="fas fa-user-circle"></i>
-                            <input type="file" id="characterImage" hidden accept="image/*" onchange="previewImg(this, 'p2')">
-                            <div id="p2" class="image-preview"></div>
-                        </label>
+                <div class="input-group">
+                    <label>صورة الهوية الوطنية (داخل اللعبة)</label>
+                    <label for="idFile" class="file-upload-label">
+                        <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                        <input type="file" id="idFile" hidden accept="image/*" onchange="previewImg(this, 'p1')">
+                        <div id="p1" class="image-preview"></div>
+                    </label>
+                    <div class="example-box">
+                        <strong>مثال للصورة المطلوبة:</strong><br>
+                        <img src="https://image2url.com/r2/default/images/1769805658220-13fbc5c4-b22b-4b75-81cf-9d53e13bb9e1.jpeg">
                     </div>
                 </div>
-                <button class="btn btn-primary" onclick="nextStep(2)">الاستمرار للتصنيف <i class="fas fa-arrow-left"></i></button>
+                <button class="btn btn-primary" onclick="goToStep(2)">التالي <i class="fas fa-arrow-left"></i></button>
             </div>
 
             <div class="step" id="step2">
-                <h3 style="margin-bottom:20px; color: var(--accent);"><i class="fas fa-shield-alt"></i> اختيار قطاع العمل</h3>
+                <h3><i class="fas fa-shield-alt"></i> الخطوة 2: اختر التصنيف</h3>
                 <div class="departments-grid">
-                    <div class="department-card" onclick="selectDept('وزارة الصحة', this)"><i class="fas fa-heartbeat"></i><br>وزارة الصحة</div>
-                    <div class="department-card" onclick="selectDept('وزارة الداخلية', this)"><i class="fas fa-shield-alt"></i><br>وزارة الداخلية</div>
-                    <div class="department-card" onclick="selectDept('وزارة العدل', this)"><i class="fas fa-gavel"></i><br>وزارة العدل</div>
-                    <div class="department-card" onclick="selectDept('مواطن', this)"><i class="fas fa-user"></i><br>مواطن</div>
+                    <div class="department-card" onclick="selectDept('health', this)"><i class="fas fa-heartbeat"></i><br>وزارة الصحة</div>
+                    <div class="department-card" onclick="selectDept('interior', this)"><i class="fas fa-shield-alt"></i><br>وزارة الداخلية</div>
+                    <div class="department-card" onclick="selectDept('justice', this)"><i class="fas fa-gavel"></i><br>وزارة العدل</div>
+                    <div class="department-card" onclick="selectDept('citizen', this)"><i class="fas fa-user"></i><br>مواطن</div>
                 </div>
                 <div style="display:flex; gap:10px; margin-top:20px;">
-                    <button class="btn btn-secondary" onclick="nextStep(1)">رجوع</button>
-                    <button class="btn btn-primary" onclick="nextStep(3)">تأكيد الطلب</button>
+                    <button class="btn btn-secondary" onclick="goToStep(1)">السابق</button>
+                    <button class="btn btn-primary" onclick="goToStep(3)">التالي</button>
                 </div>
             </div>
 
             <div class="step" id="step3">
-                <h3 style="text-align:center; color: var(--success);"><i class="fas fa-file-signature"></i> مراجعة نهائية</h3>
-                <div id="summaryText" style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 15px; margin: 20px 0; line-height: 2;"></div>
-                <button class="btn btn-primary" onclick="submitToFirebase()" style="background: var(--success);">إرسال لمدير النظام</button>
-                <button class="btn btn-secondary" onclick="nextStep(2)">تعديل</button>
+                <h3><i class="fas fa-medal"></i> الخطوة 3: اختر الرتبة</h3>
+                <div id="ranksList" class="ranks-grid"></div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button class="btn btn-secondary" onclick="goToStep(2)">السابق</button>
+                    <button class="btn btn-primary" onclick="goToStep(4)">التالي</button>
+                </div>
+            </div>
+
+            <div class="step" id="step4">
+                <h3><i class="fas fa-briefcase"></i> الخطوة 4: المناصب الإدارية</h3>
+                <div id="addList" class="ranks-grid"></div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button class="btn btn-secondary" onclick="goToStep(3)">السابق</button>
+                    <button class="btn btn-primary" onclick="goToStep(5)">التالي</button>
+                </div>
+            </div>
+
+            <div class="step" id="step5">
+                <h3><i class="fas fa-check-double"></i> الخطوة 5: مراجعة الطلب</h3>
+                <div id="finalSummary" style="background:rgba(0,0,0,0.3); padding:20px; border-radius:15px; margin:20px 0;"></div>
+                <button class="btn btn-primary" onclick="submitToFirebase()" style="background:var(--success);">إرسال الطلب لمدير النظام</button>
+                <button class="btn btn-secondary" onclick="goToStep(4)">تعديل</button>
             </div>
         </div>
 
         <div id="successMessage" class="status-message">
-            <i class="fas fa-hourglass-half" style="font-size:70px; color:var(--warning); margin-bottom: 20px;"></i>
+            <i class="fas fa-hourglass-half" style="font-size:70px; color:var(--warning); margin-bottom: 25px;"></i>
             <h2 id="statusTitle">طلبك قيد المراجعة الفنية</h2>
-            <p id="dynamicStatusMsg" style="margin-top: 15px; opacity: 0.8;">سيقوم أحد مسؤولي الهيئة بمراجعة بياناتك وصور الهوية المرفقة قريباً.</p>
+            <p id="dynamicMsg">سيتم توجيهك للمنصة فور قبول طلبك من الإدارة.</p>
         </div>
     </div>
 </div>
 
 <script>
-    // --- الربط بـ Firebase ---
+    // تكوين Firebase (نفس قاعدة بياناتك السابقة)
     const firebaseConfig = { databaseURL: "https://myproject-7439e-default-rtdb.firebaseio.com/" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let selectedDeptName = "";
-    let uploadedImg1 = "", uploadedImg2 = "";
+    const DEPARTMENTS = {
+        health: { name: 'وزارة الصحة', ranks: ['مسعف', 'مسعف أول', 'ممرض', 'ممرض أول', 'دكتور عام', 'استشاري', 'وزير الصحة'], adds: ['إدارة القبول', 'شؤون صحية'] },
+        interior: { name: 'وزارة الداخلية', ranks: ['جندي', 'عريف', 'رقيب', 'ملازم', 'نقيب', 'عقيد', 'لواء', 'فريق أول', 'وزير الداخلية'], adds: ['القبول والتجنيد', 'شؤون الأفراد'] },
+        justice: { name: 'وزارة العدل', ranks: ['محامي', 'قاضي', 'قاضي محكمة عليا', 'وزير العدل'], adds: ['الشؤون العدلية'] },
+        citizen: { name: 'مواطن', ranks: ['مواطن'], adds: [] }
+    };
+
+    let selectedDept = "", selectedRank = "", selectedAdds = [], uploadedImg = "";
 
     function previewImg(input, pId) {
         if (input.files && input.files[0]) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 document.getElementById(pId).innerHTML = `<img src="${e.target.result}">`;
-                if(pId === 'p1') uploadedImg1 = e.target.result;
-                else uploadedImg2 = e.target.result;
+                uploadedImg = e.target.result;
             };
             reader.readAsDataURL(input.files[0]);
         }
     }
 
-    function nextStep(s) {
-        if(s === 2 && (!document.getElementById('fullName').value || !uploadedImg1)) {
-            alert("يرجى تعبئة الاسم وإرفاق صورة الهوية أولاً"); return;
+    function selectDept(id, el) {
+        selectedDept = id;
+        document.querySelectorAll('.department-card').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+        
+        // تحديث الرتب والمناصب بناءً على الاختيار
+        const ranksGrid = document.getElementById('ranksList');
+        ranksGrid.innerHTML = DEPARTMENTS[id].ranks.map(r => `<div class="rank-item" onclick="selectRank('${r}', this)">${r}</div>`).join('');
+        
+        const addGrid = document.getElementById('addList');
+        addGrid.innerHTML = DEPARTMENTS[id].adds.length ? DEPARTMENTS[id].adds.map(a => `<div class="rank-item" onclick="toggleAdd('${a}', this)">${a}</div>`).join('') : "لا توجد مناصب إضافية لهذا التصنيف";
+    }
+
+    function selectRank(rank, el) {
+        selectedRank = rank;
+        document.querySelectorAll('#ranksList .rank-item').forEach(r => r.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function toggleAdd(add, el) {
+        el.classList.toggle('selected');
+        const idx = selectedAdds.indexOf(add);
+        if(idx > -1) selectedAdds.splice(idx, 1); else selectedAdds.push(add);
+    }
+
+    function goToStep(s) {
+        if(s === 2 && (!document.getElementById('fullName').value || !uploadedImg)) {
+            alert("يرجى إكمال البيانات ورفع صورة الهوية أولاً"); return;
         }
+        if(s === 3 && !selectedDept) { alert("اختر التصنيف أولاً"); return; }
+        if(s === 4 && !selectedRank) { alert("اختر الرتبة أولاً"); return; }
+
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step' + s).classList.add('active');
-        if(s === 3) {
-            document.getElementById('summaryText').innerHTML = `
+
+        if(s === 5) {
+            document.getElementById('finalSummary').innerHTML = `
                 <b>الاسم:</b> ${document.getElementById('fullName').value}<br>
-                <b>الآيدي:</b> ${document.getElementById('gameId').value}<br>
-                <b>القطاع:</b> ${selectedDeptName}
+                <b>التصنيف:</b> ${DEPARTMENTS[selectedDept].name}<br>
+                <b>الرتبة:</b> ${selectedRank}<br>
+                <b>المناصب:</b> ${selectedAdds.join(' - ') || 'لا يوجد'}
             `;
         }
     }
 
-    function selectDept(name, el) {
-        selectedDeptName = name;
-        document.querySelectorAll('.department-card').forEach(c => c.classList.remove('selected'));
-        el.classList.add('selected');
-    }
-
     function getDeviceId() {
-        let id = localStorage.getItem('kr_device_id');
-        if(!id) { id = 'DEV-' + Math.random().toString(36).substr(2, 9); localStorage.setItem('kr_device_id', id); }
+        let id = localStorage.getItem('kr_id_device');
+        if(!id) { id = 'DEV-' + Math.random().toString(36).substr(2, 9); localStorage.setItem('kr_id_device', id); }
         return id;
     }
 
     function submitToFirebase() {
+        const orderId = 'REQ-' + Date.now().toString().slice(-6);
         const data = {
-            id: 'KR-' + Date.now().toString().slice(-6),
+            id: orderId,
             deviceId: getDeviceId(),
             fullName: document.getElementById('fullName').value,
             age: document.getElementById('age').value,
+            gameId: document.getElementById('gameId').value,
             gameUsername: document.getElementById('gameUsername').value,
             discordUsername: document.getElementById('discordUsername').value,
-            gameId: document.getElementById('gameId').value,
-            departmentName: selectedDeptName,
-            nationalIdImage: uploadedImg1,
-            characterImage: uploadedImg2,
+            departmentName: DEPARTMENTS[selectedDept].name,
+            rank: selectedRank,
+            additionals: selectedAdds,
+            nationalIdImage: uploadedImg,
             status: 'pending',
             date: new Date().toLocaleString('ar-SA')
         };
 
-        db.ref('orders/' + data.id).set(data).then(() => {
+        db.ref('orders/' + orderId).set(data).then(() => {
             document.getElementById('applicationForm').style.display = 'none';
             document.getElementById('successMessage').classList.add('show');
-            startMonitoring();
+            startMonitoring(orderId);
         });
     }
 
-    function startMonitoring() {
-        const devId = getDeviceId();
-        db.ref('orders').on('value', (snapshot) => {
-            const orders = snapshot.val();
-            for(let key in orders) {
-                if(orders[key].deviceId === devId) {
-                    const status = orders[key].status;
-                    
-                    if(status === 'accepted') {
-                        window.location.href = 'kr-digital-platform.html';
-                    } 
-                    else if(status === 'extended') {
-                        document.getElementById('statusTitle').innerText = "تم تمديد فترة المراجعة";
-                        document.getElementById('dynamicStatusMsg').innerHTML = 
-                            "<b style='color:var(--warning)'>لقد تم تمديد مهلة المراجعة لمراجعة معلوماتك بشكل صحيح، يرجى الانتظار.</b>";
-                    }
-                    else if(status === 'rejected') {
-                        handleReject(key);
-                    }
-                }
+    function startMonitoring(orderId) {
+        db.ref('orders/' + orderId).on('value', (snap) => {
+            const val = snap.val();
+            if(!val) return;
+            if(val.status === 'accepted') {
+                window.location.href = 'kr-digital-platform.html';
+            } else if(val.status === 'rejected') {
+                alert("تم رفض طلبك، يرجى المحاولة مرة أخرى ببيانات صحيحة.");
+                db.ref('orders/' + orderId).remove();
+                location.reload();
             }
         });
-    }
-
-    function handleReject(key) {
-        db.ref('orders/' + key).remove();
-        document.getElementById('successMessage').style.display = 'none';
-        const msgZone = document.getElementById('previousRequestMessage');
-        msgZone.innerHTML = `
-            <div style="background:var(--danger); padding:30px; border-radius:20px; text-align:center; margin-bottom:20px;">
-                <i class="fas fa-user-times" style="font-size:50px;"></i>
-                <h2>لقد تم رفض تقديمك من قبل إدارة النظام</h2>
-                <p>قم بالتقديم مرة أخرى وكتابة المعلومات بشكل صحيح.</p>
-            </div>`;
-        
-        setTimeout(() => { location.reload(); }, 10000);
     }
 
     window.onload = () => {
         const devId = getDeviceId();
         db.ref('orders').once('value', (snap) => {
             const data = snap.val();
-            let hasOrder = false;
             for(let k in data) {
                 if(data[k].deviceId === devId) {
-                    hasOrder = true;
                     document.getElementById('applicationForm').style.display = 'none';
                     document.getElementById('successMessage').classList.add('show');
-                    startMonitoring();
+                    startMonitoring(k);
+                    break;
                 }
             }
-            document.getElementById('loadingScreen').style.fadeOut = "slow";
-            setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; }, 1000);
+            document.getElementById('loadingScreen').style.display = 'none';
         });
     };
 </script>
