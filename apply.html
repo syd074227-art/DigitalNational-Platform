@@ -446,48 +446,127 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function startStatusMonitoring() {
     statusCheckInterval = setInterval(function() {
-        const requests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
         const deviceId = getDeviceId();
+        const isAccepted = localStorage.getItem(`user_${deviceId}_accepted`);
+        
+        if (isAccepted === 'true') {
+            console.log('🎉 تم قبول الطلب! جاري التوجيه الفوري للبوابة KR...');
+            clearInterval(statusCheckInterval);
+            
+            const userData = JSON.parse(localStorage.getItem(`user_${deviceId}_data`) || '{}');
+            
+            // ✅ حفظ بيانات المستخدم للبوابة KR
+            localStorage.setItem('kr_user_data', JSON.stringify(userData));
+            localStorage.setItem('kr_user_active', 'true');
+            localStorage.setItem('kr_user_id', userData.id || '');
+            localStorage.setItem('kr_user_name', userData.fullName || '');
+            localStorage.setItem('kr_user_dept', userData.departmentName || '');
+            localStorage.setItem('kr_user_rank', userData.rank || '');
+            
+            // تنظيف المفاتيح المؤقتة
+            localStorage.removeItem(`user_${deviceId}_accepted`);
+            localStorage.removeItem(`user_${deviceId}_data`);
+            
+            // ✅ توجيه فوري للبوابة KR الذكية
+            window.location.href = 'kr-digital-platform.html';
+            return;
+        }
+        
+        // التحقق من طلبات localStorage القديمة
+        const requests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
         const userRequests = requests.filter(req => req.deviceId === deviceId);
+        
         if (userRequests.length > 0) {
             const latestRequest = userRequests.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate))[0];
+            
             if (latestRequest.status === 'accepted') {
-                console.log('🎉 تم قبول الطلب! جاري التوجيه الفوري...');
+                console.log('✅ تم قبول الطلب سابقاً! جاري التوجيه للبوابة KR...');
                 clearInterval(statusCheckInterval);
-                redirectToActivatedPlatform(latestRequest);
+                
+                // ✅ حفظ بيانات المستخدم للبوابة KR
+                localStorage.setItem('kr_user_data', JSON.stringify(latestRequest));
+                localStorage.setItem('kr_user_active', 'true');
+                localStorage.setItem('kr_user_id', latestRequest.id || '');
+                localStorage.setItem('kr_user_name', latestRequest.fullName || '');
+                localStorage.setItem('kr_user_dept', latestRequest.departmentName || '');
+                localStorage.setItem('kr_user_rank', latestRequest.rank || '');
+                
+                // ✅ توجيه فوري للبوابة KR الذكية
+                window.location.href = 'kr-digital-platform.html';
             }
         }
-    }, 2000);
+    }, 1500);
 }
 
 function checkExistingRequest() {
-    const requests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
     const deviceId = getDeviceId();
+    
+    // ✅ التحقق من القبول المباشر
+    const isAccepted = localStorage.getItem(`user_${deviceId}_accepted`);
+    if (isAccepted === 'true') {
+        console.log('✅ تم قبول الطلب مسبقاً! جاري التوجيه...');
+        const userData = JSON.parse(localStorage.getItem(`user_${deviceId}_data`) || '{}');
+        
+        localStorage.setItem('kr_user_data', JSON.stringify(userData));
+        localStorage.setItem('kr_user_active', 'true');
+        localStorage.setItem('kr_user_id', userData.id || '');
+        localStorage.setItem('kr_user_name', userData.fullName || '');
+        localStorage.setItem('kr_user_dept', userData.departmentName || '');
+        localStorage.setItem('kr_user_rank', userData.rank || '');
+        
+        localStorage.removeItem(`user_${deviceId}_accepted`);
+        localStorage.removeItem(`user_${deviceId}_data`);
+        
+        window.location.href = 'kr-digital-platform.html';
+        return;
+    }
+    
+    // التحقق من الطلبات القديمة
+    const requests = JSON.parse(localStorage.getItem('admin_pending_requests') || '[]');
     const userRequests = requests.filter(req => req.deviceId === deviceId);
+    
     if (userRequests.length > 0) {
         const latestRequest = userRequests.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate))[0];
         existingRequestData = latestRequest;
         hasExistingRequest = true;
+        
         if (latestRequest.status === 'accepted') {
             console.log('✅ الحساب مفعّل! جاري التوجيه إلى المنصة الرقمية...');
-            redirectToActivatedPlatform(latestRequest);
+            
+            // ✅ حفظ بيانات المستخدم للبوابة KR
+            localStorage.setItem('kr_user_data', JSON.stringify(latestRequest));
+            localStorage.setItem('kr_user_active', 'true');
+            localStorage.setItem('kr_user_id', latestRequest.id || '');
+            localStorage.setItem('kr_user_name', latestRequest.fullName || '');
+            localStorage.setItem('kr_user_dept', latestRequest.departmentName || '');
+            localStorage.setItem('kr_user_rank', latestRequest.rank || '');
+            
+            window.location.href = 'kr-digital-platform.html';
             return;
         }
+        
         if (latestRequest.status === 'pending' || latestRequest.status === 'rejected') {
             showExistingRequest(latestRequest);
             document.getElementById('loadingScreen').style.display = 'none';
             return;
         }
     }
+    
     document.getElementById('loadingScreen').style.display = 'none';
     document.getElementById('applicationForm').style.display = 'block';
 }
 
 function redirectToActivatedPlatform(userData) {
-    localStorage.setItem('activated_user_data', JSON.stringify(userData));
-    localStorage.setItem('user_activated', 'true');
+    // ✅ حفظ بيانات المستخدم للبوابة KR
+    localStorage.setItem('kr_user_data', JSON.stringify(userData));
+    localStorage.setItem('kr_user_active', 'true');
+    localStorage.setItem('kr_user_id', userData.id || '');
+    localStorage.setItem('kr_user_name', userData.fullName || '');
+    localStorage.setItem('kr_user_dept', userData.departmentName || '');
+    localStorage.setItem('kr_user_rank', userData.rank || '');
+    
     document.getElementById('loadingScreen').style.display = 'flex';
-    document.getElementById('loadingScreen').innerHTML = `<div style="text-align: center;"><i class="fas fa-check-circle" style="font-size: 100px; color: #00c853; margin-bottom: 30px; animation: scaleIn 0.5s ease;"></i><div style="color: #00c853; font-size: 28px; font-weight: 800; margin-bottom: 15px;">تم تفعيل هويتك بنجاح! 🎉</div><div style="color: var(--accent); font-size: 18px; font-weight: 600; animation: pulse 1.5s ease-in-out infinite;">جاري التوجيه إلى المنصة الرقمية...</div><div style="margin-top: 30px;"><div class="loading-spinner"></div></div></div><style>@keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }</style>`;
+    document.getElementById('loadingScreen').innerHTML = `<div style="text-align: center;"><i class="fas fa-check-circle" style="font-size: 100px; color: #00c853; margin-bottom: 30px; animation: scaleIn 0.5s ease;"></i><div style="color: #00c853; font-size: 28px; font-weight: 800; margin-bottom: 15px;">تم تفعيل هويتك بنجاح! 🎉</div><div style="color: var(--accent); font-size: 18px; font-weight: 600; animation: pulse 1.5s ease-in-out infinite;">جاري التوجيه إلى البوابة KR الذكية...</div><div style="margin-top: 30px;"><div class="loading-spinner"></div></div></div><style>@keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }</style>`;
     setTimeout(() => { window.location.href = 'kr-digital-platform.html'; }, 1500);
 }
 
@@ -504,29 +583,6 @@ function showExistingRequest(request) {
     messageDiv.style.backdropFilter = 'blur(20px)';
     messageDiv.style.border = `2px solid ${statusColor}`;
     formDiv.style.display = 'none';
-}
-
-function startNewRequest() {
-    clearInterval(statusCheckInterval);
-    document.getElementById('previousRequestMessage').style.display = 'none';
-    document.getElementById('applicationForm').style.display = 'block';
-    hasExistingRequest = false;
-    existingRequestData = null;
-    document.getElementById('fullName').value = '';
-    document.getElementById('age').value = '';
-    document.getElementById('gameUsername').value = '';
-    document.getElementById('discordUsername').value = '';
-    document.getElementById('gameId').value = '';
-    selectedDepartment = null;
-    selectedRank = null;
-    selectedAdditionals = [];
-    document.getElementById('step1').style.display = 'block';
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step3').style.display = 'none';
-    document.getElementById('step4').style.display = 'none';
-    document.getElementById('step5').style.display = 'none';
-    resetDepartmentSelection();
-    startStatusMonitoring();
 }
 
 function setupGameIdField() {
@@ -650,7 +706,7 @@ function showSuccessMessage(requestData) {
     const form = document.getElementById('applicationForm');
     const successMessage = document.getElementById('successMessage');
     const successDetails = document.getElementById('successDetails');
-    successDetails.innerHTML = `<div style="background: rgba(0,0,0,0.3); border-radius: 20px; padding: 35px; margin: 35px 0; border: 1px solid rgba(255,255,255,0.1);"><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="color: var(--gray-light);"><i class="fas fa-hashtag"></i> رقم الطلب:</span><span style="font-weight: 800; font-size: 20px; color: var(--accent);">${requestData.id}</span></div><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="color: var(--gray-light);"><i class="fas fa-calendar"></i> تاريخ التقديم:</span><span style="font-weight: 600;">${requestData.date}</span></div><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="color: var(--gray-light);"><i class="fas fa-building"></i> الوزارة:</span><span style="font-weight: 600;">${requestData.departmentName}</span></div><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0;"><span style="color: var(--gray-light);"><i class="fas fa-info-circle"></i> الحالة:</span><span style="color: var(--warning); font-weight: 700; font-size: 18px;"><i class="fas fa-clock"></i> قيد المراجعة</span></div></div><p style="color: var(--gray-light); font-size: 16px; text-align: center; margin-top: 20px;"><i class="fas fa-sync-alt fa-spin" style="margin-left: 8px;"></i> سيتم توجيهك تلقائياً للمنصة الرقمية فور قبول طلبك</p>`;
+    successDetails.innerHTML = `<div style="background: rgba(0,0,0,0.3); border-radius: 20px; padding: 35px; margin: 35px 0; border: 1px solid rgba(255,255,255,0.1);"><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="color: var(--gray-light);"><i class="fas fa-hashtag"></i> رقم الطلب:</span><span style="font-weight: 800; font-size: 20px; color: var(--accent);">${requestData.id}</span></div><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="color: var(--gray-light);"><i class="fas fa-calendar"></i> تاريخ التقديم:</span><span style="font-weight: 600;">${requestData.date}</span></div><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="color: var(--gray-light);"><i class="fas fa-building"></i> الوزارة:</span><span style="font-weight: 600;">${requestData.departmentName}</span></div><div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 0;"><span style="color: var(--gray-light);"><i class="fas fa-info-circle"></i> الحالة:</span><span style="color: var(--warning); font-weight: 700; font-size: 18px;"><i class="fas fa-clock"></i> قيد المراجعة</span></div></div><p style="color: var(--gray-light); font-size: 16px; text-align: center; margin-top: 20px;"><i class="fas fa-sync-alt fa-spin" style="margin-left: 8px;"></i> سيتم توجيهك تلقائياً للبوابة KR فور قبول طلبك</p>`;
     form.style.display = 'none';
     successMessage.style.display = 'block';
     successMessage.classList.add('show');
@@ -713,6 +769,29 @@ function showAlert(message, isSuccess) {
     if (isSuccess) { alertBox.classList.add('success'); } else { alertBox.classList.add('warning'); }
     alertBox.classList.add('show');
     setTimeout(() => { alertBox.classList.remove('show'); }, 4000);
+}
+
+function startNewRequest() {
+    clearInterval(statusCheckInterval);
+    document.getElementById('previousRequestMessage').style.display = 'none';
+    document.getElementById('applicationForm').style.display = 'block';
+    hasExistingRequest = false;
+    existingRequestData = null;
+    document.getElementById('fullName').value = '';
+    document.getElementById('age').value = '';
+    document.getElementById('gameUsername').value = '';
+    document.getElementById('discordUsername').value = '';
+    document.getElementById('gameId').value = '';
+    selectedDepartment = null;
+    selectedRank = null;
+    selectedAdditionals = [];
+    document.getElementById('step1').style.display = 'block';
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step3').style.display = 'none';
+    document.getElementById('step4').style.display = 'none';
+    document.getElementById('step5').style.display = 'none';
+    resetDepartmentSelection();
+    startStatusMonitoring();
 }
 
 window.addEventListener('beforeunload', function() { if (statusCheckInterval) { clearInterval(statusCheckInterval); } });
