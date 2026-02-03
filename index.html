@@ -1,3 +1,5 @@
+index.html 
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,28 +8,22 @@
     <title>هيئة KR الرقمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ===== متغيرات التصميم الفاخر المحدثة ===== */
+        /* ===== متغيرات التصميم الفاخر ===== */
         :root {
-            --primary: #1a237e;           /* أزرق داكن حكومي */
-            --primary-dark: #0d1b48;      /* أزرق داكن جداً */
-            --primary-light: #3949ab;     /* أزرق متوسط */
-            --accent: #ffab00;            /* ذهبي مائل للبرتقالي */
-            --accent-dark: #ff8f00;       /* ذهبي داكن */
-            --gold: #ffd700;              /* ذهبي ناصع */
-            --silver: #c0c0c0;            /* فضي */
-            --success: #00c853;           /* أخضر نجاح */
-            --danger: #ff1744;            /* أحمر خطر */
-            --dark: #0a0e1a;              /* داكن جداً */
-            --darker: #121827;            /* داكن */
-            --light: #f8fafc;             /* فاتح */
-            --gradient: linear-gradient(135deg, #1a237e 0%, #3949ab 50%, #1a237e 100%);
-            --gradient-gold: linear-gradient(135deg, #ffab00 0%, #ffd700 50%, #ffab00 100%);
-            --gradient-admin: linear-gradient(135deg, #d32f2f 0%, #f44336 50%, #d32f2f 100%);
-            --shadow: 0 15px 50px rgba(0,0,0,0.3);
-            --glow: 0 0 40px rgba(26, 35, 126, 0.4);
-            --glow-gold: 0 0 40px rgba(255, 171, 0, 0.4);
-            --border-radius: 20px;
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --primary: #2d68c4;
+            --primary-dark: #1e3a8a;
+            --primary-light: #4a90e2;
+            --secondary: #00a86b;
+            --accent: #ff6b6b;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --dark: #0f172a;
+            --darker: #1e293b;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, #2d68c4 0%, #1e3a8a 50%, #0f172a 100%);
+            --gradient-gold: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            --shadow: 0 10px 40px rgba(0,0,0,0.2);
+            --glow: 0 0 30px rgba(45, 104, 196, 0.3);
         }
 
         /* ===== إعادة التعيين والإعدادات العامة ===== */
@@ -35,10 +31,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Cairo', 'Segoe UI', 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
 
         body {
             background: var(--dark);
@@ -46,7 +40,6 @@
             overflow-x: hidden;
             position: relative;
             min-height: 100vh;
-            line-height: 1.6;
         }
 
         /* ===== خلفية الجسيمات المتحركة ===== */
@@ -62,14 +55,13 @@
 
         .particle {
             position: absolute;
-            background: linear-gradient(135deg, var(--accent), var(--gold));
+            background: var(--primary-light);
             border-radius: 50%;
-            animation: float 25s infinite linear;
-            opacity: 0.15;
-            filter: blur(1px);
+            animation: float 20s infinite linear;
+            opacity: 0.3;
         }
 
-        /* ===== خلفية شبكة ثلاثية الأبعاد محسنة ===== */
+        /* ===== خلفية شبكة ثلاثية الأبعاد ===== */
         .grid-bg {
             position: fixed;
             top: 0;
@@ -77,220 +69,137 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(255, 171, 0, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 171, 0, 0.05) 1px, transparent 1px);
-            background-size: 60px 60px;
-            transform: perspective(800px) rotateX(75deg);
-            animation: gridMove 50s linear infinite;
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg);
+            animation: gridMove 40s linear infinite;
             z-index: 1;
-            opacity: 0.3;
         }
 
-        /* ===== الهيدر الفاخر المحدث ===== */
+        /* ===== الهيدر الفاخر ===== */
         .header {
-            background: linear-gradient(to bottom, rgba(10, 14, 26, 0.98), rgba(10, 14, 26, 0.9));
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-bottom: 1px solid rgba(255, 171, 0, 0.2);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            padding: 18px 30px;
+            padding: 15px 20px;
             animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* ===== الشعار الفاخر المحدث ===== */
+        /* ===== الشعار الفاخر ===== */
         .logo {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             position: relative;
         }
 
         .logo-icon {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background: var(--gradient);
-            border-radius: 18px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            animation: logoFloat 8s ease-in-out infinite;
-            box-shadow: var(--glow), inset 0 0 20px rgba(255, 255, 255, 0.1);
-            transition: var(--transition);
-        }
-
-        .logo-icon:hover {
-            transform: scale(1.05) rotate(5deg);
-            box-shadow: 0 0 50px rgba(26, 35, 126, 0.6), inset 0 0 30px rgba(255, 255, 255, 0.2);
+            animation: logoFloat 6s ease-in-out infinite;
+            box-shadow: var(--glow);
         }
 
         .logo-icon::before {
             content: '';
             position: absolute;
-            inset: -3px;
-            background: var(--gradient-gold);
-            border-radius: 21px;
+            inset: -2px;
+            background: var(--gradient);
+            border-radius: 17px;
             z-index: -1;
-            opacity: 0.3;
-            animation: logoPulse 6s ease-in-out infinite;
+            opacity: 0.5;
+            animation: logoPulse 4s ease-in-out infinite;
         }
 
         .logo-icon i {
-            font-size: 28px;
+            font-size: 24px;
             color: white;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+            animation: logoSpin 20s linear infinite;
         }
 
         .logo-text h1 {
-            font-size: 28px;
-            font-weight: 900;
-            background: linear-gradient(135deg, white, var(--accent), var(--gold));
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, white, var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 0.5px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
         }
 
         .logo-text p {
-            font-size: 13px;
+            font-size: 12px;
             color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            margin-top: 5px;
-            font-weight: 300;
         }
 
-        /* ===== قائمة التنقل المحدثة ===== */
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            padding: 10px 20px;
-            border-radius: 12px;
-            transition: var(--transition);
+        /* ===== زر الإشعارات ===== */
+        .notification {
             position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 171, 0, 0.1), transparent);
-            transition: left 0.7s;
-        }
-
-        .nav-link:hover::before {
-            left: 100%;
-        }
-
-        .nav-link:hover {
-            color: var(--accent);
-            background: rgba(255, 171, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .nav-link i {
-            font-size: 18px;
-        }
-
-        /* ===== زر الإدارة الفاخر ===== */
-        .admin-btn {
-            background: var(--gradient-admin);
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 15px;
-            font-weight: 700;
-            font-size: 16px;
             cursor: pointer;
+        }
+
+        .notification i {
+            font-size: 24px;
+            color: var(--primary-light);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .notification:hover i {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 12px;
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(211, 47, 47, 0.3);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            animation: adminPulse 3s infinite;
+            justify-content: center;
+            font-weight: 600;
+            animation: badgePulse 2s infinite;
+            box-shadow: 0 0 10px var(--accent);
         }
 
-        .admin-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: left 0.7s;
-        }
-
-        .admin-btn:hover::before {
-            left: 100%;
-        }
-
-        .admin-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(211, 47, 47, 0.4);
-            animation: none;
-        }
-
-        .admin-btn:active {
-            transform: translateY(-1px) scale(1.02);
-        }
-
-        .admin-btn i {
-            font-size: 20px;
-            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
-        }
-
-        /* ===== البانر الرئيسي الفاخر المحدث ===== */
+        /* ===== البانر الرئيسي الفاخر ===== */
         .banner {
-            background: linear-gradient(135deg, 
-                rgba(26, 35, 126, 0.95), 
-                rgba(57, 73, 171, 0.85),
-                rgba(13, 27, 72, 0.95));
+            background: var(--gradient);
             border-radius: 30px;
-            padding: 80px 60px;
-            margin: 120px 30px 50px;
+            padding: 60px 40px;
+            margin: 100px 20px 40px;
             position: relative;
             overflow: hidden;
             animation: bannerAppear 1s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: var(--shadow), var(--glow);
-            border: 1px solid rgba(255, 171, 0, 0.2);
         }
 
         .banner::before {
@@ -303,76 +212,65 @@
             background: linear-gradient(
                 45deg,
                 transparent 30%,
-                rgba(255, 171, 0, 0.15) 50%,
+                rgba(255, 255, 255, 0.1) 50%,
                 transparent 70%
             );
-            animation: shine 4s infinite;
-            pointer-events: none;
+            animation: shine 3s infinite;
         }
 
         .banner-content {
             position: relative;
             z-index: 2;
             text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
         }
 
         .banner-icon {
-            font-size: 100px;
-            background: linear-gradient(135deg, var(--gold), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
+            font-size: 80px;
+            color: white;
+            margin-bottom: 25px;
             display: inline-block;
-            animation: iconFloat 5s ease-in-out infinite;
-            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.4));
+            animation: iconFloat 4s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
         }
 
         .banner h2 {
-            font-size: 48px;
-            font-weight: 900;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, white, var(--gold), var(--accent));
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, white, var(--gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 0.5px;
-            line-height: 1.2;
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
         }
 
         .banner p {
-            font-size: 20px;
+            font-size: 18px;
             opacity: 0.9;
-            margin-bottom: 40px;
-            max-width: 700px;
+            margin-bottom: 35px;
+            max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 300;
+            line-height: 1.6;
         }
 
-        /* ===== زر البانر الفاخر المحدث ===== */
+        /* ===== زر البانر الفاخر ===== */
         .banner-btn {
-            background: linear-gradient(135deg, var(--accent), var(--gold), var(--accent-dark));
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
             color: var(--dark);
             border: none;
-            padding: 20px 50px;
-            border-radius: 18px;
-            font-weight: 800;
-            font-size: 20px;
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             position: relative;
             overflow: hidden;
-            transition: var(--transition);
-            animation: btnPulse 2.5s infinite;
-            box-shadow: 0 12px 35px rgba(255, 171, 0, 0.4);
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            transition: all 0.3s;
+            animation: btnPulse 2s infinite;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
         }
 
         .banner-btn::before {
@@ -385,10 +283,10 @@
             background: linear-gradient(
                 90deg,
                 transparent,
-                rgba(255, 255, 255, 0.4),
+                rgba(255, 255, 255, 0.3),
                 transparent
             );
-            transition: left 0.8s;
+            transition: left 0.7s;
         }
 
         .banner-btn:hover::before {
@@ -397,105 +295,90 @@
 
         .banner-btn:hover {
             transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 20px 45px rgba(255, 171, 0, 0.5);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
             animation: none;
         }
 
-        .banner-btn:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-
         .banner-btn i {
-            font-size: 22px;
+            font-size: 20px;
             transition: transform 0.3s;
         }
 
         .banner-btn:hover i {
-            transform: translateX(5px) rotate(10deg);
+            transform: translateX(5px);
         }
 
-        /* ===== قسم الخدمات الفاخر المحدث ===== */
+        /* ===== قسم الخدمات الفاخر ===== */
         .services-section {
-            padding: 60px 30px;
-            max-width: 1600px;
+            padding: 40px 20px;
+            max-width: 1400px;
             margin: 0 auto;
-            position: relative;
-            z-index: 2;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 70px;
+            margin-bottom: 50px;
         }
 
         .section-title h3 {
-            font-size: 40px;
-            font-weight: 900;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, white, var(--accent));
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, white, var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             position: relative;
             display: inline-block;
-            letter-spacing: 0.5px;
         }
 
         .section-title h3::after {
             content: '';
             position: absolute;
-            bottom: -15px;
+            bottom: -10px;
             right: 0;
             width: 100%;
-            height: 4px;
+            height: 3px;
             background: var(--gradient-gold);
             border-radius: 2px;
-            animation: lineWidth 3.5s infinite;
+            animation: lineWidth 3s infinite;
         }
 
         .section-title p {
             color: rgba(255, 255, 255, 0.7);
-            font-size: 18px;
-            max-width: 700px;
-            margin: 25px auto 0;
-            font-weight: 300;
-            line-height: 1.6;
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        /* ===== شبكة الخدمات الفاخرة المحدثة ===== */
+        /* ===== شبكة الخدمات الفاخرة ===== */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 35px;
-            perspective: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            perspective: 1000px;
         }
 
         .service-card {
-            background: linear-gradient(135deg, 
-                rgba(18, 24, 39, 0.9), 
-                rgba(26, 35, 126, 0.3));
+            background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 171, 0, 0.15);
-            border-radius: var(--border-radius);
-            padding: 45px 35px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 35px 25px;
             text-align: center;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            animation: cardAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: cardAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
             opacity: 0;
-            transform: translateY(40px);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            transform: translateY(30px);
         }
 
         .service-card:nth-child(1) { animation-delay: 0.1s; }
         .service-card:nth-child(2) { animation-delay: 0.2s; }
         .service-card:nth-child(3) { animation-delay: 0.3s; }
+        .service-card:nth-child(4) { animation-delay: 0.4s; }
 
         .service-card::before {
             content: '';
@@ -504,16 +387,15 @@
             left: 0;
             right: 0;
             height: 100%;
-            background: linear-gradient(135deg, rgba(255, 171, 0, 0.1), transparent);
+            background: linear-gradient(135deg, rgba(45, 104, 196, 0.1), transparent);
             transform: translateY(100%);
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .service-card:hover {
-            transform: translateY(-15px) scale(1.03);
-            border-color: rgba(255, 171, 0, 0.4);
-            box-shadow: var(--shadow), var(--glow-gold);
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow), var(--glow);
         }
 
         .service-card:hover::before {
@@ -521,83 +403,150 @@
         }
 
         .service-icon {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 30px;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
             background: var(--gradient);
-            border-radius: 25px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            transition: var(--transition);
-            animation: iconPulse 4s infinite;
-            z-index: 2;
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            animation: iconPulse 3s infinite;
         }
 
         .service-card:hover .service-icon {
-            transform: scale(1.15) rotate(8deg);
+            transform: scale(1.1) rotate(5deg);
             animation: none;
-            background: var(--gradient-gold);
-            box-shadow: 0 0 40px rgba(255, 171, 0, 0.4);
         }
 
         .service-icon i {
-            font-size: 42px;
+            font-size: 36px;
             color: white;
-            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
         }
 
         .service-title {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
             color: white;
             position: relative;
             z-index: 2;
-            letter-spacing: 0.5px;
         }
 
         .service-desc {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.75);
-            line-height: 1.8;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
             position: relative;
             z-index: 2;
-            font-weight: 300;
-            max-width: 280px;
+        }
+
+        /* ===== الشريط السفلي الفاخر ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 15px 0;
+            animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        .service-card::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 171, 0, 0.1);
-            z-index: 1;
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.6);
+            flex: 1;
+            padding: 10px;
+            transition: all 0.3s;
+            position: relative;
         }
 
-        /* ===== الأنيميشن المحدثة ===== */
+        .nav-item.active {
+            color: var(--gold);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            width: 40px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 2px;
+            animation: navPulse 2s infinite;
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .nav-item:hover .nav-icon {
+            color: var(--primary-light);
+        }
+
+        .nav-main {
+            position: relative;
+        }
+
+        .nav-main .nav-icon {
+            background: var(--gradient);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: -30px;
+            box-shadow: var(--glow);
+            animation: navFloat 4s ease-in-out infinite;
+        }
+
+        .nav-label {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== الأنيميشن ===== */
         @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
-            33% { transform: translateY(-30px) translateX(20px) rotate(120deg); }
-            66% { transform: translateY(20px) translateX(-20px) rotate(240deg); }
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(10px); }
         }
 
         @keyframes gridMove {
-            0% { transform: perspective(800px) rotateX(75deg) translateY(0); }
-            100% { transform: perspective(800px) rotateX(75deg) translateY(100px); }
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
         }
 
         @keyframes slideDown {
             from {
                 opacity: 0;
-                transform: translateY(-100px);
+                transform: translateY(-100%);
             }
             to {
                 opacity: 1;
@@ -606,15 +555,13 @@
         }
 
         @keyframes logoFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            25% { transform: translateY(-15px) rotate(2deg) scale(1.05); }
-            50% { transform: translateY(0) rotate(0deg) scale(1); }
-            75% { transform: translateY(-10px) rotate(-1deg) scale(1.03); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
         }
 
         @keyframes logoPulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.08); }
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
         }
 
         @keyframes logoSpin {
@@ -622,19 +569,15 @@
             to { transform: rotate(360deg); }
         }
 
-        @keyframes adminPulse {
-            0%, 100% { 
-                box-shadow: 0 8px 25px rgba(211, 47, 47, 0.3);
-            }
-            50% { 
-                box-shadow: 0 8px 35px rgba(211, 47, 47, 0.5);
-            }
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 10px var(--accent); }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px var(--accent); }
         }
 
         @keyframes bannerAppear {
             from {
                 opacity: 0;
-                transform: translateY(80px) scale(0.95);
+                transform: translateY(50px) scale(0.9);
             }
             to {
                 opacity: 1;
@@ -643,27 +586,27 @@
         }
 
         @keyframes shine {
-            0% { transform: translateX(-100%) skewX(-15deg); }
-            100% { transform: translateX(200%) skewX(-15deg); }
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         @keyframes iconFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         @keyframes btnPulse {
             0%, 100% { 
-                box-shadow: 0 12px 35px rgba(255, 171, 0, 0.4);
+                box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
             }
             50% { 
-                box-shadow: 0 12px 45px rgba(255, 171, 0, 0.6);
+                box-shadow: 0 10px 40px rgba(255, 215, 0, 0.5);
             }
         }
 
         @keyframes lineWidth {
             0%, 100% { width: 100%; }
-            50% { width: 50%; }
+            50% { width: 60%; }
         }
 
         @keyframes cardAppear {
@@ -674,113 +617,35 @@
         }
 
         @keyframes iconPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(26, 35, 126, 0.3); }
-            50% { transform: scale(1.08); box-shadow: 0 15px 40px rgba(26, 35, 126, 0.4); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
-        /* ===== تصميم متجاوب محسن ===== */
-        @media (max-width: 1200px) {
-            .header-content {
-                padding: 0 20px;
-            }
-            
-            .banner {
-                padding: 60px 40px;
-                margin: 120px 20px 40px;
-            }
-            
-            .services-grid {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            }
-        }
-
-        @media (max-width: 992px) {
-            .nav-links {
-                gap: 20px;
-            }
-            
-            .nav-link {
-                padding: 8px 16px;
-                font-size: 15px;
-            }
-            
-            .banner h2 {
-                font-size: 40px;
-            }
-            
-            .banner p {
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                padding: 15px 20px;
-            }
-            
-            .logo-text h1 {
-                font-size: 24px;
-            }
-            
-            .logo-text p {
-                font-size: 11px;
-                letter-spacing: 2px;
-            }
-            
-            .nav-links {
-                flex-direction: column;
-                position: fixed;
-                top: 80px;
-                right: 0;
-                background: rgba(10, 14, 26, 0.95);
-                width: 100%;
-                padding: 20px;
-                transform: translateY(-100%);
+        @keyframes slideUp {
+            from {
                 opacity: 0;
-                transition: var(--transition);
-                border-bottom: 1px solid rgba(255, 171, 0, 0.2);
+                transform: translateY(100%);
             }
-            
-            .nav-links.active {
-                transform: translateY(0);
+            to {
                 opacity: 1;
+                transform: translateY(0);
             }
-            
-            .nav-link {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .mobile-menu-btn {
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
-                cursor: pointer;
-                z-index: 1001;
-            }
-            
-            .mobile-menu-btn span {
-                width: 30px;
-                height: 3px;
-                background: var(--accent);
-                border-radius: 3px;
-                transition: var(--transition);
-            }
-            
-            .mobile-menu-btn.active span:nth-child(1) {
-                transform: rotate(45deg) translate(8px, 8px);
-            }
-            
-            .mobile-menu-btn.active span:nth-child(2) {
-                opacity: 0;
-            }
-            
-            .mobile-menu-btn.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(7px, -7px);
-            }
-            
+        }
+
+        @keyframes navPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes navFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* ===== تصميم متجاوب ===== */
+        @media (max-width: 768px) {
             .banner {
-                padding: 40px 30px;
+                padding: 40px 25px;
                 margin: 100px 15px 30px;
                 border-radius: 25px;
             }
@@ -793,18 +658,14 @@
                 font-size: 16px;
             }
             
-            .banner-btn {
-                padding: 16px 35px;
-                font-size: 18px;
-            }
-            
             .services-grid {
                 grid-template-columns: 1fr;
-                gap: 25px;
             }
             
-            .section-title h3 {
-                font-size: 32px;
+            .nav-main .nav-icon {
+                width: 50px;
+                height: 50px;
+                margin-top: -25px;
             }
         }
 
@@ -815,7 +676,6 @@
             
             .banner {
                 padding: 30px 20px;
-                margin: 80px 10px 20px;
             }
             
             .banner h2 {
@@ -823,237 +683,83 @@
             }
             
             .banner-btn {
-                padding: 14px 25px;
+                padding: 15px 30px;
                 font-size: 16px;
-                width: 100%;
-                justify-content: center;
             }
             
-            .admin-btn {
-                padding: 12px 20px;
-                font-size: 14px;
-                width: 100%;
-                justify-content: center;
+            .nav-container {
+                padding: 0 10px;
             }
             
-            .service-card {
-                padding: 35px 25px;
+            .nav-icon {
+                font-size: 20px;
             }
             
-            .service-icon {
-                width: 80px;
-                height: 80px;
+            .nav-label {
+                font-size: 10px;
             }
-            
-            .service-icon i {
-                font-size: 36px;
-            }
-        }
-
-        /* ===== تحسينات إضافية ===== */
-        ::selection {
-            background: var(--accent);
-            color: var(--dark);
-        }
-
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--darker);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--gradient);
-            border-radius: 6px;
-            border: 3px solid var(--darker);
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--gradient-gold);
-        }
-
-        /* ===== تأثيرات الدخول للصفحة ===== */
-        .page-transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--gradient);
-            z-index: 9999;
-            animation: pageTransition 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        @keyframes pageTransition {
-            0% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            80% {
-                opacity: 0.3;
-                transform: scale(1.1);
-            }
-            100% {
-                opacity: 0;
-                transform: scale(1.2);
-                display: none;
-            }
-        }
-
-        /* ===== رسالة الترحيب ===== */
-        .welcome-message {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, var(--gradient));
-            color: white;
-            padding: 20px 25px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            z-index: 999;
-            animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            display: none;
-            max-width: 350px;
-            border-left: 5px solid var(--accent);
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .welcome-message i {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: var(--accent);
-        }
-
-        .welcome-message h4 {
-            margin-bottom: 5px;
-            font-weight: 700;
-        }
-
-        .welcome-message p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .welcome-message .close-btn {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            font-size: 18px;
-            transition: var(--transition);
-        }
-
-        .welcome-message .close-btn:hover {
-            color: var(--accent);
         }
     </style>
 </head>
 <body>
-    <!-- انتقال الصفحة -->
-    <div class="page-transition"></div>
-    
     <!-- خلفية شبكة ثلاثية الأبعاد -->
     <div class="grid-bg"></div>
     
     <!-- جسيمات متحركة -->
     <div class="particles-container" id="particles"></div>
     
-    <!-- الهيدر الفاخر المحدث -->
+    <!-- الهيدر الفاخر -->
     <header class="header">
         <div class="header-content">
             <div class="logo">
                 <div class="logo-icon">
-                    <i class="fas fa-shield-alt"></i>
+                    <i class="fas fa-id-card"></i>
                 </div>
                 <div class="logo-text">
                     <h1>هيئة KR الرقمية</h1>
-                    <p>النظام الرقمي الموحد</p>
+                    <p>تميز في كل تفاصيلنا</p>
                 </div>
             </div>
             
-            <!-- زر القائمة للجوال -->
-            <div class="mobile-menu-btn" id="mobileMenuBtn">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="notification">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notificationBadge" style="display:none;">0</span>
             </div>
-            
-            <!-- قائمة التنقل -->
-            <nav class="nav-links" id="navLinks">
-                <a href="#" class="nav-link" onclick="showWelcomeMessage()">
-                    <i class="fas fa-home"></i>
-                    الرئيسية
-                </a>
-                <a href="#" class="nav-link" onclick="navigateTo('apply.html')">
-                    <i class="fas fa-id-card"></i>
-                    التفعيل الرقمي
-                </a>
-                <a href="#" class="nav-link" onclick="navigateTo('#')">
-                    <i class="fas fa-info-circle"></i>
-                    عن النظام
-                </a>
-                <a href="#" class="nav-link" onclick="navigateTo('#')">
-                    <i class="fas fa-headset"></i>
-                    الدعم الفني
-                </a>
-                <!-- زر الإدارة المميز -->
-                <button class="admin-btn" onclick="navigateToAdmin()">
-                    <i class="fas fa-user-shield"></i>
-                    لوحة الإدارة
-                </button>
-            </nav>
         </div>
     </header>
     
     <!-- المحتوى الرئيسي -->
     <main class="main">
-        <!-- البانر الفاخر المحدث -->
+        <!-- البانر الفاخر -->
         <section class="banner">
             <div class="banner-content">
                 <div class="banner-icon">
                     <i class="fas fa-id-card-alt"></i>
                 </div>
                 <h2>نظام تفعيل الهوية المتقدم</h2>
-                <p>تقدم هيئة KR الرقمية نظاماً متكاملاً لتقديم طلبات تفعيل الهوية الرقمية<br>بأعلى معايير الأمان والكفاءة والحماية.</p>
+                <p>تجربة فاخرة لتقديم طلبات التفعيل بأعلى معايير الأمان والكفاءة.<br>نظام تفعيل الهوية الرسمي لهيئة KR الرقمية.</p>
                 <button class="banner-btn" onclick="navigateTo('apply.html')">
                     <i class="fas fa-rocket"></i> بدء طلب التفعيل
                 </button>
             </div>
         </section>
         
-        <!-- قسم الخدمات الفاخر المحدث -->
+        <!-- قسم الخدمات الفاخر -->
         <section class="services-section">
             <div class="section-title">
                 <h3>خدماتنا المميزة</h3>
-                <p>نقدم مجموعة من الخدمات الرقمية المتطورة التي تلبي احتياجاتكم بأعلى مستويات الجودة والأمان</p>
+                <p>نقدم لكم مجموعة من الخدمات الرقمية المتطورة بأعلى معايير الجودة</p>
             </div>
             
             <div class="services-grid">
-                <!-- خدمة طلب تفعيل الهوية -->
                 <div class="service-card" onclick="navigateTo('apply.html')">
                     <div class="service-icon">
                         <i class="fas fa-id-card"></i>
                     </div>
                     <h3 class="service-title">طلب تفعيل الهوية</h3>
-                    <p class="service-desc">تقديم طلب تفعيل جديد بخطوات سهلة وآمنة مع متابعة فورية للحالة</p>
+                    <p class="service-desc">تقديم طلب تفعيل جديد بخطوات سهلة وآمنة مع متابعة فورية</p>
                 </div>
                 
-                <!-- خدمة النظام الإداري -->
                 <div class="service-card" onclick="navigateToAdmin()">
                     <div class="service-icon">
                         <i class="fas fa-user-shield"></i>
@@ -1062,171 +768,263 @@
                     <p class="service-desc">منصة متطورة لإدارة الطلبات والتحكم الكامل في النظام</p>
                 </div>
                 
-                <!-- خدمة المنصة الرقمية -->
-                <div class="service-card" onclick="navigateTo('kr-digital-platform.html')">
+                <div class="service-card" onclick="showComingSoon()">
                     <div class="service-icon">
-                        <i class="fas fa-laptop-code"></i>
+                        <i class="fas fa-map-marker-alt"></i>
                     </div>
-                    <h3 class="service-title">المنصة الرقمية</h3>
-                    <p class="service-desc">منصة الخدمات الرقمية للمستخدمين المفعّلين</p>
+                    <h3 class="service-title">متابعة الطلبات</h3>
+                    <p class="service-desc">تتبع حالة طلبك خطوة بخطة مع تحديثات فورية</p>
+                </div>
+                
+                <div class="service-card" onclick="showComingSoon()">
+                    <div class="service-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3 class="service-title">الملف الشخصي</h3>
+                    <p class="service-desc">إدارة معلوماتك الشخصية وتاريخ الطلبات السابقة</p>
                 </div>
             </div>
         </section>
     </main>
-
-    <!-- رسالة الترحيب -->
-    <div class="welcome-message" id="welcomeMessage">
-        <button class="close-btn" onclick="closeWelcomeMessage()">
-            <i class="fas fa-times"></i>
-        </button>
-        <i class="fas fa-star"></i>
-        <h4>مرحباً بك في هيئة KR الرقمية</h4>
-        <p>نظام تفعيل الهوية المتقدم بأعلى معايير الأمان والجودة</p>
-    </div>
+    
+    <!-- الشريط السفلي الفاخر -->
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
+                <div class="nav-icon">
+                    <i class="fas fa-th-large"></i>
+                </div>
+                <span class="nav-label">الخدمات</span>
+            </a>
+            
+            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
+                <div class="nav-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <span class="nav-label">متابعة</span>
+            </a>
+            
+            <a href="javascript:void(0)" class="nav-item nav-main active" onclick="navigateTo('index.html')">
+                <div class="nav-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <span class="nav-label">الرئيسية</span>
+            </a>
+            
+            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
+                <div class="nav-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <span class="nav-label">الرسائل</span>
+            </a>
+            
+            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
+                <div class="nav-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span class="nav-label">حسابي</span>
+            </a>
+        </div>
+    </nav>
 
     <script>
         // ====== إنشاء الجسيمات المتحركة ======
         function createParticles() {
             const container = document.getElementById('particles');
-            const particleCount = 80;
+            const particleCount = 50;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 
                 // أحجام وألوان عشوائية
-                const size = Math.random() * 20 + 5;
-                const color = i % 4 === 0 ? 'var(--accent)' : 
-                             i % 4 === 1 ? 'var(--primary-light)' : 
-                             i % 4 === 2 ? 'var(--gold)' : 'var(--success)';
+                const size = Math.random() * 15 + 5;
+                const color = i % 3 === 0 ? 'var(--primary)' : 
+                             i % 3 === 1 ? 'var(--primary-light)' : 'var(--gold)';
                 
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
-                particle.style.background = `radial-gradient(circle, ${color}, transparent 70%)`;
+                particle.style.background = color;
                 particle.style.left = `${Math.random() * 100}%`;
                 particle.style.top = `${Math.random() * 100}%`;
-                particle.style.animationDelay = `${Math.random() * 30}s`;
-                particle.style.animationDuration = `${Math.random() * 20 + 20}s`;
-                particle.style.opacity = Math.random() * 0.15 + 0.05;
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+                particle.style.animationDuration = `${Math.random() * 15 + 15}s`;
+                particle.style.opacity = Math.random() * 0.2 + 0.1;
                 
                 container.appendChild(particle);
             }
         }
 
-        // ====== التنقل المباشر بين الصفحات ======
-        function navigateTo(url) {
-            // تأثير انتقالي قبل الانتقال
-            document.body.style.opacity = '0.8';
-            document.body.style.transform = 'scale(0.98)';
-            document.body.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-            
-            setTimeout(() => {
-                window.location.href = url;
-            }, 400);
-        }
-
-        // ====== التنقل إلى لوحة الإدارة ======
-        function navigateToAdmin() {
-            // تحقق من وجود بيانات المدير
-            const adminKey = localStorage.getItem('kr_admin_key');
-            const adminToken = localStorage.getItem('kr_admin_token');
-            
-            if (adminKey && adminToken) {
-                // إذا كان هناك بيانات تسجيل دخول، نذهب مباشرة للوحة التحكم
-                navigateTo('admin-dashboard.html');
-            } else {
-                // إذا لم يكن هناك بيانات، نذهب لصفحة تسجيل دخول المدير
-                navigateTo('admin-login.html');
+        // ====== تحديث الإشعارات ======
+        function updateNotifications() {
+            try {
+                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
+                const pending = requests.filter(req => req.status === 'pending').length;
+                
+                const badge = document.getElementById('notificationBadge');
+                if (pending > 0) {
+                    badge.textContent = pending;
+                    badge.style.display = 'flex';
+                    // تأثير إضافي عند وجود إشعارات
+                    badge.parentElement.style.animation = 'badgePulse 2s infinite';
+                } else {
+                    badge.style.display = 'none';
+                }
+                
+            } catch (error) {
+                console.log('لا توجد طلبات بعد');
             }
         }
 
-        // ====== إظهار/إخفاء رسالة الترحيب ======
-        function showWelcomeMessage() {
-            const welcomeMsg = document.getElementById('welcomeMessage');
-            welcomeMsg.style.display = 'block';
+        // ====== التنقل بين الصفحات ======
+        function navigateTo(url) {
+            // تأثير انتقالي قبل الانتقال
+            document.body.style.opacity = '0.7';
+            document.body.style.transition = 'opacity 0.3s';
             
-            // إخفاء الرسالة بعد 8 ثواني
             setTimeout(() => {
-                closeWelcomeMessage();
-            }, 8000);
+                window.location.href = url;
+            }, 300);
         }
 
-        function closeWelcomeMessage() {
-            const welcomeMsg = document.getElementById('welcomeMessage');
-            welcomeMsg.style.animation = 'slideInRight 0.5s reverse forwards';
-            setTimeout(() => {
-                welcomeMsg.style.display = 'none';
-                welcomeMsg.style.animation = '';
-            }, 500);
-        }
-
-        // ====== القائمة المتنقلة للجوال ======
-        function setupMobileMenu() {
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const navLinks = document.getElementById('navLinks');
-            
-            mobileMenuBtn.addEventListener('click', function() {
-                this.classList.toggle('active');
-                navLinks.classList.toggle('active');
-                document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
-            });
-            
-            // إغلاق القائمة عند النقر على رابط
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenuBtn.classList.remove('active');
-                    navLinks.classList.remove('active');
-                    document.body.style.overflow = '';
-                });
-            });
-            
-            // إغلاق القائمة عند النقر خارجها
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.nav-links') && !event.target.closest('.mobile-menu-btn')) {
-                    mobileMenuBtn.classList.remove('active');
-                    navLinks.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
-        }
-
-        // ====== تأثيرات التمرير ======
-        function setupScrollEffects() {
-            let lastScroll = 0;
-            const header = document.querySelector('.header');
-            
-            window.addEventListener('scroll', function() {
-                const currentScroll = window.pageYOffset;
-                
-                // إخفاء/إظهار الهيدر
-                if (currentScroll > lastScroll && currentScroll > 150) {
-                    header.style.transform = 'translateY(-100%)';
-                } else {
-                    header.style.transform = 'translateY(0)';
-                }
-                
-                lastScroll = currentScroll;
-                
-                // تأثيرات على البطاقات عند التمرير
-                const cards = document.querySelectorAll('.service-card');
-                cards.forEach(card => {
-                    const cardTop = card.getBoundingClientRect().top;
-                    const windowHeight = window.innerHeight;
-                    
-                    if (cardTop < windowHeight * 0.85) {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
+        function navigateToAdmin() {
+            // تحقق من وجود صفحة الإدارة
+            fetch('admin/login.html')
+                .then(response => {
+                    if (response.ok) {
+                        navigateTo('admin/login.html');
+                    } else {
+                        showCustomAlert('صفحة الإدارة قيد التطوير', 'info');
                     }
+                })
+                .catch(() => {
+                    showCustomAlert('صفحة الإدارة غير متوفرة حالياً', 'warning');
                 });
-                
-                // تأثير على البانر عند التمرير
-                const banner = document.querySelector('.banner');
-                if (banner) {
-                    const scrolled = window.pageYOffset;
-                    const rate = scrolled * -0.5;
-                    banner.style.transform = `translateY(${rate}px)`;
+        }
+
+        // ====== رسائل Coming Soon مع أنيميشن ======
+        function showComingSoon() {
+            // إنشاء رسالة مع أنيميشن
+            const message = document.createElement('div');
+            message.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) scale(0);
+                    background: var(--gradient);
+                    padding: 30px 40px;
+                    border-radius: 25px;
+                    color: white;
+                    text-align: center;
+                    z-index: 2000;
+                    box-shadow: var(--shadow), var(--glow);
+                    animation: popup 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                    max-width: 90%;
+                    width: 350px;
+                    backdrop-filter: blur(20px);
+                ">
+                    <i class="fas fa-gem" style="font-size: 40px; margin-bottom: 15px; display: block; color: var(--gold);"></i>
+                    <h3 style="margin-bottom: 10px; font-size: 22px;">قريباً</h3>
+                    <p style="opacity: 0.9; margin-bottom: 20px;">هذه الخدمة قيد التطوير وسوف تكون متاحة قريباً</p>
+                    <button onclick="this.parentElement.remove()" style="
+                        background: rgba(255, 255, 255, 0.2);
+                        border: 1px solid rgba(255, 255, 255, 0.3);
+                        color: white;
+                        padding: 10px 25px;
+                        border-radius: 50px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: all 0.3s;
+                    " onmouseover="this.style.background='rgba(255, 255, 255, 0.3)';" 
+                    onmouseout="this.style.background='rgba(255, 255, 255, 0.2)';">
+                        حسناً
+                    </button>
+                </div>
+            `;
+            
+            // إضافة الأنيميشن
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes popup {
+                    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+                    70% { transform: translate(-50%, -50%) scale(1.1); }
+                    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
                 }
-            });
+            `;
+            document.head.appendChild(style);
+            
+            // إضافة طبقة شفافة
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(5px);
+                z-index: 1999;
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            overlay.onclick = function() {
+                document.body.removeChild(overlay);
+                document.body.removeChild(message);
+            };
+            
+            document.body.appendChild(overlay);
+            document.body.appendChild(message);
+        }
+
+        // ====== عرض تنبيه مخصص ======
+        function showCustomAlert(text, type = 'info') {
+            const alert = document.createElement('div');
+            alert.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 30px;
+                    right: 30px;
+                    background: ${type === 'info' ? 'var(--primary)' : 
+                               type === 'warning' ? 'var(--accent)' : 'var(--secondary)'};
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 15px;
+                    box-shadow: var(--shadow);
+                    z-index: 2000;
+                    animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    max-width: 400px;
+                    backdrop-filter: blur(10px);
+                ">
+                    <i class="fas ${type === 'info' ? 'fa-info-circle' : 
+                                 type === 'warning' ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
+                    <span>${text}</span>
+                    <i class="fas fa-times" style="margin-right: auto; cursor: pointer; opacity: 0.8;" 
+                       onclick="this.parentElement.remove()"></i>
+                </div>
+            `;
+            
+            // إضافة الأنيميشن
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(alert);
+            
+            // إزالة التنبيه بعد 5 ثواني
+            setTimeout(() => {
+                if (alert.parentElement) {
+                    alert.remove();
+                }
+            }, 5000);
         }
 
         // ====== عند تحميل الصفحة ======
@@ -1236,92 +1034,47 @@
             // إنشاء الجسيمات
             createParticles();
             
-            // إعداد القائمة المتنقلة
-            setupMobileMenu();
-            
-            // إعداد تأثيرات التمرير
-            setupScrollEffects();
+            // تحديث الإشعارات
+            updateNotifications();
             
             // تأثير تحميل الصفحة
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.8s';
+            
             setTimeout(() => {
                 document.body.style.opacity = '1';
-                document.body.style.transform = 'scale(1)';
             }, 100);
             
-            // إظهار رسالة الترحيب بعد 2 ثانية
-            setTimeout(() => {
-                showWelcomeMessage();
-            }, 2000);
-            
-            // إضافة تأثيرات تفاعلية للأزرار
-            document.querySelectorAll('.banner-btn, .admin-btn, .service-card').forEach(btn => {
-                btn.addEventListener('mousedown', function() {
-                    this.style.transform = 'scale(0.95)';
-                });
-                
-                btn.addEventListener('mouseup', function() {
-                    this.style.transform = '';
-                });
-                
-                btn.addEventListener('mouseleave', function() {
-                    this.style.transform = '';
-                });
-            });
-            
-            // تأثير تحميل الصفحة التقدمي
-            let progress = 0;
-            const loadingBar = document.createElement('div');
-            loadingBar.style.position = 'fixed';
-            loadingBar.style.top = '0';
-            loadingBar.style.left = '0';
-            loadingBar.style.height = '3px';
-            loadingBar.style.background = 'var(--gradient-gold)';
-            loadingBar.style.zIndex = '10000';
-            loadingBar.style.transition = 'width 0.3s';
-            loadingBar.style.width = '0%';
-            document.body.appendChild(loadingBar);
-            
-            const loadingInterval = setInterval(() => {
-                progress += Math.random() * 20;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(loadingInterval);
-                    setTimeout(() => {
-                        loadingBar.style.opacity = '0';
-                        setTimeout(() => {
-                            document.body.removeChild(loadingBar);
-                        }, 300);
-                    }, 300);
-                }
-                loadingBar.style.width = `${progress}%`;
-            }, 100);
-            
-            // إضافة تأثير اهتزاز لزر الإدارة
-            setInterval(() => {
-                const adminBtn = document.querySelector('.admin-btn');
-                if (adminBtn && Math.random() > 0.7) {
-                    adminBtn.style.animation = 'adminPulse 0.5s';
-                    setTimeout(() => {
-                        adminBtn.style.animation = 'adminPulse 3s infinite';
-                    }, 500);
-                }
-            }, 5000);
+            // تحديث الإشعارات كل 10 ثواني
+            setInterval(updateNotifications, 10000);
         });
 
-        // ====== منع التحديث عند الضغط على زر الإدارة ======
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
-                e.preventDefault();
-                return false;
+        // ====== تأثيرات إضافية عند التمرير ======
+        let lastScroll = 0;
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
+            const header = document.querySelector('.header');
+            
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
             }
+            
+            lastScroll = currentScroll;
+            
+            // تأثيرات على البطاقات عند التمرير
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach(card => {
+                const cardTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (cardTop < windowHeight * 0.8) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
         });
-
-        // ====== تأثيرات الطباعة في الكونسول ======
-        console.log('%c🚀 %cهيئة KR الرقمية %c\nنظام تفعيل الهوية المتقدم\nVersion 2.0.0', 
-            'font-size: 30px; color: var(--accent);', 
-            'font-size: 20px; font-weight: bold; color: var(--primary-light);', 
-            'font-size: 14px; color: var(--light);'
-        );
     </script>
 </body>
 </html>
