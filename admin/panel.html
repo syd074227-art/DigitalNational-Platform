@@ -1585,6 +1585,53 @@ admin/panel.html
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
+<script>
+  const requestsList = document.getElementById("requestsList");
+
+  // تحميل الطلبات بشكل realtime
+  const requestsRef = db.ref("requests");
+  requestsRef.on("value", (snapshot) => {
+    const data = snapshot.val();
+    requestsList.innerHTML = ""; // مسح القديم
+
+    if (!data) {
+      requestsList.innerHTML = "<p>لا توجد طلبات.</p>";
+      return;
+    }
+
+    // عرض كل طلب
+    Object.keys(data).forEach((key) => {
+      const req = data[key];
+
+      // عنصر الطلب
+      const reqDiv = document.createElement("div");
+      reqDiv.classList.add("request-item");
+      reqDiv.style.border = "1px solid #ccc";
+      reqDiv.style.padding = "10px";
+      reqDiv.style.marginBottom = "10px";
+
+      reqDiv.innerHTML = `
+        <p><strong>الاسم:</strong> ${req.name || "-"}</p>
+        <p><strong>البريد:</strong> ${req.email || "-"}</p>
+        <p><strong>الحالة:</strong> <span id="status-${key}">${req.status}</span></p>
+        <button id="accept-${key}">قبول</button>
+        <button id="reject-${key}">رفض</button>
+      `;
+
+      requestsList.appendChild(reqDiv);
+
+      // زر القبول
+      document.getElementById(`accept-${key}`).addEventListener("click", () => {
+        db.ref("requests/" + key).update({ status: "accepted" });
+      });
+
+      // زر الرفض
+      document.getElementById(`reject-${key}`).addEventListener("click", () => {
+        db.ref("requests/" + key).update({ status: "rejected" });
+      });
+    });
+  });
+</script>
 </script>
 </body>
 </html>
