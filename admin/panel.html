@@ -1,3 +1,5 @@
+admin/panel.html
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -5,13 +7,775 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اللوحة الإدارية - نظام إدارة طلبات التفعيل</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     <style>
-        /* جميع الأنماط السابقة تبقى كما هي */
-        /* ... */
+        /* ===== متغيرات التصميم الحكومي الفاخر ===== */
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-dark: #0f2a6d;
+            --primary-light: #3b82f6;
+            --secondary-color: #8b5cf6;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --gold-color: #b8860b;
+            --dark-bg: #0f172a;
+            --dark-card: #1e293b;
+            --light-text: #f8fafc;
+            --gray-text: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            --gradient-gold: linear-gradient(135deg, var(--gold-color) 0%, #fbbf24 100%);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 30px rgba(30, 58, 138, 0.3);
+        }
+
+        /* ===== الأنيميشن ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* ===== إعدادات أساسية ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Cairo', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1f35 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== الهيدر ===== */
+        .admin-header {
+            background: var(--gradient-primary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideInDown 0.5s ease;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-gold);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            box-shadow: var(--shadow-md);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, white, var(--gold-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .logo-text p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* ===== نظام البحث الذكي ===== */
+        .smart-search-section {
+            padding: 30px;
+            max-width: 1600px;
+            margin: 30px auto;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .search-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-title i {
+            color: var(--gold-color);
+            font-size: 24px;
+        }
+
+        .search-title h2 {
+            font-size: 22px;
+            color: var(--light-text);
+        }
+
+        .search-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* ===== حقل البحث الرئيسي ===== */
+        .main-search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 20px 25px 20px 70px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            color: var(--light-text);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--gold-color);
+            box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .search-icon-main {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold-color);
+            font-size: 20px;
+        }
+
+        .search-hints {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .search-hint {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--gray-text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-hint:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--light-text);
+        }
+
+        /* ===== فلاتر البحث الذكية ===== */
+        .smart-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .filter-group {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-group:hover {
+            border-color: var(--gold-color);
+            transform: translateY(-2px);
+        }
+
+        .filter-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--gold-color);
+            font-weight: 600;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-option:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .filter-option input {
+            accent-color: var(--gold-color);
+        }
+
+        /* ===== إحصائيات النظام ===== */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px auto;
+            max-width: 1600px;
+            padding: 0 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, var(--dark-card), #1a2036);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            animation: scaleIn 0.5s ease;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-color);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-gold);
+        }
+
+        .stat-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-info h3 {
+            font-size: 14px;
+            color: var(--gray-text);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--light-text);
+            margin: 10px 0;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: var(--success-color);
+        }
+
+        .stat-trend.negative {
+            color: var(--danger-color);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            background: var(--gradient-primary);
+        }
+
+        /* ===== لوحة الطلبات الرئيسية ===== */
+        .requests-dashboard {
+            max-width: 1600px;
+            margin: 40px auto;
+            padding: 0 30px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            animation: slideInRight 0.6s ease;
+        }
+
+        .dashboard-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dashboard-title i {
+            color: var(--gold-color);
+            font-size: 28px;
+        }
+
+        .dashboard-title h2 {
+            font-size: 24px;
+            color: var(--light-text);
+        }
+
+        /* ===== قائمة الطلبات الذكية ===== */
+        .smart-requests-list {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .requests-table-container {
+            overflow-x: auto;
+        }
+
+        .requests-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+
+        .requests-table thead {
+            background: rgba(30, 58, 138, 0.3);
+        }
+
+        .requests-table th {
+            padding: 20px 25px;
+            text-align: right;
+            color: var(--light-text);
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            background: rgba(30, 58, 138, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .requests-table td {
+            padding: 18px 25px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--gray-text);
+            transition: all 0.3s ease;
+        }
+
+        .requests-table tbody tr {
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .requests-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .requests-table tbody tr:hover td {
+            color: var(--light-text);
+            transform: translateX(-5px);
+        }
+
+        /* ===== علامات الحالة الذكية ===== */
+        .status-badge {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, rgba(217, 119, 6, 0.2), rgba(245, 158, 11, 0.3));
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .status-approved {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.2), rgba(4, 120, 87, 0.3));
+            color: #34d399;
+            border: 1px solid rgba(5, 150, 105, 0.4);
+        }
+
+        .status-rejected {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(239, 68, 68, 0.3));
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        /* ===== أزرار الإجراءات ===== */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            color: white;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.7s;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px) scale(1.1);
+        }
+
+        .btn-view {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, var(--success-color), #10b981);
+        }
+
+        .btn-reject {
+            background: linear-gradient(135deg, var(--danger-color), #ef4444);
+        }
+
+        /* ===== قائمة الحسابات المسجلة ===== */
+        .registered-accounts {
+            max-width: 1600px;
+            margin: 50px auto;
+            padding: 0 30px;
+            animation: slideInLeft 0.6s ease;
+        }
+
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .account-card {
+            background: linear-gradient(145deg, var(--dark-card), #1a2036);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .account-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--gold-color);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+        }
+
+        .account-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(184, 134, 11, 0.1), transparent);
+            transform: translateY(100%);
+            transition: transform 0.6s;
+        }
+
+        .account-card:hover::before {
+            transform: translateY(0);
+        }
+
+        .account-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .account-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 22px;
+            color: white;
+        }
+
+        .account-info h4 {
+            color: var(--light-text);
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .account-info p {
+            color: var(--gray-text);
+            font-size: 14px;
+        }
+
+        .account-details {
+            position: relative;
+            z-index: 1;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--gray-text);
+            font-size: 14px;
+        }
+
+        .detail-value {
+            color: var(--light-text);
+            font-weight: 600;
+        }
+
+        /* ===== نافذة الإعدادات المتحركة ===== */
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(145deg, var(--dark-bg), #1a1f35);
+            border-left: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .settings-panel.open {
+            right: 0;
+        }
+
+        .settings-header {
+            padding: 25px;
+            background: rgba(30, 58, 138, 0.3);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .settings-content {
+            padding: 25px;
+        }
+
+        .setting-group {
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .setting-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gold-color);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .setting-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .setting-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-5px);
+        }
+
+        /* ===== تصميم متجاوب ===== */
+        @media (max-width: 1200px) {
+            .smart-filters {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .accounts-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 20px;
+            }
+            
+            .stats-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .smart-filters {
+                grid-template-columns: 1fr;
+            }
+            
+            .accounts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .settings-panel {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .action-buttons {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -28,10 +792,6 @@
                 </div>
             </div>
             <div class="header-actions">
-                <div class="notification-badge" id="notificationBadge" style="display: none;">
-                    <i class="fas fa-bell"></i>
-                    <span id="notificationCount">0</span>
-                </div>
                 <button class="btn" onclick="openSettings()">
                     <i class="fas fa-cog"></i>
                     <span>الإعدادات</span>
@@ -40,33 +800,290 @@
         </div>
     </header>
 
-    <!-- باقي الشفرة HTML تبقى كما هي -->
-    <!-- ... -->
+    <!-- نظام البحث الذكي -->
+    <section class="smart-search-section">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-title">
+                    <i class="fas fa-search"></i>
+                    <h2>البحث الذكي المتقدم</h2>
+                </div>
+                <div class="search-actions">
+                    <button class="btn btn-secondary" onclick="clearSearch()">
+                        <i class="fas fa-redo"></i>
+                        إعادة تعيين
+                    </button>
+                    <button class="btn btn-primary" onclick="advancedSearch()">
+                        <i class="fas fa-filter"></i>
+                        بحث متقدم
+                    </button>
+                </div>
+            </div>
+            
+            <div class="main-search-box">
+                <div class="search-input-wrapper">
+                    <input type="text" 
+                           class="search-input" 
+                           id="smartSearch"
+                           placeholder="ابحث في الطلبات، المستخدمين، الهويات، الوظائف..."
+                           onkeyup="performSmartSearch()">
+                    <i class="fas fa-search search-icon-main"></i>
+                </div>
+                <div class="search-hints">
+                    <span class="search-hint" onclick="searchBy('pending')">طلبات معلقة</span>
+                    <span class="search-hint" onclick="searchBy('citizen')">مواطنون</span>
+                    <span class="search-hint" onclick="searchBy('today')">طلبات اليوم</span>
+                    <span class="search-hint" onclick="searchBy('health')">قطاع الصحة</span>
+                </div>
+            </div>
+            
+            <div class="smart-filters">
+                <div class="filter-group">
+                    <div class="filter-title">
+                        <i class="fas fa-filter"></i>
+                        <span>فلترة حسب الحالة</span>
+                    </div>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" name="status" value="pending" onchange="applyFilters()">
+                            <span>قيد المراجعة</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="status" value="approved" onchange="applyFilters()">
+                            <span>مقبولة</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="status" value="rejected" onchange="applyFilters()">
+                            <span>مرفوضة</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <div class="filter-title">
+                        <i class="fas fa-briefcase"></i>
+                        <span>فلترة حسب الوظيفة</span>
+                    </div>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" name="job" value="citizen" onchange="applyFilters()">
+                            <span>مواطن</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="job" value="interior" onchange="applyFilters()">
+                            <span>داخلية</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="job" value="health" onchange="applyFilters()">
+                            <span>صحة</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <div class="filter-title">
+                        <i class="fas fa-calendar"></i>
+                        <span>فلترة حسب التاريخ</span>
+                    </div>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" name="date" value="today" onchange="applyFilters()">
+                            <span>اليوم</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="date" value="week" onchange="applyFilters()">
+                            <span>أسبوع</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="date" value="month" onchange="applyFilters()">
+                            <span>شهر</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- إحصائيات النظام -->
+    <section class="stats-overview">
+        <div class="stat-card" onclick="filterByStatus('all')">
+            <div class="stat-content">
+                <div class="stat-info">
+                    <h3>إجمالي الطلبات</h3>
+                    <div class="stat-number" id="totalRequests">0</div>
+                    <div class="stat-trend">
+                        <i class="fas fa-chart-line"></i>
+                        <span>+12% عن الشهر الماضي</span>
+                    </div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stat-card" onclick="filterByStatus('pending')">
+            <div class="stat-content">
+                <div class="stat-info">
+                    <h3>طلبات قيد المراجعة</h3>
+                    <div class="stat-number" id="pendingRequests">0</div>
+                    <div class="stat-trend">
+                        <i class="fas fa-clock"></i>
+                        <span>بحاجة للمراجعة</span>
+                    </div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stat-card" onclick="filterByStatus('approved')">
+            <div class="stat-content">
+                <div class="stat-info">
+                    <h3>طلبات مقبولة</h3>
+                    <div class="stat-number" id="approvedRequests">0</div>
+                    <div class="stat-trend positive">
+                        <i class="fas fa-check-circle"></i>
+                        <span>+8% هذه الشهر</span>
+                    </div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stat-card" onclick="filterByStatus('rejected')">
+            <div class="stat-content">
+                <div class="stat-info">
+                    <h3>طلبات مرفوضة</h3>
+                    <div class="stat-number" id="rejectedRequests">0</div>
+                    <div class="stat-trend negative">
+                        <i class="fas fa-times-circle"></i>
+                        <span>-3% هذه الشهر</span>
+                    </div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- لوحة الطلبات الرئيسية -->
+    <section class="requests-dashboard">
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <i class="fas fa-tasks"></i>
+                <h2>إدارة طلبات التفعيل</h2>
+            </div>
+            <div class="dashboard-actions">
+                <button class="btn btn-success" onclick="approveSelected()">
+                    <i class="fas fa-check"></i>
+                    قبول المحدد
+                </button>
+                <button class="btn btn-danger" onclick="rejectSelected()">
+                    <i class="fas fa-times"></i>
+                    رفض المحدد
+                </button>
+            </div>
+        </div>
+        
+        <div class="smart-requests-list">
+            <div class="requests-table-container">
+                <table class="requests-table" id="requestsTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"></th>
+                            <th>رقم الطلب</th>
+                            <th>الاسم الكامل</th>
+                            <th>رقم الهوية</th>
+                            <th>الوظيفة</th>
+                            <th>المنصب</th>
+                            <th>التاريخ</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestsTableBody">
+                        <!-- سيتم ملؤها بواسطة JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- قائمة الحسابات المسجلة -->
+    <section class="registered-accounts">
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <i class="fas fa-users"></i>
+                <h2>الحسابات المسجلة</h2>
+            </div>
+            <button class="btn btn-primary" onclick="refreshAccounts()">
+                <i class="fas fa-sync-alt"></i>
+                تحديث
+            </button>
+        </div>
+        
+        <div class="accounts-grid" id="accountsGrid">
+            <!-- سيتم ملؤها بواسطة JavaScript -->
+        </div>
+    </section>
+
+    <!-- نافذة الإعدادات المتحركة -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h3><i class="fas fa-cog"></i> إعدادات النظام</h3>
+            <button class="btn btn-close" onclick="closeSettings()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="settings-content">
+            <div class="setting-group">
+                <div class="setting-title">
+                    <i class="fas fa-bell"></i>
+                    <span>الإشعارات</span>
+                </div>
+                <div class="setting-option">
+                    <span>إشعارات الطلبات الجديدة</span>
+                    <label class="switch">
+                        <input type="checkbox" id="notifyNewRequests" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-option">
+                    <span>إشعارات الموافقة</span>
+                    <label class="switch">
+                        <input type="checkbox" id="notifyApprovals" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <div class="setting-title">
+                    <i class="fas fa-eye"></i>
+                    <span>عرض البيانات</span>
+                </div>
+                <div class="setting-option">
+                    <span>عرض 10 صفوف</span>
+                    <input type="radio" name="rows" value="10" checked>
+                </div>
+                <div class="setting-option">
+                    <span>عرض 25 صفاً</span>
+                    <input type="radio" name="rows" value="25">
+                </div>
+                <div class="setting-option">
+                    <span>عرض 50 صفاً</span>
+                    <input type="radio" name="rows" value="50">
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // ====== تكوين Firebase ======
-        const firebaseConfig = {
-            apiKey: "AIzaSyC4N68B8RQmzS_h5d8Q6vM4l5oWv5mW8Hs",
-            authDomain: "kr-system-5c846.firebaseapp.com",
-            databaseURL: "https://kr-system-5c846-default-rtdb.firebaseio.com",
-            projectId: "kr-system-5c846",
-            storageBucket: "kr-system-5c846.appspot.com",
-            messagingSenderId: "123456789012",
-            appId: "1:123456789012:web:abcdef1234567890"
-        };
-
-        // تهيئة Firebase
-        let firebaseApp, database;
-
-        try {
-            firebaseApp = firebase.initializeApp(firebaseConfig);
-            database = firebase.database();
-            console.log('✅ Firebase تم التهيئة بنجاح في لوحة التحكم');
-        } catch (error) {
-            console.error('❌ خطأ في تهيئة Firebase:', error);
-            showAlert('حدث خطأ في الاتصال بقاعدة البيانات', 'danger');
-        }
-
         // ====== النظام الأساسي ======
         let allRequests = [];
         let filteredRequests = [];
@@ -76,112 +1093,34 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 نظام الإدارة الفاخر - جاهز');
             
-            if (database) {
-                // تحميل البيانات من Firebase
-                loadDataFromFirebase();
-                
-                // الاستماع للتحديثات في الوقت الحقيقي
-                setupRealtimeListeners();
-            } else {
-                // إذا فشل Firebase، تحميل البيانات المحلية
-                loadLocalData();
-            }
+            // تحميل البيانات
+            loadAllData();
             
             // إعداد البحث الذكي
             setupSmartSearch();
+            
+            // تحميل الإحصائيات
+            updateStatistics();
+            
+            // تحميل الحسابات
+            loadRegisteredAccounts();
             
             // إعداد الأنيميشن
             setupAnimations();
         });
 
-        // ====== تحميل البيانات من Firebase ======
-        function loadDataFromFirebase() {
-            console.log('📥 جاري تحميل البيانات من Firebase...');
+        // ====== تحميل البيانات من apply.html ======
+        function loadAllData() {
+            console.log('📥 جاري تحميل البيانات...');
             
-            // تحميل الطلبات
-            database.ref('requests').on('value', (snapshot) => {
-                const requestsData = snapshot.val() || {};
-                
-                allRequests = Object.keys(requestsData).map(key => {
-                    const request = requestsData[key];
-                    return {
-                        id: request.id || key,
-                        firebaseId: key,
-                        name: request.fullName || request.name || 'غير معروف',
-                        gameId: request.gameId || request.idNumber || 'غير معروف',
-                        department: request.department || request.jobType || 'citizen',
-                        departmentName: request.departmentName || getDepartmentName(request.department) || 'مواطن',
-                        rank: request.rank || 'غير محدد',
-                        date: request.formattedDate || request.date || 'غير معروف',
-                        status: request.status || 'pending',
-                        age: request.age || 'غير معروف',
-                        discord: request.discordUsername || 'غير معروف',
-                        gameUsername: request.gameUsername || 'غير معروف',
-                        additionals: request.additionals || [],
-                        hasNationalIdImage: request.hasNationalIdImage || false,
-                        hasCharacterImage: request.hasCharacterImage || false,
-                        imageUrls: request.imageUrls || null,
-                        reviewed: request.reviewed || false,
-                        reviewNotes: request.reviewNotes || '',
-                        reviewer: request.reviewer || '',
-                        priority: request.priority || 'normal',
-                        timestamp: request.timestamp || Date.now()
-                    };
-                });
-                
-                // ترتيب حسب التاريخ (الأحدث أولاً)
-                allRequests.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-                
-                console.log(`✅ تم تحميل ${allRequests.length} طلب من Firebase`);
-                renderRequestsTable(allRequests);
-                loadRegisteredAccounts();
-                updateStatistics();
-                updateNotificationCount();
-            });
-            
-            // تحميل الإحصائيات
-            database.ref('statistics').on('value', (snapshot) => {
-                const stats = snapshot.val();
-                if (stats) {
-                    document.getElementById('totalRequests').textContent = stats.total || 0;
-                    document.getElementById('pendingRequests').textContent = stats.pending || 0;
-                    document.getElementById('approvedRequests').textContent = stats.accepted || 0;
-                    document.getElementById('rejectedRequests').textContent = stats.rejected || 0;
-                }
-            });
-        }
-
-        // ====== إعداد الاستماع في الوقت الحقيقي ======
-        function setupRealtimeListeners() {
-            // الاستماع للإشعارات الجديدة
-            database.ref('admin_notifications').orderByChild('timestamp').limitToLast(10)
-                .on('value', (snapshot) => {
-                    const notifications = snapshot.val() || {};
-                    const unreadCount = Object.values(notifications).filter(n => !n.read).length;
-                    
-                    updateNotificationBadge(unreadCount);
-                });
-            
-            // الاستماع للطلبات الجديدة
-            database.ref('requests').orderByChild('timestamp').limitToLast(1)
-                .on('child_added', (snapshot) => {
-                    const newRequest = snapshot.val();
-                    console.log('🆕 طلب جديد:', newRequest.fullName);
-                    
-                    // عرض إشعار للطلب الجديد
-                    showNewRequestNotification(newRequest);
-                });
-        }
-
-        // ====== تحميل البيانات المحلية (نسخة احتياطية) ======
-        function loadLocalData() {
-            console.log('📥 جاري تحميل البيانات المحلية...');
-            
+            // 1. محاولة قراءة البيانات من جميع المصادر المحتملة
             const sources = [
                 'admin_panel_requests',
                 'admin_requests',
                 'admin_backup_requests',
-                'pending_requests'
+                'pending_requests',
+                'kr_requests',
+                'identityRequests'
             ];
             
             allRequests = [];
@@ -190,424 +1129,271 @@
                 try {
                     const data = JSON.parse(localStorage.getItem(source) || '[]');
                     if (Array.isArray(data) && data.length > 0) {
-                        allRequests = [...allRequests, ...data];
+                        console.log(`📊 وجد ${data.length} طلب في ${source}`);
+                        
+                        // تنسيق البيانات
+                        const formattedData = data.map(item => ({
+                            id: item.id || item.requestNumber || 'غير معروف',
+                            name: item.name || item.fullName || 'غير معروف',
+                            gameId: item.gameId || item.idNumber || 'غير معروف',
+                            job: item.job || item.jobType || 'citizen',
+                            jobName: item.jobName || getJobName(item.job) || 'مواطن',
+                            rank: item.rank || 'غير محدد',
+                            date: item.date || item.submissionDateFormatted || 'غير معروف',
+                            status: item.status || 'pending',
+                            age: item.age || 'غير معروف',
+                            discord: item.discordUsername || 'غير معروف'
+                        }));
+                        
+                        allRequests = [...allRequests, ...formattedData];
                     }
                 } catch (error) {
                     console.log(`⚠️ خطأ في قراءة ${source}:`, error);
                 }
             });
             
+            // 2. إذا لم توجد بيانات، نستخدم بيانات تجريبية
             if (allRequests.length === 0) {
+                console.log('📋 إنشاء بيانات تجريبية');
                 allRequests = getSampleData();
+                localStorage.setItem('admin_panel_requests', JSON.stringify(allRequests));
             }
             
-            console.log(`✅ تم تحميل ${allRequests.length} طلب محلياً`);
+            // 3. إزالة التكرارات
+            allRequests = removeDuplicates(allRequests);
+            
+            console.log(`✅ تم تحميل ${allRequests.length} طلب`);
             renderRequestsTable(allRequests);
-            loadRegisteredAccounts();
-            updateStatistics();
         }
 
-        // ====== عرض إشعار للطلب الجديد ======
-        function showNewRequestNotification(request) {
-            const notificationSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3');
-            notificationSound.play().catch(e => console.log('لا يمكن تشغيل الصوت'));
+        // ====== البحث الذكي ======
+        function performSmartSearch() {
+            const searchTerm = document.getElementById('smartSearch').value.toLowerCase().trim();
             
-            // إنشاء إشعار على الشاشة
-            const notification = document.createElement('div');
-            notification.className = 'floating-notification';
-            notification.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div style="background: var(--gradient-primary); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-user-plus" style="color: white; font-size: 22px;"></i>
-                    </div>
-                    <div>
-                        <strong style="color: white; font-size: 16px;">طلب تفعيل جديد</strong>
-                        <p style="color: rgba(255,255,255,0.8); margin: 5px 0 0 0; font-size: 14px;">
-                            ${request.fullName} - ${request.departmentName}
-                        </p>
-                    </div>
-                </div>
-                <button onclick="this.parentElement.remove()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
+            if (!searchTerm) {
+                renderRequestsTable(allRequests);
+                return;
+            }
             
-            notification.style.cssText = `
-                position: fixed;
-                top: 100px;
-                left: 30px;
-                background: rgba(30, 58, 138, 0.95);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                border-radius: 15px;
-                padding: 20px;
-                z-index: 9999;
-                animation: slideInLeft 0.5s ease;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 20px;
-                min-width: 350px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            `;
+            // بحث شامل في جميع الحقول
+            filteredRequests = allRequests.filter(request => {
+                return (
+                    (request.id && request.id.toLowerCase().includes(searchTerm)) ||
+                    (request.name && request.name.toLowerCase().includes(searchTerm)) ||
+                    (request.gameId && request.gameId.includes(searchTerm)) ||
+                    (request.jobName && request.jobName.toLowerCase().includes(searchTerm)) ||
+                    (request.rank && request.rank.toLowerCase().includes(searchTerm)) ||
+                    (request.status && getStatusText(request.status).toLowerCase().includes(searchTerm)) ||
+                    (request.discord && request.discord.toLowerCase().includes(searchTerm))
+                );
+            });
             
-            document.body.appendChild(notification);
+            renderRequestsTable(filteredRequests);
+            showSearchResultsCount(filteredRequests.length);
+        }
+
+        // ====== تطبيق الفلاتر ======
+        function applyFilters() {
+            const statusFilters = Array.from(document.querySelectorAll('input[name="status"]:checked')).map(cb => cb.value);
+            const jobFilters = Array.from(document.querySelectorAll('input[name="job"]:checked')).map(cb => cb.value);
+            const dateFilters = Array.from(document.querySelectorAll('input[name="date"]:checked')).map(cb => cb.value);
             
-            // إزالة الإشعار تلقائياً بعد 5 ثواني
-            setTimeout(() => {
-                if (notification.parentElement) {
-                    notification.style.animation = 'slideOutLeft 0.5s ease';
-                    setTimeout(() => notification.remove(), 500);
+            filteredRequests = allRequests.filter(request => {
+                // فلترة حسب الحالة
+                if (statusFilters.length > 0 && !statusFilters.includes(request.status)) {
+                    return false;
                 }
-            }, 5000);
-        }
-
-        // ====== تحديث شارة الإشعارات ======
-        function updateNotificationBadge(count) {
-            const badge = document.getElementById('notificationBadge');
-            const countSpan = document.getElementById('notificationCount');
-            
-            if (count > 0) {
-                badge.style.display = 'flex';
-                countSpan.textContent = count;
                 
-                // تأثير النبض
-                badge.style.animation = 'pulse 2s infinite';
-            } else {
-                badge.style.display = 'none';
-            }
-        }
-
-        // ====== دوال إدارة الطلبات ======
-
-        // قبول الطلب
-        async function approveRequest(requestId) {
-            const request = allRequests.find(r => r.id === requestId || r.firebaseId === requestId);
-            if (!request) return;
-
-            try {
-                if (database && request.firebaseId) {
-                    await database.ref(`requests/${request.firebaseId}`).update({
-                        status: 'approved',
-                        reviewed: true,
-                        reviewer: 'المسؤول',
-                        reviewDate: new Date().toISOString()
-                    });
-                    
-                    // نقل الطلب إلى القائمة المقبولة
-                    await database.ref(`approved_requests/${request.firebaseId}`).set(request);
-                    
-                    // حذف من الطلبات المعلقة
-                    await database.ref(`admin_pending_requests/${request.firebaseId}`).remove();
-                    
-                    // تحديث الإحصائيات
-                    await updateFirebaseStats();
-                    
-                    // إنشاء إشعار للمستخدم
-                    await createUserNotification(request, 'approved');
-                    
-                    showAlert('✅ تم قبول الطلب بنجاح', 'success');
-                } else {
-                    // إذا لم يكن متصلاً بـ Firebase
-                    request.status = 'approved';
-                    request.reviewed = true;
-                    request.reviewer = 'المسؤول';
-                    request.reviewDate = new Date().toISOString();
-                    
-                    renderRequestsTable(allRequests);
-                    updateStatistics();
-                    showAlert('✅ تم قبول الطلب بنجاح (محلياً)', 'success');
+                // فلترة حسب الوظيفة
+                if (jobFilters.length > 0 && !jobFilters.includes(request.job)) {
+                    return false;
                 }
-            } catch (error) {
-                console.error('❌ خطأ في قبول الطلب:', error);
-                showAlert('❌ حدث خطأ في قبول الطلب', 'danger');
-            }
-        }
-
-        // رفض الطلب
-        async function rejectRequest(requestId, reason = '') {
-            const request = allRequests.find(r => r.id === requestId || r.firebaseId === requestId);
-            if (!request) return;
-
-            const rejectReason = reason || prompt('أدخل سبب الرفض:', 'لم يتم استيفاء الشروط المطلوبة');
-            if (!rejectReason) return;
-
-            try {
-                if (database && request.firebaseId) {
-                    await database.ref(`requests/${request.firebaseId}`).update({
-                        status: 'rejected',
-                        reviewed: true,
-                        reviewer: 'المسؤول',
-                        reviewNotes: rejectReason,
-                        reviewDate: new Date().toISOString()
-                    });
+                
+                // فلترة حسب التاريخ
+                if (dateFilters.length > 0) {
+                    const requestDate = new Date(request.date);
+                    const today = new Date();
                     
-                    // نقل الطلب إلى القائمة المرفوضة
-                    await database.ref(`rejected_requests/${request.firebaseId}`).set({
-                        ...request,
-                        rejectReason: rejectReason
-                    });
+                    if (dateFilters.includes('today') && !isSameDay(requestDate, today)) {
+                        return false;
+                    }
                     
-                    // حذف من الطلبات المعلقة
-                    await database.ref(`admin_pending_requests/${request.firebaseId}`).remove();
+                    if (dateFilters.includes('week')) {
+                        const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                        if (requestDate < weekAgo) {
+                            return false;
+                        }
+                    }
                     
-                    // تحديث الإحصائيات
-                    await updateFirebaseStats();
-                    
-                    // إنشاء إشعار للمستخدم
-                    await createUserNotification(request, 'rejected', rejectReason);
-                    
-                    showAlert('✅ تم رفض الطلب بنجاح', 'success');
-                } else {
-                    // إذا لم يكن متصلاً بـ Firebase
-                    request.status = 'rejected';
-                    request.reviewed = true;
-                    request.reviewer = 'المسؤول';
-                    request.reviewNotes = rejectReason;
-                    request.reviewDate = new Date().toISOString();
-                    
-                    renderRequestsTable(allRequests);
-                    updateStatistics();
-                    showAlert('✅ تم رفض الطلب بنجاح (محلياً)', 'success');
+                    if (dateFilters.includes('month')) {
+                        const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+                        if (requestDate < monthAgo) {
+                            return false;
+                        }
+                    }
                 }
-            } catch (error) {
-                console.error('❌ خطأ في رفض الطلب:', error);
-                showAlert('❌ حدث خطأ في رفض الطلب', 'danger');
-            }
-        }
-
-        // عرض تفاصيل الطلب
-        async function viewRequest(requestId) {
-            const request = allRequests.find(r => r.id === requestId || r.firebaseId === requestId);
-            if (!request) return;
-
-            // إنشاء نافذة عرض التفاصيل
-            const modal = document.createElement('div');
-            modal.className = 'request-details-modal';
+                
+                return true;
+            });
             
-            let imagesHTML = '';
-            if (request.imageUrls) {
-                imagesHTML = `
-                    <div class="modal-images">
-                        ${request.imageUrls.nationalIdUrl ? `
-                            <div class="modal-image">
-                                <h4><i class="fas fa-id-card"></i> صورة الهوية الوطنية</h4>
-                                <img src="${request.imageUrls.nationalIdUrl}" 
-                                     alt="الهوية الوطنية" 
-                                     onclick="openImageModal('${request.imageUrls.nationalIdUrl}')">
-                            </div>
-                        ` : ''}
-                        ${request.imageUrls.characterUrl ? `
-                            <div class="modal-image">
-                                <h4><i class="fas fa-user"></i> صورة الشخصية</h4>
-                                <img src="${request.imageUrls.characterUrl}" 
-                                     alt="صورة الشخصية" 
-                                     onclick="openImageModal('${request.imageUrls.characterUrl}')">
-                            </div>
-                        ` : ''}
+            renderRequestsTable(filteredRequests);
+            showFilteredResultsCount(filteredRequests.length);
+        }
+
+        // ====== عرض الجدول ======
+        function renderRequestsTable(requests) {
+            const tbody = document.getElementById('requestsTableBody');
+            tbody.innerHTML = '';
+            
+            if (requests.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 50px;">
+                            <i class="fas fa-inbox" style="font-size: 60px; color: rgba(255,255,255,0.1); margin-bottom: 20px;"></i>
+                            <h3 style="color: rgba(255,255,255,0.5); margin-bottom: 10px;">لا توجد طلبات</h3>
+                            <p style="color: rgba(255,255,255,0.3);">لم يتم العثور على طلبات تطابق معايير البحث</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            requests.forEach((request, index) => {
+                const row = document.createElement('tr');
+                row.style.animationDelay = `${index * 0.05}s`;
+                row.className = 'fade-in-row';
+                
+                row.innerHTML = `
+                    <td><input type="checkbox" class="request-checkbox" data-id="${request.id}"></td>
+                    <td><strong class="request-id">${request.id}</strong></td>
+                    <td>
+                        <div class="user-info">
+                            <div class="user-name">${request.name}</div>
+                            <div class="user-age">العمر: ${request.age}</div>
+                        </div>
+                    </td>
+                    <td style="direction: ltr; font-family: 'Courier New', monospace;">
+                        ${request.gameId}
+                    </td>
+                    <td>
+                        <span class="job-badge">${request.jobName}</span>
+                    </td>
+                    <td>${request.rank}</td>
+                    <td>${request.date}</td>
+                    <td>
+                        <span class="status-badge status-${request.status}">
+                            ${getStatusText(request.status)}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn btn-view" onclick="viewRequest('${request.id}')" title="عرض التفاصيل">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn btn-approve" onclick="approveRequest('${request.id}')" title="قبول الطلب">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="action-btn btn-reject" onclick="rejectRequest('${request.id}')" title="رفض الطلب">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+            
+            // تطبيق الأنيميشن
+            animateRows();
+        }
+
+        // ====== تحميل الحسابات المسجلة ======
+        function loadRegisteredAccounts() {
+            // جمع جميع الحسابات الفريدة من الطلبات
+            const uniqueAccounts = [];
+            const seenIds = new Set();
+            
+            allRequests.forEach(request => {
+                if (!seenIds.has(request.gameId)) {
+                    seenIds.add(request.gameId);
+                    uniqueAccounts.push({
+                        id: request.gameId,
+                        name: request.name,
+                        age: request.age,
+                        job: request.jobName,
+                        status: request.status,
+                        lastRequest: request.date,
+                        requestsCount: allRequests.filter(r => r.gameId === request.gameId).length
+                    });
+                }
+            });
+            
+            registeredAccounts = uniqueAccounts;
+            renderAccountsGrid();
+        }
+
+        // ====== عرض شبكة الحسابات ======
+        function renderAccountsGrid() {
+            const grid = document.getElementById('accountsGrid');
+            grid.innerHTML = '';
+            
+            registeredAccounts.forEach((account, index) => {
+                const card = document.createElement('div');
+                card.className = 'account-card';
+                card.style.animationDelay = `${index * 0.1}s`;
+                
+                card.innerHTML = `
+                    <div class="account-header">
+                        <div class="account-avatar">
+                            ${account.name.charAt(0)}
+                        </div>
+                        <div class="account-info">
+                            <h4>${account.name}</h4>
+                            <p>${account.job}</p>
+                        </div>
+                    </div>
+                    <div class="account-details">
+                        <div class="detail-row">
+                            <span class="detail-label">رقم الهوية</span>
+                            <span class="detail-value">${account.id}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">العمر</span>
+                            <span class="detail-value">${account.age}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">عدد الطلبات</span>
+                            <span class="detail-value">${account.requestsCount}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">آخر طلب</span>
+                            <span class="detail-value">${account.lastRequest}</span>
+                        </div>
                     </div>
                 `;
-            }
-            
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3><i class="fas fa-file-alt"></i> تفاصيل الطلب</h3>
-                        <button class="modal-close" onclick="this.parentElement.parentElement.remove()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="request-details-grid">
-                            <div class="detail-item">
-                                <label><i class="fas fa-hashtag"></i> رقم الطلب:</label>
-                                <span>${request.id}</span>
-                            </div>
-                            <div class="detail-item">
-                                <label><i class="fas fa-user"></i> الاسم الكامل:</label>
-                                <span>${request.name}</span>
-                            </div>
-                            <div class="detail-item">
-                                <label><i class="fas fa-calendar"></i> العمر:</label>
-                                <span>${request.age} سنة</span>
-                            </div>
-                            <div class="detail-item">
-                                <label><i class="fas fa-gamepad"></i> اسم اللعبة:</label>
-                                <span>${request.gameUsername}</span>
-                            </div>
-                            <div class="detail-item">
-                                <label><i class="fab fa-discord"></i> ديسكورد:</label>
-                                <span>${request.discord}</span>
-                            </div>
-                            <div class="detail-item">
-                                <label><i class="fas fa-fingerprint"></i> رقم الهوية:</label>
-                                <span style="direction: ltr; font-family: monospace;">${request.gameId}</span>
-                            </div>
-                            <div class="detail-item">
-                                <label><i class="fas fa-building"></i> الوزارة:</label>
-                                <span>${request.departmentName}</span>
-                            </div>
-                            <div class="detail-item">
-                                <label><i class="fas fa-medal"></i> الرتبة:</label>
-                                <span>${request.rank}</span>
-                            </div>
-                            <div class="detail-item">
-                                <label><i class="fas fa-calendar-alt"></i> تاريخ التقديم:</label>
-                                <span>${request.date}</span>
-                            </div>
-                            <div class="detail-item">
-                                <label><i class="fas fa-info-circle"></i> الحالة:</label>
-                                <span class="status-badge status-${request.status}">
-                                    ${getStatusText(request.status)}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        ${imagesHTML}
-                        
-                        ${request.additionals && request.additionals.length > 0 ? `
-                            <div class="additional-posts">
-                                <h4><i class="fas fa-briefcase"></i> المناصب الإضافية:</h4>
-                                <div class="posts-list">
-                                    ${request.additionals.map(post => `<span class="post-tag">${post}</span>`).join('')}
-                                </div>
-                            </div>
-                        ` : ''}
-                        
-                        ${request.reviewNotes ? `
-                            <div class="review-notes">
-                                <h4><i class="fas fa-comment"></i> ملاحظات المراجعة:</h4>
-                                <p>${request.reviewNotes}</p>
-                            </div>
-                        ` : ''}
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-success" onclick="approveRequest('${request.id}'); this.parentElement.parentElement.remove()">
-                            <i class="fas fa-check"></i> قبول
-                        </button>
-                        <button class="btn btn-danger" onclick="rejectRequest('${request.id}'); this.parentElement.parentElement.remove()">
-                            <i class="fas fa-times"></i> رفض
-                        </button>
-                        <button class="btn btn-secondary" onclick="this.parentElement.parentElement.remove()">
-                            <i class="fas fa-times"></i> إغلاق
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            
-            // إضافة الأنماط للمودال
-            const style = document.createElement('style');
-            style.textContent = `
-                .request-details-modal {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.8);
-                    backdrop-filter: blur(10px);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 10000;
-                    animation: fadeIn 0.3s ease;
-                }
-                .modal-content {
-                    background: linear-gradient(145deg, #1e293b, #0f172a);
-                    border-radius: 20px;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    width: 90%;
-                    max-width: 800px;
-                    max-height: 90vh;
-                    overflow-y: auto;
-                    animation: scaleIn 0.3s ease;
-                }
-                .modal-header {
-                    padding: 25px;
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    background: rgba(30, 58, 138, 0.3);
-                }
-                .modal-header h3 {
-                    color: white;
-                    margin: 0;
-                }
-                .modal-close {
-                    background: none;
-                    border: none;
-                    color: white;
-                    font-size: 24px;
-                    cursor: pointer;
-                    transition: color 0.3s;
-                }
-                .modal-close:hover {
-                    color: #fbbf24;
-                }
-                .modal-body {
-                    padding: 25px;
-                }
-                .request-details-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                    gap: 20px;
-                    margin-bottom: 30px;
-                }
-                .detail-item {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 15px;
-                    background: rgba(255, 255, 255, 0.05);
-                    border-radius: 10px;
-                }
-                .detail-item label {
-                    color: #94a3b8;
-                    font-weight: 600;
-                }
-                .detail-item span {
-                    color: white;
-                    font-weight: 600;
-                }
-                .modal-images {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                    gap: 20px;
-                    margin: 30px 0;
-                }
-                .modal-image img {
-                    width: 100%;
-                    border-radius: 10px;
-                    cursor: pointer;
-                    transition: transform 0.3s;
-                }
-                .modal-image img:hover {
-                    transform: scale(1.05);
-                }
-                .modal-footer {
-                    padding: 25px;
-                    border-top: 1px solid rgba(255, 255, 255, 0.1);
-                    display: flex;
-                    gap: 15px;
-                    justify-content: flex-end;
-                    background: rgba(0, 0, 0, 0.2);
-                }
-            `;
-            document.head.appendChild(style);
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // ====== الإعدادات ======
+        function openSettings() {
+            document.getElementById('settingsPanel').classList.add('open');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsPanel').classList.remove('open');
         }
 
         // ====== دوال مساعدة ======
-        function getDepartmentName(department) {
-            const departments = {
-                'health': 'وزارة الصحة',
-                'interior': 'وزارة الداخلية',
-                'justice': 'وزارة العدل',
-                'citizen': 'مواطن'
+        function getJobName(jobType) {
+            const jobs = {
+                'citizen': 'مواطن',
+                'interior': 'منسوب الداخلية',
+                'health': 'منسوب الصحة',
+                'justice': 'منسوب العدل'
             };
-            return departments[department] || department;
+            return jobs[jobType] || jobType;
         }
 
         function getStatusText(status) {
@@ -619,50 +1405,173 @@
             return statuses[status] || status;
         }
 
-        async function updateFirebaseStats() {
-            if (!database) return;
+        function isSameDay(date1, date2) {
+            return date1.getDate() === date2.getDate() &&
+                   date1.getMonth() === date2.getMonth() &&
+                   date1.getFullYear() === date2.getFullYear();
+        }
 
-            try {
-                const stats = {
-                    total: allRequests.length,
-                    pending: allRequests.filter(r => r.status === 'pending').length,
-                    approved: allRequests.filter(r => r.status === 'approved').length,
-                    rejected: allRequests.filter(r => r.status === 'rejected').length,
-                    lastUpdate: new Date().toISOString()
-                };
+        function removeDuplicates(requests) {
+            const seen = new Set();
+            return requests.filter(request => {
+                const key = `${request.id}-${request.gameId}`;
+                if (seen.has(key)) {
+                    return false;
+                }
+                seen.add(key);
+                return true;
+            });
+        }
 
-                await database.ref('statistics').set(stats);
-            } catch (error) {
-                console.error('❌ خطأ في تحديث الإحصائيات:', error);
+        // ====== بيانات تجريبية ======
+        function getSampleData() {
+            return [
+                {
+                    id: 'KR-2024-001',
+                    name: 'محمد أحمد العتيبي',
+                    gameId: '1234567890',
+                    job: 'citizen',
+                    jobName: 'مواطن',
+                    rank: 'مواطن',
+                    date: 'السبت، 15 مارس 2024، 10:30 ص',
+                    status: 'pending',
+                    age: 25,
+                    discord: 'mohammed#1234'
+                },
+                {
+                    id: 'KR-2024-002',
+                    name: 'سارة خالد الغامدي',
+                    gameId: '0987654321',
+                    job: 'health',
+                    jobName: 'منسوب الصحة',
+                    rank: 'طبيب',
+                    date: 'الجمعة، 14 مارس 2024، 02:15 م',
+                    status: 'approved',
+                    age: 28,
+                    discord: 'sarah#5678'
+                },
+                {
+                    id: 'KR-2024-003',
+                    name: 'فهد سعود الحربي',
+                    gameId: '1122334455',
+                    job: 'interior',
+                    jobName: 'منسوب الداخلية',
+                    rank: 'ملازم',
+                    date: 'الخميس، 13 مارس 2024، 11:45 ص',
+                    status: 'rejected',
+                    age: 30,
+                    discord: 'fahad#9012'
+                },
+                {
+                    id: 'KR-2024-004',
+                    name: 'نورة عبدالله القحطاني',
+                    gameId: '5566778899',
+                    job: 'justice',
+                    jobName: 'منسوب العدل',
+                    rank: 'محامي',
+                    date: 'الأربعاء، 12 مارس 2024، 09:20 ص',
+                    status: 'pending',
+                    age: 26,
+                    discord: 'noura#3456'
+                },
+                {
+                    id: 'KR-2024-005',
+                    name: 'عبدالعزيز ناصر السليم',
+                    gameId: '6677889900',
+                    job: 'citizen',
+                    jobName: 'مواطن',
+                    rank: 'مواطن',
+                    date: 'الثلاثاء، 11 مارس 2024، 03:30 م',
+                    status: 'approved',
+                    age: 32,
+                    discord: 'abdulaziz#7890'
+                }
+            ];
+        }
+
+        // ====== الأنيميشن ======
+        function animateRows() {
+            const rows = document.querySelectorAll('.fade-in-row');
+            rows.forEach((row, index) => {
+                setTimeout(() => {
+                    row.style.opacity = '0';
+                    row.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        row.style.transition = 'all 0.5s ease';
+                        row.style.opacity = '1';
+                        row.style.transform = 'translateY(0)';
+                    }, 10);
+                }, index * 50);
+            });
+        }
+
+        function setupAnimations() {
+            // إضافة تأثيرات عند التمرير
+            window.addEventListener('scroll', () => {
+                const cards = document.querySelectorAll('.stat-card, .account-card');
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.8) {
+                        card.classList.add('animated');
+                    }
+                });
+            });
+        }
+
+        // ====== تحديث الإحصائيات ======
+        function updateStatistics() {
+            document.getElementById('totalRequests').textContent = allRequests.length;
+            document.getElementById('pendingRequests').textContent = allRequests.filter(r => r.status === 'pending').length;
+            document.getElementById('approvedRequests').textContent = allRequests.filter(r => r.status === 'approved').length;
+            document.getElementById('rejectedRequests').textContent = allRequests.filter(r => r.status === 'rejected').length;
+        }
+
+        // ====== دوال الإجراءات ======
+        function viewRequest(requestId) {
+            alert(`عرض تفاصيل الطلب: ${requestId}`);
+        }
+
+        function approveRequest(requestId) {
+            const request = allRequests.find(r => r.id === requestId);
+            if (request) {
+                request.status = 'approved';
+                updateStatistics();
+                renderRequestsTable(allRequests);
+                alert(`تم قبول الطلب: ${requestId}`);
             }
         }
 
-        async function createUserNotification(request, type, reason = '') {
-            if (!database) return;
-
-            try {
-                const notification = {
-                    id: 'user_notif_' + Date.now(),
-                    type: type,
-                    title: type === 'approved' ? '✅ تم قبول طلبك' : '❌ تم رفض طلبك',
-                    message: type === 'approved' 
-                        ? `مبروك! تم قبول طلب تفعيل هويتك في ${request.departmentName}`
-                        : `نعتذر، تم رفض طلبك. السبب: ${reason}`,
-                    requestId: request.id,
-                    timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    read: false
-                };
-
-                await database.ref(`user_notifications/${request.deviceId}`).push(notification);
-            } catch (error) {
-                console.error('❌ خطأ في إنشاء إشعار للمستخدم:', error);
+        function rejectRequest(requestId) {
+            const request = allRequests.find(r => r.id === requestId);
+            if (request) {
+                request.status = 'rejected';
+                updateStatistics();
+                renderRequestsTable(allRequests);
+                alert(`تم رفض الطلب: ${requestId}`);
             }
         }
 
-        // ====== باقي الدوال تبقى كما هي ======
-        // performSmartSearch, applyFilters, renderRequestsTable, loadRegisteredAccounts, etc.
-        // (نفس الدوال السابقة بدون تغيير)
-        
+        function approveSelected() {
+            const selected = Array.from(document.querySelectorAll('.request-checkbox:checked'))
+                .map(cb => cb.dataset.id);
+            
+            selected.forEach(id => approveRequest(id));
+            alert(`تم قبول ${selected.length} طلب`);
+        }
+
+        function rejectSelected() {
+            const selected = Array.from(document.querySelectorAll('.request-checkbox:checked'))
+                .map(cb => cb.dataset.id);
+            
+            selected.forEach(id => rejectRequest(id));
+            alert(`تم رفض ${selected.length} طلب`);
+        }
+
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll').checked;
+            const checkboxes = document.querySelectorAll('.request-checkbox');
+            checkboxes.forEach(cb => cb.checked = selectAll);
+        }
     </script>
 </body>
 </html>
