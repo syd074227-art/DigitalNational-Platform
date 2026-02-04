@@ -4,213 +4,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الهيئة الرقمية KR - البوابة الموحدة</title>
+    <title>تسجيل الدخول الإداري - الهيئة الرقمية KR</title>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-gold: #d4af37;
+            --primary-dark: #0a1929;
+            --text-light: #ffffff;
+            --text-secondary: #94a3b8;
+            --error: #ef4444;
+        }
         body {
             font-family: 'IBM Plex Sans Arabic', sans-serif;
-            background: linear-gradient(135deg, #0a1929 0%, #0d2439 50%, #1a3a52 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
-            color: #ffffff;
-        }
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
-        header {
-            padding: 25px 0;
-            border-bottom: 1px solid rgba(26, 147, 71, 0.2);
-            background: rgba(10, 25, 41, 0.6);
-            backdrop-filter: blur(10px);
-        }
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .logo-section { display: flex; align-items: center; gap: 20px; }
-        .logo {
-            width: 85px; height: 85px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 22px;
+            color: var(--text-light);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 12px;
+            position: relative;
         }
-        .logo img {
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: pulse 10s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .login-container {
+            position: relative;
+            z-index: 1;
             width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: brightness(0) invert(1);
+            max-width: 450px;
+            margin: 20px;
         }
-        .site-title h1 {
-            font-family: 'Tajawal', sans-serif;
-            font-size: 32px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #1a9347, #22c55e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .login-box {
+            background: linear-gradient(135deg, rgba(26, 43, 61, 0.9), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 25px;
+            padding: 50px 40px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 100px rgba(212, 175, 55, 0.1);
+            animation: fadeInUp 0.8s ease-out;
         }
-        .site-title p { font-size: 14px; color: #94a3b8; }
-        .btn-secondary {
-            padding: 12px 28px;
-            background: rgba(26, 147, 71, 0.1);
-            border: 1px solid rgba(26, 147, 71, 0.4);
-            color: #22c55e;
-            border-radius: 12px;
-            font-size: 14px;
-            text-decoration: none;
-            transition: all 0.3s ease;
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .btn-secondary:hover {
-            background: rgba(26, 147, 71, 0.2);
-            transform: translateY(-2px);
-        }
-        .hero {
-            padding: 80px 0 60px;
+        .logo-container {
             text-align: center;
+            margin-bottom: 40px;
         }
-        .hero h2 {
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             font-family: 'Tajawal', sans-serif;
             font-size: 48px;
             font-weight: 900;
+            color: var(--primary-dark);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
             margin-bottom: 20px;
-            color: #ffffff;
+            animation: logoGlow 3s ease-in-out infinite;
         }
-        .hero p {
-            font-size: 18px;
-            color: #94a3b8;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            line-height: 1.8;
+        @keyframes logoGlow {
+            0%, 100% { box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4); }
+            50% { box-shadow: 0 20px 50px rgba(212, 175, 55, 0.6); transform: scale(1.05); }
         }
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin-top: 60px;
-            padding-bottom: 80px;
-        }
-        .service-card {
-            background: linear-gradient(135deg, rgba(26, 43, 61, 0.6), rgba(15, 23, 42, 0.6));
-            border: 1px solid rgba(26, 147, 71, 0.2);
-            border-radius: 20px;
-            padding: 40px;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(10px);
-        }
-        .service-card:hover {
-            transform: translateY(-10px);
-            border-color: #1a9347;
-            box-shadow: 0 20px 40px rgba(26, 147, 71, 0.3);
-        }
-        .service-icon {
-            width: 75px; height: 75px;
-            background: linear-gradient(135deg, rgba(26, 147, 71, 0.2), rgba(30, 90, 142, 0.2));
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        .service-card h3 {
+        .login-title {
             font-family: 'Tajawal', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #22c55e;
+            font-size: 28px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .service-card p {
-            color: #94a3b8;
-            line-height: 1.8;
+        .login-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 35px;
+            font-size: 14px;
+        }
+        .form-group {
             margin-bottom: 25px;
         }
-        .service-btn {
-            display: inline-block;
-            padding: 14px 32px;
-            background: linear-gradient(135deg, #1a9347, #22c55e);
-            color: white;
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
             border-radius: 12px;
-            font-weight: 600;
-            text-decoration: none;
+            color: var(--text-light);
+            font-size: 15px;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+            background: rgba(15, 23, 42, 0.8);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            border: none;
+            border-radius: 12px;
+            color: var(--primary-dark);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Tajawal', sans-serif;
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+            margin-top: 10px;
         }
-        .service-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(26, 147, 71, 0.5);
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.4);
         }
-        footer {
-            background: rgba(10, 25, 41, 0.6);
-            padding: 40px 0;
-            border-top: 1px solid rgba(26, 147, 71, 0.2);
+        .btn-login:active {
+            transform: translateY(0);
+        }
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
+            color: #fca5a5;
+            font-size: 14px;
+            display: none;
             text-align: center;
         }
-        footer p { color: #94a3b8; margin-bottom: 10px; }
-        .footer-green { color: #22c55e; font-weight: 600; }
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .back-link a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+        .back-link a:hover {
+            color: var(--primary-gold);
+        }
+        .security-badge {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .security-badge p {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        .security-badge .icon {
+            font-size: 20px;
+            margin-left: 5px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .loading.show {
+            display: block;
+        }
+        .spinner {
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top: 3px solid var(--primary-gold);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo-section">
-                    <div class="logo">
-                        <img src="https://image2url.com/r2/default/images/1770164318104-a6f07631-b19e-47a8-b2e2-b68f3ae8dd92.png" alt="KR">
-                    </div>
-                    <div class="site-title">
-                        <h1>الهيئة الرقمية KR</h1>
-                        <p>بوابة الدخول الموحدة</p>
-                    </div>
-                </div>
-                <div class="header-actions">
-                    <a href="admin-login.html" class="btn-secondary">🔐 الدخول الإداري</a>
-                </div>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo-container">
+                <div class="logo">KR</div>
+                <h2 class="login-title">الدخول الإداري</h2>
+                <p class="login-subtitle">نظام إدارة الطلبات - الهيئة الرقمية</p>
             </div>
-        </div>
-    </header>
 
 ```
-<main>
-    <div class="container">
-        <section class="hero">
-            <h2>منصة الخدمات الرقمية الحكومية</h2>
-            <p>نظام رقمي متطور لتقديم الخدمات الحكومية بكل سهولة وأمان</p>
-        </section>
+        <div class="error-message" id="errorMessage"></div>
 
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">🆔</div>
-                <h3>طلب تفعيل الهوية</h3>
-                <p>تقديم طلب تفعيل الهوية الرقمية للمواطنين والموظفين الحكوميين</p>
-                <a href="application.html" class="service-btn">تقديم طلب جديد</a>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>اسم المستخدم</label>
+                <input type="text" id="username" required placeholder="أدخل اسم المستخدم">
             </div>
 
-            <div class="service-card">
-                <div class="service-icon">📋</div>
-                <h3>متابعة الطلب</h3>
-                <p>تتبع حالة طلبك ومعرفة آخر التحديثات من خلال رقم الطلب</p>
-                <a href="track-application.html" class="service-btn">متابعة الطلب</a>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="password" required placeholder="أدخل كلمة المرور">
             </div>
 
-            <div class="service-card">
-                <div class="service-icon">📞</div>
-                <h3>الدعم الفني</h3>
-                <p>فريق الدعم الفني متاح لمساعدتك في أي استفسار</p>
-                <a href="mailto:support@kr-digital.gov" class="service-btn">تواصل معنا</a>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="color: var(--text-secondary);">جاري التحقق...</p>
             </div>
+
+            <button type="submit" class="btn-login" id="loginBtn">
+                تسجيل الدخول 🔐
+            </button>
+        </form>
+
+        <div class="back-link">
+            <a href="index.html">← العودة للصفحة الرئيسية</a>
+        </div>
+
+        <div class="security-badge">
+            <p><span class="icon">🔒</span> اتصال آمن ومشفر</p>
+            <p style="font-size: 12px; color: #64748b;">مخصص للموظفين المعتمدين فقط</p>
         </div>
     </div>
-</main>
+</div>
 
-<footer>
-    <div class="container">
-        <p>جميع الحقوق محفوظة © 2026 - <span class="footer-green">الهيئة الرقمية KR</span></p>
-        <p>نظام رقمي حكومي متطور ومؤمن</p>
-    </div>
-</footer>
+<script>
+    // Firebase Configuration
+    const firebaseConfig = {
+        databaseURL: "https://kr-system-5c846-default-rtdb.firebaseio.com/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const errorMsg = document.getElementById('errorMessage');
+        const loginBtn = document.getElementById('loginBtn');
+        const loading = document.getElementById('loading');
+
+        // Hide error message
+        errorMsg.classList.remove('show');
+        loginBtn.style.display = 'none';
+        loading.classList.add('show');
+
+        try {
+            // Check credentials in Firebase
+            const adminRef = database.ref('admins/' + username);
+            const snapshot = await adminRef.once('value');
+            
+            if (snapshot.exists()) {
+                const adminData = snapshot.val();
+                if (adminData.password === password) {
+                    // Success - store session
+                    sessionStorage.setItem('adminUser', username);
+                    sessionStorage.setItem('adminName', adminData.name);
+                    
+                    // Redirect to admin panel
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    showError('كلمة المرور غير صحيحة');
+                }
+            } else {
+                showError('اسم المستخدم غير موجود');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            showError('حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى');
+        }
+
+        loading.classList.remove('show');
+        loginBtn.style.display = 'block';
+    });
+
+    function showError(message) {
+        const errorMsg = document.getElementById('errorMessage');
+        errorMsg.textContent = message;
+        errorMsg.classList.add('show');
+    }
+
+    // تسجيل حساب إداري تجريبي (يمكن حذف هذا الكود بعد التجربة)
+    async function createTestAdmin() {
+        try {
+            await database.ref('admins/admin').set({
+                password: 'admin123',
+                name: 'مدير النظام',
+                role: 'مشرف عام',
+                createdAt: new Date().toISOString()
+            });
+            console.log('تم إنشاء حساب تجريبي: admin / admin123');
+        } catch (error) {
+            console.error('Error creating test admin:', error);
+        }
+    }
+    
+    // استدعاء الدالة مرة واحدة لإنشاء حساب تجريبي
+    // createTestAdmin(); // قم بإلغاء التعليق لإنشاء الحساب
+</script>
 ```
 
 </body>
