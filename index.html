@@ -1,1080 +1,316 @@
-index.html 
-
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هيئة KR الرقمية</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>الهيئة الرقمية KR - البوابة الموحدة</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* ===== متغيرات التصميم الفاخر ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #2d68c4;
-            --primary-dark: #1e3a8a;
-            --primary-light: #4a90e2;
-            --secondary: #00a86b;
-            --accent: #ff6b6b;
-            --gold: #ffd700;
-            --silver: #c0c0c0;
-            --dark: #0f172a;
-            --darker: #1e293b;
-            --light: #f8fafc;
-            --gradient: linear-gradient(135deg, #2d68c4 0%, #1e3a8a 50%, #0f172a 100%);
-            --gradient-gold: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            --shadow: 0 10px 40px rgba(0,0,0,0.2);
-            --glow: 0 0 30px rgba(45, 104, 196, 0.3);
+            --primary-gold: #d4af37;
+            --primary-dark: #0a1929;
+            --text-light: #ffffff;
+            --text-secondary: #94a3b8;
         }
-
-        /* ===== إعادة التعيين والإعدادات العامة ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         body {
-            background: var(--dark);
-            color: var(--light);
-            overflow-x: hidden;
-            position: relative;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
+            color: var(--text-light);
+            position: relative;
+            overflow-x: hidden;
         }
-
-        /* ===== خلفية الجسيمات المتحركة ===== */
-        .particles-container {
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.08) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
             pointer-events: none;
-            z-index: 1;
         }
-
-        .particle {
-            position: absolute;
-            background: var(--primary-light);
-            border-radius: 50%;
-            animation: float 20s infinite linear;
-            opacity: 0.3;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
-
-        /* ===== خلفية شبكة ثلاثية الأبعاد ===== */
-        .grid-bg {
+        body::after {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
             background-size: 50px 50px;
-            transform: perspective(500px) rotateX(60deg);
-            animation: gridMove 40s linear infinite;
+            pointer-events: none;
+        }
+        .container {
+            position: relative;
             z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-
-        /* ===== الهيدر الفاخر ===== */
-        .header {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 15px 20px;
-            animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        header {
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            background: rgba(10, 25, 41, 0.5);
+            animation: slideDown 0.8s ease-out;
         }
-
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 20px;
         }
-
-        /* ===== الشعار الفاخر ===== */
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            position: relative;
-        }
-
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--gradient);
-            border-radius: 15px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            animation: logoFloat 6s ease-in-out infinite;
-            box-shadow: var(--glow);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--primary-dark);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: logoGlow 3s ease-in-out infinite;
         }
-
-        .logo-icon::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: var(--gradient);
-            border-radius: 17px;
-            z-index: -1;
-            opacity: 0.5;
-            animation: logoPulse 4s ease-in-out infinite;
+        @keyframes logoGlow {
+            0%, 100% { box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+            50% { box-shadow: 0 10px 40px rgba(212, 175, 55, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.5); transform: scale(1.05); }
         }
-
-        .logo-icon i {
-            font-size: 24px;
-            color: white;
-            animation: logoSpin 20s linear infinite;
-        }
-
-        .logo-text h1 {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, white, var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
-
-        .logo-text p {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* ===== زر الإشعارات ===== */
-        .notification {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .notification i {
-            font-size: 24px;
-            color: var(--primary-light);
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .notification:hover i {
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--accent);
-            color: white;
-            font-size: 10px;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            animation: badgePulse 2s infinite;
-            box-shadow: 0 0 10px var(--accent);
-        }
-
-        /* ===== البانر الرئيسي الفاخر ===== */
-        .banner {
-            background: var(--gradient);
-            border-radius: 30px;
-            padding: 60px 40px;
-            margin: 100px 20px 40px;
-            position: relative;
-            overflow: hidden;
-            animation: bannerAppear 1s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow), var(--glow);
-        }
-
-        .banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background: linear-gradient(
-                45deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.1) 50%,
-                transparent 70%
-            );
-            animation: shine 3s infinite;
-        }
-
-        .banner-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-        }
-
-        .banner-icon {
-            font-size: 80px;
-            color: white;
-            margin-bottom: 25px;
-            display: inline-block;
-            animation: iconFloat 4s ease-in-out infinite;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
-        }
-
-        .banner h2 {
-            font-size: 42px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, white, var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
-
-        .banner p {
-            font-size: 18px;
-            opacity: 0.9;
-            margin-bottom: 35px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
-        }
-
-        /* ===== زر البانر الفاخر ===== */
-        .banner-btn {
-            background: linear-gradient(135deg, var(--gold), #ffed4e);
-            color: var(--dark);
-            border: none;
-            padding: 18px 45px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 18px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-            animation: btnPulse 2s infinite;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
-        }
-
-        .banner-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.3),
-                transparent
-            );
-            transition: left 0.7s;
-        }
-
-        .banner-btn:hover::before {
-            left: 100%;
-        }
-
-        .banner-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
-            animation: none;
-        }
-
-        .banner-btn i {
-            font-size: 20px;
-            transition: transform 0.3s;
-        }
-
-        .banner-btn:hover i {
-            transform: translateX(5px);
-        }
-
-        /* ===== قسم الخدمات الفاخر ===== */
-        .services-section {
-            padding: 40px 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .section-title h3 {
+        .site-title h1 {
+            font-family: 'Tajawal', sans-serif;
             font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, white, var(--primary-light));
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            position: relative;
-            display: inline-block;
+            margin-bottom: 5px;
         }
-
-        .section-title h3::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            right: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--gradient-gold);
-            border-radius: 2px;
-            animation: lineWidth 3s infinite;
+        .site-title p {
+            font-size: 14px;
+            color: var(--text-secondary);
         }
-
-        .section-title p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 16px;
-            max-width: 600px;
-            margin: 0 auto;
+        .btn-secondary {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--text-light);
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
         }
-
-        /* ===== شبكة الخدمات الفاخرة ===== */
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--primary-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero h2 {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--text-light), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            perspective: 1000px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+            padding-bottom: 80px;
         }
-
         .service-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            padding: 35px 25px;
-            text-align: center;
+            background: linear-gradient(135deg, rgba(26, 43, 61, 0.8), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+            padding: 40px;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            animation: cardAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            opacity: 0;
-            transform: translateY(30px);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease-out both;
         }
-
-        .service-card:nth-child(1) { animation-delay: 0.1s; }
-        .service-card:nth-child(2) { animation-delay: 0.2s; }
-        .service-card:nth-child(3) { animation-delay: 0.3s; }
-        .service-card:nth-child(4) { animation-delay: 0.4s; }
-
+        .service-card:nth-child(1) { animation-delay: 0.4s; }
+        .service-card:nth-child(2) { animation-delay: 0.5s; }
+        .service-card:nth-child(3) { animation-delay: 0.6s; }
         .service-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
+            width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(45, 104, 196, 0.1), transparent);
-            transform: translateY(100%);
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
-
-        .service-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: var(--shadow), var(--glow);
-        }
-
         .service-card:hover::before {
-            transform: translateY(0);
+            opacity: 1;
         }
-
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+        }
         .service-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 25px;
-            background: var(--gradient);
-            border-radius: 20px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            transition: all 0.3s;
-            animation: iconPulse 3s infinite;
+            font-size: 32px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
         }
-
-        .service-card:hover .service-icon {
-            transform: scale(1.1) rotate(5deg);
-            animation: none;
-        }
-
-        .service-icon i {
-            font-size: 36px;
-            color: white;
-        }
-
-        .service-title {
-            font-size: 20px;
+        .service-card h3 {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 12px;
-            color: white;
-            position: relative;
-            z-index: 2;
+            margin-bottom: 15px;
+            color: var(--primary-gold);
         }
-
-        .service-desc {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.6;
-            position: relative;
-            z-index: 2;
+        .service-card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 20px;
         }
-
-        /* ===== الشريط السفلي الفاخر ===== */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 1000;
-            padding: 15px 0;
-            animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .service-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            color: var(--primary-dark);
+            border-radius: 10px;
+            font-weight: 600;
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.6);
-            flex: 1;
-            padding: 10px;
-            transition: all 0.3s;
-            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+            font-family: 'Tajawal', sans-serif;
         }
-
-        .nav-item.active {
-            color: var(--gold);
+        .service-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
         }
-
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            top: -15px;
-            width: 40px;
-            height: 3px;
-            background: var(--gold);
-            border-radius: 2px;
-            animation: navPulse 2s infinite;
+        footer {
+            background: rgba(10, 25, 41, 0.5);
+            padding: 40px 0;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            text-align: center;
+            backdrop-filter: blur(10px);
         }
-
-        .nav-icon {
-            font-size: 22px;
-            margin-bottom: 5px;
-            transition: all 0.3s;
+        footer p {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
         }
-
-        .nav-item:hover {
-            color: white;
-            transform: translateY(-5px);
-        }
-
-        .nav-item:hover .nav-icon {
-            color: var(--primary-light);
-        }
-
-        .nav-main {
-            position: relative;
-        }
-
-        .nav-main .nav-icon {
-            background: var(--gradient);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: -30px;
-            box-shadow: var(--glow);
-            animation: navFloat 4s ease-in-out infinite;
-        }
-
-        .nav-label {
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        /* ===== الأنيميشن ===== */
-        @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            50% { transform: translateY(-20px) translateX(10px); }
-        }
-
-        @keyframes gridMove {
-            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
-        }
-
-        @keyframes logoPulse {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
-        }
-
-        @keyframes logoSpin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes badgePulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 10px var(--accent); }
-            50% { transform: scale(1.1); box-shadow: 0 0 20px var(--accent); }
-        }
-
-        @keyframes bannerAppear {
-            from {
-                opacity: 0;
-                transform: translateY(50px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        @keyframes iconFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes btnPulse {
-            0%, 100% { 
-                box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
-            }
-            50% { 
-                box-shadow: 0 10px 40px rgba(255, 215, 0, 0.5);
-            }
-        }
-
-        @keyframes lineWidth {
-            0%, 100% { width: 100%; }
-            50% { width: 60%; }
-        }
-
-        @keyframes cardAppear {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes iconPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes navPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        @keyframes navFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        /* ===== تصميم متجاوب ===== */
-        @media (max-width: 768px) {
-            .banner {
-                padding: 40px 25px;
-                margin: 100px 15px 30px;
-                border-radius: 25px;
-            }
-            
-            .banner h2 {
-                font-size: 32px;
-            }
-            
-            .banner p {
-                font-size: 16px;
-            }
-            
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-main .nav-icon {
-                width: 50px;
-                height: 50px;
-                margin-top: -25px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo-text h1 {
-                font-size: 20px;
-            }
-            
-            .banner {
-                padding: 30px 20px;
-            }
-            
-            .banner h2 {
-                font-size: 28px;
-            }
-            
-            .banner-btn {
-                padding: 15px 30px;
-                font-size: 16px;
-            }
-            
-            .nav-container {
-                padding: 0 10px;
-            }
-            
-            .nav-icon {
-                font-size: 20px;
-            }
-            
-            .nav-label {
-                font-size: 10px;
-            }
+        .footer-gold {
+            color: var(--primary-gold);
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <!-- خلفية شبكة ثلاثية الأبعاد -->
-    <div class="grid-bg"></div>
-    
-    <!-- جسيمات متحركة -->
-    <div class="particles-container" id="particles"></div>
-    
-    <!-- الهيدر الفاخر -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-id-card"></i>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">KR</div>
+                    <div class="site-title">
+                        <h1>الهيئة الرقمية</h1>
+                        <p>بوابة الدخول الموحدة</p>
+                    </div>
                 </div>
-                <div class="logo-text">
-                    <h1>هيئة KR الرقمية</h1>
-                    <p>تميز في كل تفاصيلنا</p>
+                <div class="header-actions">
+                    <a href="admin-login.html" class="btn-secondary">الدخول الإداري</a>
                 </div>
-            </div>
-            
-            <div class="notification">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge" id="notificationBadge" style="display:none;">0</span>
             </div>
         </div>
     </header>
-    
-    <!-- المحتوى الرئيسي -->
-    <main class="main">
-        <!-- البانر الفاخر -->
-        <section class="banner">
-            <div class="banner-content">
-                <div class="banner-icon">
-                    <i class="fas fa-id-card-alt"></i>
-                </div>
-                <h2>نظام تفعيل الهوية المتقدم</h2>
-                <p>تجربة فاخرة لتقديم طلبات التفعيل بأعلى معايير الأمان والكفاءة.<br>نظام تفعيل الهوية الرسمي لهيئة KR الرقمية.</p>
-                <button class="banner-btn" onclick="navigateTo('apply.html')">
-                    <i class="fas fa-rocket"></i> بدء طلب التفعيل
-                </button>
-            </div>
+
+```
+<main>
+    <div class="container">
+        <section class="hero">
+            <h2>منصة الخدمات الرقمية الحكومية</h2>
+            <p>نظام رقمي متطور لتقديم الخدمات الحكومية بكل سهولة وأمان، من خلال بوابة موحدة ومتكاملة</p>
         </section>
-        
-        <!-- قسم الخدمات الفاخر -->
-        <section class="services-section">
-            <div class="section-title">
-                <h3>خدماتنا المميزة</h3>
-                <p>نقدم لكم مجموعة من الخدمات الرقمية المتطورة بأعلى معايير الجودة</p>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🆔</div>
+                <h3>طلب تفعيل الهوية</h3>
+                <p>تقديم طلب تفعيل الهوية الرقمية للمواطنين والموظفين الحكوميين بخطوات بسيطة وآمنة</p>
+                <a href="application.html" class="service-btn">تقديم طلب جديد</a>
             </div>
-            
-            <div class="services-grid">
-                <div class="service-card" onclick="navigateTo('apply.html')">
-                    <div class="service-icon">
-                        <i class="fas fa-id-card"></i>
-                    </div>
-                    <h3 class="service-title">طلب تفعيل الهوية</h3>
-                    <p class="service-desc">تقديم طلب تفعيل جديد بخطوات سهلة وآمنة مع متابعة فورية</p>
-                </div>
-                
-                <div class="service-card" onclick="navigateToAdmin()">
-                    <div class="service-icon">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <h3 class="service-title">النظام الإداري</h3>
-                    <p class="service-desc">منصة متطورة لإدارة الطلبات والتحكم الكامل في النظام</p>
-                </div>
-                
-                <div class="service-card" onclick="showComingSoon()">
-                    <div class="service-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h3 class="service-title">متابعة الطلبات</h3>
-                    <p class="service-desc">تتبع حالة طلبك خطوة بخطة مع تحديثات فورية</p>
-                </div>
-                
-                <div class="service-card" onclick="showComingSoon()">
-                    <div class="service-icon">
-                        <i class="fas fa-user-circle"></i>
-                    </div>
-                    <h3 class="service-title">الملف الشخصي</h3>
-                    <p class="service-desc">إدارة معلوماتك الشخصية وتاريخ الطلبات السابقة</p>
-                </div>
+
+            <div class="service-card">
+                <div class="service-icon">📋</div>
+                <h3>متابعة الطلب</h3>
+                <p>تتبع حالة طلبك ومعرفة آخر التحديثات من خلال رقم الطلب الخاص بك</p>
+                <a href="track-application.html" class="service-btn">متابعة الطلب</a>
             </div>
-        </section>
-    </main>
-    
-    <!-- الشريط السفلي الفاخر -->
-    <nav class="bottom-nav">
-        <div class="nav-container">
-            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
-                <div class="nav-icon">
-                    <i class="fas fa-th-large"></i>
-                </div>
-                <span class="nav-label">الخدمات</span>
-            </a>
-            
-            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
-                <div class="nav-icon">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <span class="nav-label">متابعة</span>
-            </a>
-            
-            <a href="javascript:void(0)" class="nav-item nav-main active" onclick="navigateTo('index.html')">
-                <div class="nav-icon">
-                    <i class="fas fa-home"></i>
-                </div>
-                <span class="nav-label">الرئيسية</span>
-            </a>
-            
-            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
-                <div class="nav-icon">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <span class="nav-label">الرسائل</span>
-            </a>
-            
-            <a href="javascript:void(0)" class="nav-item" onclick="showComingSoon()">
-                <div class="nav-icon">
-                    <i class="fas fa-user"></i>
-                </div>
-                <span class="nav-label">حسابي</span>
-            </a>
+
+            <div class="service-card">
+                <div class="service-icon">📞</div>
+                <h3>الدعم الفني</h3>
+                <p>فريق الدعم الفني متاح لمساعدتك في أي استفسار أو مشكلة قد تواجهك</p>
+                <a href="#" class="service-btn">تواصل معنا</a>
+            </div>
         </div>
-    </nav>
+    </div>
+</main>
 
-    <script>
-        // ====== إنشاء الجسيمات المتحركة ======
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 50;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                // أحجام وألوان عشوائية
-                const size = Math.random() * 15 + 5;
-                const color = i % 3 === 0 ? 'var(--primary)' : 
-                             i % 3 === 1 ? 'var(--primary-light)' : 'var(--gold)';
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.background = color;
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.top = `${Math.random() * 100}%`;
-                particle.style.animationDelay = `${Math.random() * 20}s`;
-                particle.style.animationDuration = `${Math.random() * 15 + 15}s`;
-                particle.style.opacity = Math.random() * 0.2 + 0.1;
-                
-                container.appendChild(particle);
-            }
-        }
+<footer>
+    <div class="container">
+        <p>جميع الحقوق محفوظة © 2026 - <span class="footer-gold">الهيئة الرقمية KR</span></p>
+        <p>نظام رقمي حكومي متطور ومؤمن</p>
+    </div>
+</footer>
+```
 
-        // ====== تحديث الإشعارات ======
-        function updateNotifications() {
-            try {
-                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-                const pending = requests.filter(req => req.status === 'pending').length;
-                
-                const badge = document.getElementById('notificationBadge');
-                if (pending > 0) {
-                    badge.textContent = pending;
-                    badge.style.display = 'flex';
-                    // تأثير إضافي عند وجود إشعارات
-                    badge.parentElement.style.animation = 'badgePulse 2s infinite';
-                } else {
-                    badge.style.display = 'none';
-                }
-                
-            } catch (error) {
-                console.log('لا توجد طلبات بعد');
-            }
-        }
-
-        // ====== التنقل بين الصفحات ======
-        function navigateTo(url) {
-            // تأثير انتقالي قبل الانتقال
-            document.body.style.opacity = '0.7';
-            document.body.style.transition = 'opacity 0.3s';
-            
-            setTimeout(() => {
-                window.location.href = url;
-            }, 300);
-        }
-
-        function navigateToAdmin() {
-            // تحقق من وجود صفحة الإدارة
-            fetch('admin/login.html')
-                .then(response => {
-                    if (response.ok) {
-                        navigateTo('admin/login.html');
-                    } else {
-                        showCustomAlert('صفحة الإدارة قيد التطوير', 'info');
-                    }
-                })
-                .catch(() => {
-                    showCustomAlert('صفحة الإدارة غير متوفرة حالياً', 'warning');
-                });
-        }
-
-        // ====== رسائل Coming Soon مع أنيميشن ======
-        function showComingSoon() {
-            // إنشاء رسالة مع أنيميشن
-            const message = document.createElement('div');
-            message.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%) scale(0);
-                    background: var(--gradient);
-                    padding: 30px 40px;
-                    border-radius: 25px;
-                    color: white;
-                    text-align: center;
-                    z-index: 2000;
-                    box-shadow: var(--shadow), var(--glow);
-                    animation: popup 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-                    max-width: 90%;
-                    width: 350px;
-                    backdrop-filter: blur(20px);
-                ">
-                    <i class="fas fa-gem" style="font-size: 40px; margin-bottom: 15px; display: block; color: var(--gold);"></i>
-                    <h3 style="margin-bottom: 10px; font-size: 22px;">قريباً</h3>
-                    <p style="opacity: 0.9; margin-bottom: 20px;">هذه الخدمة قيد التطوير وسوف تكون متاحة قريباً</p>
-                    <button onclick="this.parentElement.remove()" style="
-                        background: rgba(255, 255, 255, 0.2);
-                        border: 1px solid rgba(255, 255, 255, 0.3);
-                        color: white;
-                        padding: 10px 25px;
-                        border-radius: 50px;
-                        cursor: pointer;
-                        font-weight: 600;
-                        transition: all 0.3s;
-                    " onmouseover="this.style.background='rgba(255, 255, 255, 0.3)';" 
-                    onmouseout="this.style.background='rgba(255, 255, 255, 0.2)';">
-                        حسناً
-                    </button>
-                </div>
-            `;
-            
-            // إضافة الأنيميشن
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes popup {
-                    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-                    70% { transform: translate(-50%, -50%) scale(1.1); }
-                    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // إضافة طبقة شفافة
-            const overlay = document.createElement('div');
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.7);
-                backdrop-filter: blur(5px);
-                z-index: 1999;
-                animation: fadeIn 0.3s ease;
-            `;
-            
-            overlay.onclick = function() {
-                document.body.removeChild(overlay);
-                document.body.removeChild(message);
-            };
-            
-            document.body.appendChild(overlay);
-            document.body.appendChild(message);
-        }
-
-        // ====== عرض تنبيه مخصص ======
-        function showCustomAlert(text, type = 'info') {
-            const alert = document.createElement('div');
-            alert.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 30px;
-                    right: 30px;
-                    background: ${type === 'info' ? 'var(--primary)' : 
-                               type === 'warning' ? 'var(--accent)' : 'var(--secondary)'};
-                    color: white;
-                    padding: 15px 25px;
-                    border-radius: 15px;
-                    box-shadow: var(--shadow);
-                    z-index: 2000;
-                    animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    max-width: 400px;
-                    backdrop-filter: blur(10px);
-                ">
-                    <i class="fas ${type === 'info' ? 'fa-info-circle' : 
-                                 type === 'warning' ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
-                    <span>${text}</span>
-                    <i class="fas fa-times" style="margin-right: auto; cursor: pointer; opacity: 0.8;" 
-                       onclick="this.parentElement.remove()"></i>
-                </div>
-            `;
-            
-            // إضافة الأنيميشن
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideInRight {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            document.body.appendChild(alert);
-            
-            // إزالة التنبيه بعد 5 ثواني
-            setTimeout(() => {
-                if (alert.parentElement) {
-                    alert.remove();
-                }
-            }, 5000);
-        }
-
-        // ====== عند تحميل الصفحة ======
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 الصفحة الرئيسية الفاخرة - جاهزة');
-            
-            // إنشاء الجسيمات
-            createParticles();
-            
-            // تحديث الإشعارات
-            updateNotifications();
-            
-            // تأثير تحميل الصفحة
-            document.body.style.opacity = '0';
-            document.body.style.transition = 'opacity 0.8s';
-            
-            setTimeout(() => {
-                document.body.style.opacity = '1';
-            }, 100);
-            
-            // تحديث الإشعارات كل 10 ثواني
-            setInterval(updateNotifications, 10000);
-        });
-
-        // ====== تأثيرات إضافية عند التمرير ======
-        let lastScroll = 0;
-        window.addEventListener('scroll', function() {
-            const currentScroll = window.pageYOffset;
-            const header = document.querySelector('.header');
-            
-            if (currentScroll > lastScroll && currentScroll > 100) {
-                header.style.transform = 'translateY(-100%)';
-            } else {
-                header.style.transform = 'translateY(0)';
-            }
-            
-            lastScroll = currentScroll;
-            
-            // تأثيرات على البطاقات عند التمرير
-            const cards = document.querySelectorAll('.service-card');
-            cards.forEach(card => {
-                const cardTop = card.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (cardTop < windowHeight * 0.8) {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }
-            });
-        });
-    </script>
 </body>
 </html>
