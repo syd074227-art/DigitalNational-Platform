@@ -8,20 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary-green: #1a9347;
-            --secondary-blue: #1e5a8e;
+            --primary-gold: #d4af37;
+            --primary-dark: #0a1929;
             --text-light: #ffffff;
             --text-secondary: #94a3b8;
-            --success: #22c55e;
+            --success: #10b981;
             --error: #ef4444;
-            --warning: #f59e0b;
         }
         body {
             font-family: 'IBM Plex Sans Arabic', sans-serif;
-            background: linear-gradient(135deg, #0a1929 0%, #0d2439 50%, #1a3a52 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
             color: var(--text-light);
             position: relative;
@@ -31,12 +31,8 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: 
-                url('https://image2url.com/r2/default/images/1770164318104-a6f07631-b19e-47a8-b2e2-b68f3ae8dd92.png') center/400px no-repeat,
-                radial-gradient(circle at 50% 50%, rgba(26, 147, 71, 0.03) 0%, transparent 60%);
-            opacity: 0.4;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
             pointer-events: none;
-            z-index: 0;
         }
         .container {
             position: relative;
@@ -47,9 +43,9 @@
         }
         header {
             padding: 20px 0;
-            border-bottom: 1px solid rgba(26, 147, 71, 0.2);
-            backdrop-filter: blur(20px);
-            background: rgba(10, 25, 41, 0.8);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            background: rgba(10, 25, 41, 0.5);
             margin-bottom: 30px;
         }
         .header-content {
@@ -67,26 +63,22 @@
         }
         .logo {
             width: 60px; height: 60px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
-            box-shadow: 0 10px 30px rgba(26, 147, 71, 0.3);
-        }
-        .logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: brightness(0) invert(1);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary-dark);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
         }
         .site-title h1 {
             font-family: 'Tajawal', sans-serif;
             font-size: 24px;
             font-weight: 900;
-            background: linear-gradient(135deg, #1a9347, #22c55e);
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 3px;
@@ -97,9 +89,9 @@
         }
         .btn-back {
             padding: 10px 20px;
-            background: rgba(26, 147, 71, 0.1);
-            border: 1px solid rgba(26, 147, 71, 0.4);
-            color: var(--success);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--text-light);
             border-radius: 8px;
             font-size: 14px;
             cursor: pointer;
@@ -107,16 +99,16 @@
             transition: all 0.3s ease;
         }
         .btn-back:hover {
-            background: rgba(26, 147, 71, 0.2);
-            border-color: var(--success);
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--primary-gold);
         }
         .form-container {
-            background: rgba(26, 43, 61, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(26, 147, 71, 0.3);
-            border-radius: 25px;
+            background: linear-gradient(135deg, rgba(26, 43, 61, 0.8), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
         .form-title {
             font-family: 'Tajawal', sans-serif;
@@ -124,7 +116,7 @@
             font-weight: 900;
             text-align: center;
             margin-bottom: 10px;
-            background: linear-gradient(135deg, #1a9347, #22c55e);
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -147,7 +139,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: rgba(26, 147, 71, 0.2);
+            background: rgba(212, 175, 55, 0.2);
             z-index: 0;
         }
         .step {
@@ -164,7 +156,7 @@
             height: 40px;
             border-radius: 50%;
             background: rgba(26, 43, 61, 0.8);
-            border: 2px solid rgba(26, 147, 71, 0.3);
+            border: 2px solid rgba(212, 175, 55, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -172,10 +164,10 @@
             transition: all 0.3s ease;
         }
         .step.active .step-number {
-            background: linear-gradient(135deg, #1a9347, #22c55e);
-            border-color: var(--success);
-            color: white;
-            box-shadow: 0 5px 15px rgba(26, 147, 71, 0.4);
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            border-color: var(--primary-gold);
+            color: var(--primary-dark);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
         }
         .step.completed .step-number {
             background: var(--success);
@@ -188,7 +180,7 @@
             text-align: center;
         }
         .step.active .step-label {
-            color: var(--success);
+            color: var(--primary-gold);
             font-weight: 600;
         }
         .form-step {
@@ -223,17 +215,20 @@
             width: 100%;
             padding: 12px 15px;
             background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(26, 147, 71, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.3);
             border-radius: 10px;
             color: var(--text-light);
             font-size: 15px;
             font-family: 'IBM Plex Sans Arabic', sans-serif;
             transition: all 0.3s ease;
         }
-        input:focus, select:focus, textarea:focus {
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
-            border-color: var(--success);
-            box-shadow: 0 0 0 3px rgba(26, 147, 71, 0.1);
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
         }
         input[type="file"] {
             display: none;
@@ -242,19 +237,19 @@
             width: 100%;
             padding: 20px;
             background: rgba(15, 23, 42, 0.6);
-            border: 2px dashed rgba(26, 147, 71, 0.3);
+            border: 2px dashed rgba(212, 175, 55, 0.3);
             border-radius: 10px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         .file-upload-wrapper:hover {
-            border-color: var(--success);
-            background: rgba(26, 147, 71, 0.05);
+            border-color: var(--primary-gold);
+            background: rgba(212, 175, 55, 0.05);
         }
         .file-upload-wrapper.has-file {
             border-color: var(--success);
-            background: rgba(26, 147, 71, 0.1);
+            background: rgba(16, 185, 129, 0.05);
         }
         .upload-icon {
             font-size: 40px;
@@ -267,7 +262,7 @@
         .file-preview {
             margin-top: 15px;
             padding: 10px;
-            background: rgba(26, 147, 71, 0.1);
+            background: rgba(16, 185, 129, 0.1);
             border-radius: 8px;
             color: var(--success);
             display: none;
@@ -282,7 +277,7 @@
             border-radius: 10px;
             margin: 15px auto;
             display: block;
-            border: 2px solid rgba(26, 147, 71, 0.3);
+            border: 2px solid rgba(212, 175, 55, 0.3);
         }
         .warning-box {
             background: rgba(239, 68, 68, 0.1);
@@ -294,8 +289,8 @@
             font-size: 14px;
         }
         .info-box {
-            background: rgba(30, 90, 142, 0.1);
-            border: 1px solid rgba(30, 90, 142, 0.3);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: 10px;
             padding: 15px;
             margin: 15px 0;
@@ -321,7 +316,7 @@
         }
         .terms-text {
             background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(26, 147, 71, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.2);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
@@ -331,7 +326,7 @@
             line-height: 1.8;
         }
         .terms-text h3 {
-            color: var(--success);
+            color: var(--primary-gold);
             margin-bottom: 15px;
             font-family: 'Tajawal', sans-serif;
         }
@@ -359,13 +354,13 @@
             font-family: 'Tajawal', sans-serif;
         }
         .btn-primary {
-            background: linear-gradient(135deg, #1a9347, #22c55e);
-            color: white;
-            box-shadow: 0 5px 15px rgba(26, 147, 71, 0.3);
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            color: var(--primary-dark);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
         }
         .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(26, 147, 71, 0.4);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
         }
         .btn-primary:disabled {
             opacity: 0.5;
@@ -374,20 +369,20 @@
         .btn-secondary {
             background: rgba(255, 255, 255, 0.05);
             color: var(--text-light);
-            border: 1px solid rgba(26, 147, 71, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.3);
         }
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.1);
         }
         .review-section {
             background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(26, 147, 71, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.2);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
         }
         .review-section h3 {
-            color: var(--success);
+            color: var(--primary-gold);
             margin-bottom: 15px;
             font-family: 'Tajawal', sans-serif;
             font-size: 20px;
@@ -396,7 +391,7 @@
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
-            border-bottom: 1px solid rgba(26, 147, 71, 0.1);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
         }
         .review-item:last-child {
             border-bottom: none;
@@ -419,8 +414,8 @@
             display: block;
         }
         .spinner {
-            border: 3px solid rgba(26, 147, 71, 0.3);
-            border-top: 3px solid var(--success);
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top: 3px solid var(--primary-gold);
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -455,7 +450,7 @@
             line-height: 1.8;
         }
         .application-id {
-            background: rgba(26, 147, 71, 0.1);
+            background: rgba(16, 185, 129, 0.1);
             border: 1px solid var(--success);
             border-radius: 10px;
             padding: 20px;
@@ -475,7 +470,7 @@
             padding: 15px;
             background: rgba(10, 25, 41, 0.4);
             border-radius: 8px;
-            border: 1px solid rgba(26, 147, 71, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.2);
         }
         .hidden {
             display: none !important;
@@ -486,9 +481,7 @@
     <header>
         <div class="header-content">
             <div class="logo-section">
-                <div class="logo">
-                    <img src="https://image2url.com/r2/default/images/1770164318104-a6f07631-b19e-47a8-b2e2-b68f3ae8dd92.png" alt="KR">
-                </div>
+                <div class="logo">KR</div>
                 <div class="site-title">
                     <h1>الهيئة الرقمية</h1>
                     <p>طلب تفعيل الهوية</p>
@@ -771,7 +764,7 @@
 
             <!-- Step 4: Review -->
             <div class="form-step" data-step="4">
-                <h3 style="color: var(--success); text-align: center; margin-bottom: 30px; font-family: 'Tajawal', sans-serif;">
+                <h3 style="color: var(--primary-gold); text-align: center; margin-bottom: 30px; font-family: 'Tajawal', sans-serif;">
                     مراجعة البيانات
                 </h3>
 
@@ -875,10 +868,12 @@
     let currentStep = 1;
     const totalSteps = 4;
 
+    // Terms Agreement
     document.getElementById('agreeTerms').addEventListener('change', function() {
         document.getElementById('agreeBtn').disabled = !this.checked;
     });
 
+    // File Upload Handlers
     function setupFileUpload(inputId, wrapperId, previewId) {
         const input = document.getElementById(inputId);
         const wrapper = document.getElementById(wrapperId);
@@ -897,14 +892,17 @@
     setupFileUpload('personalPhoto', 'personalPhotoWrapper', 'personalPhotoPreview');
     setupFileUpload('discordRanks', 'discordRanksWrapper', 'discordRanksPreview');
 
+    // Occupation Handling
     function handleOccupationChange() {
         const occupation = document.getElementById('occupation').value;
         
+        // Hide all options
         document.getElementById('interiorOptions').classList.add('hidden');
         document.getElementById('justiceOptions').classList.add('hidden');
         document.getElementById('healthOptions').classList.add('hidden');
         document.getElementById('discordRanksGroup').style.display = 'none';
 
+        // Show relevant options
         if (occupation === 'وزارة الداخلية') {
             document.getElementById('interiorOptions').classList.remove('hidden');
             document.getElementById('discordRanksGroup').style.display = 'block';
@@ -938,6 +936,7 @@
         }
     }
 
+    // Step Navigation
     function updateStepIndicator() {
         document.querySelectorAll('.step').forEach((step, index) => {
             const stepNumber = index + 1;
@@ -976,6 +975,7 @@
             }
         }
 
+        // Special validation for step 3
         if (currentStep === 3) {
             const occupation = document.getElementById('occupation').value;
             if (occupation !== 'مواطن') {
@@ -1029,15 +1029,18 @@
     }
 
     function updateReview() {
+        // Personal Info
         document.getElementById('review-fullName').textContent = document.getElementById('fullName').value;
         document.getElementById('review-age').textContent = document.getElementById('age').value + ' سنة';
         document.getElementById('review-gameName').textContent = document.getElementById('gameName').value;
         document.getElementById('review-discordName').textContent = document.getElementById('discordName').value;
         document.getElementById('review-nationalId').textContent = document.getElementById('nationalId').value;
 
+        // Occupation
         const occupation = document.getElementById('occupation').value;
         document.getElementById('review-occupation').textContent = occupation;
 
+        // Rank and Position
         if (occupation !== 'مواطن') {
             let rank = '';
             let positions = [];
@@ -1090,10 +1093,12 @@
         document.getElementById('loadingSpinner').classList.add('show');
 
         try {
+            // Generate Application ID
             const timestamp = Date.now();
             const random = Math.floor(Math.random() * 10000);
             const applicationId = `KR-${timestamp}-${random}`;
 
+            // Collect form data
             const occupation = document.getElementById('occupation').value;
             let rank = null;
             let positions = [];
@@ -1114,6 +1119,7 @@
                 }
             }
 
+            // Upload files
             const idImageGameFile = document.getElementById('idImageGame').files[0];
             const personalPhotoFile = document.getElementById('personalPhoto').files[0];
             const discordRanksFile = document.getElementById('discordRanks').files[0];
@@ -1126,6 +1132,7 @@
                 discordRanksData = await uploadFile(discordRanksFile, 'discordRanks');
             }
 
+            // Prepare application data
             const applicationData = {
                 applicationId: applicationId,
                 status: 'قيد المراجعة',
@@ -1149,8 +1156,10 @@
                 }
             };
 
+            // Save to Firebase
             await database.ref('applications/' + applicationId).set(applicationData);
 
+            // Show success message
             document.getElementById('loadingSpinner').classList.remove('show');
             document.getElementById('successMessage').classList.add('show');
             document.getElementById('applicationNumber').textContent = applicationId;
@@ -1163,6 +1172,7 @@
         }
     }
 
+    // Initialize
     updateStepIndicator();
 </script>
 ```
