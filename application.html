@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلب تفعيل الهوية - الهيئة الرقمية KR</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-gold: #d4af37;
+            --primary-dark: #0a1929;
+            --text-light: #ffffff;
+            --text-secondary: #94a3b8;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: var(--text-light);
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            background: rgba(10, 25, 41, 0.5);
+            margin-bottom: 30px;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo {
+            width: 60px; height: 60px;
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary-dark);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+        .site-title h1 {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 3px;
+        }
+        .site-title p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .btn-back {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--text-light);
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-back:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--primary-gold);
+        }
+        .form-container {
+            background: linear-gradient(135deg, rgba(26, 43, 61, 0.8), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .form-title {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .form-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(212, 175, 55, 0.2);
+            z-index: 0;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(26, 43, 61, 0.8);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .step.active .step-number {
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            border-color: var(--primary-gold);
+            color: var(--primary-dark);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+        .step.completed .step-number {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        .step-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .step.active .step-label {
+            color: var(--primary-gold);
+            font-weight: 600;
+        }
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        label .required {
+            color: var(--error);
+            margin-right: 3px;
+        }
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 15px;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .file-upload-wrapper {
+            width: 100%;
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px dashed rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .file-upload-wrapper:hover {
+            border-color: var(--primary-gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+        .file-upload-wrapper.has-file {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        .upload-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .upload-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .file-preview {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 8px;
+            color: var(--success);
+            display: none;
+        }
+        .file-preview.show {
+            display: block;
+        }
+        .example-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            margin: 15px auto;
+            display: block;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #fca5a5;
+            font-size: 14px;
+        }
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #93c5fd;
+            font-size: 14px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 3px;
+            cursor: pointer;
+        }
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+            flex: 1;
+        }
+        .terms-text {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .terms-text h3 {
+            color: var(--primary-gold);
+            margin-bottom: 15px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .terms-text ul {
+            list-style-position: inside;
+            margin: 10px 0;
+        }
+        .terms-text li {
+            margin-bottom: 8px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            color: var(--primary-dark);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .review-section {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .review-section h3 {
+            color: var(--primary-gold);
+            margin-bottom: 15px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 20px;
+        }
+        .review-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        .review-item:last-child {
+            border-bottom: none;
+        }
+        .review-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .review-value {
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .loading.show {
+            display: block;
+        }
+        .spinner {
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top: 3px solid var(--primary-gold);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        .success-message.show {
+            display: block;
+        }
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        .success-message h2 {
+            font-family: 'Tajawal', sans-serif;
+            color: var(--success);
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+        .success-message p {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+        .application-id {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .application-id strong {
+            color: var(--success);
+            font-size: 24px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        select option {
+            background: #0f172a;
+            color: var(--text-light);
+        }
+        .sub-options {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(10, 25, 41, 0.4);
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">KR</div>
+                <div class="site-title">
+                    <h1>الهيئة الرقمية</h1>
+                    <p>طلب تفعيل الهوية</p>
+                </div>
+            </div>
+            <a href="index.html" class="btn-back">← العودة للرئيسية</a>
+        </div>
+    </header>
+
+```
+<div class="container">
+    <div class="form-container">
+        <h2 class="form-title">طلب تفعيل الهوية الرقمية</h2>
+        <p class="form-subtitle">يرجى تعبئة جميع البيانات المطلوبة بدقة</p>
+
+        <div class="step-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">الشروط</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">البيانات</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">المهنة</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">المراجعة</div>
+            </div>
+        </div>
+
+        <form id="applicationForm">
+            <!-- Step 1: Terms -->
+            <div class="form-step active" data-step="1">
+                <div class="terms-text">
+                    <h3>شروط وأحكام استخدام خدمة تفعيل الهوية الرقمية</h3>
+                    <ul>
+                        <li>أقر بأن جميع المعلومات المقدمة صحيحة ودقيقة</li>
+                        <li>أتحمل المسؤولية الكاملة عن صحة البيانات والوثائق المرفقة</li>
+                        <li>أوافق على استخدام بياناتي للأغراض الحكومية الرسمية فقط</li>
+                        <li>أدرك أن تقديم معلومات خاطئة قد يعرضني للمساءلة القانونية</li>
+                        <li>أوافق على شروط الخصوصية وحماية البيانات الشخصية</li>
+                        <li>أتعهد بعدم إساءة استخدام الخدمات الحكومية الإلكترونية</li>
+                        <li>أقر بأن الهوية الرقمية هي وثيقة رسمية معتمدة</li>
+                    </ul>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <label for="agreeTerms">
+                        <strong>أقر وأتعهد</strong> بأن جميع المعلومات المدخلة صحيحة ودقيقة (باستثناء الاسم والعمر)، وأوافق على جميع الشروط والأحكام المذكورة أعلاه
+                    </label>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" onclick="nextStep()" id="agreeBtn" disabled>
+                        الموافقة والمتابعة ←
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Personal Info -->
+            <div class="form-step" data-step="2">
+                <div class="form-group">
+                    <label><span class="required">*</span> الاسم الرباعي بالعربي</label>
+                    <input type="text" id="fullName" required pattern="[\u0600-\u06FF\s]+" placeholder="مثال: أحمد محمد علي السعيد">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="required">*</span> العمر</label>
+                    <input type="number" id="age" required min="18" max="99" placeholder="مثال: 25">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="required">*</span> اسم الحساب في اللعبة</label>
+                    <input type="text" id="gameName" required placeholder="مثال: Player123">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="required">*</span> اسم الحساب في الديسكورد</label>
+                    <input type="text" id="discordName" required placeholder="مثال: User#1234">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="required">*</span> رقم الهوية الوطنية</label>
+                    <div class="info-box">
+                        📝 مثال على الأرقام المطلوبة
+                    </div>
+                    <img src="https://image2url.com/r2/default/images/1770161645230-88383567-ea66-40e6-8912-dc18e07d4aad.jpeg" alt="مثال رقم الهوية" class="example-image">
+                    <input type="text" id="nationalId" required placeholder="أدخل رقم الهوية">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="required">*</span> صورة الهوية الوطنية باللعبة</label>
+                    <div class="info-box">
+                        📸 مثال على الصورة المطلوبة
+                    </div>
+                    <img src="https://image2url.com/r2/default/images/1770161878954-891eeed7-0e62-4b85-8a18-e8746781c6c5.jpeg" alt="مثال صورة الهوية" class="example-image">
+                    <input type="file" id="idImageGame" accept="image/*" required>
+                    <label for="idImageGame" class="file-upload-wrapper" id="idImageGameWrapper">
+                        <div class="upload-icon">📤</div>
+                        <div class="upload-text">اضغط لرفع صورة الهوية</div>
+                    </label>
+                    <div class="file-preview" id="idImageGamePreview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="required">*</span> صورة الشخصية الخاصة بك</label>
+                    <div class="warning-box">
+                        ⚠️ تنبيه: يرجى عدم وجود إكسسوارات أو قبعات في الصورة
+                    </div>
+                    <div class="info-box">
+                        📸 مثال على الصورة المطلوبة
+                    </div>
+                    <img src="https://image2url.com/r2/default/images/1770161964430-f1389a15-3a40-41bd-b6a0-f9c1b37f3fb6.jpeg" alt="مثال صورة شخصية" class="example-image">
+                    <input type="file" id="personalPhoto" accept="image/*" required>
+                    <label for="personalPhoto" class="file-upload-wrapper" id="personalPhotoWrapper">
+                        <div class="upload-icon">📤</div>
+                        <div class="upload-text">اضغط لرفع صورتك الشخصية</div>
+                    </label>
+                    <div class="file-preview" id="personalPhotoPreview"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">→ السابق</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">استكمال الإجراءات ←</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Occupation -->
+            <div class="form-step" data-step="3">
+                <div class="form-group">
+                    <label><span class="required">*</span> اختر مهنتك الحالية</label>
+                    <select id="occupation" required onchange="handleOccupationChange()">
+                        <option value="">اختر المهنة</option>
+                        <option value="مواطن">مواطن</option>
+                        <option value="وزارة الداخلية">وزارة الداخلية</option>
+                        <option value="وزارة العدل">وزارة العدل</option>
+                        <option value="وزارة الصحة">وزارة الصحة</option>
+                    </select>
+                </div>
+
+                <!-- Interior Ministry Options -->
+                <div id="interiorOptions" class="sub-options hidden">
+                    <div class="form-group">
+                        <label><span class="required">*</span> الرتبة</label>
+                        <select id="interiorRank" onchange="showInteriorPositions()">
+                            <option value="">اختر الرتبة</option>
+                            <option value="جندي">جندي</option>
+                            <option value="جندي أول">جندي أول</option>
+                            <option value="عريف">عريف</option>
+                            <option value="وكيل رقيب">وكيل رقيب</option>
+                            <option value="رقيب">رقيب</option>
+                            <option value="رقيب أول">رقيب أول</option>
+                            <option value="رئيس رقباء">رئيس رقباء</option>
+                            <option value="ملازم">ملازم</option>
+                            <option value="ملازم أول">ملازم أول</option>
+                            <option value="نقيب">نقيب</option>
+                            <option value="رائد">رائد</option>
+                            <option value="مقدم">مقدم</option>
+                            <option value="عقيد">عقيد</option>
+                            <option value="عميد">عميد</option>
+                            <option value="لواء">لواء</option>
+                            <option value="فريق">فريق</option>
+                            <option value="فريق أول">فريق أول</option>
+                            <option value="نائب مدير الأمن العام">نائب مدير الأمن العام</option>
+                            <option value="مدير الأمن العام">مدير الأمن العام</option>
+                            <option value="نائب وزير الداخلية">نائب وزير الداخلية</option>
+                            <option value="وزير الداخلية">وزير الداخلية</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group hidden" id="interiorPositionGroup">
+                        <label>المناصب الإدارية (اختياري)</label>
+                        <div class="info-box">في حال لديك أكثر من منصب إداري يرجى اختياره</div>
+                        <select id="interiorPosition" multiple size="6">
+                            <option value="إدارة القبول والتجنيد">إدارة القبول والتجنيد</option>
+                            <option value="إدارة شؤون الداخلية">إدارة شؤون الداخلية</option>
+                            <option value="إدارة شؤون الأفراد">إدارة شؤون الأفراد</option>
+                            <option value="إدارة الأمن العام">إدارة الأمن العام</option>
+                            <option value="الادارة العامة للشكاوي">الادارة العامة للشكاوي</option>
+                            <option value="الضباط">الضباط</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Justice Ministry Options -->
+                <div id="justiceOptions" class="sub-options hidden">
+                    <div class="form-group">
+                        <label><span class="required">*</span> الرتبة</label>
+                        <select id="justiceRank" onchange="showJusticePositions()">
+                            <option value="">اختر الرتبة</option>
+                            <option value="محامي">محامي</option>
+                            <option value="محامي خبير">محامي خبير</option>
+                            <option value="محامي متمرس">محامي متمرس</option>
+                            <option value="قاضي">قاضي</option>
+                            <option value="قاضي خبير">قاضي خبير</option>
+                            <option value="قاضي متمرس">قاضي متمرس</option>
+                            <option value="قاضي محكمة عليا">قاضي محكمة عليا</option>
+                            <option value="مستشار القضايا">مستشار القضايا</option>
+                            <option value="مستشار وزير العدل">مستشار وزير العدل</option>
+                            <option value="نائب وزير العدل">نائب وزير العدل</option>
+                            <option value="وزير العدل">وزير العدل</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group hidden" id="justicePositionGroup">
+                        <label>المناصب الإدارية (اختياري)</label>
+                        <select id="justicePosition" multiple size="3">
+                            <option value="إدارة القبول والتسجيل">إدارة القبول والتسجيل</option>
+                            <option value="إدارة الشكاوي بوزارة العدل">إدارة الشكاوي بوزارة العدل</option>
+                            <option value="إدارة الشؤون العدلية">إدارة الشؤون العدلية</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Health Ministry Options -->
+                <div id="healthOptions" class="sub-options hidden">
+                    <div class="form-group">
+                        <label><span class="required">*</span> الرتبة</label>
+                        <select id="healthRank" onchange="showHealthPositions()">
+                            <option value="">اختر الرتبة</option>
+                            <option value="مسعف">مسعف</option>
+                            <option value="مسعف أول">مسعف أول</option>
+                            <option value="ممرض">ممرض</option>
+                            <option value="ممرض أول">ممرض أول</option>
+                            <option value="فني صحي">فني صحي</option>
+                            <option value="فني صحي أول">فني صحي أول</option>
+                            <option value="أخصائي">أخصائي</option>
+                            <option value="مساعد جراح">مساعد جراح</option>
+                            <option value="دكتور عام">دكتور عام</option>
+                            <option value="دكتور">دكتور</option>
+                            <option value="استشاري">استشاري</option>
+                            <option value="جراح">جراح</option>
+                            <option value="رئيس استشاري">رئيس استشاري</option>
+                            <option value="مدير طبي">مدير طبي</option>
+                            <option value="مستشار وزير الصحة">مستشار وزير الصحة</option>
+                            <option value="نائب وزير الصحة">نائب وزير الصحة</option>
+                            <option value="وزير الصحة">وزير الصحة</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group hidden" id="healthPositionGroup">
+                        <label>المناصب الإدارية (اختياري)</label>
+                        <select id="healthPosition" multiple size="5">
+                            <option value="إدارة القبول والتسجيل">إدارة القبول والتسجيل</option>
+                            <option value="إدارة الشؤون الصحية">إدارة الشؤون الصحية</option>
+                            <option value="إدارة متطوعين الهلال الأحمر">إدارة متطوعين الهلال الأحمر</option>
+                            <option value="إدارة الشكاوي بوزارة الصحة">إدارة الشكاوي بوزارة الصحة</option>
+                            <option value="إدارة الكلية الصحية">إدارة الكلية الصحية</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="discordRanksGroup" style="display: none;">
+                    <label><span class="required">*</span> صورة الرتب المملوكة في الديسكورد</label>
+                    <div class="warning-box">
+                        ⚠️ تنبيه: يجب إظهار اسم المستخدم في الصورة
+                    </div>
+                    <div class="info-box">
+                        📸 مثال على الصورة المطلوبة
+                    </div>
+                    <img src="https://image2url.com/r2/default/images/1770162603514-dfab4951-965a-4683-9305-730c4445f835.jpeg" alt="مثال صورة الرتب" class="example-image">
+                    <input type="file" id="discordRanks" accept="image/*">
+                    <label for="discordRanks" class="file-upload-wrapper" id="discordRanksWrapper">
+                        <div class="upload-icon">📤</div>
+                        <div class="upload-text">اضغط لرفع صورة الرتب</div>
+                    </label>
+                    <div class="file-preview" id="discordRanksPreview"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">→ السابق</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">استكمال ←</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Review -->
+            <div class="form-step" data-step="4">
+                <h3 style="color: var(--primary-gold); text-align: center; margin-bottom: 30px; font-family: 'Tajawal', sans-serif;">
+                    مراجعة البيانات
+                </h3>
+
+                <div class="review-section">
+                    <h3>البيانات الشخصية</h3>
+                    <div class="review-item">
+                        <span class="review-label">الاسم الرباعي:</span>
+                        <span class="review-value" id="review-fullName"></span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">العمر:</span>
+                        <span class="review-value" id="review-age"></span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">اسم الحساب (اللعبة):</span>
+                        <span class="review-value" id="review-gameName"></span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">اسم الحساب (ديسكورد):</span>
+                        <span class="review-value" id="review-discordName"></span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">رقم الهوية:</span>
+                        <span class="review-value" id="review-nationalId"></span>
+                    </div>
+                </div>
+
+                <div class="review-section">
+                    <h3>معلومات المهنة</h3>
+                    <div class="review-item">
+                        <span class="review-label">المهنة:</span>
+                        <span class="review-value" id="review-occupation"></span>
+                    </div>
+                    <div class="review-item" id="review-rank-container" style="display: none;">
+                        <span class="review-label">الرتبة:</span>
+                        <span class="review-value" id="review-rank"></span>
+                    </div>
+                    <div class="review-item" id="review-position-container" style="display: none;">
+                        <span class="review-label">المناصب الإدارية:</span>
+                        <span class="review-value" id="review-position"></span>
+                    </div>
+                </div>
+
+                <div class="review-section">
+                    <h3>المرفقات</h3>
+                    <div class="review-item">
+                        <span class="review-label">صورة الهوية (اللعبة):</span>
+                        <span class="review-value">✅ تم الإرفاق</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">الصورة الشخصية:</span>
+                        <span class="review-value">✅ تم الإرفاق</span>
+                    </div>
+                    <div class="review-item" id="review-discord-container" style="display: none;">
+                        <span class="review-label">صورة الرتب (ديسكورد):</span>
+                        <span class="review-value">✅ تم الإرفاق</span>
+                    </div>
+                </div>
+
+                <div class="info-box" style="margin: 20px 0;">
+                    يرجى مراجعة جميع البيانات بدقة قبل الإرسال. في حال وجود أي خطأ، يمكنك العودة للخطوات السابقة لتعديل البيانات.
+                </div>
+
+                <div class="loading" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p>جاري إرسال الطلب...</p>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">✅</div>
+                    <h2>تم إرسال طلبك بنجاح!</h2>
+                    <p>تم استلام طلبك وسيتم مراجعته من قبل الفريق المختص</p>
+                    <div class="application-id">
+                        <p>رقم الطلب الخاص بك:</p>
+                        <strong id="applicationNumber"></strong>
+                    </div>
+                    <p>يمكنك متابعة حالة طلبك من خلال رقم الطلب أعلاه</p>
+                    <div class="btn-group" style="margin-top: 30px;">
+                        <a href="track-application.html" class="btn btn-primary" style="text-align: center;">متابعة الطلب</a>
+                        <a href="index.html" class="btn btn-secondary" style="text-align: center;">العودة للرئيسية</a>
+                    </div>
+                </div>
+
+                <div class="btn-group" id="submitButtons">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">→ السابق</button>
+                    <button type="button" class="btn btn-primary" onclick="submitForm()">إرسال طلب التفعيل ✓</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Firebase Configuration
+    const firebaseConfig = {
+        databaseURL: "https://kr-system-5c846-default-rtdb.firebaseio.com/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    let currentStep = 1;
+    const totalSteps = 4;
+
+    // Terms Agreement
+    document.getElementById('agreeTerms').addEventListener('change', function() {
+        document.getElementById('agreeBtn').disabled = !this.checked;
+    });
+
+    // File Upload Handlers
+    function setupFileUpload(inputId, wrapperId, previewId) {
+        const input = document.getElementById(inputId);
+        const wrapper = document.getElementById(wrapperId);
+        const preview = document.getElementById(previewId);
+
+        input.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                wrapper.classList.add('has-file');
+                preview.textContent = '✓ تم اختيار الملف: ' + this.files[0].name;
+                preview.classList.add('show');
+            }
+        });
+    }
+
+    setupFileUpload('idImageGame', 'idImageGameWrapper', 'idImageGamePreview');
+    setupFileUpload('personalPhoto', 'personalPhotoWrapper', 'personalPhotoPreview');
+    setupFileUpload('discordRanks', 'discordRanksWrapper', 'discordRanksPreview');
+
+    // Occupation Handling
+    function handleOccupationChange() {
+        const occupation = document.getElementById('occupation').value;
+        
+        // Hide all options
+        document.getElementById('interiorOptions').classList.add('hidden');
+        document.getElementById('justiceOptions').classList.add('hidden');
+        document.getElementById('healthOptions').classList.add('hidden');
+        document.getElementById('discordRanksGroup').style.display = 'none';
+
+        // Show relevant options
+        if (occupation === 'وزارة الداخلية') {
+            document.getElementById('interiorOptions').classList.remove('hidden');
+            document.getElementById('discordRanksGroup').style.display = 'block';
+        } else if (occupation === 'وزارة العدل') {
+            document.getElementById('justiceOptions').classList.remove('hidden');
+            document.getElementById('discordRanksGroup').style.display = 'block';
+        } else if (occupation === 'وزارة الصحة') {
+            document.getElementById('healthOptions').classList.remove('hidden');
+            document.getElementById('discordRanksGroup').style.display = 'block';
+        }
+    }
+
+    function showInteriorPositions() {
+        const rank = document.getElementById('interiorRank').value;
+        if (rank) {
+            document.getElementById('interiorPositionGroup').classList.remove('hidden');
+        }
+    }
+
+    function showJusticePositions() {
+        const rank = document.getElementById('justiceRank').value;
+        if (rank) {
+            document.getElementById('justicePositionGroup').classList.remove('hidden');
+        }
+    }
+
+    function showHealthPositions() {
+        const rank = document.getElementById('healthRank').value;
+        if (rank) {
+            document.getElementById('healthPositionGroup').classList.remove('hidden');
+        }
+    }
+
+    // Step Navigation
+    function updateStepIndicator() {
+        document.querySelectorAll('.step').forEach((step, index) => {
+            const stepNumber = index + 1;
+            if (stepNumber < currentStep) {
+                step.classList.add('completed');
+                step.classList.remove('active');
+            } else if (stepNumber === currentStep) {
+                step.classList.add('active');
+                step.classList.remove('completed');
+            } else {
+                step.classList.remove('active', 'completed');
+            }
+        });
+
+        document.querySelectorAll('.form-step').forEach((step, index) => {
+            if (index + 1 === currentStep) {
+                step.classList.add('active');
+            } else {
+                step.classList.remove('active');
+            }
+        });
+    }
+
+    function validateCurrentStep() {
+        const currentStepElement = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+        const requiredInputs = currentStepElement.querySelectorAll('[required]');
+        
+        for (let input of requiredInputs) {
+            if (!input.value && input.type !== 'file') {
+                alert('يرجى تعبئة جميع الحقول المطلوبة');
+                return false;
+            }
+            if (input.type === 'file' && input.hasAttribute('required') && !input.files.length) {
+                alert('يرجى رفع جميع الملفات المطلوبة');
+                return false;
+            }
+        }
+
+        // Special validation for step 3
+        if (currentStep === 3) {
+            const occupation = document.getElementById('occupation').value;
+            if (occupation !== 'مواطن') {
+                let rankSelected = false;
+                if (occupation === 'وزارة الداخلية') {
+                    rankSelected = document.getElementById('interiorRank').value !== '';
+                } else if (occupation === 'وزارة العدل') {
+                    rankSelected = document.getElementById('justiceRank').value !== '';
+                } else if (occupation === 'وزارة الصحة') {
+                    rankSelected = document.getElementById('healthRank').value !== '';
+                }
+                
+                if (!rankSelected) {
+                    alert('يرجى اختيار الرتبة');
+                    return false;
+                }
+
+                const discordRanks = document.getElementById('discordRanks');
+                if (!discordRanks.files.length) {
+                    alert('يرجى رفع صورة الرتب في الديسكورد');
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    function nextStep() {
+        if (!validateCurrentStep()) {
+            return;
+        }
+
+        if (currentStep === 3) {
+            updateReview();
+        }
+
+        if (currentStep < totalSteps) {
+            currentStep++;
+            updateStepIndicator();
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            updateStepIndicator();
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function updateReview() {
+        // Personal Info
+        document.getElementById('review-fullName').textContent = document.getElementById('fullName').value;
+        document.getElementById('review-age').textContent = document.getElementById('age').value + ' سنة';
+        document.getElementById('review-gameName').textContent = document.getElementById('gameName').value;
+        document.getElementById('review-discordName').textContent = document.getElementById('discordName').value;
+        document.getElementById('review-nationalId').textContent = document.getElementById('nationalId').value;
+
+        // Occupation
+        const occupation = document.getElementById('occupation').value;
+        document.getElementById('review-occupation').textContent = occupation;
+
+        // Rank and Position
+        if (occupation !== 'مواطن') {
+            let rank = '';
+            let positions = [];
+
+            if (occupation === 'وزارة الداخلية') {
+                rank = document.getElementById('interiorRank').value;
+                const posSelect = document.getElementById('interiorPosition');
+                positions = Array.from(posSelect.selectedOptions).map(opt => opt.value);
+            } else if (occupation === 'وزارة العدل') {
+                rank = document.getElementById('justiceRank').value;
+                const posSelect = document.getElementById('justicePosition');
+                positions = Array.from(posSelect.selectedOptions).map(opt => opt.value);
+            } else if (occupation === 'وزارة الصحة') {
+                rank = document.getElementById('healthRank').value;
+                const posSelect = document.getElementById('healthPosition');
+                positions = Array.from(posSelect.selectedOptions).map(opt => opt.value);
+            }
+
+            document.getElementById('review-rank').textContent = rank;
+            document.getElementById('review-rank-container').style.display = 'flex';
+
+            if (positions.length > 0) {
+                document.getElementById('review-position').textContent = positions.join(', ');
+                document.getElementById('review-position-container').style.display = 'flex';
+            } else {
+                document.getElementById('review-position-container').style.display = 'none';
+            }
+
+            document.getElementById('review-discord-container').style.display = 'flex';
+        } else {
+            document.getElementById('review-rank-container').style.display = 'none';
+            document.getElementById('review-position-container').style.display = 'none';
+            document.getElementById('review-discord-container').style.display = 'none';
+        }
+    }
+
+    async function uploadFile(file, path) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                resolve(e.target.result);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    async function submitForm() {
+        document.getElementById('submitButtons').style.display = 'none';
+        document.getElementById('loadingSpinner').classList.add('show');
+
+        try {
+            // Generate Application ID
+            const timestamp = Date.now();
+            const random = Math.floor(Math.random() * 10000);
+            const applicationId = `KR-${timestamp}-${random}`;
+
+            // Collect form data
+            const occupation = document.getElementById('occupation').value;
+            let rank = null;
+            let positions = [];
+
+            if (occupation !== 'مواطن') {
+                if (occupation === 'وزارة الداخلية') {
+                    rank = document.getElementById('interiorRank').value;
+                    const posSelect = document.getElementById('interiorPosition');
+                    positions = Array.from(posSelect.selectedOptions).map(opt => opt.value);
+                } else if (occupation === 'وزارة العدل') {
+                    rank = document.getElementById('justiceRank').value;
+                    const posSelect = document.getElementById('justicePosition');
+                    positions = Array.from(posSelect.selectedOptions).map(opt => opt.value);
+                } else if (occupation === 'وزارة الصحة') {
+                    rank = document.getElementById('healthRank').value;
+                    const posSelect = document.getElementById('healthPosition');
+                    positions = Array.from(posSelect.selectedOptions).map(opt => opt.value);
+                }
+            }
+
+            // Upload files
+            const idImageGameFile = document.getElementById('idImageGame').files[0];
+            const personalPhotoFile = document.getElementById('personalPhoto').files[0];
+            const discordRanksFile = document.getElementById('discordRanks').files[0];
+
+            const idImageGameData = await uploadFile(idImageGameFile, 'idImages');
+            const personalPhotoData = await uploadFile(personalPhotoFile, 'personalPhotos');
+            let discordRanksData = null;
+            
+            if (discordRanksFile) {
+                discordRanksData = await uploadFile(discordRanksFile, 'discordRanks');
+            }
+
+            // Prepare application data
+            const applicationData = {
+                applicationId: applicationId,
+                status: 'قيد المراجعة',
+                submittedAt: new Date().toISOString(),
+                personalInfo: {
+                    fullName: document.getElementById('fullName').value,
+                    age: document.getElementById('age').value,
+                    gameName: document.getElementById('gameName').value,
+                    discordName: document.getElementById('discordName').value,
+                    nationalId: document.getElementById('nationalId').value
+                },
+                occupation: {
+                    type: occupation,
+                    rank: rank,
+                    positions: positions
+                },
+                documents: {
+                    idImageGame: idImageGameData,
+                    personalPhoto: personalPhotoData,
+                    discordRanks: discordRanksData
+                }
+            };
+
+            // Save to Firebase
+            await database.ref('applications/' + applicationId).set(applicationData);
+
+            // Show success message
+            document.getElementById('loadingSpinner').classList.remove('show');
+            document.getElementById('successMessage').classList.add('show');
+            document.getElementById('applicationNumber').textContent = applicationId;
+
+        } catch (error) {
+            console.error('Error submitting application:', error);
+            alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
+            document.getElementById('loadingSpinner').classList.remove('show');
+            document.getElementById('submitButtons').style.display = 'flex';
+        }
+    }
+
+    // Initialize
+    updateStepIndicator();
+</script>
+```
+
+</body>
+</html>
