@@ -9,14 +9,16 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary-gold: #d4af37;
-            --primary-dark: #0a1929;
+            --primary-green: #1a9347;
+            --primary-dark: #0d2439;
+            --secondary-blue: #1e5a8e;
             --text-light: #ffffff;
             --text-secondary: #94a3b8;
+            --success: #22c55e;
         }
         body {
             font-family: 'IBM Plex Sans Arabic', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #0a1929 0%, #0d2439 50%, #1a3a52 100%);
             min-height: 100vh;
             color: var(--text-light);
             position: relative;
@@ -25,30 +27,16 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.08) 0%, transparent 50%);
-            animation: pulse 15s ease-in-out infinite;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(26, 147, 71, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(30, 90, 142, 0.08) 0%, transparent 50%);
+            animation: pulse 20s ease-in-out infinite;
             pointer-events: none;
         }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.6; }
-        }
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
         }
         .container {
             position: relative;
@@ -58,10 +46,10 @@
             padding: 0 20px;
         }
         header {
-            padding: 30px 0;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 25px 0;
+            border-bottom: 1px solid rgba(26, 147, 71, 0.2);
             backdrop-filter: blur(10px);
-            background: rgba(10, 25, 41, 0.5);
+            background: rgba(10, 25, 41, 0.6);
             animation: slideDown 0.8s ease-out;
         }
         @keyframes slideDown {
@@ -81,29 +69,48 @@
             gap: 20px;
         }
         .logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
-            border-radius: 20px;
+            width: 85px;
+            height: 85px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 36px;
-            font-weight: 900;
-            color: var(--primary-dark);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            animation: logoGlow 3s ease-in-out infinite;
+            padding: 12px;
+            box-shadow: 0 10px 30px rgba(26, 147, 71, 0.3),
+                        0 0 0 1px rgba(26, 147, 71, 0.2);
+            animation: logoFloat 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
         }
-        @keyframes logoGlow {
-            0%, 100% { box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
-            50% { box-shadow: 0 10px 40px rgba(212, 175, 55, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.5); transform: scale(1.05); }
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(26, 147, 71, 0.1), rgba(30, 90, 142, 0.1));
+            z-index: 0;
+        }
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            filter: brightness(0) invert(1);
         }
         .site-title h1 {
             font-family: 'Tajawal', sans-serif;
             font-size: 32px;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
+            background: linear-gradient(135deg, #1a9347, #22c55e);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 5px;
@@ -113,22 +120,25 @@
             color: var(--text-secondary);
         }
         .btn-secondary {
-            padding: 12px 25px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            color: var(--text-light);
-            border-radius: 10px;
+            padding: 12px 28px;
+            background: rgba(26, 147, 71, 0.1);
+            border: 1px solid rgba(26, 147, 71, 0.4);
+            color: var(--success);
+            border-radius: 12px;
             font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
             text-decoration: none;
-            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         .btn-secondary:hover {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: var(--primary-gold);
+            background: rgba(26, 147, 71, 0.2);
+            border-color: var(--success);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 5px 20px rgba(26, 147, 71, 0.3);
         }
         .hero {
             padding: 80px 0 60px;
@@ -144,9 +154,10 @@
             font-size: 48px;
             font-weight: 900;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--text-light), var(--text-secondary));
+            background: linear-gradient(135deg, #ffffff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.3;
         }
         .hero p {
             font-size: 18px;
@@ -163,8 +174,8 @@
             padding-bottom: 80px;
         }
         .service-card {
-            background: linear-gradient(135deg, rgba(26, 43, 61, 0.8), rgba(15, 23, 42, 0.8));
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            background: linear-gradient(135deg, rgba(26, 43, 61, 0.6), rgba(15, 23, 42, 0.6));
+            border: 1px solid rgba(26, 147, 71, 0.2);
             border-radius: 20px;
             padding: 40px;
             cursor: pointer;
@@ -184,7 +195,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), transparent);
+            background: linear-gradient(135deg, rgba(26, 147, 71, 0.05), transparent);
             opacity: 0;
             transition: opacity 0.4s ease;
         }
@@ -193,53 +204,59 @@
         }
         .service-card:hover {
             transform: translateY(-10px);
-            border-color: var(--primary-gold);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+            border-color: var(--primary-green);
+            box-shadow: 0 20px 40px rgba(26, 147, 71, 0.3);
         }
         .service-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
-            border-radius: 15px;
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(135deg, rgba(26, 147, 71, 0.2), rgba(30, 90, 142, 0.2));
+            border: 1px solid rgba(26, 147, 71, 0.3);
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 36px;
             margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 5px 15px rgba(26, 147, 71, 0.2);
+            transition: all 0.3s ease;
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, rgba(26, 147, 71, 0.3), rgba(30, 90, 142, 0.3));
         }
         .service-card h3 {
             font-family: 'Tajawal', sans-serif;
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 15px;
-            color: var(--primary-gold);
+            color: var(--success);
         }
         .service-card p {
             color: var(--text-secondary);
             line-height: 1.8;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         .service-btn {
             display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, var(--primary-gold), #f4e5b8);
-            color: var(--primary-dark);
-            border-radius: 10px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #1a9347, #22c55e);
+            color: white;
+            border-radius: 12px;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 5px 20px rgba(26, 147, 71, 0.3);
             font-family: 'Tajawal', sans-serif;
         }
         .service-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 8px 25px rgba(26, 147, 71, 0.5);
         }
         footer {
-            background: rgba(10, 25, 41, 0.5);
+            background: rgba(10, 25, 41, 0.6);
             padding: 40px 0;
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-top: 1px solid rgba(26, 147, 71, 0.2);
             text-align: center;
             backdrop-filter: blur(10px);
         }
@@ -247,8 +264,8 @@
             color: var(--text-secondary);
             margin-bottom: 10px;
         }
-        .footer-gold {
-            color: var(--primary-gold);
+        .footer-green {
+            color: var(--success);
             font-weight: 600;
         }
     </style>
@@ -258,14 +275,18 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo-section">
-                    <div class="logo">KR</div>
+                    <div class="logo">
+                        <img src="https://image2url.com/r2/default/images/1770164318104-a6f07631-b19e-47a8-b2e2-b68f3ae8dd92.png" alt="شعار KR">
+                    </div>
                     <div class="site-title">
-                        <h1>الهيئة الرقمية</h1>
+                        <h1>الهيئة الرقمية KR</h1>
                         <p>بوابة الدخول الموحدة</p>
                     </div>
                 </div>
                 <div class="header-actions">
-                    <a href="admin-login.html" class="btn-secondary">الدخول الإداري</a>
+                    <a href="admin-login.html" class="btn-secondary">
+                        🔐 الدخول الإداري
+                    </a>
                 </div>
             </div>
         </div>
@@ -280,25 +301,25 @@
         </section>
 
         <div class="services-grid">
-            <div class="service-card">
+            <div class="service-card" onclick="window.location.href='application.html'">
                 <div class="service-icon">🆔</div>
                 <h3>طلب تفعيل الهوية</h3>
                 <p>تقديم طلب تفعيل الهوية الرقمية للمواطنين والموظفين الحكوميين بخطوات بسيطة وآمنة</p>
-                <a href="application.html" class="service-btn">تقديم طلب جديد</a>
+                <a href="application.html" class="service-btn" onclick="event.stopPropagation()">تقديم طلب جديد</a>
             </div>
 
-            <div class="service-card">
+            <div class="service-card" onclick="window.location.href='track-application.html'">
                 <div class="service-icon">📋</div>
                 <h3>متابعة الطلب</h3>
                 <p>تتبع حالة طلبك ومعرفة آخر التحديثات من خلال رقم الطلب الخاص بك</p>
-                <a href="track-application.html" class="service-btn">متابعة الطلب</a>
+                <a href="track-application.html" class="service-btn" onclick="event.stopPropagation()">متابعة الطلب</a>
             </div>
 
             <div class="service-card">
                 <div class="service-icon">📞</div>
                 <h3>الدعم الفني</h3>
                 <p>فريق الدعم الفني متاح لمساعدتك في أي استفسار أو مشكلة قد تواجهك</p>
-                <a href="#" class="service-btn">تواصل معنا</a>
+                <a href="mailto:support@kr-digital.gov" class="service-btn">تواصل معنا</a>
             </div>
         </div>
     </div>
@@ -306,7 +327,7 @@
 
 <footer>
     <div class="container">
-        <p>جميع الحقوق محفوظة © 2026 - <span class="footer-gold">الهيئة الرقمية KR</span></p>
+        <p>جميع الحقوق محفوظة © 2026 - <span class="footer-green">الهيئة الرقمية KR</span></p>
         <p>نظام رقمي حكومي متطور ومؤمن</p>
     </div>
 </footer>
