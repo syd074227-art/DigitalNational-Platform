@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة KR الموحدة | المنصة الرقمية الحكومية</title>
+    <title>منصة KR | المنصة الرقمية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -22,37 +22,21 @@
             animation: pulse-custom 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
         
-        .backdrop-blur-custom {
-            backdrop-filter: blur(20px);
-        }
-        
-        /* Pattern Background */
         .pattern-bg {
             background-image: radial-gradient(circle at 2px 2px, rgb(59, 130, 246) 1px, transparent 0);
             background-size: 50px 50px;
         }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Tajawal', 'sans-serif'],
-                    },
-                    animation: {
-                        'pulse-custom': 'pulse-custom 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-                            '50%': { transform: 'translateY(-20px) rotate(5deg)' },
-                        }
-                    }
-                }
-            }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
-    </script>
+        
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 min-h-screen">
     
@@ -65,13 +49,13 @@
                         <span class="text-2xl font-bold text-white">KR</span>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-white">منصة KR الموحدة</h1>
-                        <p class="text-sm text-blue-300">المنصة الرقمية </p>
+                        <h1 class="text-2xl font-bold text-white">منصة KR</h1>
+                        <p class="text-sm text-blue-300">المنصة الرقمية</p>
                     </div>
                 </div>
-                <button onclick="window.location.href='/apply'" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-semibold shadow-lg shadow-blue-900/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-800/50 border border-blue-500/30 hover:scale-105">
+                <a href="application.html" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-semibold shadow-lg shadow-blue-900/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-800/50 border border-blue-500/30 hover:scale-105 inline-block">
                     طلب تفعيل الهوية
-                </button>
+                </a>
             </div>
         </div>
     </header>
@@ -88,18 +72,18 @@
         <div class="container mx-auto px-6 relative z-10">
             <div class="text-center max-w-4xl mx-auto">
                 <div class="inline-block mb-6 px-6 py-2 bg-blue-900/40 backdrop-blur-sm border border-blue-600/30 rounded-full">
-                    <span class="text-blue-300 font-semibold"> منصة معتمدة في KR</span>
+                    <span class="text-blue-300 font-semibold">منصة معتمدة</span>
                 </div>
                 <h2 class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                    منصة <span class="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">KR الموحدة</span>
+                    منصة <span class="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">KR</span>
                 </h2>
                 <p class="text-xl text-blue-200 mb-10 leading-relaxed">
                     نظام رقمي متكامل لإدارة الهوية الرقمية والخدمات الإلكترونية بأعلى معايير الأمان والموثوقية
                 </p>
                 <div class="flex gap-4 justify-center flex-wrap">
-                    <button onclick="window.location.href='/apply'" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-lg font-bold text-lg shadow-2xl shadow-blue-900/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-800/60 border border-blue-500/30 hover:scale-105">
+                    <a href="application.html" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-lg font-bold text-lg shadow-2xl shadow-blue-900/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-800/60 border border-blue-500/30 hover:scale-105 inline-block">
                         ابدأ الآن
-                    </button>
+                    </a>
                     <button onclick="showMoreInfo()" class="bg-slate-800/50 backdrop-blur-sm hover:bg-slate-800/70 text-white px-10 py-4 rounded-lg font-bold text-lg border-2 border-blue-600/30 hover:border-blue-500/50 transition-all duration-300">
                         المزيد من المعلومات
                     </button>
@@ -124,17 +108,17 @@
                         
                         <h3 class="text-2xl font-bold text-white mb-4">انقر لتفعيل هويتك</h3>
                         <p class="text-blue-200 mb-6 leading-relaxed">
-                            احصل على هويتك الرقمية المعتمدة لدى KR بخطوات بسيطة وآمنة. نظام متطور للتحقق والمصادقة الإلكترونية.
+                            احصل على هويتك الرقمية المعتمدة بخطوات بسيطة وآمنة. نظام متطور للتحقق والمصادقة الإلكترونية.
                         </p>
                         
-                        <button onclick="window.location.href='/apply'" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 rounded-lg font-semibold shadow-lg shadow-blue-900/30 transition-all duration-300 hover:shadow-xl border border-blue-500/30">
+                        <a href="application.html" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 rounded-lg font-semibold shadow-lg shadow-blue-900/30 transition-all duration-300 hover:shadow-xl border border-blue-500/30 inline-block text-center">
                             تفعيل الهوية الرقمية
-                        </button>
+                        </a>
                         
                         <div class="mt-6 pt-6 border-t border-blue-800/30">
                             <div class="flex items-center gap-2 text-sm text-blue-300">
                                 <i class="fas fa-shield-alt"></i>
-                                <span>معتمد لدى KR </span>
+                                <span>معتمد من الجهات المختصة</span>
                             </div>
                         </div>
                     </div>
@@ -178,7 +162,7 @@
                         
                         <h3 class="text-2xl font-bold text-white mb-4">تعريف بالمنصة</h3>
                         <p class="text-indigo-200 mb-6 leading-relaxed">
-                            منصة KR الموحدة هي نظام حكومي رقمي متطور يخدم أكثر من 20,000 مستخدم بأعلى معايير الأمان والجودة.
+                            منصة KR هي نظام رقمي متطور يخدم أكثر من 20,000 مستخدم بأعلى معايير الأمان والجودة.
                         </p>
                         
                         <button onclick="showPlatformInfo()" class="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white py-3 rounded-lg font-semibold shadow-lg shadow-indigo-900/30 transition-all duration-300 hover:shadow-xl border border-indigo-500/30">
@@ -276,57 +260,6 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="py-16 relative">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-white mb-4">ماذا يقول المستخدمون؟</h2>
-                <p class="text-blue-200 text-lg">تقييمات المستخدمين لمنصة KR</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-xl rounded-2xl p-6 border border-blue-700/20">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center">
-                            <i class="fas fa-user text-white"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-bold">محمد أحمد</h4>
-                            <p class="text-blue-300 text-sm">موظف حكومي</p>
-                        </div>
-                    </div>
-                    <p class="text-blue-200">"منصة متميزة وسهلة الاستخدام، وفرت علينا الكثير من الوقت والجهد في المعاملات الرقمية."</p>
-                </div>
-                
-                <div class="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-xl rounded-2xl p-6 border border-cyan-700/20">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-cyan-600 to-cyan-800 rounded-full flex items-center justify-center">
-                            <i class="fas fa-user text-white"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-bold">سارة الخالد</h4>
-                            <p class="text-cyan-300 text-sm">مسؤولة نظام</p>
-                        </div>
-                    </div>
-                    <p class="text-cyan-200">"الأمان والموثوقية في هذه المنصة لا مثيل لهما، أنصح الجميع باستخدامها."</p>
-                </div>
-                
-                <div class="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-xl rounded-2xl p-6 border border-indigo-700/20">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-full flex items-center justify-center">
-                            <i class="fas fa-user text-white"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-bold">خالد الحربي</h4>
-                            <p class="text-indigo-300 text-sm">مدير تقنية معلومات</p>
-                        </div>
-                    </div>
-                    <p class="text-indigo-200">"التطوير المستمر والدعم الفني الممتاز يجعلان منصة KR الخيار الأول."</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="bg-slate-900/80 backdrop-blur-md border-t border-blue-800/30 py-12 mt-20">
         <div class="container mx-auto px-6">
@@ -336,7 +269,7 @@
                         <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
                             <span class="text-lg font-bold text-white">KR</span>
                         </div>
-                        <h4 class="text-white font-bold text-lg">منصة KR الموحدة</h4>
+                        <h4 class="text-white font-bold text-lg">منصة KR</h4>
                     </div>
                     <p class="text-blue-300 text-sm leading-relaxed">
                         منصة رقمية متطورة تقدم خدمات الهوية والخدمات الرقمية والإدارة الإلكترونية بأعلى معايير الأمان.
@@ -354,7 +287,7 @@
                 <div>
                     <h4 class="text-white font-bold mb-4 text-lg">تواصل معنا</h4>
                     <ul class="space-y-2 text-blue-300 text-sm">
-                        <li><i class="fas fa-envelope ml-2"></i> info@kr-platform.gov.sa</li>
+                        <li><i class="fas fa-envelope ml-2"></i> info@kr-platform.sa</li>
                         <li><i class="fas fa-phone ml-2"></i> 920000000</li>
                         <li><i class="fas fa-map-marker-alt ml-2"></i> الرياض، المملكة العربية السعودية</li>
                     </ul>
@@ -362,7 +295,7 @@
             </div>
             <div class="border-t border-blue-800/30 pt-8 text-center">
                 <p class="text-blue-300 text-sm">
-                    © 2026 منصة KR الموحدة. جميع الحقوق محفوظة.
+                    © 2026 منصة KR. جميع الحقوق محفوظة.
                 </p>
             </div>
         </div>
@@ -370,7 +303,6 @@
 
     <!-- JavaScript Functions -->
     <script>
-        // Function to show alert messages
         function showAlert(message, type = 'info') {
             const alertDiv = document.createElement('div');
             alertDiv.className = `fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-6 py-4 rounded-lg shadow-lg backdrop-blur-md border ${
@@ -392,7 +324,6 @@
             }, 5000);
         }
 
-        // Navigation functions
         function showMoreInfo() {
             showAlert('قريباً ستتوفر المزيد من المعلومات عن المنصة', 'info');
         }
@@ -404,19 +335,18 @@
         function showPlatformInfo() {
             const info = `
                 <div class="max-w-md mx-auto">
-                    <h3 class="text-xl font-bold text-white mb-4">عن منصة KR الموحدة</h3>
+                    <h3 class="text-xl font-bold text-white mb-4">عن منصة KR</h3>
                     <p class="text-blue-200 mb-4">
-                        منصة رقمية حكومية متكاملة تهدف إلى تبسيط وتسهيل الخدمات الإلكترونية للمواطنين والجهات الحكومية.
+                        منصة رقمية متكاملة تهدف إلى تبسيط وتسهيل الخدمات الإلكترونية للمستخدمين.
                     </p>
                     <ul class="space-y-2 text-blue-300">
                         <li><i class="fas fa-check ml-2 text-green-400"></i> تأسست عام 2023</li>
                         <li><i class="fas fa-check ml-2 text-green-400"></i> تغطي كافة مناطق المملكة</li>
-                        <li><i class="fas fa-check ml-2 text-green-400"></i> معتمدة من هيئة الحكومة الرقمية</li>
+                        <li><i class="fas fa-check ml-2 text-green-400"></i> معتمدة من الجهات المختصة</li>
                     </ul>
                 </div>
             `;
             
-            // Create modal
             const modal = document.createElement('div');
             modal.className = 'fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4';
             modal.innerHTML = `
@@ -433,7 +363,7 @@
         }
 
         function showSupport() {
-            showAlert('للحصول على الدعم الفني، يرجى الاتصال على 920000000 أو مراسلة info@kr-platform.gov.sa', 'info');
+            showAlert('للحصول على الدعم الفني، يرجى الاتصال على 920000000 أو مراسلة info@kr-platform.sa', 'info');
         }
 
         function showFAQ() {
@@ -445,7 +375,7 @@
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-envelope text-blue-400"></i>
-                        <span class="text-blue-300">info@kr-platform.gov.sa</span>
+                        <span class="text-blue-300">info@kr-platform.sa</span>
                     </div>
                     <div class="flex items-center gap-3">
                         <i class="fas fa-phone text-blue-400"></i>
@@ -458,7 +388,6 @@
                 </div>
             `;
             
-            // Create modal
             const modal = document.createElement('div');
             modal.className = 'fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4';
             modal.innerHTML = `
@@ -475,19 +404,7 @@
             document.body.appendChild(modal);
         }
 
-        function scrollToSection(sectionId) {
-            const sections = {
-                'services': document.querySelector('section:nth-of-type(3)')
-            };
-            
-            if (sections[sectionId]) {
-                sections[sectionId].scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        // Initialize page animations
         document.addEventListener('DOMContentLoaded', function() {
-            // Add animation to cards on scroll
             const observerOptions = {
                 threshold: 0.1,
                 rootMargin: '0px 0px -50px 0px'
@@ -496,44 +413,16 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-fade-in');
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
                     }
                 });
             }, observerOptions);
 
-            // Observe all cards and sections
             document.querySelectorAll('.group, .bg-slate-800\\/30').forEach(el => {
                 observer.observe(el);
             });
-
-            // Add CSS for fade-in animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fade-in {
-                    from { opacity: 0; transform: translateY(20px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .animate-fade-in {
-                    animation: fade-in 0.6s ease-out forwards;
-                }
-            `;
-            document.head.appendChild(style);
         });
-
-        // Check for localStorage data (for Apply page integration)
-        function checkForSavedData() {
-            try {
-                const requests = JSON.parse(localStorage.getItem('identityRequests') || '[]');
-                if (requests.length > 0) {
-                    console.log(`لديك ${requests.length} طلب(طلبات) سابق(ة)`);
-                }
-            } catch (e) {
-                console.log('لا توجد بيانات محفوظة');
-            }
-        }
-
-        // Initialize check
-        checkForSavedData();
     </script>
 
 </body>
