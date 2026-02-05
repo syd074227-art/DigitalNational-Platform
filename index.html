@@ -385,6 +385,91 @@
             0%, 100% { opacity: 0.3; }
             50% { opacity: 1; }
         }
+
+        /* نافذة التفعيل المدمجة */
+        .activation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(12, 21, 40, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(22, 36, 71, 0.95), rgba(31, 64, 104, 0.95));
+            border-radius: 20px;
+            width: 95%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 201, 255, 0.3);
+            animation: modalSlideUp 0.4s ease;
+        }
+
+        @keyframes modalSlideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            flex: 1;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
         
         /* تصميم متجاوب - تركز كل شيء */
         @media (max-width: 1200px) {
@@ -432,6 +517,11 @@
             
             .feature-text {
                 font-size: 0.85rem;
+            }
+
+            .modal-content {
+                width: 98%;
+                max-height: 85vh;
             }
         }
         
@@ -493,6 +583,18 @@
                 height: 50px;
                 font-size: 18px;
             }
+
+            .modal-header {
+                padding: 20px;
+            }
+
+            .modal-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
         }
         
         @media (max-width: 576px) {
@@ -546,6 +648,17 @@
             .bottom-feature-desc {
                 font-size: 0.75rem;
             }
+
+            .modal-header {
+                padding: 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .modal-header h1 {
+                font-size: 1.3rem;
+                text-align: center;
+            }
         }
         
         @media (max-height: 700px) {
@@ -559,6 +672,10 @@
             
             .bottom-features {
                 margin-top: 30px;
+            }
+
+            .modal-content {
+                max-height: 80vh;
             }
         }
     </style>
@@ -634,7 +751,7 @@
         
         <!-- زر التفعيل -->
         <div class="activation-container">
-            <button class="activation-btn" id="activateBtn" onclick="window.location.href='activation-form.html'">
+            <button class="activation-btn" id="activateBtn">
                 <i class="fas fa-fingerprint btn-icon"></i>
                 <span class="btn-text">طلب تفعيل الهوية</span>
             </button>
@@ -676,8 +793,783 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- نافذة التفعيل المدمجة -->
+    <div class="activation-modal" id="activationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>طلب تفعيل الهوية الرقمية</h1>
+                <button class="close-modal" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- سيتم تحميل نموذج التفعيل هنا -->
+                <div id="formContainer">
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <div class="loader" style="width: 50px; height: 50px; border: 4px solid rgba(0, 201, 255, 0.2); border-radius: 50%; border-top-color: var(--neon); margin: 0 auto 20px; animation: spin 1s linear infinite;"></div>
+                        <p style="color: var(--light); font-size: 1.1rem;">جاري تحميل نموذج التفعيل...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // دالة لتضمين نموذج التفعيل مباشرة
+        function loadActivationForm() {
+            const formContainer = document.getElementById('formContainer');
+            
+            // إنشاء النموذج مباشرة في الصفحة
+            formContainer.innerHTML = `
+                <style>
+                    /* أنماط النموذج */
+                    .form-container {
+                        max-width: 100%;
+                    }
+                    
+                    .terms-section {
+                        background: #f8f9fa;
+                        border-radius: 10px;
+                        padding: 20px;
+                        margin-bottom: 25px;
+                        border: 2px solid #e1e5eb;
+                    }
+                    
+                    .terms-title {
+                        color: #1f4068;
+                        font-size: 1.2rem;
+                        margin-bottom: 15px;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    }
+                    
+                    .terms-list {
+                        list-style: none;
+                        margin-bottom: 20px;
+                    }
+                    
+                    .terms-list li {
+                        padding: 10px 0;
+                        border-bottom: 1px solid #e1e5eb;
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 12px;
+                        color: #333;
+                        font-size: 0.95rem;
+                    }
+                    
+                    .terms-list li:last-child {
+                        border-bottom: none;
+                    }
+                    
+                    .term-icon {
+                        color: #1f4068;
+                        font-size: 1rem;
+                        margin-top: 3px;
+                    }
+                    
+                    .checkbox-container {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        padding: 15px;
+                        background: white;
+                        border-radius: 10px;
+                        border: 2px solid #e1e5eb;
+                        margin-top: 15px;
+                    }
+                    
+                    .checkbox-container input[type="checkbox"] {
+                        width: 20px;
+                        height: 20px;
+                        accent-color: #1f4068;
+                        cursor: pointer;
+                    }
+                    
+                    .checkbox-container label {
+                        font-size: 1rem;
+                        font-weight: 600;
+                        color: #333;
+                        cursor: pointer;
+                    }
+                    
+                    .buttons-container {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-top: 30px;
+                        padding-top: 20px;
+                        border-top: 2px solid #e1e5eb;
+                    }
+                    
+                    .btn {
+                        padding: 12px 30px;
+                        border: none;
+                        border-radius: 10px;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+                    
+                    .btn-primary {
+                        background: linear-gradient(135deg, #1f4068, #162447);
+                        color: white;
+                    }
+                    
+                    .btn-primary:hover:not(:disabled) {
+                        transform: translateY(-2px);
+                        box-shadow: 0 7px 15px rgba(31, 64, 104, 0.3);
+                    }
+                    
+                    .btn-secondary {
+                        background: #f8f9fa;
+                        color: #555;
+                        border: 2px solid #e1e5eb;
+                    }
+                    
+                    .btn-secondary:hover {
+                        background: #e9ecef;
+                    }
+                    
+                    .btn:disabled {
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                        transform: none !important;
+                        box-shadow: none !important;
+                    }
+                    
+                    .alert {
+                        padding: 15px 20px;
+                        border-radius: 10px;
+                        margin-bottom: 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        animation: slideIn 0.3s ease;
+                    }
+                    
+                    .alert-error {
+                        background: #f8d7da;
+                        color: #721c24;
+                        border: 1px solid #f5c6cb;
+                    }
+                    
+                    .alert-warning {
+                        background: #fff3cd;
+                        color: #856404;
+                        border: 1px solid #ffeaa7;
+                    }
+                    
+                    @keyframes slideIn {
+                        from { opacity: 0; transform: translateX(-20px); }
+                        to { opacity: 1; transform: translateX(0); }
+                    }
+                    
+                    @keyframes spin {
+                        to { transform: rotate(360deg); }
+                    }
+                </style>
+                
+                <div class="form-container">
+                    <div id="alertsContainer"></div>
+                    
+                    <div class="terms-section">
+                        <div class="terms-title">
+                            <i class="fas fa-file-contract"></i>
+                            قم بالموافقة على الشروط التالية
+                        </div>
+                        
+                        <ul class="terms-list">
+                            <li>
+                                <i class="fas fa-exclamation-circle term-icon"></i>
+                                <span>أوافق على أن أي خطأ في التقديم يعرضني للانتظار لمدة يوم كامل قبل إمكانية التقديم مرة أخرى</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-exclamation-circle term-icon"></i>
+                                <span>أوافق على ضرورة التحقق من صحة جميع المعلومات المدخلة قبل الإرسال</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-exclamation-circle term-icon"></i>
+                                <span>أوافق على أن جميع البيانات المقدمة تخضع للتحقق الآلي الدقيق</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-exclamation-circle term-icon"></i>
+                                <span>أوافق على أن عدم التطابق بين البيانات سيؤدي إلى رفض الطلب تلقائياً</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-exclamation-circle term-icon"></i>
+                                <span>أوافق على ضرورة إرفاق جميع المستندات المطلوبة بالصيغ المحددة</span>
+                            </li>
+                        </ul>
+                        
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="agreeTermsModal">
+                            <label for="agreeTermsModal">أقر بأني قد قرأت الشروط وأوافق عليها تماماً</label>
+                        </div>
+                    </div>
+                    
+                    <div class="buttons-container">
+                        <button class="btn btn-secondary" id="cancelBtn">
+                            <i class="fas fa-times"></i>
+                            إلغاء
+                        </button>
+                        <button class="btn btn-primary" id="continueBtn" disabled>
+                            <i class="fas fa-arrow-left"></i>
+                            استكمال الإجراءات
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // إضافة أحداث للنموذج
+            document.getElementById('agreeTermsModal').addEventListener('change', function() {
+                document.getElementById('continueBtn').disabled = !this.checked;
+            });
+            
+            document.getElementById('continueBtn').addEventListener('click', function() {
+                loadFullForm();
+            });
+            
+            document.getElementById('cancelBtn').addEventListener('click', function() {
+                document.getElementById('activationModal').style.display = 'none';
+            });
+        }
+        
+        // دالة لتحميل النموذج الكامل
+        function loadFullForm() {
+            const formContainer = document.getElementById('formContainer');
+            
+            formContainer.innerHTML = `
+                <style>
+                    /* أنماط النموذج الكامل */
+                    .form-section {
+                        animation: fadeIn 0.5s ease;
+                    }
+                    
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+                    
+                    .form-title {
+                        color: #1f4068;
+                        font-size: 1.3rem;
+                        margin-bottom: 20px;
+                        padding-bottom: 10px;
+                        border-bottom: 2px solid #e1e5eb;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    }
+                    
+                    .form-group {
+                        margin-bottom: 20px;
+                    }
+                    
+                    .form-group label {
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: 600;
+                        color: #444;
+                        font-size: 0.95rem;
+                    }
+                    
+                    .form-group label .required {
+                        color: #e74c3c;
+                        margin-right: 5px;
+                    }
+                    
+                    .form-input {
+                        width: 100%;
+                        padding: 12px 15px;
+                        border: 2px solid #e1e5eb;
+                        border-radius: 8px;
+                        font-size: 0.95rem;
+                        transition: all 0.3s ease;
+                        background: white;
+                        color: #333;
+                    }
+                    
+                    .form-input:focus {
+                        outline: none;
+                        border-color: #1f4068;
+                        box-shadow: 0 0 0 3px rgba(31, 64, 104, 0.1);
+                    }
+                    
+                    .form-input.error {
+                        border-color: #e74c3c;
+                    }
+                    
+                    .form-input.success {
+                        border-color: #2ecc71;
+                    }
+                    
+                    .hint {
+                        display: block;
+                        margin-top: 6px;
+                        font-size: 0.8rem;
+                        color: #666;
+                    }
+                    
+                    .hint.error {
+                        color: #e74c3c;
+                    }
+                    
+                    .hint.success {
+                        color: #2ecc71;
+                    }
+                    
+                    .file-upload {
+                        border: 2px dashed #e1e5eb;
+                        border-radius: 8px;
+                        padding: 25px 15px;
+                        text-align: center;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        position: relative;
+                        overflow: hidden;
+                        background: #f8f9fa;
+                    }
+                    
+                    .file-upload:hover {
+                        border-color: #1f4068;
+                        background: rgba(31, 64, 104, 0.02);
+                    }
+                    
+                    .file-upload input[type="file"] {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        top: 0;
+                        left: 0;
+                        opacity: 0;
+                        cursor: pointer;
+                    }
+                    
+                    .upload-icon {
+                        font-size: 2rem;
+                        color: #1f4068;
+                        margin-bottom: 10px;
+                    }
+                    
+                    .file-preview {
+                        margin-top: 15px;
+                        display: none;
+                    }
+                    
+                    .preview-image {
+                        max-width: 200px;
+                        max-height: 150px;
+                        border-radius: 6px;
+                        margin: 0 auto 10px;
+                        display: block;
+                        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+                    }
+                    
+                    .image-example {
+                        display: inline-block;
+                        margin-top: 8px;
+                        color: #1f4068;
+                        text-decoration: none;
+                        font-size: 0.85rem;
+                    }
+                    
+                    .image-example:hover {
+                        text-decoration: underline;
+                    }
+                    
+                    .age-display {
+                        display: inline-block;
+                        margin-right: 10px;
+                        padding: 6px 12px;
+                        background: #1f4068;
+                        color: white;
+                        border-radius: 6px;
+                        font-weight: 600;
+                        font-size: 0.9rem;
+                    }
+                    
+                    .form-buttons {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-top: 30px;
+                        padding-top: 20px;
+                        border-top: 2px solid #e1e5eb;
+                    }
+                    
+                    .submit-btn {
+                        background: linear-gradient(135deg, #2ecc71, #27ae60);
+                        color: white;
+                        border: none;
+                        padding: 12px 35px;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+                    
+                    .submit-btn:hover:not(:disabled) {
+                        transform: translateY(-2px);
+                        box-shadow: 0 7px 15px rgba(46, 204, 113, 0.3);
+                    }
+                    
+                    .submit-btn:disabled {
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                        transform: none !important;
+                        box-shadow: none !important;
+                    }
+                    
+                    .back-btn {
+                        background: #f8f9fa;
+                        color: #555;
+                        border: 2px solid #e1e5eb;
+                        padding: 12px 25px;
+                        font-size: 0.95rem;
+                        font-weight: 600;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+                    
+                    .back-btn:hover {
+                        background: #e9ecef;
+                    }
+                    
+                    .verification-results {
+                        background: #f8f9fa;
+                        border-radius: 10px;
+                        padding: 20px;
+                        margin-top: 25px;
+                        border-left: 4px solid #1f4068;
+                        display: none;
+                    }
+                    
+                    .verification-item {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 10px 0;
+                        border-bottom: 1px solid #e1e5eb;
+                        font-size: 0.9rem;
+                    }
+                    
+                    .verification-item:last-child {
+                        border-bottom: none;
+                    }
+                    
+                    .verification-status {
+                        padding: 4px 12px;
+                        border-radius: 15px;
+                        font-size: 0.8rem;
+                        font-weight: 600;
+                    }
+                    
+                    .status-success {
+                        background: #d5edda;
+                        color: #155724;
+                    }
+                    
+                    .status-error {
+                        background: #f8d7da;
+                        color: #721c24;
+                    }
+                </style>
+                
+                <div class="form-section">
+                    <div id="formAlertsContainer"></div>
+                    
+                    <div class="form-title">
+                        <i class="fas fa-user-edit"></i>
+                        المعلومات الشخصية
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><span class="required">*</span>الاسم الثلاثي بالعربية</label>
+                        <input type="text" class="form-input" id="fullNameModal" placeholder="مثال: محمد بن عبدالله الحازمي" dir="rtl">
+                        <span class="hint error" id="nameErrorModal" style="display: none;">يجب كتابة الاسم ثلاثي (الاسم + اسم الأب + اسم العائلة)</span>
+                        <span class="hint">يجب كتابة الاسم كاملاً (الاسم + اسم الأب + اسم العائلة)</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><span class="required">*</span>تاريخ الميلاد</label>
+                        <input type="date" class="form-input" id="birthDateModal">
+                        <div style="margin-top: 10px;">
+                            <span class="age-display" id="ageDisplayModal" style="display: none;">العمر: --</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><span class="required">*</span>اسم حسابك في اللعبة</label>
+                        <input type="text" class="form-input" id="gameUsernameModal" placeholder="GameUsername123">
+                        <span class="hint">فقط أحرف إنجليزية وأرقام - بدون مسافات أو رموز خاصة</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><span class="required">*</span>اسم حسابك في الديسكورد</label>
+                        <input type="text" class="form-input" id="discordUsernameModal" placeholder="Username#1234">
+                        <span class="hint">فقط أحرف إنجليزية، أرقام، والنقطة (#) - مثال: UserName#1234</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><span class="required">*</span>رقم الهوية في اللعبة</label>
+                        <input type="text" class="form-input" id="gameIdModal" placeholder="1234567890" maxlength="10">
+                        <span class="hint">
+                            <a href="https://image2url.com/r2/default/images/1770326344157-bee38862-a2c5-44e9-93ac-2f93ee9d9556.jpeg" 
+                               target="_blank" class="image-example">
+                                <i class="fas fa-external-link-alt"></i> مثال على الرقم المطلوب
+                            </a>
+                        </span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><span class="required">*</span>قم برفع هويتك الوطنية في اللعبة</label>
+                        <div class="file-upload">
+                            <input type="file" id="gameIdCardModal" accept="image/*">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div>انقر لرفع صورة الهوية</div>
+                            <div style="font-size: 0.8rem; color: #666; margin-top: 8px;">JPEG, PNG - الحد الأقصى 5MB</div>
+                            <a href="https://image2url.com/r2/default/images/1770326520037-ce2cbb4b-0890-4443-a628-4b0465f9b0f8.jpeg" 
+                               target="_blank" class="image-example">
+                                <i class="fas fa-external-link-alt"></i> مثال على الصورة المطلوبة
+                            </a>
+                        </div>
+                        <div class="file-preview" id="gameIdCardPreviewModal">
+                            <img class="preview-image" id="gameIdCardImageModal">
+                            <button type="button" class="back-btn" onclick="removeFileModal('gameIdCardModal')" style="padding: 6px 12px; font-size: 0.85rem; margin-top: 5px;">
+                                <i class="fas fa-trash"></i> حذف الصورة
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><span class="required">*</span>قم برفع صورة شخصيتك في اللعبة</label>
+                        <div class="file-upload">
+                            <input type="file" id="characterImageModal" accept="image/*">
+                            <div class="upload-icon">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div>انقر لرفع صورة الشخصية</div>
+                            <div style="font-size: 0.8rem; color: #666; margin-top: 8px;">بدون إكسسوارات أو قبعات</div>
+                            <a href="https://image2url.com/r2/default/images/1770326882712-9c966fea-15ac-41bb-8a45-2ff0989a1542.jpeg" 
+                               target="_blank" class="image-example">
+                                <i class="fas fa-external-link-alt"></i> مثال على الصورة المطلوبة
+                            </a>
+                        </div>
+                        <div class="file-preview" id="characterImagePreviewModal">
+                            <img class="preview-image" id="characterImagePreviewImgModal">
+                            <button type="button" class="back-btn" onclick="removeFileModal('characterImageModal')" style="padding: 6px 12px; font-size: 0.85rem; margin-top: 5px;">
+                                <i class="fas fa-trash"></i> حذف الصورة
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><span class="required">*</span>قم برفع صورة حسابك في الديسكورد</label>
+                        <div class="file-upload">
+                            <input type="file" id="discordImageModal" accept="image/*">
+                            <div class="upload-icon">
+                                <i class="fab fa-discord"></i>
+                            </div>
+                            <div>انقر لرفع صورة حساب الديسكورد</div>
+                            <a href="https://image2url.com/r2/default/images/1770162603514-dfab4951-965a-4683-9305-730c4445f835.jpeg" 
+                               target="_blank" class="image-example">
+                                <i class="fas fa-external-link-alt"></i> مثال على الصورة المطلوبة
+                            </a>
+                        </div>
+                        <div class="file-preview" id="discordImagePreviewModal">
+                            <img class="preview-image" id="discordImagePreviewImgModal">
+                            <button type="button" class="back-btn" onclick="removeFileModal('discordImageModal')" style="padding: 6px 12px; font-size: 0.85rem; margin-top: 5px;">
+                                <i class="fas fa-trash"></i> حذف الصورة
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="verification-results" id="verificationResultsModal">
+                        <div class="form-title">
+                            <i class="fas fa-clipboard-check"></i>
+                            نتائج التحقق
+                        </div>
+                        <div id="verificationListModal"></div>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button class="back-btn" id="backBtnModal">
+                            <i class="fas fa-arrow-right"></i>
+                            العودة للشروط
+                        </button>
+                        <button class="submit-btn" id="submitBtnModal">
+                            <i class="fas fa-fingerprint"></i>
+                            تفعيل الهوية
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // إضافة الأحداث للنموذج
+            initializeFormEvents();
+        }
+        
+        // دالة لتهيئة أحداث النموذج
+        function initializeFormEvents() {
+            // حدث تاريخ الميلاد
+            document.getElementById('birthDateModal').addEventListener('change', function() {
+                if (this.value) {
+                    const birthDate = new Date(this.value);
+                    const today = new Date();
+                    let age = today.getFullYear() - birthDate.getFullYear();
+                    const monthDiff = today.getMonth() - birthDate.getMonth();
+                    
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                    }
+                    
+                    document.getElementById('ageDisplayModal').textContent = `العمر: ${age}`;
+                    document.getElementById('ageDisplayModal').style.display = 'inline-block';
+                }
+            });
+            
+            // أحداث الملفات
+            document.getElementById('gameIdCardModal').addEventListener('change', function() {
+                previewImageModal('gameIdCardModal', 'gameIdCardPreviewModal', 'gameIdCardImageModal');
+            });
+            
+            document.getElementById('characterImageModal').addEventListener('change', function() {
+                previewImageModal('characterImageModal', 'characterImagePreviewModal', 'characterImagePreviewImgModal');
+            });
+            
+            document.getElementById('discordImageModal').addEventListener('change', function() {
+                previewImageModal('discordImageModal', 'discordImagePreviewModal', 'discordImagePreviewImgModal');
+            });
+            
+            // زر العودة
+            document.getElementById('backBtnModal').addEventListener('click', function() {
+                loadActivationForm();
+            });
+            
+            // زر التقديم
+            document.getElementById('submitBtnModal').addEventListener('click', function() {
+                // هنا يمكنك إضافة منطق التقديم
+                showAlertModal('تم تقديم طلبك بنجاح! سيتم مراجعة الطلب وإشعارك بالنتيجة.', 'success');
+                
+                // حظر التقديم لمدة 5 ساعات
+                const blockDuration = 5 * 60 * 60 * 1000;
+                const blockEndTime = Date.now() + blockDuration;
+                
+                localStorage.setItem('submissionBlocked', 'true');
+                localStorage.setItem('blockUntil', blockEndTime.toString());
+                
+                // إغلاق النافذة بعد 3 ثواني
+                setTimeout(() => {
+                    document.getElementById('activationModal').style.display = 'none';
+                    location.reload();
+                }, 3000);
+            });
+            
+            // إضافة تنبيه إذا كان محظوراً
+            checkBlockStatusModal();
+        }
+        
+        // دالة لعرض التنبيهات
+        function showAlertModal(message, type = 'info') {
+            const alertsContainer = document.getElementById('formAlertsContainer');
+            const alertTypes = {
+                'success': { icon: 'fa-check-circle', class: 'alert-success', bg: '#d5edda', color: '#155724' },
+                'error': { icon: 'fa-exclamation-circle', class: 'alert-error', bg: '#f8d7da', color: '#721c24' },
+                'warning': { icon: 'fa-exclamation-triangle', class: 'alert-warning', bg: '#fff3cd', color: '#856404' },
+                'info': { icon: 'fa-info-circle', class: 'alert-info', bg: '#d1ecf1', color: '#0c5460' }
+            };
+            
+            const alert = document.createElement('div');
+            alert.className = `alert ${alertTypes[type].class}`;
+            alert.style.backgroundColor = alertTypes[type].bg;
+            alert.style.color = alertTypes[type].color;
+            alert.style.borderColor = alertTypes[type].color + '40';
+            alert.innerHTML = `
+                <i class="fas ${alertTypes[type].icon} alert-icon"></i>
+                <div>${message}</div>
+            `;
+            
+            alertsContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+        
+        // دالة لعرض معاينة الصورة
+        function previewImageModal(inputId, previewId, imgId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            const img = document.getElementById(imgId);
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        // دالة لحذف الملف
+        function removeFileModal(inputId) {
+            const input = document.getElementById(inputId);
+            const previewId = inputId + 'Preview';
+            const preview = document.getElementById(previewId);
+            
+            input.value = '';
+            if (preview) {
+                preview.style.display = 'none';
+            }
+        }
+        
+        // التحقق من حالة الحظر
+        function checkBlockStatusModal() {
+            const blocked = localStorage.getItem('submissionBlocked');
+            const blockTime = localStorage.getItem('blockUntil');
+            
+            if (blocked && blockTime) {
+                const now = Date.now();
+                if (now < parseInt(blockTime)) {
+                    const remaining = parseInt(blockTime) - now;
+                    const hours = Math.floor(remaining / (1000 * 60 * 60));
+                    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                    
+                    showAlertModal(`لا يمكنك التقديم الآن. يجب الانتظار ${hours} ساعة و ${minutes} دقيقة`, 'error');
+                    
+                    const submitBtn = document.getElementById('submitBtnModal');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = `<i class="fas fa-clock"></i> محظور: ${hours}:${minutes.toString().padStart(2, '0')}`;
+                    }
+                    
+                    return true;
+                } else {
+                    localStorage.removeItem('submissionBlocked');
+                    localStorage.removeItem('blockUntil');
+                }
+            }
+            return false;
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // إنشاء النجوم
             function createStars() {
@@ -688,16 +1580,11 @@
                     const star = document.createElement('div');
                     star.className = 'star';
                     
-                    // حجم عشوائي
                     const size = Math.random() * 2.5;
                     star.style.width = size + 'px';
                     star.style.height = size + 'px';
-                    
-                    // موقع عشوائي
                     star.style.left = Math.random() * 100 + '%';
                     star.style.top = Math.random() * 100 + '%';
-                    
-                    // تأخير عشوائي للوميض
                     star.style.animationDelay = Math.random() * 3 + 's';
                     
                     starsContainer.appendChild(star);
@@ -714,12 +1601,10 @@
                 if (blocked && blockTime) {
                     const now = Date.now();
                     if (now < parseInt(blockTime)) {
-                        // حساب الوقت المتبقي
                         const remaining = parseInt(blockTime) - now;
                         const hours = Math.floor(remaining / (1000 * 60 * 60));
                         const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
                         
-                        // إضافة تحذير على زر التفعيل
                         const activateBtn = document.getElementById('activateBtn');
                         activateBtn.innerHTML = `
                             <i class="fas fa-clock btn-icon"></i>
@@ -728,30 +1613,6 @@
                         activateBtn.style.background = 'linear-gradient(135deg, #666, #888)';
                         activateBtn.disabled = true;
                         activateBtn.style.cursor = 'not-allowed';
-                        activateBtn.onclick = null;
-                        
-                        // بدء المؤقت التلقائي
-                        const timer = setInterval(() => {
-                            const now = Date.now();
-                            const remaining = parseInt(blockTime) - now;
-                            
-                            if (remaining <= 0) {
-                                clearInterval(timer);
-                                localStorage.removeItem('submissionBlocked');
-                                localStorage.removeItem('blockUntil');
-                                location.reload();
-                            } else {
-                                const hours = Math.floor(remaining / (1000 * 60 * 60));
-                                const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                                const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-                                
-                                activateBtn.innerHTML = `
-                                    <i class="fas fa-clock btn-icon"></i>
-                                    <span class="btn-text">${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}</span>
-                                `;
-                            }
-                        }, 1000);
-                        
                         return true;
                     } else {
                         localStorage.removeItem('submissionBlocked');
@@ -761,10 +1622,9 @@
                 return false;
             }
             
-            // التحقق من الحالة عند التحميل
             checkBlockStatus();
             
-            // إضافة تأثيرات hover للمميزات
+            // إضافة تأثيرات hover
             const featureItems = document.querySelectorAll('.feature-item');
             const bottomFeatures = document.querySelectorAll('.bottom-feature');
             
@@ -788,8 +1648,10 @@
                 });
             });
             
-            // زر التفعيل
+            // زر التفعيل - يفتح النافذة المدمجة
             const activateBtn = document.getElementById('activateBtn');
+            const activationModal = document.getElementById('activationModal');
+            const closeModal = document.getElementById('closeModal');
             
             if (!activateBtn.disabled) {
                 activateBtn.addEventListener('click', function() {
@@ -811,7 +1673,6 @@
                         z-index: 0;
                     `;
                     
-                    // إضافة أنيميشن للتموج
                     const style = document.createElement('style');
                     style.textContent = `
                         @keyframes rippleEffect {
@@ -825,18 +1686,28 @@
                     
                     this.appendChild(ripple);
                     
-                    // إزالة التموج بعد الأنيميشن
                     setTimeout(() => {
                         ripple.remove();
                         this.style.transform = '';
+                        
+                        // فتح النافذة المدمجة
+                        activationModal.style.display = 'flex';
+                        loadActivationForm();
                     }, 600);
-                    
-                    // الانتقال إلى صفحة التفعيل
-                    setTimeout(() => {
-                        window.location.href = 'activation-form.html';
-                    }, 300);
                 });
             }
+            
+            // إغلاق النافذة
+            closeModal.addEventListener('click', function() {
+                activationModal.style.display = 'none';
+            });
+            
+            // إغلاق النافذة عند النقر خارج المحتوى
+            activationModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    activationModal.style.display = 'none';
+                }
+            });
             
             // ضبط الموقع للشاشات الصغيرة
             function adjustLayout() {
@@ -857,7 +1728,6 @@
                 }
             }
             
-            // استدعاء عند تحميل الصفحة وعند تغيير حجم النافذة
             adjustLayout();
             window.addEventListener('resize', adjustLayout);
         });
