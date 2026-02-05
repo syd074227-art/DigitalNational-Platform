@@ -103,10 +103,15 @@
             z-index: 10;
         }
         
+        /* العنوان الرئيسي المعدل */
+        .hero-section {
+            margin-bottom: 40px;
+        }
+        
         .hero-title {
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             font-weight: 800;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             background: linear-gradient(135deg, var(--light), var(--neon));
             -webkit-background-clip: text;
             background-clip: text;
@@ -114,6 +119,57 @@
             line-height: 1.2;
             opacity: 0;
             animation: fadeInUp 1s ease 0.3s forwards;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(224, 247, 255, 0.9);
+            max-width: 700px;
+            margin: 0 auto 10px;
+            line-height: 1.6;
+            font-weight: 300;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+        
+        /* قسم المميزات المعدل */
+        .features-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.7s forwards;
+        }
+        
+        .feature-item {
+            background: rgba(31, 64, 104, 0.3);
+            border: 1px solid rgba(0, 201, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            min-width: 180px;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            background: rgba(31, 64, 104, 0.5);
+            border-color: var(--neon);
+            box-shadow: 0 10px 25px rgba(0, 201, 255, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--neon);
+            margin-bottom: 10px;
+        }
+        
+        .feature-text {
+            font-size: 0.95rem;
+            color: rgba(224, 247, 255, 0.9);
+            line-height: 1.4;
         }
         
         @keyframes fadeInUp {
@@ -127,24 +183,47 @@
             }
         }
         
-        .hero-subtitle {
-            font-size: 1.3rem;
-            color: rgba(224, 247, 255, 0.9);
-            max-width: 700px;
-            margin: 0 auto 50px;
-            line-height: 1.6;
-            font-weight: 300;
+        /* قسم تفعيل الهوية */
+        .activation-section {
             opacity: 0;
-            animation: fadeInUp 1s ease 0.5s forwards;
+            animation: fadeInUp 1s ease 0.9s forwards;
+            margin-bottom: 30px;
+        }
+        
+        .activation-title {
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .time-badge {
+            background: linear-gradient(135deg, var(--neon), var(--accent));
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .compatibility-badge {
+            display: block;
+            font-size: 0.9rem;
+            color: rgba(224, 247, 255, 0.7);
+            margin-top: 10px;
         }
         
         /* زر التفعيل - محوره في المنتصف */
         .activation-container {
             position: relative;
-            margin: 60px auto;
+            margin: 30px auto;
             width: fit-content;
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.7s forwards;
         }
         
         .activation-btn {
@@ -227,63 +306,59 @@
             opacity: 1;
         }
         
-        /* المميزات - ثابتة في الأسفل */
-        .features {
-            position: fixed;
-            bottom: 40px;
-            left: 0;
-            width: 100%;
+        /* المميزات السفلية */
+        .bottom-features {
             display: flex;
             justify-content: center;
-            gap: 40px;
-            padding: 0 20px;
-            z-index: 100;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
             opacity: 0;
-            animation: fadeInUp 1s ease 0.9s forwards;
+            animation: fadeInUp 1s ease 1.1s forwards;
         }
         
-        .feature {
+        .bottom-feature {
             text-align: center;
-            max-width: 180px;
+            max-width: 160px;
             opacity: 0.8;
             transition: var(--transition);
         }
         
-        .feature:hover {
+        .bottom-feature:hover {
             opacity: 1;
             transform: translateY(-5px);
         }
         
-        .feature-icon {
-            width: 70px;
-            height: 70px;
+        .bottom-feature-icon {
+            width: 60px;
+            height: 60px;
             background: rgba(31, 64, 104, 0.5);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 15px;
-            font-size: 24px;
+            font-size: 20px;
             color: var(--neon);
             border: 2px solid rgba(0, 201, 255, 0.3);
             transition: var(--transition);
         }
         
-        .feature:hover .feature-icon {
+        .bottom-feature:hover .bottom-feature-icon {
             background: rgba(31, 64, 104, 0.8);
             border-color: var(--neon);
             transform: scale(1.1);
         }
         
-        .feature-title {
-            font-size: 1.1rem;
+        .bottom-feature-title {
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             color: var(--light);
         }
         
-        .feature-desc {
-            font-size: 0.85rem;
+        .bottom-feature-desc {
+            font-size: 0.8rem;
             color: rgba(224, 247, 255, 0.7);
             line-height: 1.4;
         }
@@ -311,29 +386,20 @@
             50% { opacity: 1; }
         }
         
-        /* الخط الرقمي الخفيف */
-        .digital-line {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                var(--neon), 
-                transparent);
-            z-index: 1;
-        }
-        
         /* تصميم متجاوب - تركز كل شيء */
         @media (max-width: 1200px) {
             .hero-title {
-                font-size: 3rem;
+                font-size: 2.8rem;
             }
             
             .activation-btn {
                 padding: 22px 50px;
                 font-size: 1.4rem;
+            }
+            
+            .feature-item {
+                min-width: 160px;
+                padding: 15px;
             }
         }
         
@@ -343,20 +409,29 @@
             }
             
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 2.3rem;
             }
             
             .hero-subtitle {
                 font-size: 1.1rem;
-                margin-bottom: 40px;
+                margin-bottom: 30px;
             }
             
-            .features {
-                gap: 30px;
+            .features-container {
+                gap: 15px;
             }
             
-            .feature {
-                max-width: 150px;
+            .feature-item {
+                min-width: 140px;
+                padding: 12px;
+            }
+            
+            .feature-icon {
+                font-size: 1.5rem;
+            }
+            
+            .feature-text {
+                font-size: 0.85rem;
             }
         }
         
@@ -376,12 +451,22 @@
             }
             
             .hero-title {
-                font-size: 2rem;
+                font-size: 1.9rem;
             }
             
             .hero-subtitle {
                 font-size: 1rem;
-                margin-bottom: 30px;
+                margin-bottom: 25px;
+            }
+            
+            .features-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .feature-item {
+                width: 90%;
+                max-width: 300px;
             }
             
             .activation-btn {
@@ -395,20 +480,18 @@
                 font-size: 1.5rem;
             }
             
-            .features {
-                bottom: 30px;
+            .bottom-features {
                 gap: 20px;
-                flex-wrap: wrap;
             }
             
-            .feature {
+            .bottom-feature {
                 max-width: 130px;
             }
             
-            .feature-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 20px;
+            .bottom-feature-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
             }
         }
         
@@ -429,12 +512,18 @@
             }
             
             .hero-title {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             
             .hero-subtitle {
                 font-size: 0.9rem;
-                margin-bottom: 25px;
+                margin-bottom: 20px;
+            }
+            
+            .activation-title {
+                font-size: 1.2rem;
+                flex-direction: column;
+                gap: 5px;
             }
             
             .activation-btn {
@@ -442,46 +531,23 @@
                 font-size: 1rem;
             }
             
-            .features {
-                position: relative;
-                bottom: auto;
-                margin-top: 50px;
+            .bottom-features {
                 gap: 15px;
             }
             
-            .feature {
+            .bottom-feature {
                 max-width: 100px;
             }
             
-            .feature-title {
+            .bottom-feature-title {
                 font-size: 0.9rem;
             }
             
-            .feature-desc {
+            .bottom-feature-desc {
                 font-size: 0.75rem;
             }
         }
         
-        @media (max-width: 400px) {
-            .hero-title {
-                font-size: 1.5rem;
-            }
-            
-            .activation-btn {
-                padding: 14px 20px;
-                font-size: 0.9rem;
-            }
-            
-            .features {
-                gap: 10px;
-            }
-            
-            .feature {
-                max-width: 90px;
-            }
-        }
-        
-        /* ضمان أن المحتوى في المنتصف للجميع */
         @media (max-height: 700px) {
             .main-content {
                 position: relative;
@@ -491,10 +557,8 @@
                 margin: 100px auto 50px;
             }
             
-            .features {
-                position: relative;
-                bottom: auto;
-                margin-top: 50px;
+            .bottom-features {
+                margin-top: 30px;
             }
         }
     </style>
@@ -507,9 +571,6 @@
     <!-- النجوم -->
     <div class="stars" id="stars"></div>
     
-    <!-- الخط الرقمي -->
-    <div class="digital-line"></div>
-    
     <!-- اسم المنصة -->
     <div class="platform-name">
         <div class="kr-logo">KR</div>
@@ -518,55 +579,100 @@
     
     <!-- المحتوى الرئيسي -->
     <div class="main-content">
-        <h1 class="hero-title">هويتك الرقمية الموحدة</h1>
+        <!-- العنوان الرئيسي -->
+        <div class="hero-section">
+            <h1 class="hero-title">هويتك الرقمية الموجودة</h1>
+            <p class="hero-subtitle">
+                بوابة رقمية متكاملة تمنحك هوية موحدة لجميع الخدمات
+            </p>
+        </div>
         
-        <p class="hero-subtitle">
-            بوابة رقمية متكاملة تمنحك هوية موحدة لجميع الخدمات
-            <br>
-            بتقنيات أمان متقدمة وتجربة مستخدم سلسة
-        </p>
+        <!-- المميزات الرئيسية -->
+        <div class="features-container">
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="feature-text">
+                    أتمتة من المتقدم للهجرة
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="feature-text">
+                    تفعيل فوري في دقائق
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <div class="feature-text">
+                    وصول لجميع الخدمات
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم تفعيل الهوية -->
+        <div class="activation-section">
+            <div class="activation-title">
+                <span>تفعيل الهوية الرقمية</span>
+                <span class="time-badge">
+                    <i class="fas fa-clock"></i>
+                    دقيقة
+                </span>
+            </div>
+            <div class="compatibility-badge">
+                <i class="fas fa-mobile-alt"></i>
+                توافق مع جميع الأجهزة
+            </div>
+        </div>
         
         <!-- زر التفعيل -->
         <div class="activation-container">
-            <button class="activation-btn" id="activateBtn">
+            <button class="activation-btn" id="activateBtn" onclick="window.location.href='activation-form.html'">
                 <i class="fas fa-fingerprint btn-icon"></i>
-                <span class="btn-text">تفعيل الهوية الرقمية</span>
+                <span class="btn-text">طلب تفعيل الهوية</span>
             </button>
             <div class="btn-glow"></div>
         </div>
         
-        <!-- المميزات -->
-        <div class="features">
-            <div class="feature">
-                <div class="feature-icon">
+        <!-- المميزات السفلية -->
+        <div class="bottom-features">
+            <div class="bottom-feature">
+                <div class="bottom-feature-icon">
                     <i class="fas fa-shield-alt"></i>
                 </div>
-                <h3 class="feature-title">آمنة</h3>
-                <p class="feature-desc">تشفير متقدم لحماية بياناتك</p>
+                <h3 class="bottom-feature-title">آمنة</h3>
+                <p class="bottom-feature-desc">تشفير متقدم لحماية بياناتك</p>
             </div>
             
-            <div class="feature">
-                <div class="feature-icon">
-                    <i class="fas fa-bolt"></i>
+            <div class="bottom-feature">
+                <div class="bottom-feature-icon">
+                    <i class="fas fa-check-circle"></i>
                 </div>
-                <h3 class="feature-title">سريعة</h3>
-                <p class="feature-desc">تفعيل فوري في دقائق</p>
+                <h3 class="bottom-feature-title">مؤكدة</h3>
+                <p class="bottom-feature-desc">تحقق ذكي من المعلومات</p>
             </div>
             
-            <div class="feature">
-                <div class="feature-icon">
-                    <i class="fas fa-link"></i>
+            <div class="bottom-feature">
+                <div class="bottom-feature-icon">
+                    <i class="fas fa-sync-alt"></i>
                 </div>
-                <h3 class="feature-title">موحدة</h3>
-                <p class="feature-desc">وصول لجميع الخدمات</p>
+                <h3 class="bottom-feature-title">متكاملة</h3>
+                <p class="bottom-feature-desc">ربط مع جميع الأنظمة</p>
             </div>
             
-            <div class="feature">
-                <div class="feature-icon">
-                    <i class="fas fa-mobile-alt"></i>
+            <div class="bottom-feature">
+                <div class="bottom-feature-icon">
+                    <i class="fas fa-headset"></i>
                 </div>
-                <h3 class="feature-title">ذكية</h3>
-                <p class="feature-desc">توافق مع جميع الأجهزة</p>
+                <h3 class="bottom-feature-title">دعم</h3>
+                <p class="bottom-feature-desc">مساعدة على مدار الساعة</p>
             </div>
         </div>
     </div>
@@ -576,14 +682,14 @@
             // إنشاء النجوم
             function createStars() {
                 const starsContainer = document.getElementById('stars');
-                const starCount = 100;
+                const starCount = 80;
                 
                 for (let i = 0; i < starCount; i++) {
                     const star = document.createElement('div');
                     star.className = 'star';
                     
                     // حجم عشوائي
-                    const size = Math.random() * 3;
+                    const size = Math.random() * 2.5;
                     star.style.width = size + 'px';
                     star.style.height = size + 'px';
                     
@@ -600,176 +706,81 @@
             
             createStars();
             
-            // زر التفعيل
-            const activateBtn = document.getElementById('activateBtn');
-            
-            activateBtn.addEventListener('click', function() {
-                // تأثير بسيط عند النقر
-                this.style.transform = 'scale(0.95)';
+            // التحقق من حالة الحظر
+            function checkBlockStatus() {
+                const blocked = localStorage.getItem('submissionBlocked');
+                const blockTime = localStorage.getItem('blockUntil');
                 
-                // إنشاء تأثير تموج
-                const ripple = document.createElement('div');
-                ripple.style.cssText = `
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    width: 100%;
-                    height: 100%;
-                    background: radial-gradient(circle, rgba(0,201,255,0.3) 0%, transparent 70%);
-                    border-radius: 20px;
-                    transform: translate(-50%, -50%) scale(0);
-                    animation: rippleEffect 0.6s ease-out forwards;
-                    z-index: 0;
-                `;
-                
-                // إضافة أنيميشن للتموج
-                const style = document.createElement('style');
-                style.textContent = `
-                    @keyframes rippleEffect {
-                        to {
-                            transform: translate(-50%, -50%) scale(2);
-                            opacity: 0;
-                        }
+                if (blocked && blockTime) {
+                    const now = Date.now();
+                    if (now < parseInt(blockTime)) {
+                        // حساب الوقت المتبقي
+                        const remaining = parseInt(blockTime) - now;
+                        const hours = Math.floor(remaining / (1000 * 60 * 60));
+                        const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                        
+                        // إضافة تحذير على زر التفعيل
+                        const activateBtn = document.getElementById('activateBtn');
+                        activateBtn.innerHTML = `
+                            <i class="fas fa-clock btn-icon"></i>
+                            <span class="btn-text">متاح بعد ${hours}:${minutes.toString().padStart(2, '0')}</span>
+                        `;
+                        activateBtn.style.background = 'linear-gradient(135deg, #666, #888)';
+                        activateBtn.disabled = true;
+                        activateBtn.style.cursor = 'not-allowed';
+                        activateBtn.onclick = null;
+                        
+                        // بدء المؤقت التلقائي
+                        const timer = setInterval(() => {
+                            const now = Date.now();
+                            const remaining = parseInt(blockTime) - now;
+                            
+                            if (remaining <= 0) {
+                                clearInterval(timer);
+                                localStorage.removeItem('submissionBlocked');
+                                localStorage.removeItem('blockUntil');
+                                location.reload();
+                            } else {
+                                const hours = Math.floor(remaining / (1000 * 60 * 60));
+                                const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                                const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+                                
+                                activateBtn.innerHTML = `
+                                    <i class="fas fa-clock btn-icon"></i>
+                                    <span class="btn-text">${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}</span>
+                                `;
+                            }
+                        }, 1000);
+                        
+                        return true;
+                    } else {
+                        localStorage.removeItem('submissionBlocked');
+                        localStorage.removeItem('blockUntil');
                     }
-                `;
-                document.head.appendChild(style);
-                
-                this.appendChild(ripple);
-                
-                // إزالة التموج بعد الأنيميشن
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
-                
-                // إعادة الزر لحالته الطبيعية
-                setTimeout(() => {
-                    this.style.transform = 'translateY(-5px)';
-                }, 200);
-                
-                // عرض رسالة التفعيل
-                setTimeout(() => {
-                    showActivationModal();
-                }, 400);
-            });
-            
-            // عرض نافذة التفعيل
-            function showActivationModal() {
-                const modal = document.createElement('div');
-                modal.innerHTML = `
-                    <div style="
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: rgba(12, 21, 40, 0.95);
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        z-index: 2000;
-                        animation: modalFadeIn 0.3s ease;
-                    ">
-                        <div style="
-                            background: linear-gradient(135deg, rgba(22, 36, 71, 0.95), rgba(31, 64, 104, 0.95));
-                            border-radius: 20px;
-                            padding: 40px;
-                            max-width: 500px;
-                            width: 90%;
-                            text-align: center;
-                            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-                            border: 1px solid rgba(0, 201, 255, 0.3);
-                            animation: modalSlideUp 0.4s ease;
-                        ">
-                            <i class="fas fa-check-circle" style="
-                                font-size: 3.5rem;
-                                color: var(--neon);
-                                margin-bottom: 20px;
-                                display: block;
-                            "></i>
-                            
-                            <h2 style="
-                                color: white;
-                                font-size: 1.8rem;
-                                margin-bottom: 15px;
-                                background: linear-gradient(135deg, var(--light), var(--neon));
-                                -webkit-background-clip: text;
-                                background-clip: text;
-                                color: transparent;
-                            ">تم استلام طلبك</h2>
-                            
-                            <p style="
-                                color: rgba(224, 247, 255, 0.9);
-                                line-height: 1.6;
-                                margin-bottom: 25px;
-                                font-size: 1.1rem;
-                            ">
-                                تم تسجيل طلب تفعيل الهوية الرقمية بنجاح
-                                <br>
-                                <span style="color: var(--neon); font-weight: bold;">رقم الطلب: KR${Math.floor(1000 + Math.random() * 9000)}</span>
-                            </p>
-                            
-                            <div style="
-                                background: rgba(0, 201, 255, 0.1);
-                                padding: 15px;
-                                border-radius: 10px;
-                                margin-bottom: 25px;
-                                text-align: right;
-                            ">
-                                <p style="color: rgba(224, 247, 255, 0.8); margin-bottom: 5px; font-size: 0.9rem;">
-                                    <i class="fas fa-clock" style="margin-left: 8px;"></i>
-                                    مدة المراجعة: 24-48 ساعة
-                                </p>
-                                <p style="color: rgba(224, 247, 255, 0.8); font-size: 0.9rem;">
-                                    <i class="fas fa-envelope" style="margin-left: 8px;"></i>
-                                    سيتم الإشعار عبر البريد الإلكتروني
-                                </p>
-                            </div>
-                            
-                            <button onclick="this.closest('div[style*=\"position: fixed\"]').remove()" style="
-                                background: linear-gradient(135deg, var(--neon), var(--accent));
-                                color: white;
-                                border: none;
-                                padding: 12px 40px;
-                                font-size: 1rem;
-                                font-weight: 600;
-                                border-radius: 10px;
-                                cursor: pointer;
-                                transition: all 0.3s;
-                                margin-top: 10px;
-                            ">تم</button>
-                        </div>
-                    </div>
-                `;
-                
-                // إضافة أنيميشن للنافذة
-                const style = document.createElement('style');
-                style.textContent = `
-                    @keyframes modalFadeIn {
-                        from { opacity: 0; }
-                        to { opacity: 1; }
-                    }
-                    
-                    @keyframes modalSlideUp {
-                        from { 
-                            opacity: 0;
-                            transform: translateY(30px);
-                        }
-                        to { 
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
-                `;
-                document.head.appendChild(style);
-                
-                document.body.appendChild(modal);
+                }
+                return false;
             }
             
-            // إضافة تأثير خفيف للمميزات
-            const features = document.querySelectorAll('.feature');
-            features.forEach(feature => {
-                feature.addEventListener('mouseenter', function() {
+            // التحقق من الحالة عند التحميل
+            checkBlockStatus();
+            
+            // إضافة تأثيرات hover للمميزات
+            const featureItems = document.querySelectorAll('.feature-item');
+            const bottomFeatures = document.querySelectorAll('.bottom-feature');
+            
+            featureItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-8px)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            bottomFeatures.forEach(feature => {
+                feature.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
                 });
                 
                 feature.addEventListener('mouseleave', function() {
@@ -777,10 +788,59 @@
                 });
             });
             
+            // زر التفعيل
+            const activateBtn = document.getElementById('activateBtn');
+            
+            if (!activateBtn.disabled) {
+                activateBtn.addEventListener('click', function() {
+                    // تأثير بسيط عند النقر
+                    this.style.transform = 'scale(0.95)';
+                    
+                    // إنشاء تأثير تموج
+                    const ripple = document.createElement('div');
+                    ripple.style.cssText = `
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        width: 100%;
+                        height: 100%;
+                        background: radial-gradient(circle, rgba(0,201,255,0.3) 0%, transparent 70%);
+                        border-radius: 20px;
+                        transform: translate(-50%, -50%) scale(0);
+                        animation: rippleEffect 0.6s ease-out forwards;
+                        z-index: 0;
+                    `;
+                    
+                    // إضافة أنيميشن للتموج
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        @keyframes rippleEffect {
+                            to {
+                                transform: translate(-50%, -50%) scale(2);
+                                opacity: 0;
+                            }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                    
+                    this.appendChild(ripple);
+                    
+                    // إزالة التموج بعد الأنيميشن
+                    setTimeout(() => {
+                        ripple.remove();
+                        this.style.transform = '';
+                    }, 600);
+                    
+                    // الانتقال إلى صفحة التفعيل
+                    setTimeout(() => {
+                        window.location.href = 'activation-form.html';
+                    }, 300);
+                });
+            }
+            
             // ضبط الموقع للشاشات الصغيرة
             function adjustLayout() {
                 const mainContent = document.querySelector('.main-content');
-                const features = document.querySelector('.features');
                 
                 if (window.innerHeight < 700) {
                     mainContent.style.position = 'relative';
@@ -788,20 +848,12 @@
                     mainContent.style.left = 'auto';
                     mainContent.style.transform = 'none';
                     mainContent.style.margin = '100px auto 50px';
-                    
-                    features.style.position = 'relative';
-                    features.style.bottom = 'auto';
-                    features.style.marginTop = '50px';
                 } else {
                     mainContent.style.position = 'absolute';
                     mainContent.style.top = '50%';
                     mainContent.style.left = '50%';
                     mainContent.style.transform = 'translate(-50%, -50%)';
                     mainContent.style.margin = '0';
-                    
-                    features.style.position = 'fixed';
-                    features.style.bottom = '40px';
-                    features.style.marginTop = '0';
                 }
             }
             
