@@ -14,24 +14,25 @@
         }
         
         :root {
-            --primary: #0f1a30;
-            --secondary: #1a237e;
-            --accent: #2962ff;
-            --neon: #00e5ff;
-            --gradient: linear-gradient(135deg, #0f1a30 0%, #1a237e 50%, #2962ff 100%);
-            --neon-glow: 0 0 20px rgba(0, 229, 255, 0.7);
-            --transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            --primary: #0c1528;
+            --secondary: #162447;
+            --accent: #1f4068;
+            --neon: #00c9ff;
+            --light: #e0f7ff;
+            --gradient: linear-gradient(135deg, #0c1528 0%, #162447 50%, #1f4068 100%);
+            --gradient-light: linear-gradient(135deg, #00c9ff 0%, #1f4068 100%);
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            --transition: all 0.4s ease;
         }
         
         body {
             background: var(--primary);
             color: white;
             min-height: 100vh;
-            overflow: hidden;
-            position: relative;
+            overflow-x: hidden;
         }
         
-        /* خلفية ديناميكية */
+        /* خلفية ثابتة */
         .background {
             position: fixed;
             top: 0;
@@ -40,13 +41,12 @@
             height: 100%;
             z-index: -2;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(41, 98, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(26, 35, 126, 0.2) 0%, transparent 50%),
-                linear-gradient(135deg, #0c1528 0%, #151f44 100%);
+                radial-gradient(circle at 20% 80%, rgba(31, 64, 104, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 201, 255, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         }
         
-        /* شبكة نقاط متحركة */
+        /* شبكة خفيفة ثابتة */
         .grid-overlay {
             position: fixed;
             top: 0;
@@ -54,231 +54,136 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 229, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 229, 255, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(0, 201, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 201, 255, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
             z-index: -1;
-            animation: gridMove 20s linear infinite;
+            opacity: 0.5;
         }
         
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-        
-        /* أشعة ضوئية */
-        .light-beams {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.3;
-        }
-        
-        .beam {
-            position: absolute;
-            width: 2px;
-            height: 200%;
-            background: linear-gradient(to bottom, transparent, var(--neon), transparent);
-            animation: beamRotate 20s linear infinite;
-        }
-        
-        .beam:nth-child(1) {
-            left: 10%;
-            animation-delay: 0s;
-        }
-        
-        .beam:nth-child(2) {
-            left: 30%;
-            animation-delay: -5s;
-        }
-        
-        .beam:nth-child(3) {
-            left: 50%;
-            animation-delay: -10s;
-        }
-        
-        .beam:nth-child(4) {
-            left: 70%;
-            animation-delay: -15s;
-        }
-        
-        .beam:nth-child(5) {
-            left: 90%;
-            animation-delay: -20s;
-        }
-        
-        @keyframes beamRotate {
-            0% { transform: rotate(0deg) translateY(-50%); }
-            100% { transform: rotate(360deg) translateY(-50%); }
-        }
-        
-        /* اسم المنصة في الأعلى */
+        /* اسم المنصة */
         .platform-name {
             position: fixed;
             top: 40px;
             right: 50px;
             z-index: 100;
             text-align: right;
+            transition: var(--transition);
         }
         
         .kr-logo {
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--neon), var(--accent));
+            background: linear-gradient(135deg, var(--light), var(--neon));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: var(--neon-glow);
             letter-spacing: 2px;
-            margin-bottom: 10px;
-            animation: logoGlow 3s ease-in-out infinite alternate;
-        }
-        
-        @keyframes logoGlow {
-            0% { text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
-            100% { text-shadow: 0 0 30px rgba(0, 229, 255, 0.9), 0 0 40px rgba(41, 98, 255, 0.5); }
+            margin-bottom: 8px;
         }
         
         .platform-subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            color: rgba(224, 247, 255, 0.7);
             font-weight: 300;
-            letter-spacing: 8px;
+            letter-spacing: 6px;
             text-transform: uppercase;
         }
         
-        /* المحتوى الرئيسي */
+        /* المحتوى الرئيسي - مركز تماماً */
         .main-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 1200px;
             padding: 20px;
             text-align: center;
-            position: relative;
             z-index: 10;
         }
         
         .hero-title {
-            font-size: 4.5rem;
+            font-size: 3.5rem;
             font-weight: 800;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #ffffff, var(--neon));
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--light), var(--neon));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            line-height: 1.1;
-            animation: titleFloat 6s ease-in-out infinite;
+            line-height: 1.2;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
         }
         
-        @keyframes titleFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
         }
         
         .hero-subtitle {
-            font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.3rem;
+            color: rgba(224, 247, 255, 0.9);
             max-width: 700px;
-            margin-bottom: 60px;
+            margin: 0 auto 50px;
             line-height: 1.6;
             font-weight: 300;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
         }
         
-        /* زر التفعيل الرهيب */
+        /* زر التفعيل - محوره في المنتصف */
         .activation-container {
             position: relative;
-            margin: 80px 0;
+            margin: 60px auto;
+            width: fit-content;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.7s forwards;
         }
         
         .activation-btn {
             background: linear-gradient(135deg, 
-                rgba(41, 98, 255, 0.9), 
-                rgba(0, 229, 255, 0.9));
+                rgba(31, 64, 104, 0.95), 
+                rgba(0, 201, 255, 0.95));
             color: white;
             border: none;
-            padding: 28px 70px;
-            font-size: 1.8rem;
+            padding: 25px 60px;
+            font-size: 1.6rem;
             font-weight: 700;
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             position: relative;
             overflow: hidden;
             transition: var(--transition);
-            box-shadow: 
-                0 0 30px rgba(0, 229, 255, 0.5),
-                0 10px 40px rgba(0, 0, 0, 0.3),
-                inset 0 0 20px rgba(255, 255, 255, 0.2);
-            animation: btnPulse 3s ease-in-out infinite;
+            box-shadow: var(--shadow);
             z-index: 2;
         }
         
-        @keyframes btnPulse {
-            0%, 100% { 
-                box-shadow: 
-                    0 0 30px rgba(0, 229, 255, 0.5),
-                    0 10px 40px rgba(0, 0, 0, 0.3),
-                    inset 0 0 20px rgba(255, 255, 255, 0.2);
-                transform: scale(1);
-            }
-            50% { 
-                box-shadow: 
-                    0 0 50px rgba(0, 229, 255, 0.8),
-                    0 15px 60px rgba(0, 0, 0, 0.4),
-                    inset 0 0 30px rgba(255, 255, 255, 0.3);
-                transform: scale(1.05);
-            }
-        }
-        
         .activation-btn:hover {
-            animation: none;
-            transform: scale(1.1) rotate(-2deg);
-            box-shadow: 
-                0 0 60px rgba(0, 229, 255, 1),
-                0 20px 80px rgba(0, 0, 0, 0.5),
-                inset 0 0 40px rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 201, 255, 0.4);
         }
         
-        .activation-btn::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, 
-                var(--neon), var(--accent), var(--neon));
-            border-radius: 27px;
-            z-index: -1;
-            animation: borderRotate 3s linear infinite;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .activation-btn:hover::before {
-            opacity: 1;
-        }
-        
-        @keyframes borderRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .activation-btn:active {
+            transform: translateY(-2px);
         }
         
         .btn-icon {
-            font-size: 2.2rem;
-            animation: iconFloat 2s ease-in-out infinite;
+            font-size: 1.8rem;
+            transition: var(--transition);
         }
         
-        @keyframes iconFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+        .activation-btn:hover .btn-icon {
+            transform: rotate(15deg) scale(1.2);
         }
         
         .btn-text {
@@ -286,217 +191,164 @@
             z-index: 1;
         }
         
-        .btn-glow {
+        .activation-btn::before {
+            content: '';
             position: absolute;
+            top: 0;
+            left: -100%;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, 
-                rgba(0, 229, 255, 0.4) 0%, 
-                transparent 70%);
-            border-radius: 25px;
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 0.3s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.6s;
         }
         
-        .activation-btn:hover .btn-glow {
-            opacity: 1;
+        .activation-btn:hover::before {
+            left: 100%;
         }
         
-        /* تأثيرات إضافية حول الزر */
-        .orbital-ring {
+        /* تأثير خفيف حول الزر */
+        .btn-glow {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 500px;
-            height: 500px;
             transform: translate(-50%, -50%);
-            border: 2px solid rgba(0, 229, 255, 0.1);
-            border-radius: 50%;
-            animation: ringRotate 30s linear infinite;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, 
+                rgba(0, 201, 255, 0.2) 0%, 
+                transparent 70%);
+            border-radius: 30px;
+            z-index: 1;
+            opacity: 0;
+            transition: var(--transition);
         }
         
-        .orbital-ring:nth-child(2) {
-            width: 600px;
-            height: 600px;
-            animation-duration: 40s;
-            animation-direction: reverse;
+        .activation-btn:hover + .btn-glow {
+            opacity: 1;
         }
         
-        .orbital-ring:nth-child(3) {
-            width: 700px;
-            height: 700px;
-            animation-duration: 50s;
-        }
-        
-        @keyframes ringRotate {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        
-        .floating-particles {
-            position: absolute;
-            top: 0;
+        /* المميزات - ثابتة في الأسفل */
+        .features {
+            position: fixed;
+            bottom: 40px;
             left: 0;
             width: 100%;
-            height: 100%;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--neon);
-            border-radius: 50%;
-            filter: blur(1px);
-            animation: particleFloat 15s linear infinite;
-        }
-        
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) translateX(100px);
-                opacity: 0;
-            }
-        }
-        
-        /* المميزات السفلية */
-        .features {
             display: flex;
             justify-content: center;
-            gap: 50px;
-            margin-top: 100px;
-            flex-wrap: wrap;
+            gap: 40px;
+            padding: 0 20px;
+            z-index: 100;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.9s forwards;
         }
         
         .feature {
             text-align: center;
-            max-width: 200px;
+            max-width: 180px;
             opacity: 0.8;
             transition: var(--transition);
         }
         
         .feature:hover {
             opacity: 1;
-            transform: translateY(-10px);
+            transform: translateY(-5px);
         }
         
         .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(0, 229, 255, 0.1);
+            width: 70px;
+            height: 70px;
+            background: rgba(31, 64, 104, 0.5);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 30px;
+            margin: 0 auto 15px;
+            font-size: 24px;
             color: var(--neon);
-            border: 2px solid rgba(0, 229, 255, 0.3);
+            border: 2px solid rgba(0, 201, 255, 0.3);
             transition: var(--transition);
         }
         
         .feature:hover .feature-icon {
-            background: rgba(0, 229, 255, 0.2);
+            background: rgba(31, 64, 104, 0.8);
             border-color: var(--neon);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+            transform: scale(1.1);
         }
         
         .feature-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 10px;
-            color: white;
+            margin-bottom: 8px;
+            color: var(--light);
         }
         
         .feature-desc {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            color: rgba(224, 247, 255, 0.7);
             line-height: 1.4;
         }
         
-        /* مؤشر التمرير */
-        .scroll-indicator {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
-            animation: fadeInOut 2s infinite;
-            z-index: 100;
-        }
-        
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-        
-        /* تأثيرات الجسيمات */
-        .particles-container {
+        /* النجوم الثابتة */
+        .stars {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: starTwinkle 3s infinite ease-in-out;
+        }
+        
+        @keyframes starTwinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        /* الخط الرقمي الخفيف */
+        .digital-line {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--neon), 
+                transparent);
             z-index: 1;
         }
         
-        /* تصميم متجاوب */
-        @media (max-width: 1024px) {
+        /* تصميم متجاوب - تركز كل شيء */
+        @media (max-width: 1200px) {
             .hero-title {
-                font-size: 3.5rem;
+                font-size: 3rem;
             }
             
             .activation-btn {
-                padding: 24px 50px;
-                font-size: 1.5rem;
-            }
-            
-            .kr-logo {
-                font-size: 2.8rem;
+                padding: 22px 50px;
+                font-size: 1.4rem;
             }
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
+            .main-content {
+                padding: 15px;
+            }
+            
             .hero-title {
                 font-size: 2.5rem;
             }
             
             .hero-subtitle {
-                font-size: 1.2rem;
-                padding: 0 20px;
-            }
-            
-            .activation-btn {
-                padding: 20px 40px;
-                font-size: 1.3rem;
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .platform-name {
-                right: 20px;
-                top: 20px;
-            }
-            
-            .kr-logo {
-                font-size: 2.2rem;
-            }
-            
-            .platform-subtitle {
-                font-size: 1rem;
-                letter-spacing: 4px;
+                font-size: 1.1rem;
+                margin-bottom: 40px;
             }
             
             .features {
@@ -508,35 +360,155 @@
             }
         }
         
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
+            .platform-name {
+                right: 30px;
+                top: 30px;
+            }
+            
+            .kr-logo {
+                font-size: 2.2rem;
+            }
+            
+            .platform-subtitle {
+                font-size: 0.85rem;
+                letter-spacing: 4px;
+            }
+            
             .hero-title {
                 font-size: 2rem;
             }
             
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 30px;
+            }
+            
             .activation-btn {
-                padding: 18px 30px;
-                font-size: 1.1rem;
+                padding: 18px 35px;
+                font-size: 1.2rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn-icon {
+                font-size: 1.5rem;
+            }
+            
+            .features {
+                bottom: 30px;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+            
+            .feature {
+                max-width: 130px;
+            }
+            
+            .feature-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .platform-name {
+                right: 20px;
+                top: 20px;
+                text-align: center;
             }
             
             .kr-logo {
                 font-size: 1.8rem;
             }
+            
+            .platform-subtitle {
+                font-size: 0.75rem;
+                letter-spacing: 3px;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 25px;
+            }
+            
+            .activation-btn {
+                padding: 16px 25px;
+                font-size: 1rem;
+            }
+            
+            .features {
+                position: relative;
+                bottom: auto;
+                margin-top: 50px;
+                gap: 15px;
+            }
+            
+            .feature {
+                max-width: 100px;
+            }
+            
+            .feature-title {
+                font-size: 0.9rem;
+            }
+            
+            .feature-desc {
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            
+            .activation-btn {
+                padding: 14px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .features {
+                gap: 10px;
+            }
+            
+            .feature {
+                max-width: 90px;
+            }
+        }
+        
+        /* ضمان أن المحتوى في المنتصف للجميع */
+        @media (max-height: 700px) {
+            .main-content {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                margin: 100px auto 50px;
+            }
+            
+            .features {
+                position: relative;
+                bottom: auto;
+                margin-top: 50px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- الخلفية الديناميكية -->
+    <!-- الخلفية الثابتة -->
     <div class="background"></div>
     <div class="grid-overlay"></div>
     
-    <!-- الأشعة الضوئية -->
-    <div class="light-beams">
-        <div class="beam"></div>
-        <div class="beam"></div>
-        <div class="beam"></div>
-        <div class="beam"></div>
-        <div class="beam"></div>
-    </div>
+    <!-- النجوم -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- الخط الرقمي -->
+    <div class="digital-line"></div>
     
     <!-- اسم المنصة -->
     <div class="platform-name">
@@ -546,30 +518,21 @@
     
     <!-- المحتوى الرئيسي -->
     <div class="main-content">
-        <h1 class="hero-title">مستقبل الهوية الرقمية<br>يبدأ من هنا</h1>
+        <h1 class="hero-title">هويتك الرقمية الموحدة</h1>
         
         <p class="hero-subtitle">
-            هوية رقمية موحدة وآمنة تمنحك وصولاً فورياً لجميع الخدمات الرقمية المتكاملة
+            بوابة رقمية متكاملة تمنحك هوية موحدة لجميع الخدمات
             <br>
-            بنظام تشفير متقدم وواجهة ذكية تتطور مع احتياجاتك
+            بتقنيات أمان متقدمة وتجربة مستخدم سلسة
         </p>
         
         <!-- زر التفعيل -->
         <div class="activation-container">
-            <!-- الحلقات المدارية -->
-            <div class="orbital-ring"></div>
-            <div class="orbital-ring"></div>
-            <div class="orbital-ring"></div>
-            
-            <!-- الجسيمات العائمة -->
-            <div class="floating-particles" id="particles"></div>
-            
-            <!-- الزر الرئيسي -->
             <button class="activation-btn" id="activateBtn">
-                <div class="btn-glow"></div>
-                <i class="fas fa-bolt btn-icon"></i>
-                <span class="btn-text">طلب تفعيل الهوية الرقمية</span>
+                <i class="fas fa-fingerprint btn-icon"></i>
+                <span class="btn-text">تفعيل الهوية الرقمية</span>
             </button>
+            <div class="btn-glow"></div>
         </div>
         
         <!-- المميزات -->
@@ -578,229 +541,273 @@
                 <div class="feature-icon">
                     <i class="fas fa-shield-alt"></i>
                 </div>
-                <h3 class="feature-title">حماية متقدمة</h3>
-                <p class="feature-desc">تشفير من المستوى العسكري مع مصادقة متعددة العوامل</p>
+                <h3 class="feature-title">آمنة</h3>
+                <p class="feature-desc">تشفير متقدم لحماية بياناتك</p>
             </div>
             
             <div class="feature">
                 <div class="feature-icon">
                     <i class="fas fa-bolt"></i>
                 </div>
-                <h3 class="feature-title">سرعة فائقة</h3>
-                <p class="feature-desc">تفعيل فوري وإنجاز المعاملات في ثوانٍ معدودة</p>
+                <h3 class="feature-title">سريعة</h3>
+                <p class="feature-desc">تفعيل فوري في دقائق</p>
             </div>
             
             <div class="feature">
                 <div class="feature-icon">
-                    <i class="fas fa-infinity"></i>
+                    <i class="fas fa-link"></i>
                 </div>
-                <h3 class="feature-title">تكامل شامل</h3>
-                <p class="feature-desc">وصول موحد لجميع الخدمات الرقمية من مكان واحد</p>
+                <h3 class="feature-title">موحدة</h3>
+                <p class="feature-desc">وصول لجميع الخدمات</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3 class="feature-title">ذكية</h3>
+                <p class="feature-desc">توافق مع جميع الأجهزة</p>
             </div>
         </div>
     </div>
     
-    <!-- مؤشر التمرير -->
-    <div class="scroll-indicator">
-        <i class="fas fa-chevron-down"></i>
-    </div>
-    
-    <!-- تأثيرات الجسيمات -->
-    <div class="particles-container" id="particlesContainer"></div>
-    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // إنشاء جسيمات عشوائية
-            function createParticles() {
-                const particlesContainer = document.getElementById('particlesContainer');
-                const particles = document.getElementById('particles');
+            // إنشاء النجوم
+            function createStars() {
+                const starsContainer = document.getElementById('stars');
+                const starCount = 100;
                 
-                for (let i = 0; i < 50; i++) {
-                    // جسيمات للخلفية العامة
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = Math.random() * 100 + '%';
-                    particle.style.animationDelay = Math.random() * 15 + 's';
-                    particle.style.animationDuration = (10 + Math.random() * 20) + 's';
-                    particle.style.width = (2 + Math.random() * 4) + 'px';
-                    particle.style.height = particle.style.width;
-                    particlesContainer.appendChild(particle);
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
                     
-                    // جسيمات خاصة حول الزر
-                    const btnParticle = document.createElement('div');
-                    btnParticle.className = 'particle';
-                    btnParticle.style.left = (30 + Math.random() * 40) + '%';
-                    btnParticle.style.animationDelay = Math.random() * 10 + 's';
-                    btnParticle.style.animationDuration = (5 + Math.random() * 10) + 's';
-                    btnParticle.style.width = (1 + Math.random() * 2) + 'px';
-                    btnParticle.style.height = btnParticle.style.width;
-                    btnParticle.style.opacity = '0.7';
-                    particles.appendChild(btnParticle);
+                    // حجم عشوائي
+                    const size = Math.random() * 3;
+                    star.style.width = size + 'px';
+                    star.style.height = size + 'px';
+                    
+                    // موقع عشوائي
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    
+                    // تأخير عشوائي للوميض
+                    star.style.animationDelay = Math.random() * 3 + 's';
+                    
+                    starsContainer.appendChild(star);
                 }
             }
             
-            createParticles();
+            createStars();
             
-            // تأثير زر التفعيل
+            // زر التفعيل
             const activateBtn = document.getElementById('activateBtn');
             
             activateBtn.addEventListener('click', function() {
-                // تأثير اهتزاز
-                this.style.animation = 'none';
-                this.style.transform = 'scale(0.9)';
+                // تأثير بسيط عند النقر
+                this.style.transform = 'scale(0.95)';
                 
-                // إنشرات ضوئية
-                for (let i = 0; i < 20; i++) {
-                    setTimeout(() => {
-                        createRipple(this, i * 50);
-                    }, i * 50);
-                }
-                
-                // إعادة الزر لحالته
-                setTimeout(() => {
-                    this.style.animation = '';
-                    this.style.transform = '';
-                }, 1000);
-                
-                // رسالة تأكيد مع تأثير
-                setTimeout(() => {
-                    showActivationMessage();
-                }, 500);
-            });
-            
-            // تأثير التموجات
-            function createRipple(button, delay) {
-                setTimeout(() => {
-                    const ripple = document.createElement('div');
-                    ripple.style.cssText = `
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        width: 100%;
-                        height: 100%;
-                        background: radial-gradient(circle, rgba(0,229,255,0.3) 0%, transparent 70%);
-                        border-radius: 25px;
-                        transform: translate(-50%, -50%) scale(0);
-                        animation: rippleExpand 1s ease-out forwards;
-                        z-index: 0;
-                    `;
-                    
-                    const style = document.createElement('style');
-                    style.textContent = `
-                        @keyframes rippleExpand {
-                            to {
-                                transform: translate(-50%, -50%) scale(3);
-                                opacity: 0;
-                            }
-                        }
-                    `;
-                    document.head.appendChild(style);
-                    
-                    button.appendChild(ripple);
-                    
-                    setTimeout(() => {
-                        ripple.remove();
-                    }, 1000);
-                }, delay);
-            }
-            
-            // رسالة التفعيل
-            function showActivationMessage() {
-                const message = document.createElement('div');
-                message.innerHTML = `
-                    <div style="
-                        position: fixed;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%) scale(0.8);
-                        background: rgba(15, 26, 48, 0.95);
-                        backdrop-filter: blur(10px);
-                        border: 2px solid var(--neon);
-                        border-radius: 20px;
-                        padding: 40px;
-                        text-align: center;
-                        max-width: 500px;
-                        width: 90%;
-                        z-index: 1000;
-                        box-shadow: var(--neon-glow), 0 0 100px rgba(0,0,0,0.5);
-                        animation: messageAppear 0.5s forwards;
-                    ">
-                        <i class="fas fa-check-circle" style="
-                            font-size: 4rem;
-                            color: var(--neon);
-                            margin-bottom: 20px;
-                            display: block;
-                            animation: iconPulse 2s infinite;
-                        "></i>
-                        <h2 style="
-                            color: white;
-                            font-size: 2rem;
-                            margin-bottom: 15px;
-                            background: linear-gradient(135deg, white, var(--neon));
-                            -webkit-background-clip: text;
-                            background-clip: text;
-                            color: transparent;
-                        ">تم استلام الطلب</h2>
-                        <p style="
-                            color: rgba(255,255,255,0.8);
-                            line-height: 1.6;
-                            margin-bottom: 30px;
-                            font-size: 1.1rem;
-                        ">
-                            تم استلام طلب تفعيل الهوية الرقمية بنجاح!
-                            <br>
-                            سيتم مراجعة الطلب وإشعارك عند اكتمال التفعيل.
-                            <br>
-                            <span style="color: var(--neon); font-weight: bold;">رقم الطلب: KR${Math.floor(Math.random() * 10000)}</span>
-                        </p>
-                        <button onclick="this.parentElement.remove()" style="
-                            background: var(--neon);
-                            color: var(--primary);
-                            border: none;
-                            padding: 12px 40px;
-                            font-size: 1.1rem;
-                            font-weight: bold;
-                            border-radius: 10px;
-                            cursor: pointer;
-                            transition: all 0.3s;
-                        ">موافق</button>
-                    </div>
+                // إنشاء تأثير تموج
+                const ripple = document.createElement('div');
+                ripple.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 100%;
+                    height: 100%;
+                    background: radial-gradient(circle, rgba(0,201,255,0.3) 0%, transparent 70%);
+                    border-radius: 20px;
+                    transform: translate(-50%, -50%) scale(0);
+                    animation: rippleEffect 0.6s ease-out forwards;
+                    z-index: 0;
                 `;
                 
-                document.body.appendChild(message);
-                
-                // إضافة الأنيميشن للرسالة
+                // إضافة أنيميشن للتموج
                 const style = document.createElement('style');
                 style.textContent = `
-                    @keyframes messageAppear {
-                        to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-                    }
-                    @keyframes iconPulse {
-                        0%, 100% { transform: scale(1); }
-                        50% { transform: scale(1.1); }
+                    @keyframes rippleEffect {
+                        to {
+                            transform: translate(-50%, -50%) scale(2);
+                            opacity: 0;
+                        }
                     }
                 `;
                 document.head.appendChild(style);
-            }
-            
-            // تأثيرات التمرير
-            window.addEventListener('scroll', function() {
-                const scrolled = window.pageYOffset;
-                const background = document.querySelector('.background');
-                background.style.transform = `translateY(${scrolled * 0.5}px)`;
+                
+                this.appendChild(ripple);
+                
+                // إزالة التموج بعد الأنيميشن
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+                
+                // إعادة الزر لحالته الطبيعية
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-5px)';
+                }, 200);
+                
+                // عرض رسالة التفعيل
+                setTimeout(() => {
+                    showActivationModal();
+                }, 400);
             });
             
-            // تفاعل مع المميزات
+            // عرض نافذة التفعيل
+            function showActivationModal() {
+                const modal = document.createElement('div');
+                modal.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(12, 21, 40, 0.95);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 2000;
+                        animation: modalFadeIn 0.3s ease;
+                    ">
+                        <div style="
+                            background: linear-gradient(135deg, rgba(22, 36, 71, 0.95), rgba(31, 64, 104, 0.95));
+                            border-radius: 20px;
+                            padding: 40px;
+                            max-width: 500px;
+                            width: 90%;
+                            text-align: center;
+                            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+                            border: 1px solid rgba(0, 201, 255, 0.3);
+                            animation: modalSlideUp 0.4s ease;
+                        ">
+                            <i class="fas fa-check-circle" style="
+                                font-size: 3.5rem;
+                                color: var(--neon);
+                                margin-bottom: 20px;
+                                display: block;
+                            "></i>
+                            
+                            <h2 style="
+                                color: white;
+                                font-size: 1.8rem;
+                                margin-bottom: 15px;
+                                background: linear-gradient(135deg, var(--light), var(--neon));
+                                -webkit-background-clip: text;
+                                background-clip: text;
+                                color: transparent;
+                            ">تم استلام طلبك</h2>
+                            
+                            <p style="
+                                color: rgba(224, 247, 255, 0.9);
+                                line-height: 1.6;
+                                margin-bottom: 25px;
+                                font-size: 1.1rem;
+                            ">
+                                تم تسجيل طلب تفعيل الهوية الرقمية بنجاح
+                                <br>
+                                <span style="color: var(--neon); font-weight: bold;">رقم الطلب: KR${Math.floor(1000 + Math.random() * 9000)}</span>
+                            </p>
+                            
+                            <div style="
+                                background: rgba(0, 201, 255, 0.1);
+                                padding: 15px;
+                                border-radius: 10px;
+                                margin-bottom: 25px;
+                                text-align: right;
+                            ">
+                                <p style="color: rgba(224, 247, 255, 0.8); margin-bottom: 5px; font-size: 0.9rem;">
+                                    <i class="fas fa-clock" style="margin-left: 8px;"></i>
+                                    مدة المراجعة: 24-48 ساعة
+                                </p>
+                                <p style="color: rgba(224, 247, 255, 0.8); font-size: 0.9rem;">
+                                    <i class="fas fa-envelope" style="margin-left: 8px;"></i>
+                                    سيتم الإشعار عبر البريد الإلكتروني
+                                </p>
+                            </div>
+                            
+                            <button onclick="this.closest('div[style*=\"position: fixed\"]').remove()" style="
+                                background: linear-gradient(135deg, var(--neon), var(--accent));
+                                color: white;
+                                border: none;
+                                padding: 12px 40px;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                border-radius: 10px;
+                                cursor: pointer;
+                                transition: all 0.3s;
+                                margin-top: 10px;
+                            ">تم</button>
+                        </div>
+                    </div>
+                `;
+                
+                // إضافة أنيميشن للنافذة
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes modalFadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                    
+                    @keyframes modalSlideUp {
+                        from { 
+                            opacity: 0;
+                            transform: translateY(30px);
+                        }
+                        to { 
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                document.body.appendChild(modal);
+            }
+            
+            // إضافة تأثير خفيف للمميزات
             const features = document.querySelectorAll('.feature');
             features.forEach(feature => {
                 feature.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-15px) scale(1.05)';
+                    this.style.transform = 'translateY(-8px)';
                 });
                 
                 feature.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
+                    this.style.transform = 'translateY(0)';
                 });
             });
+            
+            // ضبط الموقع للشاشات الصغيرة
+            function adjustLayout() {
+                const mainContent = document.querySelector('.main-content');
+                const features = document.querySelector('.features');
+                
+                if (window.innerHeight < 700) {
+                    mainContent.style.position = 'relative';
+                    mainContent.style.top = 'auto';
+                    mainContent.style.left = 'auto';
+                    mainContent.style.transform = 'none';
+                    mainContent.style.margin = '100px auto 50px';
+                    
+                    features.style.position = 'relative';
+                    features.style.bottom = 'auto';
+                    features.style.marginTop = '50px';
+                } else {
+                    mainContent.style.position = 'absolute';
+                    mainContent.style.top = '50%';
+                    mainContent.style.left = '50%';
+                    mainContent.style.transform = 'translate(-50%, -50%)';
+                    mainContent.style.margin = '0';
+                    
+                    features.style.position = 'fixed';
+                    features.style.bottom = '40px';
+                    features.style.marginTop = '0';
+                }
+            }
+            
+            // استدعاء عند تحميل الصفحة وعند تغيير حجم النافذة
+            adjustLayout();
+            window.addEventListener('resize', adjustLayout);
         });
     </script>
 </body>
