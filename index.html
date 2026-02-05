@@ -424,6 +424,16 @@
             });
         });
     </script>
-
+<script>
+    // رابط بطاقة النظام الإداري
+    document.addEventListener('DOMContentLoaded', function() {
+        const adminCardBtn = document.querySelector('[onclick*="showAdminLogin"]');
+        if (adminCardBtn) {
+            adminCardBtn.onclick = function() {
+                window.location.href = 'admin/login.html';
+            };
+        }
+    });
+</script>
 </body>
 </html>
