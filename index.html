@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KR - المنصة الرقمية</title>
+    <title>KR | المنصة الرقمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,365 +14,271 @@
         }
         
         :root {
-            --primary: #0f4c8a;
-            --secondary: #1e88e5;
-            --accent: #00b4d8;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gradient: linear-gradient(135deg, #0f4c8a 0%, #1e88e5 50%, #00b4d8 100%);
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --primary: #0f1a30;
+            --secondary: #1a237e;
+            --accent: #2962ff;
+            --neon: #00e5ff;
+            --gradient: linear-gradient(135deg, #0f1a30 0%, #1a237e 50%, #2962ff 100%);
+            --neon-glow: 0 0 20px rgba(0, 229, 255, 0.7);
+            --transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
         
         body {
-            background-color: #f5f7fa;
-            color: var(--dark);
-            overflow-x: hidden;
-            line-height: 1.6;
+            background: var(--primary);
+            color: white;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
         }
         
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header Styles */
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: var(--shadow);
+        /* خلفية ديناميكية */
+        .background {
             position: fixed;
-            width: 100%;
             top: 0;
-            z-index: 1000;
-            animation: slideDown 0.5s ease-out;
-        }
-        
-        @keyframes slideDown {
-            from { transform: translateY(-100%); }
-            to { transform: translateY(0); }
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .logo-icon {
-            width: 42px;
-            height: 42px;
-            background: var(--gradient);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 20px;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(15, 76, 138, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(15, 76, 138, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(15, 76, 138, 0); }
-        }
-        
-        .logo-text {
-            font-size: 28px;
-            font-weight: 800;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .nav-link {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 600;
-            font-size: 16px;
-            padding: 8px 0;
-            position: relative;
-            transition: var(--transition);
-        }
-        
-        .nav-link:hover {
-            color: var(--primary);
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
             left: 0;
-            width: 0;
-            height: 3px;
-            background: var(--gradient);
-            border-radius: 2px;
-            transition: var(--transition);
-        }
-        
-        .nav-link:hover::after {
             width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(41, 98, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(26, 35, 126, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, #0c1528 0%, #151f44 100%);
         }
         
-        .user-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        /* شبكة نقاط متحركة */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 229, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
         }
         
-        .notification-icon {
-            position: relative;
-            cursor: pointer;
-            color: var(--dark);
-            font-size: 20px;
-            transition: var(--transition);
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
         }
         
-        .notification-icon:hover {
-            color: var(--primary);
-            transform: translateY(-2px);
+        /* أشعة ضوئية */
+        .light-beams {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
         }
         
-        .notification-badge {
+        .beam {
             position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ff4757;
-            color: white;
-            font-size: 10px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
+            width: 2px;
+            height: 200%;
+            background: linear-gradient(to bottom, transparent, var(--neon), transparent);
+            animation: beamRotate 20s linear infinite;
+        }
+        
+        .beam:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .beam:nth-child(2) {
+            left: 30%;
+            animation-delay: -5s;
+        }
+        
+        .beam:nth-child(3) {
+            left: 50%;
+            animation-delay: -10s;
+        }
+        
+        .beam:nth-child(4) {
+            left: 70%;
+            animation-delay: -15s;
+        }
+        
+        .beam:nth-child(5) {
+            left: 90%;
+            animation-delay: -20s;
+        }
+        
+        @keyframes beamRotate {
+            0% { transform: rotate(0deg) translateY(-50%); }
+            100% { transform: rotate(360deg) translateY(-50%); }
+        }
+        
+        /* اسم المنصة في الأعلى */
+        .platform-name {
+            position: fixed;
+            top: 40px;
+            right: 50px;
+            z-index: 100;
+            text-align: right;
+        }
+        
+        .kr-logo {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--neon-glow);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes logoGlow {
+            0% { text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
+            100% { text-shadow: 0 0 30px rgba(0, 229, 255, 0.9), 0 0 40px rgba(41, 98, 255, 0.5); }
+        }
+        
+        .platform-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+        }
+        
+        /* المحتوى الرئيسي */
+        .main-content {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-        }
-        
-        /* Hero Section */
-        .hero {
-            padding: 180px 0 100px;
-            background: linear-gradient(rgba(245, 247, 250, 0.9), rgba(245, 247, 250, 0.9)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M500,50L485,65L470,50L455,65L440,50L425,65L410,50L395,65L380,50L365,65L350,50L335,65L320,50L305,65L290,50L275,65L260,50L245,65L230,50L215,65L200,50L185,65L170,50L155,65L140,50L125,65L110,50L95,65L80,50L65,65L50,50L35,65L20,50L5,65L0,50V100H1000V50Z" fill="%230f4c8a" opacity="0.05"/></svg>');
-            background-repeat: no-repeat;
-            background-position: bottom;
-            background-size: 100% 150px;
-        }
-        
-        .hero-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-        
-        .hero-content {
-            animation: fadeInLeft 0.8s ease-out;
-        }
-        
-        @keyframes fadeInLeft {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
         }
         
         .hero-title {
-            font-size: 3.5rem;
+            font-size: 4.5rem;
             font-weight: 800;
-            line-height: 1.1;
             margin-bottom: 20px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, #ffffff, var(--neon));
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+            animation: titleFloat 6s ease-in-out infinite;
+        }
+        
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
         
         .hero-subtitle {
-            font-size: 1.2rem;
-            color: #5a6c7d;
-            margin-bottom: 30px;
-            max-width: 90%;
-        }
-        
-        .hero-stats {
-            display: flex;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .stat {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-        }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            color: #5a6c7d;
-            margin-top: 5px;
-        }
-        
-        .hero-visual {
-            position: relative;
-            animation: fadeInRight 0.8s ease-out 0.2s both;
-        }
-        
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .floating-card {
-            background: white;
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-        
-        .floating-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-        }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        
-        .card-title {
             font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            margin-bottom: 60px;
+            line-height: 1.6;
+            font-weight: 300;
         }
         
-        .card-badge {
-            background: linear-gradient(135deg, #00b4d8, #1e88e5);
-            color: white;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .card-content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .info-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(30, 136, 229, 0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--secondary);
-            font-size: 18px;
-        }
-        
-        .info-text {
-            flex: 1;
-        }
-        
-        .info-title {
-            font-weight: 600;
-            margin-bottom: 3px;
-        }
-        
-        .info-desc {
-            font-size: 0.9rem;
-            color: #5a6c7d;
-        }
-        
-        /* Activation Button */
-        .activation-section {
-            text-align: center;
-            padding: 40px 0 100px;
-            animation: fadeInUp 0.8s ease-out 0.4s both;
-        }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* زر التفعيل الرهيب */
+        .activation-container {
+            position: relative;
+            margin: 80px 0;
         }
         
         .activation-btn {
-            background: var(--gradient);
+            background: linear-gradient(135deg, 
+                rgba(41, 98, 255, 0.9), 
+                rgba(0, 229, 255, 0.9));
             color: white;
             border: none;
-            padding: 22px 50px;
-            font-size: 1.3rem;
+            padding: 28px 70px;
+            font-size: 1.8rem;
             font-weight: 700;
-            border-radius: 16px;
+            border-radius: 25px;
             cursor: pointer;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 15px;
-            box-shadow: 0 10px 30px rgba(30, 136, 229, 0.3);
-            transition: var(--transition);
+            gap: 20px;
             position: relative;
             overflow: hidden;
+            transition: var(--transition);
+            box-shadow: 
+                0 0 30px rgba(0, 229, 255, 0.5),
+                0 10px 40px rgba(0, 0, 0, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+            animation: btnPulse 3s ease-in-out infinite;
+            z-index: 2;
+        }
+        
+        @keyframes btnPulse {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 30px rgba(0, 229, 255, 0.5),
+                    0 10px 40px rgba(0, 0, 0, 0.3),
+                    inset 0 0 20px rgba(255, 255, 255, 0.2);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 50px rgba(0, 229, 255, 0.8),
+                    0 15px 60px rgba(0, 0, 0, 0.4),
+                    inset 0 0 30px rgba(255, 255, 255, 0.3);
+                transform: scale(1.05);
+            }
         }
         
         .activation-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(30, 136, 229, 0.4);
-        }
-        
-        .activation-btn:active {
-            transform: translateY(-2px);
+            animation: none;
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 
+                0 0 60px rgba(0, 229, 255, 1),
+                0 20px 80px rgba(0, 0, 0, 0.5),
+                inset 0 0 40px rgba(255, 255, 255, 0.4);
         }
         
         .activation-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, 
+                var(--neon), var(--accent), var(--neon));
+            border-radius: 27px;
+            z-index: -1;
+            animation: borderRotate 3s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
         .activation-btn:hover::before {
-            left: 100%;
+            opacity: 1;
+        }
+        
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .btn-icon {
-            font-size: 1.5rem;
+            font-size: 2.2rem;
+            animation: iconFloat 2s ease-in-out infinite;
+        }
+        
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
         
         .btn-text {
@@ -380,533 +286,521 @@
             z-index: 1;
         }
         
-        .btn-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            margin-left: 10px;
+        .btn-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, 
+                rgba(0, 229, 255, 0.4) 0%, 
+                transparent 70%);
+            border-radius: 25px;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
-        /* Features Section */
+        .activation-btn:hover .btn-glow {
+            opacity: 1;
+        }
+        
+        /* تأثيرات إضافية حول الزر */
+        .orbital-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(0, 229, 255, 0.1);
+            border-radius: 50%;
+            animation: ringRotate 30s linear infinite;
+        }
+        
+        .orbital-ring:nth-child(2) {
+            width: 600px;
+            height: 600px;
+            animation-duration: 40s;
+            animation-direction: reverse;
+        }
+        
+        .orbital-ring:nth-child(3) {
+            width: 700px;
+            height: 700px;
+            animation-duration: 50s;
+        }
+        
+        @keyframes ringRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .floating-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--neon);
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: particleFloat 15s linear infinite;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* المميزات السفلية */
         .features {
-            padding: 80px 0;
-            background: white;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 100px;
+            flex-wrap: wrap;
         }
         
-        .section-title {
+        .feature {
             text-align: center;
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 60px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .feature-card {
-            background: var(--light);
-            border-radius: 20px;
-            padding: 35px 30px;
+            max-width: 200px;
+            opacity: 0.8;
             transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
-        .feature-card:hover {
+        .feature:hover {
+            opacity: 1;
             transform: translateY(-10px);
-            box-shadow: var(--shadow);
         }
         
         .feature-icon {
-            width: 70px;
-            height: 70px;
-            background: var(--gradient);
-            border-radius: 18px;
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 229, 255, 0.1);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 28px;
-            margin-bottom: 25px;
+            margin: 0 auto 20px;
+            font-size: 30px;
+            color: var(--neon);
+            border: 2px solid rgba(0, 229, 255, 0.3);
+            transition: var(--transition);
+        }
+        
+        .feature:hover .feature-icon {
+            background: rgba(0, 229, 255, 0.2);
+            border-color: var(--neon);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
         }
         
         .feature-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: white;
         }
         
         .feature-desc {
-            color: #5a6c7d;
-            margin-bottom: 20px;
-        }
-        
-        .feature-link {
-            color: var(--secondary);
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: var(--transition);
-        }
-        
-        .feature-link:hover {
-            gap: 12px;
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 70px 0 30px;
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-        
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 40px;
-            height: 3px;
-            background: var(--gradient);
-            border-radius: 2px;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-links a {
-            color: #b0b7c3;
-            text-decoration: none;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-            transform: translateX(5px);
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #b0b7c3;
             font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.4;
         }
         
-        /* Animations for numbers */
-        .counter {
-            display: inline-block;
+        /* مؤشر التمرير */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            animation: fadeInOut 2s infinite;
+            z-index: 100;
         }
         
-        /* Responsive */
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        /* تأثيرات الجسيمات */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* تصميم متجاوب */
         @media (max-width: 1024px) {
-            .hero-container {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            
-            .hero {
-                padding: 150px 0 80px;
-            }
-            
             .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .activation-btn {
+                padding: 24px 50px;
+                font-size: 1.5rem;
+            }
+            
+            .kr-logo {
                 font-size: 2.8rem;
             }
         }
         
         @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .nav-links {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
             .hero-title {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
             }
             
-            .hero-stats {
-                gap: 20px;
-            }
-            
-            .stat-number {
-                font-size: 2rem;
+            .hero-subtitle {
+                font-size: 1.2rem;
+                padding: 0 20px;
             }
             
             .activation-btn {
-                padding: 18px 35px;
-                font-size: 1.1rem;
+                padding: 20px 40px;
+                font-size: 1.3rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .platform-name {
+                right: 20px;
+                top: 20px;
+            }
+            
+            .kr-logo {
+                font-size: 2.2rem;
+            }
+            
+            .platform-subtitle {
+                font-size: 1rem;
+                letter-spacing: 4px;
+            }
+            
+            .features {
+                gap: 30px;
+            }
+            
+            .feature {
+                max-width: 150px;
             }
         }
         
         @media (max-width: 480px) {
             .hero-title {
-                font-size: 1.8rem;
-            }
-            
-            .section-title {
                 font-size: 2rem;
             }
             
-            .features-grid {
-                grid-template-columns: 1fr;
+            .activation-btn {
+                padding: 18px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .kr-logo {
+                font-size: 1.8rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <div class="logo-icon">KR</div>
-                <div class="logo-text">المنصة الرقمية</div>
-            </div>
+    <!-- الخلفية الديناميكية -->
+    <div class="background"></div>
+    <div class="grid-overlay"></div>
+    
+    <!-- الأشعة الضوئية -->
+    <div class="light-beams">
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="beam"></div>
+    </div>
+    
+    <!-- اسم المنصة -->
+    <div class="platform-name">
+        <div class="kr-logo">KR</div>
+        <div class="platform-subtitle">المنصة الرقمية</div>
+    </div>
+    
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <h1 class="hero-title">مستقبل الهوية الرقمية<br>يبدأ من هنا</h1>
+        
+        <p class="hero-subtitle">
+            هوية رقمية موحدة وآمنة تمنحك وصولاً فورياً لجميع الخدمات الرقمية المتكاملة
+            <br>
+            بنظام تشفير متقدم وواجهة ذكية تتطور مع احتياجاتك
+        </p>
+        
+        <!-- زر التفعيل -->
+        <div class="activation-container">
+            <!-- الحلقات المدارية -->
+            <div class="orbital-ring"></div>
+            <div class="orbital-ring"></div>
+            <div class="orbital-ring"></div>
             
-            <nav class="nav-links">
-                <a href="#" class="nav-link">الرئيسية</a>
-                <a href="#" class="nav-link">الخدمات</a>
-                <a href="#" class="nav-link">المعاملات</a>
-                <a href="#" class="nav-link">التقارير</a>
-                <a href="#" class="nav-link">الدعم</a>
-            </nav>
+            <!-- الجسيمات العائمة -->
+            <div class="floating-particles" id="particles"></div>
             
-            <div class="user-actions">
-                <div class="notification-icon">
-                    <i class="fas fa-bell"></i>
-                    <div class="notification-badge">3</div>
-                </div>
-                <div class="user-avatar">
-                    <div style="width: 40px; height: 40px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AS</div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container hero-container">
-            <div class="hero-content">
-                <h1 class="hero-title">بوابتك الرقمية المتكاملة</h1>
-                <p class="hero-subtitle">
-                    منصة متطورة توفر لك تجربة رقمية سلسة وآمنة مع واجهة حديثة تتيح إدارة جميع احتياجاتك من مكان واحد.
-                </p>
-                
-                <div class="hero-stats">
-                    <div class="stat">
-                        <div class="stat-number counter" data-target="154">0</div>
-                        <div class="stat-label">خدمة رقمية</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number counter" data-target="892">0</div>
-                        <div class="stat-label">ألف مستخدم</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number counter" data-target="99">0</div>
-                        <div class="stat-label">٪ رضا</div>
-                    </div>
-                </div>
-                
-                <p class="hero-subtitle">
-                    استمتع بتجربة فريدة مع واجهة ذكية تتعلم من تفضيلاتك، وتقدم لك ما تحتاجه قبل أن تطلبه.
-                </p>
-            </div>
-            
-            <div class="hero-visual">
-                <div class="floating-card">
-                    <div class="card-header">
-                        <h3 class="card-title">الملف الرقمي</h3>
-                        <span class="card-badge">نشط</span>
-                    </div>
-                    
-                    <div class="card-content">
-                        <div class="info-item">
-                            <div class="info-icon">
-                                <i class="fas fa-user-check"></i>
-                            </div>
-                            <div class="info-text">
-                                <div class="info-title">التفعيل الرقمي</div>
-                                <div class="info-desc">تفعيل هويتك الرقمية يمنحك الوصول لجميع الخدمات</div>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item">
-                            <div class="info-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <div class="info-text">
-                                <div class="info-title">الحماية والأمان</div>
-                                <div class="info-desc">بياناتك محمية بأعلى معايير التشفير العالمية</div>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item">
-                            <div class="info-icon">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <div class="info-text">
-                                <div class="info-title">سرعة التنفيذ</div>
-                                <div class="info-desc">إنجاز المعاملات في دقائق بدلاً من أيام</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Activation Section -->
-    <section class="activation-section">
-        <div class="container">
+            <!-- الزر الرئيسي -->
             <button class="activation-btn" id="activateBtn">
-                <i class="fas fa-rocket btn-icon"></i>
+                <div class="btn-glow"></div>
+                <i class="fas fa-bolt btn-icon"></i>
                 <span class="btn-text">طلب تفعيل الهوية الرقمية</span>
-                <span class="btn-badge">جديد</span>
             </button>
         </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">مميزات المنصة</h2>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-tachometer-alt"></i>
-                    </div>
-                    <h3 class="feature-title">سرعة فائقة</h3>
-                    <p class="feature-desc">أداء محسّن يقلل وقت التحميل ويعزز تجربة المستخدم مع استجابة فورية.</p>
-                    <a href="#" class="feature-link">
-                        اكتشف المزيد
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
+        
+        <!-- المميزات -->
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <h3 class="feature-title">حماية متقدمة</h3>
-                    <p class="feature-desc">نظام أمان متعدد الطبقات يحمي بياناتك ويضمن الخصوصية التامة.</p>
-                    <a href="#" class="feature-link">
-                        اكتشف المزيد
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-magic"></i>
-                    </div>
-                    <h3 class="feature-title">ذكاء اصطناعي</h3>
-                    <p class="feature-desc">تقنيات ذكية تقدم اقتراحات مخصصة وتوقع احتياجاتك المستقبلية.</p>
-                    <a href="#" class="feature-link">
-                        اكتشف المزيد
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <h3>المنصة الرقمية</h3>
-                    <p style="color: #b0b7c3; margin-bottom: 20px;">بوابة رقمية متكاملة تقدم تجربة مستخدم فريدة مع أحدث التقنيات.</p>
-                    <div class="logo" style="justify-content: flex-start;">
-                        <div class="logo-icon">KR</div>
-                        <div class="logo-text">المنصة الرقمية</div>
-                    </div>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>روابط سريعة</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-chevron-left"></i> الرئيسية</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-left"></i> الخدمات</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-left"></i> المعاملات</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-left"></i> التقارير</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-left"></i> الدعم</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>الخدمات</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-chevron-left"></i> تفعيل الهوية</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-left"></i> المعاملات الإلكترونية</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-left"></i> المستندات الرقمية</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-left"></i> التواقيع الذكية</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-left"></i> الخدمات السحابية</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>التواصل</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-phone-alt"></i> الدعم الفني: 19999</a></li>
-                        <li><a href="#"><i class="fas fa-envelope"></i> info@kr-platform.com</a></li>
-                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> المقر الرقمي</a></li>
-                        <li><a href="#"><i class="fas fa-headset"></i> الدعم على مدار الساعة</a></li>
-                    </ul>
-                </div>
+                <h3 class="feature-title">حماية متقدمة</h3>
+                <p class="feature-desc">تشفير من المستوى العسكري مع مصادقة متعددة العوامل</p>
             </div>
             
-            <div class="copyright">
-                <p>© 2023 المنصة الرقمية KR. جميع الحقوق محفوظة.</p>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="feature-title">سرعة فائقة</h3>
+                <p class="feature-desc">تفعيل فوري وإنجاز المعاملات في ثوانٍ معدودة</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-infinity"></i>
+                </div>
+                <h3 class="feature-title">تكامل شامل</h3>
+                <p class="feature-desc">وصول موحد لجميع الخدمات الرقمية من مكان واحد</p>
             </div>
         </div>
-    </footer>
-
+    </div>
+    
+    <!-- مؤشر التمرير -->
+    <div class="scroll-indicator">
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    
+    <!-- تأثيرات الجسيمات -->
+    <div class="particles-container" id="particlesContainer"></div>
+    
     <script>
-        // Number counter animation
         document.addEventListener('DOMContentLoaded', function() {
-            const counters = document.querySelectorAll('.counter');
-            const speed = 200;
-            
-            counters.forEach(counter => {
-                const updateCount = () => {
-                    const target = +counter.getAttribute('data-target');
-                    const count = +counter.innerText;
-                    const increment = target / speed;
-                    
-                    if (count < target) {
-                        counter.innerText = Math.ceil(count + increment);
-                        setTimeout(updateCount, 20);
-                    } else {
-                        counter.innerText = target;
-                    }
-                };
+            // إنشاء جسيمات عشوائية
+            function createParticles() {
+                const particlesContainer = document.getElementById('particlesContainer');
+                const particles = document.getElementById('particles');
                 
-                updateCount();
-            });
+                for (let i = 0; i < 50; i++) {
+                    // جسيمات للخلفية العامة
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    particle.style.animationDuration = (10 + Math.random() * 20) + 's';
+                    particle.style.width = (2 + Math.random() * 4) + 'px';
+                    particle.style.height = particle.style.width;
+                    particlesContainer.appendChild(particle);
+                    
+                    // جسيمات خاصة حول الزر
+                    const btnParticle = document.createElement('div');
+                    btnParticle.className = 'particle';
+                    btnParticle.style.left = (30 + Math.random() * 40) + '%';
+                    btnParticle.style.animationDelay = Math.random() * 10 + 's';
+                    btnParticle.style.animationDuration = (5 + Math.random() * 10) + 's';
+                    btnParticle.style.width = (1 + Math.random() * 2) + 'px';
+                    btnParticle.style.height = btnParticle.style.width;
+                    btnParticle.style.opacity = '0.7';
+                    particles.appendChild(btnParticle);
+                }
+            }
             
-            // Activation button animation
+            createParticles();
+            
+            // تأثير زر التفعيل
             const activateBtn = document.getElementById('activateBtn');
             
             activateBtn.addEventListener('click', function() {
-                // Add click effect
-                this.style.transform = 'scale(0.95)';
+                // تأثير اهتزاز
+                this.style.animation = 'none';
+                this.style.transform = 'scale(0.9)';
                 
-                // Create ripple effect
-                const ripple = document.createElement('span');
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = event.clientX - rect.left - size/2;
-                const y = event.clientY - rect.top - size/2;
+                // إنشرات ضوئية
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        createRipple(this, i * 50);
+                    }, i * 50);
+                }
                 
-                ripple.style.cssText = `
-                    position: absolute;
-                    border-radius: 50%;
-                    background: rgba(255, 255, 255, 0.7);
-                    transform: scale(0);
-                    animation: ripple-animation 0.6s linear;
-                    width: ${size}px;
-                    height: ${size}px;
-                    top: ${y}px;
-                    left: ${x}px;
+                // إعادة الزر لحالته
+                setTimeout(() => {
+                    this.style.animation = '';
+                    this.style.transform = '';
+                }, 1000);
+                
+                // رسالة تأكيد مع تأثير
+                setTimeout(() => {
+                    showActivationMessage();
+                }, 500);
+            });
+            
+            // تأثير التموجات
+            function createRipple(button, delay) {
+                setTimeout(() => {
+                    const ripple = document.createElement('div');
+                    ripple.style.cssText = `
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        width: 100%;
+                        height: 100%;
+                        background: radial-gradient(circle, rgba(0,229,255,0.3) 0%, transparent 70%);
+                        border-radius: 25px;
+                        transform: translate(-50%, -50%) scale(0);
+                        animation: rippleExpand 1s ease-out forwards;
+                        z-index: 0;
+                    `;
+                    
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        @keyframes rippleExpand {
+                            to {
+                                transform: translate(-50%, -50%) scale(3);
+                                opacity: 0;
+                            }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                    
+                    button.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 1000);
+                }, delay);
+            }
+            
+            // رسالة التفعيل
+            function showActivationMessage() {
+                const message = document.createElement('div');
+                message.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%) scale(0.8);
+                        background: rgba(15, 26, 48, 0.95);
+                        backdrop-filter: blur(10px);
+                        border: 2px solid var(--neon);
+                        border-radius: 20px;
+                        padding: 40px;
+                        text-align: center;
+                        max-width: 500px;
+                        width: 90%;
+                        z-index: 1000;
+                        box-shadow: var(--neon-glow), 0 0 100px rgba(0,0,0,0.5);
+                        animation: messageAppear 0.5s forwards;
+                    ">
+                        <i class="fas fa-check-circle" style="
+                            font-size: 4rem;
+                            color: var(--neon);
+                            margin-bottom: 20px;
+                            display: block;
+                            animation: iconPulse 2s infinite;
+                        "></i>
+                        <h2 style="
+                            color: white;
+                            font-size: 2rem;
+                            margin-bottom: 15px;
+                            background: linear-gradient(135deg, white, var(--neon));
+                            -webkit-background-clip: text;
+                            background-clip: text;
+                            color: transparent;
+                        ">تم استلام الطلب</h2>
+                        <p style="
+                            color: rgba(255,255,255,0.8);
+                            line-height: 1.6;
+                            margin-bottom: 30px;
+                            font-size: 1.1rem;
+                        ">
+                            تم استلام طلب تفعيل الهوية الرقمية بنجاح!
+                            <br>
+                            سيتم مراجعة الطلب وإشعارك عند اكتمال التفعيل.
+                            <br>
+                            <span style="color: var(--neon); font-weight: bold;">رقم الطلب: KR${Math.floor(Math.random() * 10000)}</span>
+                        </p>
+                        <button onclick="this.parentElement.remove()" style="
+                            background: var(--neon);
+                            color: var(--primary);
+                            border: none;
+                            padding: 12px 40px;
+                            font-size: 1.1rem;
+                            font-weight: bold;
+                            border-radius: 10px;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                        ">موافق</button>
+                    </div>
                 `;
                 
-                this.appendChild(ripple);
+                document.body.appendChild(message);
                 
-                // Remove ripple after animation
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
-                
-                // Reset button scale
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 150);
-                
-                // Show success message
-                setTimeout(() => {
-                    alert('تم استلام طلب تفعيل الهوية الرقمية بنجاح! سيتم مراجعة الطلب وإشعارك بالنتيجة.');
-                }, 300);
-            });
-            
-            // Add hover animation to feature cards
-            const featureCards = document.querySelectorAll('.feature-card');
-            
-            featureCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-10px)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-            
-            // Add animation to nav links on hover
-            const navLinks = document.querySelectorAll('.nav-link');
-            
-            navLinks.forEach(link => {
-                link.addEventListener('mouseenter', function() {
-                    this.style.color = 'var(--primary)';
-                });
-                
-                link.addEventListener('mouseleave', function() {
-                    if (!this.classList.contains('active')) {
-                        this.style.color = '';
+                // إضافة الأنيميشن للرسالة
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes messageAppear {
+                        to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
                     }
-                });
+                    @keyframes iconPulse {
+                        0%, 100% { transform: scale(1); }
+                        50% { transform: scale(1.1); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // تأثيرات التمرير
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const background = document.querySelector('.background');
+                background.style.transform = `translateY(${scrolled * 0.5}px)`;
             });
             
-            // Add CSS for ripple animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes ripple-animation {
-                    to {
-                        transform: scale(4);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
+            // تفاعل مع المميزات
+            const features = document.querySelectorAll('.feature');
+            features.forEach(feature => {
+                feature.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-15px) scale(1.05)';
+                });
+                
+                feature.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
         });
     </script>
 </body>
