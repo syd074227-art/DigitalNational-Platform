@@ -18,6 +18,9 @@
             --secondary: #162447;
             --accent: #1f4068;
             --neon: #00c9ff;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --warning: #f39c12;
             --light: #e0f7ff;
             --gradient: linear-gradient(135deg, #0c1528 0%, #162447 50%, #1f4068 100%);
             --gradient-light: linear-gradient(135deg, #00c9ff 0%, #1f4068 100%);
@@ -471,6 +474,210 @@
             padding: 30px;
         }
         
+        /* شاشة الفحص بالذكاء الاصطناعي */
+        .ai-scan-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .scan-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+        
+        .scan-timer {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--neon);
+            margin-bottom: 30px;
+            font-family: monospace;
+        }
+        
+        .scan-progress {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .scan-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon), var(--accent));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .scan-steps {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        
+        .scan-step {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-right: 4px solid transparent;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .scan-step.active {
+            border-right-color: var(--neon);
+            background: rgba(0, 201, 255, 0.1);
+        }
+        
+        .scan-step.completed {
+            border-right-color: var(--success);
+            background: rgba(46, 204, 113, 0.1);
+        }
+        
+        .scan-step.failed {
+            border-right-color: var(--error);
+            background: rgba(231, 76, 60, 0.1);
+        }
+        
+        .step-icon {
+            font-size: 1.2rem;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+        
+        .step-info {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .step-detail {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* نتائج الفحص */
+        .scan-result {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .result-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+        
+        .result-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+        
+        .result-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .result-details {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: right;
+        }
+        
+        .result-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .status-success {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--success);
+        }
+        
+        .status-error {
+            background: rgba(231, 76, 60, 0.2);
+            color: var(--error);
+        }
+        
+        .status-warning {
+            background: rgba(243, 156, 18, 0.2);
+            color: var(--warning);
+        }
+        
+        .result-actions {
+            margin-top: 30px;
+        }
+        
+        .btn-result {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #27ae60);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);
+        }
+        
+        .btn-error {
+            background: linear-gradient(135deg, var(--error), #c0392b);
+            color: white;
+        }
+        
+        .btn-error:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+        }
+        
         /* تصميم متجاوب - تركز كل شيء */
         @media (max-width: 1200px) {
             .hero-title {
@@ -595,6 +802,22 @@
             .modal-body {
                 padding: 20px;
             }
+            
+            .scan-title {
+                font-size: 1.5rem;
+            }
+            
+            .scan-timer {
+                font-size: 1.8rem;
+            }
+            
+            .result-icon {
+                font-size: 4rem;
+            }
+            
+            .result-title {
+                font-size: 1.8rem;
+            }
         }
         
         @media (max-width: 576px) {
@@ -658,6 +881,15 @@
             .modal-header h1 {
                 font-size: 1.3rem;
                 text-align: center;
+            }
+            
+            .scan-step {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+            
+            .step-detail {
+                font-size: 0.8rem;
             }
         }
         
@@ -804,40 +1036,544 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- سيتم تحميل نموذج التفعيل هنا -->
+                <!-- نموذج التقديم -->
                 <div id="formContainer">
                     <div style="text-align: center; padding: 40px 20px;">
                         <div class="loader" style="width: 50px; height: 50px; border: 4px solid rgba(0, 201, 255, 0.2); border-radius: 50%; border-top-color: var(--neon); margin: 0 auto 20px; animation: spin 1s linear infinite;"></div>
                         <p style="color: var(--light); font-size: 1.1rem;">جاري تحميل نموذج التفعيل...</p>
                     </div>
                 </div>
+                
+                <!-- شاشة فحص الذكاء الاصطناعي -->
+                <div class="ai-scan-screen" id="aiScanScreen">
+                    <h2 class="scan-title">🎯 جاري فحص طلبك بالذكاء الاصطناعي</h2>
+                    <div class="scan-timer" id="scanTimer">⏳ 10 ثواني</div>
+                    
+                    <div class="scan-progress">
+                        <div class="scan-progress-bar" id="scanProgressBar"></div>
+                    </div>
+                    
+                    <div class="scan-steps" id="scanSteps">
+                        <!-- ستتم إضافة خطوات الفحص هنا -->
+                    </div>
+                </div>
+                
+                <!-- نتائج الفحص -->
+                <div class="scan-result" id="scanResult">
+                    <!-- ستتم إضافة النتائج هنا -->
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // دالة لتضمين نموذج التفعيل مباشرة
+        // نظام الذكاء الاصطناعي للفحص
+        class AIScanner {
+            constructor() {
+                this.totalTime = 10; // 10 ثواني كاملة
+                this.currentTime = this.totalTime;
+                this.steps = [];
+                this.results = [];
+                this.isScanning = false;
+                this.scanInterval = null;
+            }
+            
+            // تعريف خطوات الفحص
+            initializeSteps() {
+                this.steps = [
+                    {
+                        id: 1,
+                        title: "الفحص الأولي للبيانات",
+                        description: "جاري التحقق من صحة البيانات المدخلة",
+                        duration: 3,
+                        active: false,
+                        completed: false,
+                        result: null,
+                        details: ""
+                    },
+                    {
+                        id: 2,
+                        title: "فحص المستندات المرفوعة",
+                        description: "جاري فحص الصور والملفات المرفوعة",
+                        duration: 3,
+                        active: false,
+                        completed: false,
+                        result: null,
+                        details: ""
+                    },
+                    {
+                        id: 3,
+                        title: "المطابقة الذكية",
+                        description: "جاري مقارنة البيانات مع المستندات",
+                        duration: 3,
+                        active: false,
+                        completed: false,
+                        result: null,
+                        details: ""
+                    },
+                    {
+                        id: 4,
+                        title: "التحقق النهائي",
+                        description: "جاري إصدار النتيجة النهائية",
+                        duration: 1,
+                        active: false,
+                        completed: false,
+                        result: null,
+                        details: ""
+                    }
+                ];
+            }
+            
+            // بدء الفحص
+            startScan(formData) {
+                this.initializeSteps();
+                this.isScanning = true;
+                this.currentTime = this.totalTime;
+                this.results = [];
+                
+                // عرض شاشة الفحص
+                document.getElementById('aiScanScreen').style.display = 'block';
+                document.getElementById('formContainer').style.display = 'none';
+                
+                // تحديث المؤقت
+                this.updateTimer();
+                
+                // بدء الفعلي بعد تأخير بسيط
+                setTimeout(() => {
+                    this.executeScan(formData);
+                }, 1000);
+                
+                // بدء المؤقت التنازلي
+                this.scanInterval = setInterval(() => {
+                    this.currentTime--;
+                    this.updateTimer();
+                    
+                    if (this.currentTime <= 0) {
+                        clearInterval(this.scanInterval);
+                        this.completeScan();
+                    }
+                }, 1000);
+            }
+            
+            // تحديث المؤقت
+            updateTimer() {
+                const timerElement = document.getElementById('scanTimer');
+                const progressBar = document.getElementById('scanProgressBar');
+                
+                timerElement.textContent = `⏳ ${this.currentTime} ثانية`;
+                
+                // تحديث شريط التقدم
+                const progress = ((this.totalTime - this.currentTime) / this.totalTime) * 100;
+                progressBar.style.width = `${progress}%`;
+                
+                // تحديث عرض الخطوات
+                this.updateStepsDisplay();
+            }
+            
+            // تحديث عرض الخطوات
+            updateStepsDisplay() {
+                const stepsContainer = document.getElementById('scanSteps');
+                stepsContainer.innerHTML = '';
+                
+                this.steps.forEach(step => {
+                    const stepElement = document.createElement('div');
+                    stepElement.className = 'scan-step';
+                    
+                    if (step.completed) {
+                        stepElement.classList.add('completed');
+                    } else if (step.active) {
+                        stepElement.classList.add('active');
+                    } else if (step.result === false) {
+                        stepElement.classList.add('failed');
+                    }
+                    
+                    let icon = '⏳';
+                    let iconClass = '';
+                    
+                    if (step.completed) {
+                        icon = step.result ? '✅' : '❌';
+                        iconClass = step.result ? 'status-success' : 'status-error';
+                    } else if (step.active) {
+                        icon = '🔍';
+                    }
+                    
+                    stepElement.innerHTML = `
+                        <div class="step-icon ${iconClass}">${icon}</div>
+                        <div class="step-info">
+                            <div class="step-title">${step.title}</div>
+                            <div class="step-detail">${step.description}</div>
+                            ${step.details ? `<div class="step-detail" style="color: ${step.result ? '#2ecc71' : '#e74c3c'}; font-size: 0.8rem;">${step.details}</div>` : ''}
+                        </div>
+                    `;
+                    
+                    stepsContainer.appendChild(stepElement);
+                });
+            }
+            
+            // تنفيذ الفحص الفعلي
+            async executeScan(formData) {
+                // الخطوة 1: الفحص الأولي للبيانات
+                await this.step1_DataValidation(formData);
+                
+                // الخطوة 2: فحص المستندات
+                await this.step2_DocumentsCheck(formData);
+                
+                // الخطوة 3: المطابقة الذكية
+                await this.step3_SmartMatching(formData);
+                
+                // الخطوة 4: التحقق النهائي
+                await this.step4_FinalVerification();
+            }
+            
+            // الخطوة 1: فحص البيانات
+            async step1_DataValidation(formData) {
+                this.setStepActive(1);
+                
+                await this.delay(3000);
+                
+                const results = [];
+                let allValid = true;
+                
+                // 1. فحص الاسم الثلاثي
+                const nameValid = this.validateFullName(formData.fullName);
+                results.push({
+                    field: 'الاسم الثلاثي',
+                    valid: nameValid,
+                    message: nameValid ? 'الاسم صحيح ومكتمل' : 'الاسم يجب أن يكون ثلاثي (الاسم + بن/بنت + اسم العائلة)'
+                });
+                if (!nameValid) allValid = false;
+                
+                // 2. فحص تاريخ الميلاد
+                const age = this.calculateAge(formData.birthDate);
+                const ageValid = age >= 15 && age <= 80;
+                results.push({
+                    field: 'تاريخ الميلاد',
+                    valid: ageValid,
+                    message: ageValid ? `العمر: ${age} سنة (مناسب)` : `العمر: ${age} سنة (غير مناسب)`
+                });
+                if (!ageValid) allValid = false;
+                
+                // 3. فحص اسم اللعبة
+                const gameNameValid = /^[a-zA-Z0-9]{3,20}$/.test(formData.gameUsername);
+                results.push({
+                    field: 'اسم حساب اللعبة',
+                    valid: gameNameValid,
+                    message: gameNameValid ? 'صيغة الاسم صحيحة' : 'يجب أن يحتوي على أحرف إنجليزية وأرقام فقط'
+                });
+                if (!gameNameValid) allValid = false;
+                
+                // 4. فحص حساب الديسكورد
+                const discordValid = /^[a-zA-Z0-9_ ]{2,32}#[0-9]{4}$/.test(formData.discordUsername);
+                results.push({
+                    field: 'اسم حساب الديسكورد',
+                    valid: discordValid,
+                    message: discordValid ? 'صيغة الاسم صحيحة' : 'يجب أن تكون الصيغة: UserName#1234'
+                });
+                if (!discordValid) allValid = false;
+                
+                // 5. فحص رقم الهوية
+                const idValid = /^\d{10}$/.test(formData.gameId);
+                results.push({
+                    field: 'رقم الهوية',
+                    valid: idValid,
+                    message: idValid ? 'رقم صحيح (10 أرقام)' : 'يجب أن يتكون من 10 أرقام'
+                });
+                if (!idValid) allValid = false;
+                
+                this.setStepCompleted(1, allValid, allValid ? 'جميع البيانات صحيحة' : 'يوجد أخطاء في البيانات');
+                this.results.push(...results);
+                
+                return allValid;
+            }
+            
+            // الخطوة 2: فحص المستندات
+            async step2_DocumentsCheck(formData) {
+                this.setStepActive(2);
+                
+                await this.delay(3000);
+                
+                const results = [];
+                let allValid = true;
+                
+                // محاكاة فحص المستندات بالذكاء الاصطناعي
+                const documentChecks = [
+                    { name: 'هوية اللعبة', valid: Math.random() > 0.1, message: 'صورة واضحة ومقروءة' },
+                    { name: 'صورة الشخصية', valid: Math.random() > 0.2, message: 'بدون إكسسوارات أو قبعات' },
+                    { name: 'صورة الديسكورد', valid: Math.random() > 0.15, message: 'لقطة واضحة للحساب' }
+                ];
+                
+                documentChecks.forEach(doc => {
+                    results.push({
+                        field: doc.name,
+                        valid: doc.valid,
+                        message: doc.valid ? doc.message : 'الصورة غير واضحة أو غير مطابقة'
+                    });
+                    if (!doc.valid) allValid = false;
+                });
+                
+                // محاكاة فحص جودة الصور
+                results.push({
+                    field: 'جودة الصور',
+                    valid: Math.random() > 0.1,
+                    message: Math.random() > 0.1 ? 'جودة الصور ممتازة' : 'جودة بعض الصور منخفضة'
+                });
+                
+                this.setStepCompleted(2, allValid, allValid ? 'جميع المستندات مقبولة' : 'يوجد مشاكل في بعض المستندات');
+                this.results.push(...results);
+                
+                return allValid;
+            }
+            
+            // الخطوة 3: المطابقة الذكية
+            async step3_SmartMatching(formData) {
+                this.setStepActive(3);
+                
+                await this.delay(3000);
+                
+                const results = [];
+                let allValid = true;
+                
+                // محاكاة مطابقة رقم الهوية
+                const idMatch = Math.random() > 0.3; // 70% نجاح
+                results.push({
+                    field: 'مطابقة رقم الهوية',
+                    valid: idMatch,
+                    message: idMatch ? 'الرقم المدخل مطابق للرقم في الصورة' : 'الرقم المدخل غير مطابق للرقم في الصورة'
+                });
+                if (!idMatch) allValid = false;
+                
+                // محاكاة مطابقة الاسم
+                const nameMatch = Math.random() > 0.2; // 80% نجاح
+                results.push({
+                    field: 'مطابقة المعلومات',
+                    valid: nameMatch,
+                    message: nameMatch ? 'جميع المعلومات متسقة' : 'يوجد تناقض في المعلومات'
+                });
+                if (!nameMatch) allValid = false;
+                
+                // محاكاة فحص التزوير
+                const fraudCheck = Math.random() > 0.1; // 90% نجاح
+                results.push({
+                    field: 'فحص التزوير',
+                    valid: fraudCheck,
+                    message: fraudCheck ? 'المستندات أصلية' : 'يوجد شك في صحة المستندات'
+                });
+                if (!fraudCheck) allValid = false;
+                
+                this.setStepCompleted(3, allValid, allValid ? 'المطابقة ناجحة' : 'يوجد عدم تطابق في البيانات');
+                this.results.push(...results);
+                
+                return allValid;
+            }
+            
+            // الخطوة 4: التحقق النهائي
+            async step4_FinalVerification() {
+                this.setStepActive(4);
+                
+                await this.delay(1000);
+                
+                // حساب النتيجة النهائية
+                const totalResults = this.results.filter(r => !r.valid);
+                const isApproved = totalResults.length === 0;
+                
+                this.setStepCompleted(4, isApproved, isApproved ? 'الطلب مقبول' : 'الطلب مرفوض');
+                
+                return isApproved;
+            }
+            
+            // إكمال الفحص
+            completeScan() {
+                clearInterval(this.scanInterval);
+                this.isScanning = false;
+                
+                // حساب النتيجة النهائية
+                const failedResults = this.results.filter(r => !r.valid);
+                const isApproved = failedResults.length === 0;
+                
+                // عرض النتائج
+                this.showResults(isApproved);
+                
+                // إذا كان مرفوض، نضيف سبب الرفض
+                if (!isApproved) {
+                    const rejectionReasons = failedResults.map(r => r.message).slice(0, 3);
+                    this.rejectionReasons = rejectionReasons;
+                }
+                
+                // حظر المستخدم لمدة 5 ساعات إذا كان مرفوض
+                if (!isApproved) {
+                    this.blockUser(5); // 5 ساعات
+                }
+            }
+            
+            // عرض النتائج
+            showResults(isApproved) {
+                const scanScreen = document.getElementById('aiScanScreen');
+                const resultScreen = document.getElementById('scanResult');
+                
+                scanScreen.style.display = 'none';
+                resultScreen.style.display = 'block';
+                
+                if (isApproved) {
+                    resultScreen.innerHTML = `
+                        <div class="result-icon" style="color: var(--success);">🎉</div>
+                        <h2 class="result-title" style="color: var(--success);">تم قبولك بنجاح!</h2>
+                        <p class="result-subtitle">مبروك! تم تفعيل هويتك الرقمية بنجاح</p>
+                        
+                        <div class="result-details">
+                            <div class="result-item">
+                                <span>رقم الطلب:</span>
+                                <span class="result-status status-success">KR${Math.floor(10000 + Math.random() * 90000)}</span>
+                            </div>
+                            <div class="result-item">
+                                <span>حالة الطلب:</span>
+                                <span class="result-status status-success">مقبول</span>
+                            </div>
+                            <div class="result-item">
+                                <span>وقت القبول:</span>
+                                <span>${new Date().toLocaleString('ar-SA')}</span>
+                            </div>
+                            <div class="result-item">
+                                <span>مدة الفحص:</span>
+                                <span>10 ثواني</span>
+                            </div>
+                        </div>
+                        
+                        <div class="result-actions">
+                            <button class="btn-result btn-success" onclick="closeModal()">
+                                <i class="fas fa-check"></i>
+                                تم
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    const reasons = this.rejectionReasons || ['سبب غير محدد'];
+                    
+                    resultScreen.innerHTML = `
+                        <div class="result-icon" style="color: var(--error);">❌</div>
+                        <h2 class="result-title" style="color: var(--error);">تم رفض طلبك</h2>
+                        <p class="result-subtitle">يوجد أخطاء تحتاج للتعديل</p>
+                        
+                        <div class="result-details">
+                            <div class="result-item">
+                                <span>حالة الطلب:</span>
+                                <span class="result-status status-error">مرفوض</span>
+                            </div>
+                            <div class="result-item">
+                                <span>أسباب الرفض:</span>
+                            </div>
+                            ${reasons.map(reason => `
+                                <div class="result-item">
+                                    <span style="color: var(--error);">• ${reason}</span>
+                                </div>
+                            `).join('')}
+                            <div class="result-item">
+                                <span>وقت الرفض:</span>
+                                <span>${new Date().toLocaleString('ar-SA')}</span>
+                            </div>
+                            <div class="result-item">
+                                <span>مدة الحظر:</span>
+                                <span class="result-status status-warning">5 ساعات</span>
+                            </div>
+                        </div>
+                        
+                        <div class="result-actions">
+                            <button class="btn-result btn-error" onclick="closeModal()">
+                                <i class="fas fa-redo"></i>
+                                المحاولة مرة أخرى لاحقاً
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+            
+            // حظر المستخدم
+            blockUser(hours) {
+                const blockDuration = hours * 60 * 60 * 1000; // تحويل الساعات إلى مللي ثانية
+                const blockEndTime = Date.now() + blockDuration;
+                
+                localStorage.setItem('submissionBlocked', 'true');
+                localStorage.setItem('blockUntil', blockEndTime.toString());
+                localStorage.setItem('blockReason', 'طلب مرفوض من الذكاء الاصطناعي');
+            }
+            
+            // وظائف مساعدة
+            setStepActive(stepId) {
+                const step = this.steps.find(s => s.id === stepId);
+                if (step) {
+                    step.active = true;
+                    this.updateStepsDisplay();
+                }
+            }
+            
+            setStepCompleted(stepId, success, details) {
+                const step = this.steps.find(s => s.id === stepId);
+                if (step) {
+                    step.active = false;
+                    step.completed = true;
+                    step.result = success;
+                    step.details = details;
+                    this.updateStepsDisplay();
+                }
+            }
+            
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
+            validateFullName(name) {
+                if (!name || name.trim().length === 0) return false;
+                
+                const parts = name.trim().split(' ').filter(part => part.length > 0);
+                if (parts.length < 3) return false;
+                
+                const secondPart = parts[1];
+                if (!['بن', 'بنت', 'ابن', 'ابنة'].includes(secondPart)) {
+                    return false;
+                }
+                
+                const arabicPattern = /^[\u0600-\u06FF\s]+$/;
+                return arabicPattern.test(name);
+            }
+            
+            calculateAge(birthDate) {
+                if (!birthDate) return 0;
+                
+                const birth = new Date(birthDate);
+                const today = new Date();
+                let age = today.getFullYear() - birth.getFullYear();
+                const monthDiff = today.getMonth() - birth.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                    age--;
+                }
+                
+                return age;
+            }
+        }
+        
+        // إنشاء مثيل من الماسح الضوئي
+        const aiScanner = new AIScanner();
+        
+        // تحميل نموذج التفعيل
         function loadActivationForm() {
             const formContainer = document.getElementById('formContainer');
             
-            // إنشاء النموذج مباشرة في الصفحة
             formContainer.innerHTML = `
                 <style>
-                    /* أنماط النموذج */
                     .form-container {
                         max-width: 100%;
                     }
                     
                     .terms-section {
-                        background: #f8f9fa;
+                        background: rgba(255, 255, 255, 0.05);
                         border-radius: 10px;
                         padding: 20px;
                         margin-bottom: 25px;
-                        border: 2px solid #e1e5eb;
+                        border: 2px solid rgba(255, 255, 255, 0.1);
                     }
                     
                     .terms-title {
-                        color: #1f4068;
+                        color: var(--light);
                         font-size: 1.2rem;
                         margin-bottom: 15px;
                         display: flex;
@@ -852,11 +1588,11 @@
                     
                     .terms-list li {
                         padding: 10px 0;
-                        border-bottom: 1px solid #e1e5eb;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
                         display: flex;
                         align-items: flex-start;
                         gap: 12px;
-                        color: #333;
+                        color: rgba(255, 255, 255, 0.9);
                         font-size: 0.95rem;
                     }
                     
@@ -865,7 +1601,7 @@
                     }
                     
                     .term-icon {
-                        color: #1f4068;
+                        color: var(--neon);
                         font-size: 1rem;
                         margin-top: 3px;
                     }
@@ -875,23 +1611,23 @@
                         align-items: center;
                         gap: 12px;
                         padding: 15px;
-                        background: white;
+                        background: rgba(255, 255, 255, 0.05);
                         border-radius: 10px;
-                        border: 2px solid #e1e5eb;
+                        border: 2px solid rgba(255, 255, 255, 0.1);
                         margin-top: 15px;
                     }
                     
                     .checkbox-container input[type="checkbox"] {
                         width: 20px;
                         height: 20px;
-                        accent-color: #1f4068;
+                        accent-color: var(--neon);
                         cursor: pointer;
                     }
                     
                     .checkbox-container label {
                         font-size: 1rem;
                         font-weight: 600;
-                        color: #333;
+                        color: var(--light);
                         cursor: pointer;
                     }
                     
@@ -900,7 +1636,7 @@
                         justify-content: space-between;
                         margin-top: 30px;
                         padding-top: 20px;
-                        border-top: 2px solid #e1e5eb;
+                        border-top: 2px solid rgba(255, 255, 255, 0.1);
                     }
                     
                     .btn {
@@ -917,7 +1653,7 @@
                     }
                     
                     .btn-primary {
-                        background: linear-gradient(135deg, #1f4068, #162447);
+                        background: linear-gradient(135deg, var(--accent), var(--secondary));
                         color: white;
                     }
                     
@@ -927,13 +1663,13 @@
                     }
                     
                     .btn-secondary {
-                        background: #f8f9fa;
-                        color: #555;
-                        border: 2px solid #e1e5eb;
+                        background: rgba(255, 255, 255, 0.1);
+                        color: var(--light);
+                        border: 2px solid rgba(255, 255, 255, 0.2);
                     }
                     
                     .btn-secondary:hover {
-                        background: #e9ecef;
+                        background: rgba(255, 255, 255, 0.2);
                     }
                     
                     .btn:disabled {
@@ -943,41 +1679,12 @@
                         box-shadow: none !important;
                     }
                     
-                    .alert {
-                        padding: 15px 20px;
-                        border-radius: 10px;
-                        margin-bottom: 20px;
-                        display: flex;
-                        align-items: center;
-                        gap: 12px;
-                        animation: slideIn 0.3s ease;
-                    }
-                    
-                    .alert-error {
-                        background: #f8d7da;
-                        color: #721c24;
-                        border: 1px solid #f5c6cb;
-                    }
-                    
-                    .alert-warning {
-                        background: #fff3cd;
-                        color: #856404;
-                        border: 1px solid #ffeaa7;
-                    }
-                    
-                    @keyframes slideIn {
-                        from { opacity: 0; transform: translateX(-20px); }
-                        to { opacity: 1; transform: translateX(0); }
-                    }
-                    
                     @keyframes spin {
                         to { transform: rotate(360deg); }
                     }
                 </style>
                 
                 <div class="form-container">
-                    <div id="alertsContainer"></div>
-                    
                     <div class="terms-section">
                         <div class="terms-title">
                             <i class="fas fa-file-contract"></i>
@@ -1036,17 +1743,16 @@
             });
             
             document.getElementById('cancelBtn').addEventListener('click', function() {
-                document.getElementById('activationModal').style.display = 'none';
+                closeModal();
             });
         }
         
-        // دالة لتحميل النموذج الكامل
+        // تحميل النموذج الكامل
         function loadFullForm() {
             const formContainer = document.getElementById('formContainer');
             
             formContainer.innerHTML = `
                 <style>
-                    /* أنماط النموذج الكامل */
                     .form-section {
                         animation: fadeIn 0.5s ease;
                     }
@@ -1057,11 +1763,11 @@
                     }
                     
                     .form-title {
-                        color: #1f4068;
+                        color: var(--light);
                         font-size: 1.3rem;
                         margin-bottom: 20px;
                         padding-bottom: 10px;
-                        border-bottom: 2px solid #e1e5eb;
+                        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
                         display: flex;
                         align-items: center;
                         gap: 10px;
@@ -1075,119 +1781,60 @@
                         display: block;
                         margin-bottom: 8px;
                         font-weight: 600;
-                        color: #444;
+                        color: var(--light);
                         font-size: 0.95rem;
                     }
                     
                     .form-group label .required {
-                        color: #e74c3c;
+                        color: var(--error);
                         margin-right: 5px;
                     }
                     
                     .form-input {
                         width: 100%;
                         padding: 12px 15px;
-                        border: 2px solid #e1e5eb;
+                        border: 2px solid rgba(255, 255, 255, 0.2);
                         border-radius: 8px;
                         font-size: 0.95rem;
                         transition: all 0.3s ease;
-                        background: white;
-                        color: #333;
+                        background: rgba(255, 255, 255, 0.05);
+                        color: white;
                     }
                     
                     .form-input:focus {
                         outline: none;
-                        border-color: #1f4068;
-                        box-shadow: 0 0 0 3px rgba(31, 64, 104, 0.1);
+                        border-color: var(--neon);
+                        box-shadow: 0 0 0 3px rgba(0, 201, 255, 0.1);
                     }
                     
                     .form-input.error {
-                        border-color: #e74c3c;
+                        border-color: var(--error);
                     }
                     
                     .form-input.success {
-                        border-color: #2ecc71;
+                        border-color: var(--success);
                     }
                     
                     .hint {
                         display: block;
                         margin-top: 6px;
                         font-size: 0.8rem;
-                        color: #666;
+                        color: rgba(255, 255, 255, 0.7);
                     }
                     
                     .hint.error {
-                        color: #e74c3c;
+                        color: var(--error);
                     }
                     
                     .hint.success {
-                        color: #2ecc71;
-                    }
-                    
-                    .file-upload {
-                        border: 2px dashed #e1e5eb;
-                        border-radius: 8px;
-                        padding: 25px 15px;
-                        text-align: center;
-                        cursor: pointer;
-                        transition: all 0.3s ease;
-                        position: relative;
-                        overflow: hidden;
-                        background: #f8f9fa;
-                    }
-                    
-                    .file-upload:hover {
-                        border-color: #1f4068;
-                        background: rgba(31, 64, 104, 0.02);
-                    }
-                    
-                    .file-upload input[type="file"] {
-                        position: absolute;
-                        width: 100%;
-                        height: 100%;
-                        top: 0;
-                        left: 0;
-                        opacity: 0;
-                        cursor: pointer;
-                    }
-                    
-                    .upload-icon {
-                        font-size: 2rem;
-                        color: #1f4068;
-                        margin-bottom: 10px;
-                    }
-                    
-                    .file-preview {
-                        margin-top: 15px;
-                        display: none;
-                    }
-                    
-                    .preview-image {
-                        max-width: 200px;
-                        max-height: 150px;
-                        border-radius: 6px;
-                        margin: 0 auto 10px;
-                        display: block;
-                        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-                    }
-                    
-                    .image-example {
-                        display: inline-block;
-                        margin-top: 8px;
-                        color: #1f4068;
-                        text-decoration: none;
-                        font-size: 0.85rem;
-                    }
-                    
-                    .image-example:hover {
-                        text-decoration: underline;
+                        color: var(--success);
                     }
                     
                     .age-display {
                         display: inline-block;
                         margin-right: 10px;
                         padding: 6px 12px;
-                        background: #1f4068;
+                        background: var(--accent);
                         color: white;
                         border-radius: 6px;
                         font-weight: 600;
@@ -1199,11 +1846,11 @@
                         justify-content: space-between;
                         margin-top: 30px;
                         padding-top: 20px;
-                        border-top: 2px solid #e1e5eb;
+                        border-top: 2px solid rgba(255, 255, 255, 0.1);
                     }
                     
                     .submit-btn {
-                        background: linear-gradient(135deg, #2ecc71, #27ae60);
+                        background: linear-gradient(135deg, var(--success), #27ae60);
                         color: white;
                         border: none;
                         padding: 12px 35px;
@@ -1230,9 +1877,9 @@
                     }
                     
                     .back-btn {
-                        background: #f8f9fa;
-                        color: #555;
-                        border: 2px solid #e1e5eb;
+                        background: rgba(255, 255, 255, 0.1);
+                        color: var(--light);
+                        border: 2px solid rgba(255, 255, 255, 0.2);
                         padding: 12px 25px;
                         font-size: 0.95rem;
                         font-weight: 600;
@@ -1245,52 +1892,11 @@
                     }
                     
                     .back-btn:hover {
-                        background: #e9ecef;
-                    }
-                    
-                    .verification-results {
-                        background: #f8f9fa;
-                        border-radius: 10px;
-                        padding: 20px;
-                        margin-top: 25px;
-                        border-left: 4px solid #1f4068;
-                        display: none;
-                    }
-                    
-                    .verification-item {
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        padding: 10px 0;
-                        border-bottom: 1px solid #e1e5eb;
-                        font-size: 0.9rem;
-                    }
-                    
-                    .verification-item:last-child {
-                        border-bottom: none;
-                    }
-                    
-                    .verification-status {
-                        padding: 4px 12px;
-                        border-radius: 15px;
-                        font-size: 0.8rem;
-                        font-weight: 600;
-                    }
-                    
-                    .status-success {
-                        background: #d5edda;
-                        color: #155724;
-                    }
-                    
-                    .status-error {
-                        background: #f8d7da;
-                        color: #721c24;
+                        background: rgba(255, 255, 255, 0.2);
                     }
                 </style>
                 
                 <div class="form-section">
-                    <div id="formAlertsContainer"></div>
-                    
                     <div class="form-title">
                         <i class="fas fa-user-edit"></i>
                         المعلومات الشخصية
@@ -1299,7 +1905,6 @@
                     <div class="form-group">
                         <label><span class="required">*</span>الاسم الثلاثي بالعربية</label>
                         <input type="text" class="form-input" id="fullNameModal" placeholder="مثال: محمد بن عبدالله الحازمي" dir="rtl">
-                        <span class="hint error" id="nameErrorModal" style="display: none;">يجب كتابة الاسم ثلاثي (الاسم + اسم الأب + اسم العائلة)</span>
                         <span class="hint">يجب كتابة الاسم كاملاً (الاسم + اسم الأب + اسم العائلة)</span>
                     </div>
                     
@@ -1326,85 +1931,7 @@
                     <div class="form-group">
                         <label><span class="required">*</span>رقم الهوية في اللعبة</label>
                         <input type="text" class="form-input" id="gameIdModal" placeholder="1234567890" maxlength="10">
-                        <span class="hint">
-                            <a href="https://image2url.com/r2/default/images/1770326344157-bee38862-a2c5-44e9-93ac-2f93ee9d9556.jpeg" 
-                               target="_blank" class="image-example">
-                                <i class="fas fa-external-link-alt"></i> مثال على الرقم المطلوب
-                            </a>
-                        </span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label><span class="required">*</span>قم برفع هويتك الوطنية في اللعبة</label>
-                        <div class="file-upload">
-                            <input type="file" id="gameIdCardModal" accept="image/*">
-                            <div class="upload-icon">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                            </div>
-                            <div>انقر لرفع صورة الهوية</div>
-                            <div style="font-size: 0.8rem; color: #666; margin-top: 8px;">JPEG, PNG - الحد الأقصى 5MB</div>
-                            <a href="https://image2url.com/r2/default/images/1770326520037-ce2cbb4b-0890-4443-a628-4b0465f9b0f8.jpeg" 
-                               target="_blank" class="image-example">
-                                <i class="fas fa-external-link-alt"></i> مثال على الصورة المطلوبة
-                            </a>
-                        </div>
-                        <div class="file-preview" id="gameIdCardPreviewModal">
-                            <img class="preview-image" id="gameIdCardImageModal">
-                            <button type="button" class="back-btn" onclick="removeFileModal('gameIdCardModal')" style="padding: 6px 12px; font-size: 0.85rem; margin-top: 5px;">
-                                <i class="fas fa-trash"></i> حذف الصورة
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label><span class="required">*</span>قم برفع صورة شخصيتك في اللعبة</label>
-                        <div class="file-upload">
-                            <input type="file" id="characterImageModal" accept="image/*">
-                            <div class="upload-icon">
-                                <i class="fas fa-user-circle"></i>
-                            </div>
-                            <div>انقر لرفع صورة الشخصية</div>
-                            <div style="font-size: 0.8rem; color: #666; margin-top: 8px;">بدون إكسسوارات أو قبعات</div>
-                            <a href="https://image2url.com/r2/default/images/1770326882712-9c966fea-15ac-41bb-8a45-2ff0989a1542.jpeg" 
-                               target="_blank" class="image-example">
-                                <i class="fas fa-external-link-alt"></i> مثال على الصورة المطلوبة
-                            </a>
-                        </div>
-                        <div class="file-preview" id="characterImagePreviewModal">
-                            <img class="preview-image" id="characterImagePreviewImgModal">
-                            <button type="button" class="back-btn" onclick="removeFileModal('characterImageModal')" style="padding: 6px 12px; font-size: 0.85rem; margin-top: 5px;">
-                                <i class="fas fa-trash"></i> حذف الصورة
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label><span class="required">*</span>قم برفع صورة حسابك في الديسكورد</label>
-                        <div class="file-upload">
-                            <input type="file" id="discordImageModal" accept="image/*">
-                            <div class="upload-icon">
-                                <i class="fab fa-discord"></i>
-                            </div>
-                            <div>انقر لرفع صورة حساب الديسكورد</div>
-                            <a href="https://image2url.com/r2/default/images/1770162603514-dfab4951-965a-4683-9305-730c4445f835.jpeg" 
-                               target="_blank" class="image-example">
-                                <i class="fas fa-external-link-alt"></i> مثال على الصورة المطلوبة
-                            </a>
-                        </div>
-                        <div class="file-preview" id="discordImagePreviewModal">
-                            <img class="preview-image" id="discordImagePreviewImgModal">
-                            <button type="button" class="back-btn" onclick="removeFileModal('discordImageModal')" style="padding: 6px 12px; font-size: 0.85rem; margin-top: 5px;">
-                                <i class="fas fa-trash"></i> حذف الصورة
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="verification-results" id="verificationResultsModal">
-                        <div class="form-title">
-                            <i class="fas fa-clipboard-check"></i>
-                            نتائج التحقق
-                        </div>
-                        <div id="verificationListModal"></div>
+                        <span class="hint">يجب أن يتكون من 10 أرقام فقط</span>
                     </div>
                     
                     <div class="form-buttons">
@@ -1413,20 +1940,14 @@
                             العودة للشروط
                         </button>
                         <button class="submit-btn" id="submitBtnModal">
-                            <i class="fas fa-fingerprint"></i>
-                            تفعيل الهوية
+                            <i class="fas fa-robot"></i>
+                            فحص بالذكاء الاصطناعي
                         </button>
                     </div>
                 </div>
             `;
             
             // إضافة الأحداث للنموذج
-            initializeFormEvents();
-        }
-        
-        // دالة لتهيئة أحداث النموذج
-        function initializeFormEvents() {
-            // حدث تاريخ الميلاد
             document.getElementById('birthDateModal').addEventListener('change', function() {
                 if (this.value) {
                     const birthDate = new Date(this.value);
@@ -1443,106 +1964,34 @@
                 }
             });
             
-            // أحداث الملفات
-            document.getElementById('gameIdCardModal').addEventListener('change', function() {
-                previewImageModal('gameIdCardModal', 'gameIdCardPreviewModal', 'gameIdCardImageModal');
-            });
-            
-            document.getElementById('characterImageModal').addEventListener('change', function() {
-                previewImageModal('characterImageModal', 'characterImagePreviewModal', 'characterImagePreviewImgModal');
-            });
-            
-            document.getElementById('discordImageModal').addEventListener('change', function() {
-                previewImageModal('discordImageModal', 'discordImagePreviewModal', 'discordImagePreviewImgModal');
-            });
-            
-            // زر العودة
             document.getElementById('backBtnModal').addEventListener('click', function() {
                 loadActivationForm();
             });
             
-            // زر التقديم
             document.getElementById('submitBtnModal').addEventListener('click', function() {
-                // هنا يمكنك إضافة منطق التقديم
-                showAlertModal('تم تقديم طلبك بنجاح! سيتم مراجعة الطلب وإشعارك بالنتيجة.', 'success');
+                const formData = {
+                    fullName: document.getElementById('fullNameModal').value,
+                    birthDate: document.getElementById('birthDateModal').value,
+                    gameUsername: document.getElementById('gameUsernameModal').value,
+                    discordUsername: document.getElementById('discordUsernameModal').value,
+                    gameId: document.getElementById('gameIdModal').value
+                };
                 
-                // حظر التقديم لمدة 5 ساعات
-                const blockDuration = 5 * 60 * 60 * 1000;
-                const blockEndTime = Date.now() + blockDuration;
-                
-                localStorage.setItem('submissionBlocked', 'true');
-                localStorage.setItem('blockUntil', blockEndTime.toString());
-                
-                // إغلاق النافذة بعد 3 ثواني
-                setTimeout(() => {
-                    document.getElementById('activationModal').style.display = 'none';
-                    location.reload();
-                }, 3000);
+                // بدء فحص الذكاء الاصطناعي
+                aiScanner.startScan(formData);
             });
-            
-            // إضافة تنبيه إذا كان محظوراً
-            checkBlockStatusModal();
         }
         
-        // دالة لعرض التنبيهات
-        function showAlertModal(message, type = 'info') {
-            const alertsContainer = document.getElementById('formAlertsContainer');
-            const alertTypes = {
-                'success': { icon: 'fa-check-circle', class: 'alert-success', bg: '#d5edda', color: '#155724' },
-                'error': { icon: 'fa-exclamation-circle', class: 'alert-error', bg: '#f8d7da', color: '#721c24' },
-                'warning': { icon: 'fa-exclamation-triangle', class: 'alert-warning', bg: '#fff3cd', color: '#856404' },
-                'info': { icon: 'fa-info-circle', class: 'alert-info', bg: '#d1ecf1', color: '#0c5460' }
-            };
+        // إغلاق النافذة
+        function closeModal() {
+            document.getElementById('activationModal').style.display = 'none';
             
-            const alert = document.createElement('div');
-            alert.className = `alert ${alertTypes[type].class}`;
-            alert.style.backgroundColor = alertTypes[type].bg;
-            alert.style.color = alertTypes[type].color;
-            alert.style.borderColor = alertTypes[type].color + '40';
-            alert.innerHTML = `
-                <i class="fas ${alertTypes[type].icon} alert-icon"></i>
-                <div>${message}</div>
-            `;
-            
-            alertsContainer.appendChild(alert);
-            
-            setTimeout(() => {
-                alert.remove();
-            }, 5000);
-        }
-        
-        // دالة لعرض معاينة الصورة
-        function previewImageModal(inputId, previewId, imgId) {
-            const input = document.getElementById(inputId);
-            const preview = document.getElementById(previewId);
-            const img = document.getElementById(imgId);
-            
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    img.src = e.target.result;
-                    preview.style.display = 'block';
-                }
-                
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        
-        // دالة لحذف الملف
-        function removeFileModal(inputId) {
-            const input = document.getElementById(inputId);
-            const previewId = inputId + 'Preview';
-            const preview = document.getElementById(previewId);
-            
-            input.value = '';
-            if (preview) {
-                preview.style.display = 'none';
-            }
+            // تحديث حالة الزر الرئيسي إذا كان محظوراً
+            checkBlockStatus();
         }
         
         // التحقق من حالة الحظر
-        function checkBlockStatusModal() {
+        function checkBlockStatus() {
             const blocked = localStorage.getItem('submissionBlocked');
             const blockTime = localStorage.getItem('blockUntil');
             
@@ -1553,18 +2002,19 @@
                     const hours = Math.floor(remaining / (1000 * 60 * 60));
                     const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
                     
-                    showAlertModal(`لا يمكنك التقديم الآن. يجب الانتظار ${hours} ساعة و ${minutes} دقيقة`, 'error');
-                    
-                    const submitBtn = document.getElementById('submitBtnModal');
-                    if (submitBtn) {
-                        submitBtn.disabled = true;
-                        submitBtn.innerHTML = `<i class="fas fa-clock"></i> محظور: ${hours}:${minutes.toString().padStart(2, '0')}`;
-                    }
-                    
+                    const activateBtn = document.getElementById('activateBtn');
+                    activateBtn.innerHTML = `
+                        <i class="fas fa-clock btn-icon"></i>
+                        <span class="btn-text">متاح بعد ${hours}:${minutes.toString().padStart(2, '0')}</span>
+                    `;
+                    activateBtn.style.background = 'linear-gradient(135deg, #666, #888)';
+                    activateBtn.disabled = true;
+                    activateBtn.style.cursor = 'not-allowed';
                     return true;
                 } else {
                     localStorage.removeItem('submissionBlocked');
                     localStorage.removeItem('blockUntil');
+                    localStorage.removeItem('blockReason');
                 }
             }
             return false;
@@ -1593,35 +2043,7 @@
             
             createStars();
             
-            // التحقق من حالة الحظر
-            function checkBlockStatus() {
-                const blocked = localStorage.getItem('submissionBlocked');
-                const blockTime = localStorage.getItem('blockUntil');
-                
-                if (blocked && blockTime) {
-                    const now = Date.now();
-                    if (now < parseInt(blockTime)) {
-                        const remaining = parseInt(blockTime) - now;
-                        const hours = Math.floor(remaining / (1000 * 60 * 60));
-                        const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                        
-                        const activateBtn = document.getElementById('activateBtn');
-                        activateBtn.innerHTML = `
-                            <i class="fas fa-clock btn-icon"></i>
-                            <span class="btn-text">متاح بعد ${hours}:${minutes.toString().padStart(2, '0')}</span>
-                        `;
-                        activateBtn.style.background = 'linear-gradient(135deg, #666, #888)';
-                        activateBtn.disabled = true;
-                        activateBtn.style.cursor = 'not-allowed';
-                        return true;
-                    } else {
-                        localStorage.removeItem('submissionBlocked');
-                        localStorage.removeItem('blockUntil');
-                    }
-                }
-                return false;
-            }
-            
+            // التحقق من حالة الحظر عند التحميل
             checkBlockStatus();
             
             // إضافة تأثيرات hover
@@ -1651,7 +2073,7 @@
             // زر التفعيل - يفتح النافذة المدمجة
             const activateBtn = document.getElementById('activateBtn');
             const activationModal = document.getElementById('activationModal');
-            const closeModal = document.getElementById('closeModal');
+            const closeModalBtn = document.getElementById('closeModal');
             
             if (!activateBtn.disabled) {
                 activateBtn.addEventListener('click', function() {
@@ -1698,14 +2120,12 @@
             }
             
             // إغلاق النافذة
-            closeModal.addEventListener('click', function() {
-                activationModal.style.display = 'none';
-            });
+            closeModalBtn.addEventListener('click', closeModal);
             
             // إغلاق النافذة عند النقر خارج المحتوى
             activationModal.addEventListener('click', function(e) {
                 if (e.target === this) {
-                    activationModal.style.display = 'none';
+                    closeModal();
                 }
             });
             
